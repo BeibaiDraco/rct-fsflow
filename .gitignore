@@ -1,0 +1,11 @@
+# local envs & caches
+runtime/
+.venv/
+venv/
+__pycache__/
+*.egg-info/
+
+# raw data & archives
+data/raw/
+*.zip
+*.mat
