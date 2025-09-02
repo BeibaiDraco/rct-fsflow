@@ -1,0 +1,12 @@
+[raw-decode] sid=20200926 area=MLIP pooled [0.050,0.200] s
+  Category:  AUC=0.857  ACC=0.752
+  R|C:       macro-ACC=0.533  macro-AUC=0.705
+[done] wrote results/session/20200926/decode_raw_timeseries_MLIP.csv/.png
+[raw-decode] sid=20200926 area=MFEF pooled [0.050,0.200] s
+  Category:  AUC=0.832  ACC=0.754
+  R|C:       macro-ACC=0.465  macro-AUC=0.640
+[done] wrote results/session/20200926/decode_raw_timeseries_MFEF.csv/.png
+[raw-decode] sid=20200926 area=MSC pooled [0.050,0.200] s
+  Category:  AUC=0.578  ACC=0.561
+  R|C:       macro-ACC=0.324  macro-AUC=0.494
+[done] wrote results/session/20200926/decode_raw_timeseries_MSC.csv/.png

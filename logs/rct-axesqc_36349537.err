@@ -1,0 +1,34 @@
+/project/bdoiron/dracoxu/rct-fsflow/04_build_axes.py:36: FutureWarning: Passing literal json to 'read_json' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
+  trials = pd.read_json(z["trials"].item())
+/project/bdoiron/dracoxu/rct-fsflow/runtime/venv/lib/python3.11/site-packages/sklearn/linear_model/_logistic.py:1272: FutureWarning: 'multi_class' was deprecated in version 1.5 and will be removed in 1.7. From then on, it will always use 'multinomial'. Leave it to its default value to avoid this warning.
+  warnings.warn(
+/project/bdoiron/dracoxu/rct-fsflow/runtime/venv/lib/python3.11/site-packages/sklearn/linear_model/_logistic.py:1272: FutureWarning: 'multi_class' was deprecated in version 1.5 and will be removed in 1.7. From then on, it will always use 'multinomial'. Leave it to its default value to avoid this warning.
+  warnings.warn(
+/project/bdoiron/dracoxu/rct-fsflow/04_build_axes.py:36: FutureWarning: Passing literal json to 'read_json' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
+  trials = pd.read_json(z["trials"].item())
+/project/bdoiron/dracoxu/rct-fsflow/runtime/venv/lib/python3.11/site-packages/sklearn/linear_model/_logistic.py:1272: FutureWarning: 'multi_class' was deprecated in version 1.5 and will be removed in 1.7. From then on, it will always use 'multinomial'. Leave it to its default value to avoid this warning.
+  warnings.warn(
+/project/bdoiron/dracoxu/rct-fsflow/runtime/venv/lib/python3.11/site-packages/sklearn/linear_model/_logistic.py:1272: FutureWarning: 'multi_class' was deprecated in version 1.5 and will be removed in 1.7. From then on, it will always use 'multinomial'. Leave it to its default value to avoid this warning.
+  warnings.warn(
+/project/bdoiron/dracoxu/rct-fsflow/04_build_axes.py:36: FutureWarning: Passing literal json to 'read_json' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
+  trials = pd.read_json(z["trials"].item())
+/project/bdoiron/dracoxu/rct-fsflow/runtime/venv/lib/python3.11/site-packages/sklearn/linear_model/_logistic.py:1272: FutureWarning: 'multi_class' was deprecated in version 1.5 and will be removed in 1.7. From then on, it will always use 'multinomial'. Leave it to its default value to avoid this warning.
+  warnings.warn(
+/project/bdoiron/dracoxu/rct-fsflow/runtime/venv/lib/python3.11/site-packages/sklearn/linear_model/_logistic.py:1272: FutureWarning: 'multi_class' was deprecated in version 1.5 and will be removed in 1.7. From then on, it will always use 'multinomial'. Leave it to its default value to avoid this warning.
+  warnings.warn(
+/project/bdoiron/dracoxu/rct-fsflow/06_axes_qc.py:36: FutureWarning: Passing literal json to 'read_json' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
+  return pd.read_json(z["trials"].item())
+Traceback (most recent call last):
+  File "/project/bdoiron/dracoxu/rct-fsflow/06_axes_qc.py", line 224, in <module>
+    main()
+  File "/project/bdoiron/dracoxu/rct-fsflow/06_axes_qc.py", line 130, in main
+    aucC_from_ZR[i] = auc_C_given_ZR_holdoutR(ZR[:, i, :], C01, T["R"].to_numpy(int))
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/bdoiron/dracoxu/rct-fsflow/06_axes_qc.py", line 81, in auc_C_given_ZR_holdoutR
+    clf.fit(Zc[train], Cc[train])
+  File "/project/bdoiron/dracoxu/rct-fsflow/runtime/venv/lib/python3.11/site-packages/sklearn/base.py", line 1365, in wrapper
+    return fit_method(estimator, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/bdoiron/dracoxu/rct-fsflow/runtime/venv/lib/python3.11/site-packages/sklearn/linear_model/_logistic.py", line 1335, in fit
+    raise ValueError(
+ValueError: This solver needs samples of at least 2 classes in the data, but the data contains only one class: np.int64(0)

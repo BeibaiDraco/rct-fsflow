@@ -1,0 +1,19 @@
+[ok] cached 20200926_MFEF.npz  shape=(483, 105, 82)
+[ok] cached 20200926_MLIP.npz  shape=(483, 105, 77)
+[ok] cached 20200926_MSC.npz  shape=(483, 105, 47)
+[done]
+[ok] axes(subspaces) saved → results/session/20200926/axes_MFEF.npz  ZC (483, 105, 1)  ZR (483, 105, 2)
+[ok] axes(subspaces) saved → results/session/20200926/axes_MLIP.npz  ZC (483, 105, 1)  ZR (483, 105, 2)
+[ok] axes(subspaces) saved → results/session/20200926/axes_MSC.npz  ZC (483, 105, 1)  ZR (483, 105, 2)
+[QC] MLIP  sid=20200926
+  CV AUC(C | ZC) pooled[0.10,0.30] = 0.969
+  CV macro AUC(R | ZR) pooled[0.05,0.20] = 0.804
+[done] Saved QC figure → results/session/20200926/qc_axes_MLIP.png
+[QC] MFEF  sid=20200926
+  CV AUC(C | ZC) pooled[0.10,0.30] = 0.990
+  CV macro AUC(R | ZR) pooled[0.05,0.20] = 0.777
+[done] Saved QC figure → results/session/20200926/qc_axes_MFEF.png
+[QC] MSC  sid=20200926
+  CV AUC(C | ZC) pooled[0.10,0.30] = 0.796
+  CV macro AUC(R | ZR) pooled[0.05,0.20] = 0.592
+[done] Saved QC figure → results/session/20200926/qc_axes_MSC.png

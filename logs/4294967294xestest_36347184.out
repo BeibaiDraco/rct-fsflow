@@ -1,0 +1,22 @@
+[ok] cached 20200926_MFEF.npz  shape=(991, 30, 82)
+[ok] cached 20200926_MLIP.npz  shape=(991, 30, 77)
+[ok] cached 20200926_MSC.npz  shape=(991, 30, 47)
+[done]
+[ok] axes saved → results/session/20200926/axes_MFEF.npz  shapes: betaC (30, 82), sC (991, 30)
+[ok] axes saved → results/session/20200926/axes_MLIP.npz  shapes: betaC (30, 77), sC (991, 30)
+[ok] axes saved → results/session/20200926/axes_MSC.npz  shapes: betaC (30, 47), sC (991, 30)
+[QC] MFEF  session 20200926
+  mean AUC(C | sC)[30:120] = nan   (want >> 0.5)
+  mean AUC(C | sR)[30:120] = nan   (want ~ 0.5)
+  macro AUC(R | sR) within C  = 0.508 (want > 0.5)
+[done] Saved QC figure → results/session/20200926/qc_axes_MFEF.png
+[QC] MLIP  session 20200926
+  mean AUC(C | sC)[30:120] = nan   (want >> 0.5)
+  mean AUC(C | sR)[30:120] = nan   (want ~ 0.5)
+  macro AUC(R | sR) within C  = 0.503 (want > 0.5)
+[done] Saved QC figure → results/session/20200926/qc_axes_MLIP.png
+[QC] MSC  session 20200926
+  mean AUC(C | sC)[30:120] = nan   (want >> 0.5)
+  mean AUC(C | sR)[30:120] = nan   (want ~ 0.5)
+  macro AUC(R | sR) within C  = 0.504 (want > 0.5)
+[done] Saved QC figure → results/session/20200926/qc_axes_MSC.png
