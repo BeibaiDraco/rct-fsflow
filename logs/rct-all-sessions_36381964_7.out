@@ -1,0 +1,19 @@
+[info] Running session 20201004  (array index 7 of 23)
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/03_cache_binned.py --root RCT --session 20201004 --bin 0.01 --t0 -0.25 --t1 0.8 --targets_vert_only
+[ok] cached 20201004_MFEF.npz  shape=(437, 105, 123)
+[ok] cached 20201004_MLIP.npz  shape=(437, 105, 82)
+[ok] cached 20201004_MSC.npz  shape=(437, 105, 23)
+[done]
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/04_build_axes.py --sid 20201004 --trainC_start 0.1 --trainC_end 0.3 --trainR_start 0.05 --trainR_end 0.2 --C_dim 1 --R_dim 2
+[ok] axes(subspaces) saved → results/session/20201004/axes_MFEF.npz  ZC (437, 105, 1)  ZR (437, 105, 2)
+[ok] axes(subspaces) saved → results/session/20201004/axes_MLIP.npz  ZC (437, 105, 1)  ZR (437, 105, 2)
+[ok] axes(subspaces) saved → results/session/20201004/axes_MSC.npz  ZC (437, 105, 1)  ZR (437, 105, 2)
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/08p_fsflow_timesliding_parallel.py --sid 20201004 --all_pairs --win 0.16 --step 0.02 --k 5 --ridge 0.01 --perms 500 --n_jobs 16
+[info] sid=20201004 running 6 ordered pairs: [('MFEF', 'MLIP'), ('MFEF', 'MSC'), ('MLIP', 'MFEF'), ('MLIP', 'MSC'), ('MSC', 'MFEF'), ('MSC', 'MLIP')]
+[done] MFEF->MLIP  saved results/session/20201004/flow_timeseries_MFEFtoMLIP.npz and results/session/20201004/flow_timeseries_MFEFtoMLIP.png
+[done] MFEF->MSC  saved results/session/20201004/flow_timeseries_MFEFtoMSC.npz and results/session/20201004/flow_timeseries_MFEFtoMSC.png
+[done] MLIP->MFEF  saved results/session/20201004/flow_timeseries_MLIPtoMFEF.npz and results/session/20201004/flow_timeseries_MLIPtoMFEF.png
+[done] MLIP->MSC  saved results/session/20201004/flow_timeseries_MLIPtoMSC.npz and results/session/20201004/flow_timeseries_MLIPtoMSC.png
+[done] MSC->MFEF  saved results/session/20201004/flow_timeseries_MSCtoMFEF.npz and results/session/20201004/flow_timeseries_MSCtoMFEF.png
+[done] MSC->MLIP  saved results/session/20201004/flow_timeseries_MSCtoMLIP.npz and results/session/20201004/flow_timeseries_MSCtoMLIP.png
+[done] Session 20201004 completed.

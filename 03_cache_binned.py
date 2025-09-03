@@ -127,6 +127,10 @@ def main():
     ap.add_argument("--bin", type=float, default=0.010, help="Bin size (s)")
     ap.add_argument("--t0",  type=float, default=-0.25, help="Window start (s)")
     ap.add_argument("--t1",  type=float, default= 0.80, help="Window end (s)")
+    ap.add_argument("--reuse_cache", action="store_true", default=True,
+                help="If a matching cache exists, skip rebuilding (default True).")
+    ap.add_argument("--force_cache", action="store_true", default=False,
+                    help="Rebuild caches even if a matching one exists.")
     args = ap.parse_args()
 
     root: Path = args.root
@@ -148,6 +152,20 @@ def main():
 
     # Trials & labels (layout filtered)
     df = reparam_CR(trials_table(sdir), targets_vert_only=args.targets_vert_only)
+
+    # check existing cache
+    if out_path.exists() and args.reuse_cache and not args.force_cache:
+        try:
+            z = np.load(out_path, allow_pickle=True)
+            meta_old = json.loads(str(z["meta"]))
+            same = (abs(float(meta_old.get("bin_size_s", -1)) - args.bin) < 1e-12
+                    and meta_old.get("window_s", []) == [args.t0, args.t1]
+                    and bool(meta_old.get("targets_vert_only", False)) == bool(args.targets_vert_only))
+            if same:
+                print(f"[skip] reuse cache {out_path.name} (bin={args.bin}, window={[args.t0,args.t1]}, vert={args.targets_vert_only})")
+                continue
+        except Exception:
+            pass
 
     # Output dir
     out_dir = Path("results/caches"); out_dir.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,101 @@
+[info] Found 24 session folders under /project/bdoiron/dracoxu/rct-fsflow/results/session
+[info] Session 20200217: found 0 flow npz files
+[info] Session 20200327: found 2 flow npz files
+       (year hint: M?)
+[info] Session 20200328: found 2 flow npz files
+       (year hint: M?)
+[info] Session 20200401: found 2 flow npz files
+       (year hint: M?)
+[info] Session 20200402: found 2 flow npz files
+       (year hint: M?)
+[info] Session 20200926: found 6 flow npz files
+       (year hint: M?)
+[info] Session 20200929: found 6 flow npz files
+       (year hint: M?)
+[info] Session 20201001: found 6 flow npz files
+       (year hint: M?)
+[info] Session 20201004: found 6 flow npz files
+       (year hint: M?)
+[info] Session 20201204: found 6 flow npz files
+       (year hint: M?)
+[info] Session 20201211: found 6 flow npz files
+       (year hint: M?)
+[info] Session 20201216: found 6 flow npz files
+       (year hint: M?)
+[info] Session 20230622: found 2 flow npz files
+       (year hint: S?)
+[info] Session 20230627: found 2 flow npz files
+       (year hint: S?)
+[info] Session 20230705: found 2 flow npz files
+       (year hint: S?)
+[info] Session 20230707: found 2 flow npz files
+       (year hint: S?)
+[info] Session 20230710: found 2 flow npz files
+       (year hint: S?)
+[info] Session 20231025: found 6 flow npz files
+       (year hint: S?)
+[info] Session 20231103: found 6 flow npz files
+       (year hint: S?)
+[info] Session 20231109: found 6 flow npz files
+       (year hint: S?)
+[info] Session 20231121: found 6 flow npz files
+       (year hint: S?)
+[info] Session 20231123: found 6 flow npz files
+       (year hint: S?)
+[info] Session 20231130: found 6 flow npz files
+       (year hint: S?)
+[info] Session 20231205: found 6 flow npz files
+       (year hint: S?)
+[info] Monkey M: collected 50 session-pair entries across 6 pairs
+[info] Monkey S: collected 52 session-pair entries across 6 pairs
+[ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_M/manifest_pairs.csv
+[ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_S/manifest_pairs.csv
+  ↳ Aggregating pair MFEF→MLIP with 11 session curves
+    Category: n_sessions per t (min–max) = 11–11
+    Direction: n_sessions per t (min–max) = 11–11
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_M/flow_avg_MFEFtoMLIP.png
+  ↳ Aggregating pair MFEF→MSC with 7 session curves
+    Category: n_sessions per t (min–max) = 7–7
+    Direction: n_sessions per t (min–max) = 7–7
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_M/flow_avg_MFEFtoMSC.png
+  ↳ Aggregating pair MLIP→MFEF with 11 session curves
+    Category: n_sessions per t (min–max) = 11–11
+    Direction: n_sessions per t (min–max) = 11–11
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_M/flow_avg_MLIPtoMFEF.png
+  ↳ Aggregating pair MLIP→MSC with 7 session curves
+    Category: n_sessions per t (min–max) = 7–7
+    Direction: n_sessions per t (min–max) = 7–7
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_M/flow_avg_MLIPtoMSC.png
+  ↳ Aggregating pair MSC→MFEF with 7 session curves
+    Category: n_sessions per t (min–max) = 7–7
+    Direction: n_sessions per t (min–max) = 7–7
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_M/flow_avg_MSCtoMFEF.png
+  ↳ Aggregating pair MSC→MLIP with 7 session curves
+    Category: n_sessions per t (min–max) = 7–7
+    Direction: n_sessions per t (min–max) = 7–7
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_M/flow_avg_MSCtoMLIP.png
+  ↳ Aggregating pair SFEF→SLIP with 12 session curves
+    Category: n_sessions per t (min–max) = 12–12
+    Direction: n_sessions per t (min–max) = 12–12
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_S/flow_avg_SFEFtoSLIP.png
+  ↳ Aggregating pair SFEF→SSC with 7 session curves
+    Category: n_sessions per t (min–max) = 7–7
+    Direction: n_sessions per t (min–max) = 7–7
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_S/flow_avg_SFEFtoSSC.png
+  ↳ Aggregating pair SLIP→SFEF with 12 session curves
+    Category: n_sessions per t (min–max) = 12–12
+    Direction: n_sessions per t (min–max) = 12–12
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_S/flow_avg_SLIPtoSFEF.png
+  ↳ Aggregating pair SLIP→SSC with 7 session curves
+    Category: n_sessions per t (min–max) = 7–7
+    Direction: n_sessions per t (min–max) = 7–7
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_S/flow_avg_SLIPtoSSC.png
+  ↳ Aggregating pair SSC→SFEF with 7 session curves
+    Category: n_sessions per t (min–max) = 7–7
+    Direction: n_sessions per t (min–max) = 7–7
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_S/flow_avg_SSCtoSFEF.png
+  ↳ Aggregating pair SSC→SLIP with 7 session curves
+    Category: n_sessions per t (min–max) = 7–7
+    Direction: n_sessions per t (min–max) = 7–7
+    [ok] wrote /project/bdoiron/dracoxu/rct-fsflow/results/group/monkey_S/flow_avg_SSCtoSLIP.png
+[done] Aggregation complete.

@@ -1,0 +1,15 @@
+  File "/project/bdoiron/dracoxu/rct-fsflow/03_cache_binned.py", line 166
+    continue
+    ^^^^^^^^
+SyntaxError: 'continue' not properly in loop
+Traceback (most recent call last):
+  File "/project/bdoiron/dracoxu/rct-fsflow/10_run_all_sessions.py", line 102, in <module>
+    main()
+  File "/project/bdoiron/dracoxu/rct-fsflow/10_run_all_sessions.py", line 80, in main
+    sh(sys.executable, BASE/"03_cache_binned.py",
+  File "/project/bdoiron/dracoxu/rct-fsflow/10_run_all_sessions.py", line 27, in sh
+    return subprocess.run(list(map(str, args)), check=check)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/software/python-3.11.9-el8-x86_64/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python', '/project/bdoiron/dracoxu/rct-fsflow/03_cache_binned.py', '--root', 'RCT', '--session', '20230707', '--bin', '0.01', '--t0', '-0.25', '--t1', '0.8', '--targets_vert_only']' returned non-zero exit status 1.
