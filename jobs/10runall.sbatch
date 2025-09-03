@@ -9,7 +9,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16          # match --n_jobs
 #SBATCH --mem=128G
-#SBATCH --array=0-22%3            # cap: run at most 3 sessions concurrently
+#SBATCH --array=0-22%4            # cap: run at most 3 sessions concurrently
 
 set -euo pipefail
 
@@ -37,6 +37,8 @@ WIN=0.16
 STEP=0.02
 K=5
 
+TAG=win160_k5_perm500
+
 python 10_run_all_sessions.py \
   --index ${SLURM_ARRAY_TASK_ID} \
   --root RCT \
@@ -44,4 +46,5 @@ python 10_run_all_sessions.py \
   --n_jobs ${N_JOBS} \
   --win ${WIN} \
   --step ${STEP} \
-  --k ${K}
+  --k ${K} \
+  --run_tag ${TAG} --skip_if_exists

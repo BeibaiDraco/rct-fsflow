@@ -6,14 +6,17 @@ Time-sliding, multivariate, feature-specific GC + integrated-band test (parallel
 
 Adds:
   --band_start --band_end  (seconds): integrate GC over [band_start, band_end] and test
-  Outputs per pair: NPZ with curves + integrated values + p-values, and a PNG.
+  --out_tag: write under results/session/<sid>/<tag>/
+  --skip_if_exists: skip a pair if NPZ+PNG already exist in the tag
 
 Usage examples:
   python 08i_fsflow_timesliding_integrated.py --sid 20200926 --A MLIP --B MFEF \
-    --win 0.16 --step 0.02 --k 5 --perms 500 --n_jobs 16 --band_start 0.12 --band_end 0.28
+    --win 0.16 --step 0.02 --k 5 --perms 500 --n_jobs 16 --band_start 0.12 --band_end 0.28 \
+    --out_tag win160_k5_perm500 --skip_if_exists
 
   python 08i_fsflow_timesliding_integrated.py --sid 20200926 --all_pairs \
-    --win 0.16 --step 0.02 --k 5 --perms 500 --n_jobs 16 --band_start 0.12 --band_end 0.28
+    --win 0.16 --step 0.02 --k 5 --perms 500 --n_jobs 16 --band_start 0.12 --band_end 0.28 \
+    --out_tag win160_k5_perm500 --skip_if_exists
 """
 from __future__ import annotations
 import argparse, json, os
@@ -33,8 +36,24 @@ os.environ.setdefault("MKL_NUM_THREADS","1")
 os.environ.setdefault("NUMEXPR_NUM_THREADS","1")
 
 # ---------- IO ----------
-def load_axes(sid: int, area: str, axes_dir: Path):
-    z = np.load(axes_dir / f"{sid}/axes_{area}.npz", allow_pickle=True)
+def load_axes(sid: int, area: str, axes_dir: Path, out_tag: str = ""):
+    """
+    Prefer tagged path results/session/<sid>/<tag>/axes_<AREA>.npz,
+    then fall back to results/session/<sid>/axes_<AREA>.npz if tag not found.
+    """
+    base = axes_dir / str(sid)
+    tagged = base / out_tag if out_tag else base
+    f = tagged / f"axes_{area}.npz"
+    if not f.exists() and out_tag:
+        alt = base / f"axes_{area}.npz"
+        if alt.exists():
+            print(f"[warn] axes not found in tag '{out_tag}', falling back to {alt}")
+            f = alt
+        else:
+            raise FileNotFoundError(f"axes_{area}.npz not found in {tagged} nor {base}")
+    elif not f.exists():
+        raise FileNotFoundError(f"axes_{area}.npz not found in {tagged}")
+    z = np.load(f, allow_pickle=True)
     meta = json.loads(str(z["meta"]))
     ZC = z["ZC"] if "ZC" in z.files else z["sC"][..., None]
     ZR = z["ZR"] if "ZR" in z.files else z["sR"][..., None]
@@ -81,7 +100,7 @@ def make_VAR_design(ZA: np.ndarray, ZB: np.ndarray,
             hx = np.concatenate(hx, axis=0) if hx else np.zeros((0,))
             hz = []
             if Oa is not None:
-                hz.append(Oa[t]); 
+                hz.append(Oa[t])
                 if k>0: hz.extend([Oa[t-i] for i in range(1,k+1)])
             if Ob is not None and k>0:
                 hz.extend([Ob[t-i] for i in range(1,k+1)])
@@ -251,9 +270,11 @@ def run_one_pair(sid: int, A: str, B: str,
                  axes_dir: Path, cache_dir: Path,
                  win: float, step: float, k: int, ridge: float,
                  perms: int, n_jobs: int, seed: int,
-                 band_start: float, band_end: float):
-    ZC_A, ZR_A, metaA = load_axes(sid, A, axes_dir)
-    ZC_B, ZR_B, metaB = load_axes(sid, B, axes_dir)
+                 band_start: float, band_end: float,
+                 out_tag: str = "", skip_if_exists: bool = False):
+    # Load axes (tag-aware)
+    ZC_A, ZR_A, metaA = load_axes(sid, A, axes_dir, out_tag)
+    ZC_B, ZR_B, metaB = load_axes(sid, B, axes_dir, out_tag)
     if ZC_A.shape[1] != ZC_B.shape[1]: raise SystemExit("Mismatched bins A vs B.")
     trials = load_trials(cache_dir, sid, B)
 
@@ -273,9 +294,19 @@ def run_one_pair(sid: int, A: str, B: str,
                                            win, step, k, ridge, perms, n_jobs, seed+22,
                                            band_start, band_end)
 
-    # Save
-    out_dir = axes_dir / f"{sid}"; out_dir.mkdir(parents=True, exist_ok=True)
+    # Tagged output dir + skip-if-exists
+    out_dir = axes_dir / f"{sid}"
+    if out_tag:
+        out_dir = out_dir / out_tag
+    out_dir.mkdir(parents=True, exist_ok=True)
+
     out_npz = out_dir / f"flow_timeseriesINT_{A}to{B}.npz"
+    out_png = out_dir / f"flow_timeseriesINT_{A}to{B}.png"
+    if skip_if_exists and out_npz.exists() and out_png.exists():
+        print(f"[skip] {sid} {A}->{B} already exists in tag '{out_tag}'")
+        return
+
+    # Save + plot
     np.savez_compressed(
         out_npz,
         tC=tC, C_fwd=C_fwd, C_rev=C_rev, C_lo=C_bands[0], C_hi=C_bands[1], C_rlo=C_bands[2], C_rhi=C_bands[3],
@@ -284,14 +315,13 @@ def run_one_pair(sid: int, A: str, B: str,
         IC_fwd=IC_f, IC_rev=IC_r, IC_fwd_null=IC_f_null, IC_rev_null=IC_r_null, pC_fwd=pCf, pC_rev=pCr,
         IR_fwd=IR_f, IR_rev=IR_r, IR_fwd_null=IR_f_null, IR_rev_null=IR_r_null, pR_fwd=pRf, pR_rev=pRr,
         meta=json.dumps({"sid": sid, "A": A, "B": B, "win": win, "step": step, "k": k,
-                         "ridge": ridge, "perms": perms, "n_jobs": n_jobs})
+                         "ridge": ridge, "perms": perms, "n_jobs": n_jobs, "tag": out_tag})
     )
-    out_png = out_dir / f"flow_timeseriesINT_{A}to{B}.png"
     plot_pair(sid, A, B, (band_start, band_end),
               tC, C_fwd, C_rev, (C_bands[0],C_bands[1],C_bands[2],C_bands[3]), IC_f, pCf,
               tR, R_fwd, R_rev, (R_bands[0],R_bands[1],R_bands[2],R_bands[3]), IR_f, pRf,
               maskC, maskR, out_png)
-    print(f"[done] {A}->{B}  integrated C={IC_f:.4f} (p={pCf:.3g}), integrated R={IR_f:.4f} (p={pRf:.3g})  -> {out_npz}")
+    print(f"[done] {sid} {A}->{B} integrated C={IC_f:.4f} (p={pCf:.3g}), integrated R={IR_f:.4f} (p={pRf:.3g})  -> {out_npz}")
 
 # ---------- CLI ----------
 def main():
@@ -311,6 +341,10 @@ def main():
     ap.add_argument("--seed",  type=int,   default=123)
     ap.add_argument("--band_start", type=float, default=0.12)
     ap.add_argument("--band_end",   type=float, default=0.28)
+    # NEW tagging / skipping
+    ap.add_argument("--out_tag", type=str, default="", help="Write under results/session/<sid>/<tag>/")
+    ap.add_argument("--skip_if_exists", action="store_true", default=False,
+                    help="Skip pair if outputs already exist in the tag")
     args = ap.parse_args()
 
     def pairs_for_session():
@@ -324,14 +358,16 @@ def main():
             run_one_pair(args.sid, A, B, args.axes_dir, args.cache_dir,
                          args.win, args.step, args.k, args.ridge,
                          args.perms, args.n_jobs, args.seed,
-                         args.band_start, args.band_end)
+                         args.band_start, args.band_end,
+                         out_tag=args.out_tag, skip_if_exists=args.skip_if_exists)
     else:
         if not args.A or not args.B:
             raise SystemExit("Provide --A and --B, or use --all_pairs.")
         run_one_pair(args.sid, args.A, args.B, args.axes_dir, args.cache_dir,
                      args.win, args.step, args.k, args.ridge,
                      args.perms, args.n_jobs, args.seed,
-                     args.band_start, args.band_end)
+                     args.band_start, args.band_end,
+                     out_tag=args.out_tag, skip_if_exists=args.skip_if_exists)
 
 if __name__ == "__main__":
     main()

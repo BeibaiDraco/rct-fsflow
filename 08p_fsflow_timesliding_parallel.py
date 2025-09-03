@@ -9,9 +9,12 @@ Features vs 08:
 - --all_pairs runs every ordered pair among detected areas (MFEF/MLIP/MSC/SFEF/SLIP/SSC)
 - Plots show BOTH forward (solid grey) and reverse (hatched grey) permutation envelopes
 - Dots mark time points where forward/reverse exceed their OWN 95% null
+- NEW: --out_tag writes under results/session/<sid>/<tag>/ to avoid overwriting runs
+- NEW: --skip_if_exists skips pair if NPZ+PNG already exist in the tagged folder
+- NEW: axes loader first searches in <sid>/<tag> then falls back to <sid>
 
 Outputs per pair:
-  results/session/<sid>/flow_timeseries_<A>to<B>.npz/.png
+  results/session/<sid>/<tag>/flow_timeseries_<A>to<B>.npz/.png
 """
 from __future__ import annotations
 import argparse, json, os
@@ -33,8 +36,24 @@ os.environ.setdefault("MKL_NUM_THREADS", "1")
 os.environ.setdefault("NUMEXPR_NUM_THREADS", "1")
 
 # ---------- IO ----------
-def load_axes(sid: int, area: str, axes_dir: Path):
-    z = np.load(axes_dir / f"{sid}/axes_{area}.npz", allow_pickle=True)
+def load_axes(sid: int, area: str, axes_dir: Path, out_tag: str = ""):
+    """
+    Load axes_<AREA>.npz. Prefer tagged path results/session/<sid>/<tag>/axes_<AREA>.npz,
+    then fall back to results/session/<sid>/axes_<AREA>.npz if tag not found.
+    """
+    base = axes_dir / str(sid)
+    tagged = base / out_tag if out_tag else base
+    f = tagged / f"axes_{area}.npz"
+    if not f.exists() and out_tag:
+        alt = base / f"axes_{area}.npz"
+        if alt.exists():
+            print(f"[warn] axes not found in tag '{out_tag}', falling back to {alt}")
+            f = alt
+        else:
+            raise FileNotFoundError(f"axes_{area}.npz not found in {tagged} nor {base}")
+    elif not f.exists():
+        raise FileNotFoundError(f"axes_{area}.npz not found in {tagged}")
+    z = np.load(f, allow_pickle=True)
     meta = json.loads(str(z["meta"]))
     ZC = z["ZC"] if "ZC" in z.files else z["sC"][..., None]  # (nT, T, dC)
     ZR = z["ZR"] if "ZR" in z.files else z["sR"][..., None]  # (nT, T, dR)
@@ -262,11 +281,15 @@ def plot_pair(sid, A, B,
 def run_one_pair(sid: int, A: str, B: str,
                  axes_dir: Path, cache_dir: Path,
                  win: float, step: float, k: int, ridge: float,
-                 perms: int, n_jobs: int, seed: int):
-    ZC_A, ZR_A, metaA = load_axes(sid, A, axes_dir)
-    ZC_B, ZR_B, metaB = load_axes(sid, B, axes_dir)
+                 perms: int, n_jobs: int, seed: int,
+                 out_tag: str = "", skip_if_exists: bool = False):
+    # Load axes (tag-aware)
+    ZC_A, ZR_A, metaA = load_axes(sid, A, axes_dir, out_tag)
+    ZC_B, ZR_B, metaB = load_axes(sid, B, axes_dir, out_tag)
     if ZC_A.shape[1] != ZC_B.shape[1]:
         raise SystemExit("Mismatched bin counts between A and B.")
+
+    # Trials for (C,R) shuffles
     trials = load_trials(cache_dir, sid, B)
 
     # CATEGORY (condition on R)
@@ -285,21 +308,31 @@ def run_one_pair(sid: int, A: str, B: str,
             win_w=win, win_step=step, k=k, ridge=ridge, perms=perms, n_jobs=n_jobs, seed=seed+2
         )
 
-    out_dir = axes_dir / f"{sid}"; out_dir.mkdir(parents=True, exist_ok=True)
+    # Tagged output dir + skip-if-exists
+    out_dir = axes_dir / f"{sid}"
+    if out_tag:
+        out_dir = out_dir / out_tag
+    out_dir.mkdir(parents=True, exist_ok=True)
+
     out_npz = out_dir / f"flow_timeseries_{A}to{B}.npz"
+    out_png = out_dir / f"flow_timeseries_{A}to{B}.png"
+    if skip_if_exists and out_npz.exists() and out_png.exists():
+        print(f"[skip] {sid} {A}->{B} already exists in tag '{out_tag}'")
+        return
+
+    # Save & plot
     np.savez_compressed(
         out_npz,
         tC=tC, C_fwd=C_fwd, C_rev=C_rev, C_lo=C_lo, C_hi=C_hi, C_rlo=C_rlo, C_rhi=C_rhi,
         tR=tR, R_fwd=R_fwd, R_rev=R_rev, R_lo=R_lo, R_hi=R_hi, R_rlo=R_rlo, R_rhi=R_rhi,
         meta=json.dumps({"sid": sid, "A": A, "B": B, "win": win, "step": step, "k": k,
-                         "ridge": ridge, "perms": perms, "n_jobs": n_jobs})
+                         "ridge": ridge, "perms": perms, "n_jobs": n_jobs, "tag": out_tag})
     )
-    out_png = out_dir / f"flow_timeseries_{A}to{B}.png"
     plot_pair(sid, A, B,
               tC, C_fwd, C_rev, (C_lo, C_hi, C_rlo, C_rhi),
               tR, R_fwd, R_rev, (R_lo, R_hi, R_rlo, R_rhi),
               out_png)
-    print(f"[done] {A}->{B}  saved {out_npz} and {out_png}")
+    print(f"[done] {sid} {A}->{B} saved {out_npz} and {out_png}")
 
 # ---------- CLI ----------
 def main():
@@ -318,6 +351,10 @@ def main():
     ap.add_argument("--perms", type=int,   default=200)
     ap.add_argument("--n_jobs", type=int,  default=8, help="Parallel workers for permutations")
     ap.add_argument("--seed",  type=int,   default=123)
+    # NEW: tagging & skip
+    ap.add_argument("--out_tag", type=str, default="", help="Write under results/session/<sid>/<tag>/")
+    ap.add_argument("--skip_if_exists", action="store_true", default=False,
+                    help="Skip pair if outputs already exist in the tag")
     args = ap.parse_args()
 
     if args.all_pairs:
@@ -329,13 +366,15 @@ def main():
         for (A,B) in pairs:
             run_one_pair(args.sid, A, B, args.axes_dir, args.cache_dir,
                          args.win, args.step, args.k, args.ridge,
-                         args.perms, args.n_jobs, args.seed)
+                         args.perms, args.n_jobs, args.seed,
+                         out_tag=args.out_tag, skip_if_exists=args.skip_if_exists)
     else:
         if not args.A or not args.B:
             raise SystemExit("Provide --A and --B, or use --all_pairs.")
         run_one_pair(args.sid, args.A, args.B, args.axes_dir, args.cache_dir,
                      args.win, args.step, args.k, args.ridge,
-                     args.perms, args.n_jobs, args.seed)
+                     args.perms, args.n_jobs, args.seed,
+                     out_tag=args.out_tag, skip_if_exists=args.skip_if_exists)
 
 if __name__ == "__main__":
     main()

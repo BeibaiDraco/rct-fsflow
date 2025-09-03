@@ -141,6 +141,9 @@ def main():
     ap.add_argument("--C_dim", type=int, default=1, help="Category subspace dimension")
     ap.add_argument("--R_dim", type=int, default=2, help="Direction subspace dimension")
     ap.add_argument("--C_reg", type=float, default=1.0)
+    ap.add_argument("--out_tag", type=str, default="", help="Optional tag subfolder under results/session/<sid>/<tag>/")
+    ap.add_argument("--skip_if_exists", action="store_true", default=False, help="Skip if output file exists.")
+
     args = ap.parse_args()
 
     # Auto-detect areas if none provided
@@ -178,7 +181,6 @@ def main():
         d = W_C.shape[1]
 
         # ---- 2) Per-category centering/whitening for R (computed on R training window) ----
-        # Compute μ_R[c], σ_R[c] per unit from XmeanR within each category
         cats = [-1, 1]
         mu_R = np.zeros((2, nU), float)   # index 0->-1, 1->+1
         std_R = np.ones((2, nU), float)
@@ -233,8 +235,16 @@ def main():
         sC = ZC[..., 0] if d>0 else np.zeros((nT, nB), float)
         sR = ZR[..., 0] if r>0 else np.zeros((nT, nB), float)
 
-        outp = args.out_dir / f"{args.sid}/axes_{area}.npz"
-        outp.parent.mkdir(parents=True, exist_ok=True)
+        # Tagged output path
+        base_dir = args.out_dir / f"{args.sid}"
+        if args.out_tag:
+            base_dir = base_dir / args.out_tag
+        base_dir.mkdir(parents=True, exist_ok=True)
+        outp = base_dir / f"axes_{area}.npz"
+        if args.skip_if_exists and outp.exists():
+            print(f"[skip] axes already exist → {outp}")
+            continue
+
         meta_out = dict(meta)
         meta_out.update({
             "trainC_window_s": [args.trainC_start, args.trainC_end],

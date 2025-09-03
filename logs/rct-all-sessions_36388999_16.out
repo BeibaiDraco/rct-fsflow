@@ -1,0 +1,21 @@
+[info] SLURM_ARRAY_TASK_ID=16
+[info] CPUs per task = 16
+[info] Hostname = midway3-0456.rcc.local
+[info] Running sid=20231025 (array idx 16)
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/03_cache_binned.py --root RCT --session 20231025 --bin 0.01 --t0 -0.25 --t1 0.8 --targets_vert_only --reuse_cache
+[skip] reuse cache 20231025_SFEF.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[skip] reuse cache 20231025_SLIP.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[skip] reuse cache 20231025_SSC.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[done]
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/04_build_axes.py --sid 20231025 --trainC_start 0.1 --trainC_end 0.3 --trainR_start 0.05 --trainR_end 0.2 --C_dim 1 --R_dim 2 --out_tag win160_k5_perm500 --skip_if_exists
+[skip] axes already exist → results/session/20231025/win160_k5_perm500/axes_SFEF.npz
+[skip] axes already exist → results/session/20231025/win160_k5_perm500/axes_SLIP.npz
+[skip] axes already exist → results/session/20231025/win160_k5_perm500/axes_SSC.npz
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/08i_fsflow_timesliding_integrated.py --sid 20231025 --all_pairs --win 0.16 --step 0.02 --k 5 --ridge 0.01 --perms 500 --n_jobs 16 --band_start 0.12 --band_end 0.28 --out_tag win160_k5_perm500 --skip_if_exists
+[info] sid=20231025 running 6 ordered pairs: [('SFEF', 'SLIP'), ('SFEF', 'SSC'), ('SLIP', 'SFEF'), ('SLIP', 'SSC'), ('SSC', 'SFEF'), ('SSC', 'SLIP')]
+[done] 20231025 SFEF->SLIP integrated C=0.0359 (p=0.0539), integrated R=0.0320 (p=0.0499)  -> results/session/20231025/win160_k5_perm500/flow_timeseriesINT_SFEFtoSLIP.npz
+[done] 20231025 SFEF->SSC integrated C=0.0294 (p=0.154), integrated R=0.0673 (p=0.002)  -> results/session/20231025/win160_k5_perm500/flow_timeseriesINT_SFEFtoSSC.npz
+[done] 20231025 SLIP->SFEF integrated C=0.0199 (p=0.545), integrated R=0.0357 (p=0.014)  -> results/session/20231025/win160_k5_perm500/flow_timeseriesINT_SLIPtoSFEF.npz
+[done] 20231025 SLIP->SSC integrated C=0.0148 (p=0.138), integrated R=0.0412 (p=0.002)  -> results/session/20231025/win160_k5_perm500/flow_timeseriesINT_SLIPtoSSC.npz
+[done] 20231025 SSC->SFEF integrated C=0.0170 (p=0.162), integrated R=0.0822 (p=0.002)  -> results/session/20231025/win160_k5_perm500/flow_timeseriesINT_SSCtoSFEF.npz
+[done] 20231025 SSC->SLIP integrated C=0.0114 (p=0.0818), integrated R=0.0411 (p=0.002)  -> results/session/20231025/win160_k5_perm500/flow_timeseriesINT_SSCtoSLIP.npz

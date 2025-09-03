@@ -8,6 +8,10 @@
 - Bins spikes per session×area into (trials, bins, units)
 - Saves: results/caches/<sid>_<AREA>.npz with:
     X (int16 counts), meta (json str), trials (pandas JSON)
+
+New:
+- --reuse_cache: skip rebuilding if an existing cache's meta matches (bin size, window, vertical-only)
+- --force_cache: rebuild even if a matching cache exists
 """
 from __future__ import annotations
 import argparse, json
@@ -127,9 +131,9 @@ def main():
     ap.add_argument("--bin", type=float, default=0.010, help="Bin size (s)")
     ap.add_argument("--t0",  type=float, default=-0.25, help="Window start (s)")
     ap.add_argument("--t1",  type=float, default= 0.80, help="Window end (s)")
-    ap.add_argument("--reuse_cache", action="store_true", default=True,
-                help="If a matching cache exists, skip rebuilding (default True).")
-    ap.add_argument("--force_cache", action="store_true", default=False,
+    ap.add_argument("--reuse_cache", action="store_true",
+                    help="If a matching cache exists, skip rebuilding.")
+    ap.add_argument("--force_cache", action="store_true",
                     help="Rebuild caches even if a matching one exists.")
     args = ap.parse_args()
 
@@ -153,26 +157,31 @@ def main():
     # Trials & labels (layout filtered)
     df = reparam_CR(trials_table(sdir), targets_vert_only=args.targets_vert_only)
 
-    # check existing cache
-    if out_path.exists() and args.reuse_cache and not args.force_cache:
-        try:
-            z = np.load(out_path, allow_pickle=True)
-            meta_old = json.loads(str(z["meta"]))
-            same = (abs(float(meta_old.get("bin_size_s", -1)) - args.bin) < 1e-12
-                    and meta_old.get("window_s", []) == [args.t0, args.t1]
-                    and bool(meta_old.get("targets_vert_only", False)) == bool(args.targets_vert_only))
-            if same:
-                print(f"[skip] reuse cache {out_path.name} (bin={args.bin}, window={[args.t0,args.t1]}, vert={args.targets_vert_only})")
-                continue
-        except Exception:
-            pass
-
     # Output dir
     out_dir = Path("results/caches"); out_dir.mkdir(parents=True, exist_ok=True)
 
     # Cache each requested actual area
     for a in targets:  # e.g., 'MFEF' or 'SFEF'
         adir = sdir / "areas" / a
+        out_path = out_dir / f"{sid}_{a}.npz"
+
+        # ---- reuse / force logic ----
+        if out_path.exists() and args.reuse_cache and not args.force_cache:
+            try:
+                z = np.load(out_path, allow_pickle=True)
+                meta_old = json.loads(str(z["meta"]))
+                same = (
+                    abs(float(meta_old.get("bin_size_s", -1.0)) - float(args.bin)) < 1e-12
+                    and meta_old.get("window_s", []) == [args.t0, args.t1]
+                    and bool(meta_old.get("targets_vert_only", False)) == bool(args.targets_vert_only)
+                )
+                if same:
+                    print(f"[skip] reuse cache {out_path.name} (bin={args.bin}, window={[args.t0,args.t1]}, vert={args.targets_vert_only})")
+                    continue
+            except Exception as e:
+                print(f"[info] cannot reuse {out_path.name}: {e}")
+
+        # ---- build cache (bin spikes) ----
         X = bin_area(adir, df, window=(args.t0, args.t1), bin_size=args.bin)
         meta = {
             "session": int(sid),
@@ -182,9 +191,9 @@ def main():
             "window_s": [args.t0, args.t1],
             "targets_vert_only": bool(args.targets_vert_only),
         }
-        out_path = out_dir / f"{sid}_{a}.npz"
         np.savez_compressed(out_path, X=X, meta=json.dumps(meta), trials=df.to_json(orient="records"))
         print(f"[ok] cached {out_path.name}  shape={X.shape}")
+
     print("[done]")
 
 if __name__ == "__main__":
