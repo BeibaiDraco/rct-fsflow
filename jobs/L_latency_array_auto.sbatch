@@ -1,0 +1,44 @@
+#!/bin/bash
+#SBATCH --job-name=rct-lat
+#SBATCH --output=logs/%x_%A_%a.out
+#SBATCH --error=logs/%x_%A_%a.err
+#SBATCH --partition=voltron
+#SBATCH --qos=voltron
+#SBATCH --account=pi-bdoiron
+#SBATCH --time=08:00:00
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=8
+#SBATCH --mem=40G
+#SBATCH --array=0-22%4   # adjust 0-<N-1>; cap at 4 concurrent
+
+set -euo pipefail
+
+BASE=/project/bdoiron/dracoxu/rct-fsflow
+cd "$BASE"
+mkdir -p logs
+
+module purge
+module load python/3.11.9
+source "$BASE/runtime/venv/bin/activate"
+
+# Ensure worklist exists once
+if [[ ! -f results/worklists/all_pairs.json ]]; then
+  if [[ "${SLURM_ARRAY_TASK_ID:-0}" == "0" ]]; then
+    python 02a_list_all_pairs.py --root RCT --out results/worklists/all_pairs.json
+  fi
+  sleep 5
+fi
+
+AXES_TAG=win160_k5_perm500
+OUT_TAG=latency_auto
+
+python L02_run_all_trial_latency.py \
+  --index ${SLURM_ARRAY_TASK_ID} \
+  --root RCT \
+  --axes_tag ${AXES_TAG} \
+  --out_tag ${OUT_TAG} \
+  --hold_m 3 --tmin 0.0 --smooth_bins 3 \
+  --auto_thr --auto_strategy session \
+  --auto_targetC 0.60 --auto_targetR 0.60 \
+  --auto_grid_C 0.55:0.95:0.01 \
+  --auto_grid_R 0.40:0.95:0.01

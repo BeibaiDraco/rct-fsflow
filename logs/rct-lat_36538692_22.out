@@ -1,0 +1,22 @@
+[info] Running sid=20231205 (array idx 22)
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/03_cache_binned.py --root RCT --session 20231205 --bin 0.01 --t0 -0.25 --t1 0.8 --targets_vert_only --reuse_cache
+[skip] reuse cache 20231205_SFEF.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[skip] reuse cache 20231205_SLIP.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[skip] reuse cache 20231205_SSC.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[done]
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/04_build_axes.py --sid 20231205 --trainC_start 0.1 --trainC_end 0.3 --trainR_start 0.05 --trainR_end 0.2 --C_dim 1 --R_dim 2 --out_tag win160_k5_perm500
+[ok] axes(subspaces) saved → results/session/20231205/win160_k5_perm500/axes_SFEF.npz  ZC (621, 105, 1)  ZR (621, 105, 2)
+[ok] axes(subspaces) saved → results/session/20231205/win160_k5_perm500/axes_SLIP.npz  ZC (621, 105, 1)  ZR (621, 105, 2)
+[ok] axes(subspaces) saved → results/session/20231205/win160_k5_perm500/axes_SSC.npz  ZC (621, 105, 1)  ZR (621, 105, 2)
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/L01_trial_latency.py --sid 20231205 --axes_tag win160_k5_perm500 --out_tag latency_auto --hold_m 3 --tmin 0.0 --smooth_bins 3 --auto_thr --auto_strategy session --auto_targetC 0.6 --auto_targetR 0.6 --auto_grid_C 0.55:0.95:0.01 --auto_grid_R 0.40:0.95:0.01
+[info] sid=20231205 area=SFEF: decoding per time-bin...
+[info] sid=20231205 area=SLIP: decoding per time-bin...
+[info] sid=20231205 area=SSC: decoding per time-bin...
+[auto] sid=20231205 session-level thresholds → C=0.550, R=0.400 (targets C=0.6, R=0.6)
+[ok] sid=20231205 area=SFEF: C thr=0.55  med=0.245s  resolved=57.5%
+[ok] sid=20231205 area=SFEF: R thr=0.40  med=0.005s  resolved=50.1%
+[ok] sid=20231205 area=SLIP: C thr=0.55  med=0.245s  resolved=9.8%
+[ok] sid=20231205 area=SLIP: R thr=0.40  med=0.005s  resolved=48.5%
+[ok] sid=20231205 area=SSC: C thr=0.55  med=0.165s  resolved=1.1%
+[ok] sid=20231205 area=SSC: R thr=0.40  med=0.005s  resolved=50.4%
+[done] sid=20231205 -> results/session/20231205/latency_auto

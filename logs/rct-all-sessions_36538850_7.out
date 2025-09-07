@@ -1,0 +1,21 @@
+[info] SLURM_ARRAY_TASK_ID=7
+[info] CPUs per task = 16
+[info] Hostname = midway3-0456.rcc.local
+[info] Running sid=20201004 (array idx 7)
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/03_cache_binned.py --root RCT --session 20201004 --bin 0.01 --t0 -0.25 --t1 0.8 --targets_vert_only --reuse_cache
+[skip] reuse cache 20201004_MFEF.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[skip] reuse cache 20201004_MLIP.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[skip] reuse cache 20201004_MSC.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[done]
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/04_build_axes.py --sid 20201004 --trainC_start 0.1 --trainC_end 0.3 --trainR_start 0.05 --trainR_end 0.2 --C_dim 1 --R_dim 2 --out_tag win160_k2_perm500_integrated --skip_if_exists
+[ok] axes(subspaces) saved → results/session/20201004/win160_k2_perm500_integrated/axes_MFEF.npz  ZC (437, 105, 1)  ZR (437, 105, 2)
+[ok] axes(subspaces) saved → results/session/20201004/win160_k2_perm500_integrated/axes_MLIP.npz  ZC (437, 105, 1)  ZR (437, 105, 2)
+[ok] axes(subspaces) saved → results/session/20201004/win160_k2_perm500_integrated/axes_MSC.npz  ZC (437, 105, 1)  ZR (437, 105, 2)
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/08i_fsflow_timesliding_integrated.py --sid 20201004 --all_pairs --win 0.16 --step 0.02 --k 2 --ridge 0.01 --perms 500 --n_jobs 16 --band_start 0.08 --band_end 0.28 --out_tag win160_k2_perm500_integrated --skip_if_exists --p_text_stride 4
+[info] sid=20201004 running 6 ordered pairs: [('MFEF', 'MLIP'), ('MFEF', 'MSC'), ('MLIP', 'MFEF'), ('MLIP', 'MSC'), ('MSC', 'MFEF'), ('MSC', 'MLIP')]
+[done] 20201004 MFEF->MLIP  RAW+INT saved -> results/session/20201004/win160_k2_perm500_integrated
+[done] 20201004 MFEF->MSC  RAW+INT saved -> results/session/20201004/win160_k2_perm500_integrated
+[done] 20201004 MLIP->MFEF  RAW+INT saved -> results/session/20201004/win160_k2_perm500_integrated
+[done] 20201004 MLIP->MSC  RAW+INT saved -> results/session/20201004/win160_k2_perm500_integrated
+[done] 20201004 MSC->MFEF  RAW+INT saved -> results/session/20201004/win160_k2_perm500_integrated
+[done] 20201004 MSC->MLIP  RAW+INT saved -> results/session/20201004/win160_k2_perm500_integrated

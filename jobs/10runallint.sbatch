@@ -9,7 +9,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16         # match --n_jobs
 #SBATCH --mem=128G
-#SBATCH --array=0-22%4             # run at most 4 sessions concurrently
+#SBATCH --array=0-22%2            # run at most 4 sessions concurrently
 
 set -euo pipefail
 
@@ -43,12 +43,12 @@ K=5
 RIDGE=1e-2
 
 # Tag for outputs (so runs don't overwrite each other)
-TAG=win160_k5_perm500
+TAG=win160_k5_perm500_integrated
 
 python 10_run_all_sessions_integrated.py \
   --index "${SLURM_ARRAY_TASK_ID}" \
   --root RCT \
   --perms "${PERMS}" --n_jobs "${N_JOBS}" \
   --win "${WIN}" --step "${STEP}" --k "${K}" --ridge "${RIDGE}" \
-  --band_start 0.12 --band_end 0.28 \
+  --band_start 0.08 --band_end 0.28 \
   --run_tag "${TAG}" --skip_if_exists

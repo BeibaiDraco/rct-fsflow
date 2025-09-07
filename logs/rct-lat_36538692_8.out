@@ -1,0 +1,22 @@
+[info] Running sid=20201204 (array idx 8)
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/03_cache_binned.py --root RCT --session 20201204 --bin 0.01 --t0 -0.25 --t1 0.8 --targets_vert_only --reuse_cache
+[skip] reuse cache 20201204_MFEF.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[skip] reuse cache 20201204_MLIP.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[skip] reuse cache 20201204_MSC.npz (bin=0.01, window=[-0.25, 0.8], vert=True)
+[done]
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/04_build_axes.py --sid 20201204 --trainC_start 0.1 --trainC_end 0.3 --trainR_start 0.05 --trainR_end 0.2 --C_dim 1 --R_dim 2 --out_tag win160_k5_perm500
+[ok] axes(subspaces) saved → results/session/20201204/win160_k5_perm500/axes_MFEF.npz  ZC (424, 105, 1)  ZR (424, 105, 2)
+[ok] axes(subspaces) saved → results/session/20201204/win160_k5_perm500/axes_MLIP.npz  ZC (424, 105, 1)  ZR (424, 105, 2)
+[ok] axes(subspaces) saved → results/session/20201204/win160_k5_perm500/axes_MSC.npz  ZC (424, 105, 1)  ZR (424, 105, 2)
+[cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/L01_trial_latency.py --sid 20201204 --axes_tag win160_k5_perm500 --out_tag latency_auto --hold_m 3 --tmin 0.0 --smooth_bins 3 --auto_thr --auto_strategy session --auto_targetC 0.6 --auto_targetR 0.6 --auto_grid_C 0.55:0.95:0.01 --auto_grid_R 0.40:0.95:0.01
+[info] sid=20201204 area=MFEF: decoding per time-bin...
+[info] sid=20201204 area=MLIP: decoding per time-bin...
+[info] sid=20201204 area=MSC: decoding per time-bin...
+[auto] sid=20201204 session-level thresholds → C=0.550, R=0.410 (targets C=0.6, R=0.6)
+[ok] sid=20201204 area=MFEF: C thr=0.55  med=0.155s  resolved=97.6%
+[ok] sid=20201204 area=MFEF: R thr=0.41  med=0.145s  resolved=52.8%
+[ok] sid=20201204 area=MLIP: C thr=0.55  med=0.145s  resolved=90.3%
+[ok] sid=20201204 area=MLIP: R thr=0.41  med=0.095s  resolved=76.4%
+[ok] sid=20201204 area=MSC: C thr=0.55  med=0.280s  resolved=0.9%
+[ok] sid=20201204 area=MSC: R thr=0.41  med=0.135s  resolved=52.4%
+[done] sid=20201204 -> results/session/20201204/latency_auto
