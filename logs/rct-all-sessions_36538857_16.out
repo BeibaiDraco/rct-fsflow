@@ -13,3 +13,9 @@
 [ok] axes(subspaces) saved → results/session/20231025/win160_k5_perm500_integrated/axes_SSC.npz  ZC (638, 105, 1)  ZR (638, 105, 2)
 [cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/08i_fsflow_timesliding_integrated.py --sid 20231025 --all_pairs --win 0.16 --step 0.02 --k 5 --ridge 0.01 --perms 500 --n_jobs 16 --band_start 0.08 --band_end 0.28 --out_tag win160_k5_perm500_integrated --skip_if_exists --p_text_stride 4
 [info] sid=20231025 running 6 ordered pairs: [('SFEF', 'SLIP'), ('SFEF', 'SSC'), ('SLIP', 'SFEF'), ('SLIP', 'SSC'), ('SSC', 'SFEF'), ('SSC', 'SLIP')]
+[done] 20231025 SFEF->SLIP  RAW+INT saved -> results/session/20231025/win160_k5_perm500_integrated
+[done] 20231025 SFEF->SSC  RAW+INT saved -> results/session/20231025/win160_k5_perm500_integrated
+[done] 20231025 SLIP->SFEF  RAW+INT saved -> results/session/20231025/win160_k5_perm500_integrated
+[done] 20231025 SLIP->SSC  RAW+INT saved -> results/session/20231025/win160_k5_perm500_integrated
+[done] 20231025 SSC->SFEF  RAW+INT saved -> results/session/20231025/win160_k5_perm500_integrated
+[done] 20231025 SSC->SLIP  RAW+INT saved -> results/session/20231025/win160_k5_perm500_integrated

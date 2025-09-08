@@ -10,3 +10,21 @@
 [ok] axes(subspaces) saved → results/session/20231121/induced_k4_win016_p500/axes_SSC.npz  ZC (638, 105, 1)  ZR (638, 105, 2)
 [cmd] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/12_induced_fsflow_timesliding.py --sid 20231121 --all_pairs --win 0.16 --step 0.02 --k 4 --ridge 0.01 --perms 500 --n_jobs 16 --bandC_start 0.12 --bandC_end 0.28 --bandR_start 0.08 --bandR_end 0.2 --int_win 0.16 --evoked_sigma_ms 10.0 --out_tag induced_k4_win016_p500 --skip_if_exists --no_x0 --cond_b_only
 [info] sid=20231121 running 6 ordered pairs: [('SFEF', 'SLIP'), ('SFEF', 'SSC'), ('SLIP', 'SFEF'), ('SLIP', 'SSC'), ('SSC', 'SFEF'), ('SSC', 'SLIP')]
+[dbg] 20231121 SFEF->SLIP C: windows=45, NaN% obs=0.0 null=0.0
+[dbg] 20231121 SFEF->SLIP R: windows=45, NaN% obs=0.0 null=0.0
+[done] 20231121 SFEF->SLIP  saved RAW+INT → results/session/20231121/induced_k4_win016_p500
+[dbg] 20231121 SFEF->SSC C: windows=45, NaN% obs=0.0 null=0.0
+[dbg] 20231121 SFEF->SSC R: windows=45, NaN% obs=0.0 null=0.0
+[done] 20231121 SFEF->SSC  saved RAW+INT → results/session/20231121/induced_k4_win016_p500
+[dbg] 20231121 SLIP->SFEF C: windows=45, NaN% obs=0.0 null=0.0
+[dbg] 20231121 SLIP->SFEF R: windows=45, NaN% obs=0.0 null=0.0
+[done] 20231121 SLIP->SFEF  saved RAW+INT → results/session/20231121/induced_k4_win016_p500
+[dbg] 20231121 SLIP->SSC C: windows=45, NaN% obs=0.0 null=0.0
+[dbg] 20231121 SLIP->SSC R: windows=45, NaN% obs=0.0 null=0.0
+[done] 20231121 SLIP->SSC  saved RAW+INT → results/session/20231121/induced_k4_win016_p500
+[dbg] 20231121 SSC->SFEF C: windows=45, NaN% obs=0.0 null=0.0
+[dbg] 20231121 SSC->SFEF R: windows=45, NaN% obs=0.0 null=0.0
+[done] 20231121 SSC->SFEF  saved RAW+INT → results/session/20231121/induced_k4_win016_p500
+[dbg] 20231121 SSC->SLIP C: windows=45, NaN% obs=0.0 null=0.0
+[dbg] 20231121 SSC->SLIP R: windows=45, NaN% obs=0.0 null=0.0
+[done] 20231121 SSC->SLIP  saved RAW+INT → results/session/20231121/induced_k4_win016_p500
