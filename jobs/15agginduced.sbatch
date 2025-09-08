@@ -18,5 +18,6 @@ module purge && module load python/3.11.9
 source /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/activate
 cd /project/bdoiron/dracoxu/rct-fsflow
 
-python 15_aggregate_induced.py --tag induced_k2_win016_p500 --save_csv
-python 15_aggregate_induced.py --tag induced_k5_win016_p500 --save_csv
+python 15_aggregate_induced_v3.py --tag induced_k2_win016_p500 --mode both --combine stouffer --annotate_p --p_stride 1
+
+python 15_aggregate_induced_v3.py --tag induced_k5_win016_p500 --mode both --combine stouffer --annotate_p --p_stride 1
