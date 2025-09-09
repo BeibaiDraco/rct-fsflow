@@ -23,14 +23,10 @@ AUTO threshold (optional):
 Outputs:
   results/session/<sid>/<tag>/latency_C_<AREA>.npy
   results/session/<sid>/<tag>/latency_R_<AREA>.npy
-  results/session/<sid>/<tag>/latency_pairs_<A>to<B>.png (ΔT distributions)
+  results/session/<sid>/<tag>/latency_pairs_<A>to<B>.png (ΔT hist)
+  results/session/<sid>/<tag>/latency_scatter_<A>to<B>.png (2-D scatter: T_C and T_R)
   results/session/<sid>/<tag>/latency_summary.csv (per pair stats)
   results/session/<sid>/<tag>/latency_thresholds.json  (actual thresholds used)
-
-Example:
-  python L01_trial_latency.py --sid 20200926 --axes_tag win160_k5_perm500 \
-    --tmin 0.0 --hold_m 3 --smooth_bins 3 \
-    --auto_thr --auto_targetC 0.60 --auto_targetR 0.60 --auto_strategy session
 """
 from __future__ import annotations
 import argparse, json, warnings
@@ -45,7 +41,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold
 from scipy.ndimage import uniform_filter1d
 
-# Silence the deprecation spam if any downstream libs still pass multi_class explicitly
+# Silence sklearn deprecation spam if any dependency still passes multi_class
 warnings.filterwarnings("ignore", message=".*'multi_class' was deprecated.*")
 
 VALID = {"MFEF","MLIP","MSC","SFEF","SLIP","SSC"}
@@ -98,7 +94,6 @@ def find_latency(t: np.ndarray, p: np.ndarray, thr: float, m: int, tmin: float) 
         return np.nan
     good = (p >= thr).astype(np.int32)
     cs = np.cumsum(good)
-    # window sum length m at i..i+m-1 is cs[i+m-1] - cs[i-1]
     last_start = len(t) - m
     if last_start < idx_start:
         return np.nan
@@ -108,94 +103,71 @@ def find_latency(t: np.ndarray, p: np.ndarray, thr: float, m: int, tmin: float) 
     return np.nan
 
 def latencies_from_probs(t: np.ndarray, P: np.ndarray, thr: float, hold_m: int, tmin: float) -> np.ndarray:
-    """Vectorized over trials (loop trials to stay simple)."""
     return np.array([find_latency(t, P[i], thr, hold_m, tmin) for i in range(P.shape[0])], dtype=float)
 
 # ---------------- decoders ----------------
 def decode_category_probs(ZC: np.ndarray, C: np.ndarray, R: np.ndarray) -> np.ndarray:
     """
     Direction-invariant category decoding (hold-one-R-out across both categories) per time-bin.
-    Returns p_true of shape (nTrials, nBins): probability of the true C label for each trial/time.
+    Returns p_true (nTrials x nBins): probability of the true C label per trial/time.
     """
     nT, nB, d = ZC.shape
     y = (C > 0).astype(int)           # 0/1 labels
     Rs = np.asarray(R, int)
-
     p = np.full((nT, nB), np.nan, dtype=float)
-
     for t in range(nB):
-        Xt = ZC[:, t, :]              # (nT, d) at this time bin
-
+        Xt = ZC[:, t, :]
         for r_hold in (1, 2, 3):
             test_idx = (Rs == r_hold)
             train_idx = ~test_idx
-
-            # sanity checks
             if train_idx.sum() < 20 or test_idx.sum() < 8:
                 continue
             if len(np.unique(y[train_idx])) < 2:
                 continue
-
             clf = LogisticRegression(
                 penalty="l2", solver="lbfgs", max_iter=2000, class_weight="balanced"
             )
             clf.fit(Xt[train_idx], y[train_idx])
-
-            pro_pos = clf.predict_proba(Xt[test_idx])[:, 1]  # P(C=+1)
-            yt = y[test_idx]                                 # true labels ∈ {0,1}
-
-            # probability of the true label
+            pro_pos = clf.predict_proba(Xt[test_idx])[:, 1]
+            yt = y[test_idx]
             p_true = pro_pos.copy()
             p_true[yt == 0] = 1.0 - pro_pos[yt == 0]
-
             p[test_idx, t] = p_true
-
     return p
 
 def decode_direction_probs(ZR: np.ndarray, C: np.ndarray, R: np.ndarray, nfold: int = 5) -> np.ndarray:
     """
     Within-category 3-way direction decoding per time-bin.
-    Returns p_true shape (nTrials, nBins): probability of the TRUE direction per trial/time.
+    Returns p_true (nTrials x nBins): probability of the TRUE direction per trial/time.
     """
     nT, nB, d = ZR.shape
     p = np.full((nT, nB), np.nan, dtype=float)
     Cint = (C > 0).astype(int)
     R01 = (np.asarray(R, int) - 1)  # {0,1,2}
-
     for t in range(nB):
         Xt = ZR[:, t, :]
-
         for cbin in (0, 1):
             sel = (Cint == cbin)
             if sel.sum() < 30:
                 continue
             yc = R01[sel]
-            # need all 3 classes present
             if len(np.unique(yc)) < 3:
                 continue
-
-            # safe n_splits
             counts = np.bincount(yc, minlength=3)
             min_class = counts.min()
             n_splits = max(2, min(nfold, int(min_class)))
             if n_splits < 2:
                 continue
-
             skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=123)
             Xc = Xt[sel]
-
             for tr_idx, te_idx in skf.split(Xc, yc):
                 clf = LogisticRegression(penalty="l2", solver="lbfgs", max_iter=2000)
                 clf.fit(Xc[tr_idx], yc[tr_idx])
                 pro = clf.predict_proba(Xc[te_idx])  # (n,3)
-
-                # probability of the true class
                 true = yc[te_idx]
                 p_true = pro[np.arange(len(te_idx)), true]
-
                 glob = np.where(sel)[0][te_idx]
                 p[glob, t] = p_true
-
     return p
 
 # ---------------- plotting ----------------
@@ -223,17 +195,46 @@ def plot_pair_latencies(sid: int, A: str, B: str,
     fig.suptitle(f"Trial-wise latency differences — sid={sid}  A={A}  B={B}")
     fig.tight_layout(rect=[0,0.03,1,0.95]); fig.savefig(out_png, dpi=150); plt.close(fig)
 
+def plot_pair_scatter(sid: int, A: str, B: str,
+                      tC_A: np.ndarray, tC_B: np.ndarray,
+                      tR_A: np.ndarray, tR_B: np.ndarray,
+                      out_png: Path):
+    # masks where both areas have finite latencies on the same trial
+    mC = np.isfinite(tC_A) & np.isfinite(tC_B)
+    mR = np.isfinite(tR_A) & np.isfinite(tR_B)
+
+    fig, axes = plt.subplots(1, 2, figsize=(10,4))
+    panels = [("T_C  A vs B", tC_A[mC], tC_B[mC]), ("T_R  A vs B", tR_A[mR], tR_B[mR])]
+
+    for ax, (ttl, x, y) in zip(axes, panels):
+        if x.size < 10:
+            ax.text(0.5, 0.5, "Insufficient data", ha="center", va="center")
+            ax.set_axis_off()
+            continue
+        lim_min = float(np.nanmin(np.concatenate([x, y])))
+        lim_max = float(np.nanmax(np.concatenate([x, y])))
+        pad = 0.05*(lim_max - lim_min + 1e-6)
+        ax.scatter(x, y, s=12, alpha=0.7, color="steelblue", edgecolor="none")
+        ax.plot([lim_min-pad, lim_max+pad], [lim_min-pad, lim_max+pad], 'k-', lw=1)
+        ax.set_xlim(lim_min-pad, lim_max+pad); ax.set_ylim(lim_min-pad, lim_max+pad)
+        ax.set_aspect('equal', 'box')
+        ax.set_title(ttl); ax.set_xlabel(f"{A} (s)"); ax.set_ylabel(f"{B} (s)")
+        if x.size >= 10:
+            r = np.corrcoef(x, y)[0,1]
+            ax.text(0.02, 0.95, f"n={x.size}   r={r:.2f}", transform=ax.transAxes, va="top")
+
+    fig.suptitle(f"Latency scatter — sid={sid}  A={A}  B={B}")
+    fig.tight_layout(rect=[0,0.03,1,0.95]); fig.savefig(out_png, dpi=150); plt.close(fig)
+
 # ---------------- auto-threshold helpers ----------------
 def parse_grid(spec: str) -> np.ndarray:
     """
-    Parse grid string:
-      '0.55:0.95:0.01'  -> np.arange(0.55, 0.95+1e-12, 0.01)
-      '0.6,0.65,0.7'    -> np.array([...])
+    '0.55:0.95:0.01' -> np.linspace(0.55,0.95,N)
+    '0.6,0.65,0.7'  -> np.array([...])
     """
     spec = spec.strip()
     if ":" in spec:
         a, b, c = map(float, spec.split(":"))
-        # inclusive of the end
         n = max(1, int(round((b - a) / c)) + 1)
         return np.linspace(a, b, n)
     else:
@@ -241,25 +242,15 @@ def parse_grid(spec: str) -> np.ndarray:
 
 def choose_threshold_for_session(p_list: list[tuple[np.ndarray,np.ndarray]],
                                  target: float, hold_m: int, tmin: float, grid: np.ndarray) -> float:
-    """
-    p_list: list of (P, t) over areas, where P is (nTrials x nBins) probabilities.
-    Returns the HIGHEST threshold in grid with resolved fraction ≥ target (aggregated across areas).
-    If none meets target, returns grid.min().
-    """
     best_thr = grid.min()
-    # evaluate from high to low to pick highest feasible
     for thr in sorted(grid, reverse=True):
-        total = 0
-        resolved = 0
+        total = 0; resolved = 0
         for P, t in p_list:
             lat = latencies_from_probs(t, P, thr, hold_m, tmin)
-            m = np.isfinite(lat).sum()
-            resolved += m
-            total += len(lat)
-        frac = (resolved / max(1, total))
+            resolved += np.isfinite(lat).sum(); total += len(lat)
+        frac = resolved/max(1,total)
         if frac >= target:
-            best_thr = thr
-            break
+            best_thr = thr; break
     return float(best_thr)
 
 def choose_threshold_per_area(p: np.ndarray, t: np.ndarray,
@@ -268,8 +259,7 @@ def choose_threshold_per_area(p: np.ndarray, t: np.ndarray,
     for thr in sorted(grid, reverse=True):
         lat = latencies_from_probs(t, p, thr, hold_m, tmin)
         if np.isfinite(lat).mean() >= target:
-            best_thr = thr
-            break
+            best_thr = thr; break
     return float(best_thr)
 
 # ---------------- main ----------------
@@ -305,9 +295,7 @@ def main():
     if not areas:
         print(f"[info] No areas for sid={sid}"); return
 
-    # choose a prefer_area for trials (any present)
-    prefer = areas[0]
-    trials = load_trials(args.cache_dir, sid, prefer_area=prefer)
+    trials = load_trials(args.cache_dir, sid, prefer_area=areas[0])
     C = np.asarray(trials["C"], int)
     R = np.asarray(trials["R"], int)
 
@@ -315,25 +303,18 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
 
     # ---- decode probabilities per area ----
-    P_C = {}  # area -> (nT x nB)
-    P_R = {}
-    t_by_area = {}
+    P_C = {}; P_R = {}; t_by_area = {}
     for area in areas:
         print(f"[info] sid={sid} area={area}: decoding per time-bin...")
         ZC, ZR, meta = load_axes(sid, area, args.axes_dir, args.axes_tag)
-        t = time_axis(meta)
-        t_by_area[area] = t
+        t = time_axis(meta); t_by_area[area] = t
 
-        # Category (hold-one-R-out)
         pC = decode_category_probs(ZC, C, R)
-        if args.smooth_bins > 1:
-            pC = np.apply_along_axis(smooth_prob, 1, pC, args.smooth_bins)
+        if args.smooth_bins > 1: pC = np.apply_along_axis(smooth_prob, 1, pC, args.smooth_bins)
         P_C[area] = pC
 
-        # Direction (within-category)
         pR = decode_direction_probs(ZR, C, R, nfold=5)
-        if args.smooth_bins > 1:
-            pR = np.apply_along_axis(smooth_prob, 1, pR, args.smooth_bins)
+        if args.smooth_bins > 1: pR = np.apply_along_axis(smooth_prob, 1, pR, args.smooth_bins)
         P_R[area] = pR
 
     # ---- auto threshold selection (optional) ----
@@ -344,7 +325,6 @@ def main():
         gridR = parse_grid(args.auto_grid_R)
 
         if args.auto_strategy == "session":
-            # one threshold per feature across areas
             p_list_C = [(P_C[a], t_by_area[a]) for a in areas]
             p_list_R = [(P_R[a], t_by_area[a]) for a in areas]
             thrC_used = choose_threshold_for_session(p_list_C, args.auto_targetC, args.hold_m, args.tmin, gridC)
@@ -355,7 +335,6 @@ def main():
                   f"(targets C={args.auto_targetC}, R={args.auto_targetR})")
             thr_log.update({"thrC_session": thrC_used, "thrR_session": thrR_used})
         else:
-            # per-area thresholds
             thrC_map, thrR_map = {}, {}
             for a in areas:
                 thrC_map[a] = choose_threshold_per_area(P_C[a], t_by_area[a], args.auto_targetC,
@@ -366,15 +345,13 @@ def main():
                       f"(targets C={args.auto_targetC}, R={args.auto_targetR})")
             thr_log.update({"thrC_per_area": thrC_map, "thrR_per_area": thrR_map})
     else:
-        # fixed thresholds from CLI
         thrC_map = {a: float(args.thrC) for a in areas}
         thrR_map = {a: float(args.thrR) for a in areas}
         print(f"[fixed] sid={sid} thresholds → C={args.thrC:.3f}, R={args.thrR:.3f}")
         thr_log.update({"thrC_fixed": args.thrC, "thrR_fixed": args.thrR})
 
     # ---- latencies per area with chosen thresholds ----
-    latC = {}
-    latR = {}
+    latC = {}; latR = {}
     for area in areas:
         t = t_by_area[area]
         pC = P_C[area]; pR = P_R[area]
@@ -383,13 +360,10 @@ def main():
         lat_C = latencies_from_probs(t, pC, thrC, args.hold_m, args.tmin)
         lat_R = latencies_from_probs(t, pR, thrR, args.hold_m, args.tmin)
 
-        # save per-area vectors
         np.save(out_dir / f"latency_C_{area}.npy", lat_C)
         np.save(out_dir / f"latency_R_{area}.npy", lat_R)
-        latC[area] = lat_C
-        latR[area] = lat_R
+        latC[area] = lat_C; latR[area] = lat_R
 
-        # diagnostics
         fracC = float(np.isfinite(lat_C).mean()) if lat_C.size else 0.0
         fracR = float(np.isfinite(lat_R).mean()) if lat_R.size else 0.0
         if np.any(np.isfinite(lat_C)):
@@ -403,13 +377,17 @@ def main():
         else:
             print(f"[warn] sid={sid} area={area}: no R latencies  thr={thrR:.2f}  resolved={fracR*100:.1f}%")
 
-    # ---- pairwise lead/lag plots ----
+    # ---- pairwise plots ----
     if args.pairs_plots:
         for A in areas:
             for B in areas:
                 if A == B: continue
-                out_png = out_dir / f"latency_pairs_{A}to{B}.png"
-                plot_pair_latencies(sid, A, B, latC[A], latC[B], latR[A], latR[B], out_png)
+                # ΔT hist
+                plot_pair_latencies(sid, A, B, latC[A], latC[B], latR[A], latR[B],
+                                    out_dir / f"latency_pairs_{A}to{B}.png")
+                # 2-D scatter (new)
+                plot_pair_scatter(sid, A, B, latC[A], latC[B], latR[A], latR[B],
+                                  out_dir / f"latency_scatter_{A}to{B}.png")
 
     # ---- summary CSV ----
     rows = []

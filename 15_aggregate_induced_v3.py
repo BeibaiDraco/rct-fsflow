@@ -128,7 +128,7 @@ def plot_single_pair(x, mu, lo, hi, p_grp, sig, mk, A, B, label, mode,
     if annotate_p:
         for i,(xx,yy,pp) in enumerate(zip(x, mu, p_grp)):
             if (i % max(1, p_stride) == 0) and np.isfinite(pp) and np.isfinite(yy):
-                ax.text(xx, yy, f"{pp:.2f}", fontsize=7, ha="center", va="bottom")
+                ax.text(xx, yy, f"{pp:.3f}", fontsize=5, ha="center", va="bottom")
     if np.any(sig):
         ax.scatter(x[sig], mu[sig], s=12, color="black", zorder=3, label="BH-FDR<0.05")
     ax.set_xlabel("time (s) from cat_stim_on")
@@ -142,12 +142,12 @@ def plot_overlay_pair(x, res_ab, res_ba, mk, A, B, label, mode, out_png: Path,
     fig, ax = plt.subplots(figsize=(10,4))
     # A->B
     ax.plot(x, res_ab["mu"], lw=2, label=f"{A}→{B} ({label})")
-    ax.fill_between(x, res_ab["lo"], res_ab["hi"], alpha=0.15)
+    #ax.fill_between(x, res_ab["lo"], res_ab["hi"], alpha=0.15)
     if np.any(res_ab["sig"]):
         ax.scatter(x[res_ab["sig"]], res_ab["mu"][res_ab["sig"]], s=12, color="black", zorder=3)
     # B->A
     ax.plot(x, res_ba["mu"], lw=2, ls="--", label=f"{B}→{A} ({label})")
-    ax.fill_between(x, res_ba["lo"], res_ba["hi"], alpha=0.15)
+    #ax.fill_between(x, res_ba["lo"], res_ba["hi"], alpha=0.15)
     if np.any(res_ba["sig"]):
         ax.scatter(x[res_ba["sig"]], res_ba["mu"][res_ba["sig"]], s=12, color="black", zorder=3)
     # p annotations
@@ -157,9 +157,9 @@ def plot_overlay_pair(x, res_ab, res_ba, mk, A, B, label, mode, out_png: Path,
         for i,xx in enumerate(x):
             if i % max(1, p_stride) != 0: continue
             if np.isfinite(res_ab["p"][i]) and np.isfinite(res_ab["mu"][i]):
-                ax.text(xx, res_ab["mu"][i] + dy, f"{res_ab['p'][i]:.2f}", fontsize=7, ha="center", va="bottom")
+                ax.text(xx, res_ab["mu"][i] + dy, f"{res_ab['p'][i]:.3f}", fontsize=5, ha="center", va="bottom")
             if np.isfinite(res_ba["p"][i]) and np.isfinite(res_ba["mu"][i]):
-                ax.text(xx, res_ba["mu"][i] - dy, f"{res_ba['p'][i]:.2f}", fontsize=7, ha="center", va="top")
+                ax.text(xx, res_ba["mu"][i] - dy, f"{res_ba['p'][i]:.3f}", fontsize=5, ha="center", va="top")
     ax.axvline(0.0, color="k", ls=":", lw=1)
     ax.set_xlabel("time (s) from cat_stim_on")
     ax.set_ylabel(("Integrated " if mode=="int" else "") + f"GC ({label})")

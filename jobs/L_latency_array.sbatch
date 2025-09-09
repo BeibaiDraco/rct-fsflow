@@ -31,11 +31,11 @@ fi
 
 # Axes tag you want to use/read (optional)
 AXES_TAG=win160_k5_perm500
-OUT_TAG=latency
+OUT_TAG=latency_new
 
 python L02_run_all_trial_latency.py \
   --index ${SLURM_ARRAY_TASK_ID} \
   --root RCT \
   --axes_tag ${AXES_TAG} \
   --out_tag ${OUT_TAG} \
-  --thrC 0.75 --thrR 0.60 --hold_m 3 --tmin 0.0 --smooth_bins 3
+  --thrC 0.60 --thrR 0.45 --hold_m 3 --tmin 0.06 --smooth_bins 2

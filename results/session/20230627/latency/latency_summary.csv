@@ -1,3 +1,3 @@
-sid,A,B,median_dC,prop_B_after_A_C,median_dR,prop_B_after_A_R,thrC,thrR,hold_m,tmin,smooth_bins
-20230627,SFEF,SLIP,,0.0,,0.0,0.75,0.6,3,0.0,3
-20230627,SLIP,SFEF,,0.0,,0.0,0.75,0.6,3,0.0,3
+sid,A,B,median_dC,prop_B_after_A_C,median_dR,prop_B_after_A_R,thrC_used_A,thrC_used_B,thrR_used_A,thrR_used_B,hold_m,tmin,smooth_bins,auto_thr,auto_strategy,auto_targetC,auto_targetR
+20230627,SFEF,SLIP,0.39000000000000035,0.001579778830963665,-0.030000000000000027,0.04739336492890995,0.65,0.65,0.45,0.45,3,0.07,3,False,,,
+20230627,SLIP,SFEF,-0.39000000000000035,0.0,0.030000000000000027,0.05687203791469194,0.65,0.65,0.45,0.45,3,0.07,3,False,,,

@@ -1,7 +1,7 @@
-sid,A,B,median_dC,prop_B_after_A_C,median_dR,prop_B_after_A_R,thrC,thrR,hold_m,tmin,smooth_bins
-20200926,MFEF,MLIP,,0.0,,0.0,0.75,0.6,3,0.0,3
-20200926,MFEF,MSC,,0.0,,0.0,0.75,0.6,3,0.0,3
-20200926,MLIP,MFEF,,0.0,,0.0,0.75,0.6,3,0.0,3
-20200926,MLIP,MSC,,0.0,,0.0,0.75,0.6,3,0.0,3
-20200926,MSC,MFEF,,0.0,,0.0,0.75,0.6,3,0.0,3
-20200926,MSC,MLIP,,0.0,,0.0,0.75,0.6,3,0.0,3
+sid,A,B,median_dC,prop_B_after_A_C,median_dR,prop_B_after_A_R,thrC_used_A,thrC_used_B,thrR_used_A,thrR_used_B,hold_m,tmin,smooth_bins,auto_thr,auto_strategy,auto_targetC,auto_targetR
+20200926,MFEF,MLIP,,,-0.1050000000000001,0.0,0.65,0.65,0.45,0.45,3,0.07,3,False,,,
+20200926,MFEF,MSC,,,,,0.65,0.65,0.45,0.45,3,0.07,3,False,,,
+20200926,MLIP,MFEF,,,0.1050000000000001,0.008281573498964804,0.65,0.65,0.45,0.45,3,0.07,3,False,,,
+20200926,MLIP,MSC,,,0.4600000000000004,0.010351966873706004,0.65,0.65,0.45,0.45,3,0.07,3,False,,,
+20200926,MSC,MFEF,,,,,0.65,0.65,0.45,0.45,3,0.07,3,False,,,
+20200926,MSC,MLIP,,,-0.4600000000000004,0.004140786749482402,0.65,0.65,0.45,0.45,3,0.07,3,False,,,
