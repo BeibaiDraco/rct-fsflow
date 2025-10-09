@@ -131,8 +131,8 @@ def main():
                     continue
                 tC_A, tC_B, tR_A, tR_B = lat
                 # Exclude trials > 350ms (0.35s) and keep only finite values
-                mC = np.isfinite(tC_A) & np.isfinite(tC_B) & (tC_A <= 0.35) & (tC_B <= 0.35)
-                mR = np.isfinite(tR_A) & np.isfinite(tR_B) & (tR_A <= 0.35) & (tR_B <= 0.35)
+                mC = np.isfinite(tC_A) & np.isfinite(tC_B) & (tC_A <= 0.85) & (tC_B <= 0.85)
+                mR = np.isfinite(tR_A) & np.isfinite(tR_B) & (tR_A <= 0.85) & (tR_B <= 0.85)
                 if mC.sum()>0:
                     pool_dC.append(tC_B[mC] - tC_A[mC])
                     pool_tC_A.append(tC_A[mC]); pool_tC_B.append(tC_B[mC])

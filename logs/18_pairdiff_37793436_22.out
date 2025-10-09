@@ -1,0 +1,21 @@
+[info] task=22 SID=20231130
+[info] TAGS: induced_k2_win016_p500 induced_k5_win016_p500
+[run] python /project/bdoiron/dracoxu/rct-fsflow/18_run_pairdiff_all_sessions.py --sid-list-file /project/bdoiron/dracoxu/rct-fsflow/results/sid_list.txt --tags induced_k2_win016_p500 induced_k5_win016_p500 --idx 22 --one-based --alpha 0.05
+[info] will process 1 session(s).
+[info] tags: induced_k2_win016_p500 induced_k5_win016_p500
+[run] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python /project/bdoiron/dracoxu/rct-fsflow/18_run_pairdiff_session.py --sid 20231130 --alpha 0.05 --tags induced_k2_win016_p500 induced_k5_win016_p500
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k2_win016_p500/pairdiff/SFEFtoSLIP
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k2_win016_p500/pairdiff/SFEFtoSSC
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k2_win016_p500/pairdiff/SLIPtoSFEF
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k2_win016_p500/pairdiff/SLIPtoSSC
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k2_win016_p500/pairdiff/SSCtoSFEF
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k2_win016_p500/pairdiff/SSCtoSLIP
+[ok] wrote results/session/20231130/induced_k2_win016_p500/pairdiff/pairdiff_manifest.json
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k5_win016_p500/pairdiff/SFEFtoSLIP
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k5_win016_p500/pairdiff/SFEFtoSSC
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k5_win016_p500/pairdiff/SLIPtoSFEF
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k5_win016_p500/pairdiff/SLIPtoSSC
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k5_win016_p500/pairdiff/SSCtoSFEF
+[ok] wrote plots + NPZ + CSV to results/session/20231130/induced_k5_win016_p500/pairdiff/SSCtoSLIP
+[ok] wrote results/session/20231130/induced_k5_win016_p500/pairdiff/pairdiff_manifest.json
+[ok] wrote results/session/20231130/pairdiff_alltags.json

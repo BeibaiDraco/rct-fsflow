@@ -1,0 +1,180 @@
+{
+  "sid": "20231103",
+  "tag": "induced_k2_win016_p500",
+  "pairs": [
+    {
+      "pair": "SFEFtoSLIP",
+      "mode": "induced",
+      "pair_npz": "results/session/20231103/induced_k2_win016_p500/induced_flow_SFEFtoSLIP.npz",
+      "outdir": "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP",
+      "diff_only_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/overlay_DIFFONLY_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/overlay_DIFFONLY_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/overlay_DIFFONLY_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/overlay_DIFFONLY_R_int.png"
+      ],
+      "full_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/overlay_diff_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/overlay_diff_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/overlay_diff_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/overlay_diff_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/metrics_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/metrics_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/metrics_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/metrics_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/pvals_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/pvals_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/pvals_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/pvals_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/pairdiff_timeseries_metrics.npz",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSLIP/pairdiff_metrics_summary.csv"
+      ],
+      "status": "ok"
+    },
+    {
+      "pair": "SFEFtoSSC",
+      "mode": "induced",
+      "pair_npz": "results/session/20231103/induced_k2_win016_p500/induced_flow_SFEFtoSSC.npz",
+      "outdir": "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC",
+      "diff_only_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/overlay_DIFFONLY_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/overlay_DIFFONLY_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/overlay_DIFFONLY_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/overlay_DIFFONLY_R_int.png"
+      ],
+      "full_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/overlay_diff_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/overlay_diff_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/overlay_diff_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/overlay_diff_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/metrics_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/metrics_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/metrics_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/metrics_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/pvals_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/pvals_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/pvals_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/pvals_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/pairdiff_timeseries_metrics.npz",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SFEFtoSSC/pairdiff_metrics_summary.csv"
+      ],
+      "status": "ok"
+    },
+    {
+      "pair": "SLIPtoSFEF",
+      "mode": "induced",
+      "pair_npz": "results/session/20231103/induced_k2_win016_p500/induced_flow_SLIPtoSFEF.npz",
+      "outdir": "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF",
+      "diff_only_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/overlay_DIFFONLY_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/overlay_DIFFONLY_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/overlay_DIFFONLY_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/overlay_DIFFONLY_R_int.png"
+      ],
+      "full_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/overlay_diff_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/overlay_diff_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/overlay_diff_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/overlay_diff_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/metrics_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/metrics_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/metrics_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/metrics_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/pvals_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/pvals_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/pvals_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/pvals_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/pairdiff_timeseries_metrics.npz",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSFEF/pairdiff_metrics_summary.csv"
+      ],
+      "status": "ok"
+    },
+    {
+      "pair": "SLIPtoSSC",
+      "mode": "induced",
+      "pair_npz": "results/session/20231103/induced_k2_win016_p500/induced_flow_SLIPtoSSC.npz",
+      "outdir": "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC",
+      "diff_only_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/overlay_DIFFONLY_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/overlay_DIFFONLY_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/overlay_DIFFONLY_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/overlay_DIFFONLY_R_int.png"
+      ],
+      "full_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/overlay_diff_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/overlay_diff_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/overlay_diff_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/overlay_diff_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/metrics_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/metrics_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/metrics_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/metrics_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/pvals_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/pvals_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/pvals_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/pvals_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/pairdiff_timeseries_metrics.npz",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SLIPtoSSC/pairdiff_metrics_summary.csv"
+      ],
+      "status": "ok"
+    },
+    {
+      "pair": "SSCtoSFEF",
+      "mode": "induced",
+      "pair_npz": "results/session/20231103/induced_k2_win016_p500/induced_flow_SSCtoSFEF.npz",
+      "outdir": "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF",
+      "diff_only_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/overlay_DIFFONLY_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/overlay_DIFFONLY_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/overlay_DIFFONLY_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/overlay_DIFFONLY_R_int.png"
+      ],
+      "full_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/overlay_diff_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/overlay_diff_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/overlay_diff_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/overlay_diff_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/metrics_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/metrics_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/metrics_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/metrics_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/pvals_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/pvals_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/pvals_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/pvals_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/pairdiff_timeseries_metrics.npz",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSFEF/pairdiff_metrics_summary.csv"
+      ],
+      "status": "ok"
+    },
+    {
+      "pair": "SSCtoSLIP",
+      "mode": "induced",
+      "pair_npz": "results/session/20231103/induced_k2_win016_p500/induced_flow_SSCtoSLIP.npz",
+      "outdir": "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP",
+      "diff_only_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/overlay_DIFFONLY_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/overlay_DIFFONLY_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/overlay_DIFFONLY_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/overlay_DIFFONLY_R_int.png"
+      ],
+      "full_plots": [
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/overlay_diff_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/overlay_diff_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/overlay_diff_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/overlay_diff_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/metrics_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/metrics_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/metrics_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/metrics_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/pvals_C_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/pvals_C_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/pvals_R_raw.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/pvals_R_int.png",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/pairdiff_timeseries_metrics.npz",
+        "results/session/20231103/induced_k2_win016_p500/pairdiff/SSCtoSLIP/pairdiff_metrics_summary.csv"
+      ],
+      "status": "ok"
+    }
+  ]
+}

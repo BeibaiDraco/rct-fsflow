@@ -19,7 +19,7 @@ module purge
 module load python/3.11.9
 source "$BASE/runtime/venv/bin/activate"
 
-OUT_TAG=latency_new
-GROUP_DIR=results/group_latency
+OUT_TAG=latency_auto
+GROUP_DIR=results/group_latency_auto
 
 python L03_aggregate_latency.py --sess_root results/session --out_tag ${OUT_TAG} --out_dir ${GROUP_DIR}
