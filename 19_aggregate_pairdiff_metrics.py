@@ -3,12 +3,16 @@
 """
 Aggregate per-session pair-difference outputs across sessions to group-level results.
 
-Adds:
-  • Group metrics plots with A→B and B→A overlays (mean ± 95% CI) for S, z_robust, z_from_p, CLES
-  • Significance dots for DIFF appear only when significant (FDR<α)
+Key changes:
+  • Default significance uses a GROUP-LEVEL EMPIRICAL NULL for the mean difference curve:
+      - For each session and time t, build paired dnull(t) = fnull(t) − rnull(t).
+      - Draw B replicates by sampling one row from each session’s dnull and averaging across sessions.
+      - Compute p_group(t) = (1 + # {rep ≥ mean_diff(t)}) / (1 + B).
+      - Black dots below the curve mark t where p_group(t) < α.
+  • Still computes Stouffer meta-p (per-time) and can FDR it if requested.
+  • Group metrics plots overlay A→B vs B→A (mean±95% CI) for S, z_rob, z_from_p, CLES.
 
-Outputs:
-  results/group_pairdiff/<TAG>/monkey_<M|S>/...
+Outputs under: results/group_pairdiff/<TAG>/monkey_<M|S>/
 """
 from __future__ import annotations
 from pathlib import Path
@@ -45,6 +49,7 @@ def areas_from_pair(pair: str) -> tuple[str,str]:
     if not m: raise ValueError(f"Bad pair name: {pair}")
     return m.group(1), m.group(2)
 
+# normal inverse CDF (Acklam) + survival func via erfc — no SciPy needed
 def _norm_ppf(p):
     p = np.asarray(p, dtype=float); eps=1e-16
     pp = np.clip(p, eps, 1-eps)
@@ -93,6 +98,21 @@ def bh_fdr(p: np.ndarray, alpha: float) -> np.ndarray:
     cutoff=p_sorted[ok.max()]
     return np.isfinite(p) & (p<=cutoff)
 
+# time integration helpers for building integrated dnull from raw rnull
+def sliding_integrate(series: np.ndarray, centers: np.ndarray, int_win: float) -> np.ndarray:
+    series = as1d(series); centers = as1d(centers)
+    if series.size == 0: return series
+    step = float(np.median(np.diff(centers))) if len(centers) >= 2 else max(int_win, 1e-6)
+    L = max(1, int(round(int_win / max(step, 1e-9))))
+    return np.convolve(series, np.ones(L, dtype=float), mode="same")
+
+def sliding_integrate_null(null_mat: np.ndarray, centers: np.ndarray, int_win: float) -> np.ndarray:
+    null_mat = np.asarray(null_mat, dtype=float)
+    out = np.empty_like(null_mat, dtype=float)
+    for i in range(null_mat.shape[0]):
+        out[i] = sliding_integrate(null_mat[i], centers, int_win)
+    return out
+
 # ---------------- plotting ----------------
 def _ci95(arr2d: np.ndarray):
     m=np.nanmean(arr2d,axis=0)
@@ -110,10 +130,10 @@ def _sigbar_y(series):
     return float(np.nanmin(vals)-0.05*rng)
 
 def plot_group_overlay_diff(out_png: Path, title: str, t, mean_diff, lo, hi,
-                            mean_null, sig_mask, alpha=0.05):
+                            mean_null, sig_mask):
     t=as1d(t); mean_diff=as1d(mean_diff); lo=as1d(lo); hi=as1d(hi); mean_null=as1d(mean_null)
     plt.figure(figsize=(8.6,4.6),dpi=160)
-    plt.fill_between(t,lo,hi,color="tab:blue",alpha=0.20,linewidth=0,label="mean±95% CI")
+    plt.fill_between(t,lo,hi,color="tab:blue",alpha=0.20,linewidth=0)
     plt.plot(t,mean_diff,lw=2.4,color="tab:blue",label="mean DIFF")
     plt.plot(t,mean_null,ls="--",lw=1.5,color="tab:gray",alpha=0.9,label="mean null μ (DIFF)")
     plt.axhline(0,color="k",ls=":",lw=1)
@@ -121,7 +141,7 @@ def plot_group_overlay_diff(out_png: Path, title: str, t, mean_diff, lo, hi,
         sig = sig_mask.astype(bool)
         if np.any(sig):
             ybar = _sigbar_y(mean_diff)
-            plt.plot(t[sig], np.full(sig.sum(), ybar), ".", ms=6, color="k", label="FDR<α")
+            plt.plot(t[sig], np.full(sig.sum(), ybar), ".", ms=6, color="k", label="p_group<α")
     plt.title(title); plt.xlabel("Time (s)"); plt.ylabel("Flow (DIFF)")
     plt.legend(frameon=False,ncol=3); plt.tight_layout(); plt.savefig(out_png); plt.close()
 
@@ -135,24 +155,42 @@ def plot_group_metrics4_overlay_bidir(out_png: Path, title: str, t,
                                       label_fwd: str, label_rev: str):
     t=as1d(t)
     fig,axes=plt.subplots(4,1,figsize=(8.6,10.0),dpi=160,sharex=True)
-    # S bits
-    ax=axes[0]; _overlay_ci(ax,t,S_fwd,"tab:blue",f"S {label_fwd}")
-    _overlay_ci(ax,t,S_rev,"tab:orange",f"S {label_rev}")
+    ax=axes[0]; _overlay_ci(ax,t,S_fwd,"tab:blue",f"S {label_fwd}"); _overlay_ci(ax,t,S_rev,"tab:orange",f"S {label_rev}")
     ax.set_ylabel("S bits"); ax.grid(alpha=0.25); ax.legend(frameon=False,ncol=2)
-    # robust z
-    ax=axes[1]; _overlay_ci(ax,t,zrob_fwd,"tab:blue",f"z_rob {label_fwd}")
-    _overlay_ci(ax,t,zrob_rev,"tab:orange",f"z_rob {label_rev}")
+    ax=axes[1]; _overlay_ci(ax,t,zrob_fwd,"tab:blue",f"z_rob {label_fwd}"); _overlay_ci(ax,t,zrob_rev,"tab:orange",f"z_rob {label_rev}")
     ax.set_ylabel("z_rob"); ax.grid(alpha=0.25); ax.legend(frameon=False,ncol=2)
-    # z_from_p
-    ax=axes[2]; _overlay_ci(ax,t,zfp_fwd,"tab:blue",f"z_from_p {label_fwd}")
-    _overlay_ci(ax,t,zfp_rev,"tab:orange",f"z_from_p {label_rev}")
+    ax=axes[2]; _overlay_ci(ax,t,zfp_fwd,"tab:blue",f"z_from_p {label_fwd}"); _overlay_ci(ax,t,zfp_rev,"tab:orange",f"z_from_p {label_rev}")
     ax.set_ylabel("z_from_p"); ax.grid(alpha=0.25); ax.legend(frameon=False,ncol=2)
-    # CLES
-    ax=axes[3]; _overlay_ci(ax,t,cles_fwd,"tab:blue",f"CLES {label_fwd}")
-    _overlay_ci(ax,t,cles_rev,"tab:orange",f"CLES {label_rev}")
+    ax=axes[3]; _overlay_ci(ax,t,cles_fwd,"tab:blue",f"CLES {label_fwd}"); _overlay_ci(ax,t,cles_rev,"tab:orange",f"CLES {label_rev}")
     ax.set_ylabel("CLES (1−p)"); ax.set_ylim(0,1); ax.grid(alpha=0.25); ax.legend(frameon=False,ncol=2)
     axes[-1].set_xlabel("Time (s)")
     fig.suptitle(title,y=0.995); fig.tight_layout(); fig.savefig(out_png); plt.close(fig)
+
+def plot_pvals_trace(out_png: Path, title: str, t, p, alpha: float, label):
+    t=as1d(t)
+    plt.figure(figsize=(8.6,4.0),dpi=160)
+    tolog=lambda x: -np.log10(np.maximum(as1d(x),1e-300))
+    plt.plot(t, tolog(p), lw=2.0, label=label)
+    plt.axhline(-np.log10(alpha), color="k", ls=":", lw=1, label=f"α={alpha}")
+    plt.title(title); plt.xlabel("Time (s)"); plt.ylabel("-log10 p")
+    plt.legend(frameon=False); plt.tight_layout(); plt.savefig(out_png); plt.close()
+
+# ----------- helpers to locate the original pair NPZ ----------------
+def get_pair_npz_path(session_root: Path, sid: str, tag: str, pair: str) -> Path | None:
+    base = session_root / sid / tag / "pairdiff"
+    man = base / "pairdiff_manifest.json"
+    if man.exists():
+        j = json.loads(Path(man).read_text())
+        for rec in j.get("pairs", []):
+            if rec.get("status") == "ok" and rec.get("pair") == pair:
+                p = Path(rec["pair_npz"])
+                if p.exists(): return p
+    # fallback guesses
+    guess1 = session_root / sid / tag / f"induced_flow_{pair}.npz"
+    guess2 = session_root / sid / tag / f"flow_timeseriesINT_{pair}.npz"
+    if guess1.exists(): return guess1
+    if guess2.exists(): return guess2
+    return None
 
 # ---------------- aggregation core ----------------
 def collect_pairs_for_tag(session_root: Path, sid: str, tag: str) -> list[str]:
@@ -170,27 +208,81 @@ def collect_pairs_for_tag(session_root: Path, sid: str, tag: str) -> list[str]:
             pairs.append(d.name)
     return sorted(set(pairs))
 
-def load_pair_npz(session_root: Path, sid: str, tag: str, pair: str):
+def load_pair_metrics_npz(session_root: Path, sid: str, tag: str, pair: str):
     npz = session_root / sid / tag / "pairdiff" / pair / "pairdiff_timeseries_metrics.npz"
     if not npz.exists(): return None
     return np.load(npz, allow_pickle=True)
 
+def build_session_dnull(pair_npz_path: Path, feature: str, series: str):
+    """
+    Return tuple (t, dnull) where dnull is (P,T) paired difference-null for requested series.
+    series in {'raw','int'}.
+    """
+    z = np.load(pair_npz_path, allow_pickle=True)
+    if feature == "C":
+        t = z["tC"]
+        fnull = z["C_fnull"]
+        rnull = z["C_rnull"]
+        int_win = float(z["int_win"]) if "int_win" in z else 0.16
+        if series == "raw":
+            dnull = fnull - rnull
+        else:
+            fnull_sl = z["C_null_sl"] if "C_null_sl" in z.files else sliding_integrate_null(fnull, t, int_win)
+            rnull_sl = sliding_integrate_null(rnull, t, int_win)
+            dnull = fnull_sl - rnull_sl
+    else:
+        t = z["tR"]
+        fnull = z["R_fnull"]
+        rnull = z["R_rnull"]
+        int_win = float(z["int_win"]) if "int_win" in z else 0.16
+        if series == "raw":
+            dnull = fnull - rnull
+        else:
+            fnull_sl = z["R_null_sl"] if "R_null_sl" in z.files else sliding_integrate_null(fnull, t, int_win)
+            rnull_sl = sliding_integrate_null(rnull, t, int_win)
+            dnull = fnull_sl - rnull_sl
+    return t, dnull
+
+def group_null_p_for_mean(mean_diff: np.ndarray, dnull_list: list[np.ndarray],
+                          B: int = 4096, seed: int | None = 12345) -> np.ndarray:
+    """
+    Build empirical null for the across-session mean difference curve.
+    Returns p_group per timepoint: one-sided Pr{ null ≥ mean_diff }.
+    """
+    rng = np.random.default_rng(seed)
+    T = mean_diff.size
+    S = len(dnull_list)
+    if S == 0: return np.full(T, np.nan)
+    # Accumulate BxT sum across sessions
+    acc = np.zeros((B, T), dtype=float)
+    for dnull in dnull_list:
+        P = dnull.shape[0]
+        idx = rng.integers(0, P, size=B)
+        acc += dnull[idx, :]  # (B,T)
+    group_mean = acc / float(S)  # (B,T)
+    # p_group per time
+    ge = (group_mean >= mean_diff[None, :]).sum(axis=0)
+    return (1 + ge) / (1 + group_mean.shape[0])
+
 def aggregate_one_pair(session_root: Path, sids: list[str], tag: str, pair: str,
-                       feature: str, series: str, alpha: float):
+                       feature: str, series: str, alpha: float,
+                       sig_mode: str, group_B: int, seed: int):
     """
     feature in {'C','R'}, series in {'raw','int'}
+    sig_mode: 'group-null' (default), 'meta', 'meta-fdr'
     Returns dict with aggregated arrays and stats, or None if <2 sessions available.
     """
     diffs=[]; null_mu=[]; pvals=[]; used_sids=[]
-
     S_fwd=[]; S_rev=[]; zrob_fwd=[]; zrob_rev=[]; zfp_fwd=[]; zfp_rev=[]; cles_fwd=[]; cles_rev=[]
-    p_fwd=[]; p_rev=[]
-
+    # for group-null construction
+    dnull_per_session=[]
     t_ref=None
+
     for sid in sids:
-        z = load_pair_npz(session_root, sid, tag, pair)
-        if z is None: continue
-        D = z[feature].item()
+        # metrics NPZ (observed & per-session metrics/pvals)
+        zm = load_pair_metrics_npz(session_root, sid, tag, pair)
+        if zm is None: continue
+        D = zm[feature].item()
         t = D[f"t_{series}"]
         if t_ref is None:
             t_ref = t
@@ -204,17 +296,22 @@ def aggregate_one_pair(session_root: Path, sids: list[str], tag: str, pair: str,
         pvals.append(as1d(D[f"p_diff_{series}"]))
         used_sids.append(sid)
 
-        # forward/reverse metrics (for overlay)
-        S_fwd.append(as1d(D[f"S_fwd_{series}"]))
-        S_rev.append(as1d(D[f"S_rev_{series}"]))
-        zrob_fwd.append(as1d(D[f"zrob_fwd_{series}"]))
-        zrob_rev.append(as1d(D[f"zrob_rev_{series}"]))
-        zfp_fwd.append(as1d(D[f"zfromp_fwd_{series}"]))
-        zfp_rev.append(as1d(D[f"zfromp_rev_{series}"]))
-        cles_fwd.append(as1d(D[f"cles_fwd_{series}"]))
-        cles_rev.append(as1d(D[f"cles_rev_{series}"]))
-        p_fwd.append(as1d(D[f"p_fwd_{series}"]))
-        p_rev.append(as1d(D[f"p_rev_{series}"]))
+        S_fwd.append(as1d(D[f"S_fwd_{series}"]));   S_rev.append(as1d(D[f"S_rev_{series}"]))
+        zrob_fwd.append(as1d(D[f"zrob_fwd_{series}"])); zrob_rev.append(as1d(D[f"zrob_rev_{series}"]))
+        zfp_fwd.append(as1d(D[f"zfromp_fwd_{series}"])); zfp_rev.append(as1d(D[f"zfromp_rev_{series}"]))
+        cles_fwd.append(as1d(D[f"cles_fwd_{series}"])); cles_rev.append(as1d(D[f"cles_rev_{series}"]))
+
+        # original pair NPZ for dnull rows
+        pair_npz = get_pair_npz_path(session_root, sid, tag, pair)
+        if pair_npz is None:
+            print(f"[warn] pair NPZ missing for dnull: {sid} {tag} {pair}")
+            continue
+        t_check, dnull = build_session_dnull(pair_npz, feature, series)
+        # ensure same time axis
+        if not (t_check.size==t_ref.size and np.allclose(t_check, t_ref, atol=1e-9)):
+            print(f"[warn] dnull t mismatch for {sid} {tag} {pair} {feature}/{series}; skipping this dnull.")
+            continue
+        dnull_per_session.append(dnull)
 
     if len(diffs) < 2:
         return None
@@ -224,26 +321,42 @@ def aggregate_one_pair(session_root: Path, sids: list[str], tag: str, pair: str,
     zrob_fwd=np.vstack(zrob_fwd); zrob_rev=np.vstack(zrob_rev)
     zfp_fwd=np.vstack(zfp_fwd); zfp_rev=np.vstack(zfp_rev)
     cles_fwd=np.vstack(cles_fwd); cles_rev=np.vstack(cles_rev)
-    p_fwd=np.vstack(p_fwd); p_rev=np.vstack(p_rev)
 
     mean_diff,lo,hi,n=_ci95(diffs)
     mean_null=np.nanmean(null_mu,axis=0)
 
-    # meta p for DIFF; FDR across time
+    # significance masks
     p_meta = stouffer_meta_p(pvals)
     fdr_mask = bh_fdr(p_meta, alpha=alpha)
     frac_sig = np.nanmean(pvals < alpha, axis=0)
 
+    if sig_mode == "meta":
+        sig_mask = p_meta < alpha
+        p_sig_display = p_meta
+    elif sig_mode == "meta-fdr":
+        sig_mask = fdr_mask
+        p_sig_display = p_meta
+    else:
+        # default: group-null for mean curve
+        if len(dnull_per_session) == 0:
+            print("[warn] no dnull matrices available; falling back to meta-p")
+            sig_mask = p_meta < alpha
+            p_sig_display = p_meta
+        else:
+            p_group = group_null_p_for_mean(mean_diff, dnull_per_session, B=group_B, seed=seed)
+            sig_mask = p_group < alpha
+            p_sig_display = p_group
+
     return dict(
         t=t_ref, mean_diff=mean_diff, lo=lo, hi=hi,
-        mean_null=mean_null, p_meta=p_meta, fdr_mask=fdr_mask,
+        mean_null=mean_null, sig_mask=sig_mask, p_display=p_sig_display,
         n_sessions_used=int(np.nanmax(n)), frac_sig=frac_sig, used_sids=used_sids,
         # forward/reverse 2D arrays for overlay plots (mean±CI)
         S_fwd=S_fwd, S_rev=S_rev,
         zrob_fwd=zrob_fwd, zrob_rev=zrob_rev,
         zfp_fwd=zfp_fwd, zfp_rev=zfp_rev,
         cles_fwd=cles_fwd, cles_rev=cles_rev,
-        p_fwd=p_fwd, p_rev=p_rev
+        p_meta=p_meta, fdr_mask=fdr_mask
     )
 
 def main():
@@ -254,6 +367,10 @@ def main():
     ap.add_argument("--sid-list-file", default="")
     ap.add_argument("--sids", nargs="*", default=[])
     ap.add_argument("--alpha", type=float, default=0.05)
+    ap.add_argument("--sig-mode", choices=["group-null","meta","meta-fdr"], default="group-null",
+                    help="How to mark significance on DIFF overlays (default: group-null)")
+    ap.add_argument("--group-B", type=int, default=4096, help="Replicates for group-null (default 4096)")
+    ap.add_argument("--seed", type=int, default=12345, help="PRNG seed for group-null draws")
     args = ap.parse_args()
 
     session_root=Path(args.session_root); out_root=Path(args.out_root)
@@ -264,6 +381,7 @@ def main():
 
     print(f"[info] Aggregating {len(sids)} sessions")
     print(f"[info] Tags: {' '.join(args.tags)}")
+    print(f"[info] Significance mode: {args.sig_mode}")
 
     for tag in args.tags:
         # collect all pairs seen in this tag
@@ -288,21 +406,22 @@ def main():
 
                 for feat in ("C","R"):
                     for series in ("raw","int"):
-                        agg = aggregate_one_pair(session_root, sids, tag, pair, feat, series, args.alpha)
+                        agg = aggregate_one_pair(session_root, sids, tag, pair, feat, series,
+                                                 args.alpha, args.sig_mode, args.group_B, args.seed)
                         if agg is None:
                             print(f"[warn] insufficient sessions for {pair} {feat}/{series}; skipping.")
                             continue
                         t=agg["t"]
 
-                        # DIFF overlay with FDR significance dots (only when significant)
+                        # DIFF overlay with significance dots (mode-controlled)
                         plot_group_overlay_diff(
                             out_dir / f"overlay_DIFF_{feat}_{base}_{series}.png",
                             f"{feat} {series} — DIFF {A}−{B} (N={agg['n_sessions_used']})",
                             t, agg["mean_diff"], agg["lo"], agg["hi"], agg["mean_null"],
-                            agg["fdr_mask"], alpha=args.alpha
+                            agg["sig_mask"]
                         )
 
-                        # NEW: A→B vs B→A overlay for metrics (mean±CI)
+                        # A→B vs B→A overlay for metrics (mean±CI)
                         plot_group_metrics4_overlay_bidir(
                             out_dir / f"metrics_BIDIR_{feat}_{base}_{series}.png",
                             f"{feat} {series} — how-far metrics (mean±95% CI) — {A}↔{B}",
@@ -314,38 +433,41 @@ def main():
                             lab_fwd, lab_rev
                         )
 
-                        # Meta-p trace for DIFF
-                        # (you can optionally add separate meta-p for fwd/rev later if needed)
-                        plt_path = out_dir / f"pvals_DIFF_{feat}_{base}_{series}.png"
-                        _plot_pvals_trace(plt_path, f"{feat} {series} — meta p (Stouffer) — DIFF {A}−{B}", t, agg["p_meta"], args.alpha)
+                        # Optional: meta-p traces for reference
+                        plot_pvals_trace(
+                            out_dir / f"pvals_META_{feat}_{base}_{series}.png",
+                            f"{feat} {series} — meta p (Stouffer) — DIFF {A}−{B}",
+                            t, agg["p_meta"], args.alpha, label="meta p (Stouffer)"
+                        )
+                        # If using group-null, also drop a p_group trace for transparency
+                        if args.sig_mode == "group-null":
+                            plot_pvals_trace(
+                                out_dir / f"pvals_GROUPNULL_{feat}_{base}_{series}.png",
+                                f"{feat} {series} — group-null p — DIFF {A}−{B}",
+                                t, agg["p_display"], args.alpha, label="group-null p"
+                            )
 
                         # CSV: group DIFF summary per time
                         csv_path = out_dir / f"group_DIFF_{feat}_{base}_{series}.csv"
                         with open(csv_path,"w",newline="") as f:
                             w=csv.writer(f)
-                            w.writerow(["t","mean_diff","ci_lo","ci_hi","null_mu_mean","meta_p","fdr_sig","frac_sig_sessions"])
+                            w.writerow(["t","mean_diff","ci_lo","ci_hi","null_mu_mean",
+                                        "p_display","sig","frac_sig_sessions","p_meta","fdr_sig"])
                             for i in range(t.size):
                                 w.writerow([
                                     float(t[i]), float(agg["mean_diff"][i]), float(agg["lo"][i]), float(agg["hi"][i]),
                                     float(agg["mean_null"][i]),
+                                    float(agg["p_display"][i]) if np.isfinite(agg["p_display"][i]) else "",
+                                    int(agg["sig_mask"][i]) if i < agg["sig_mask"].size else 0,
+                                    float(agg["frac_sig"][i]),
                                     float(agg["p_meta"][i]) if np.isfinite(agg["p_meta"][i]) else "",
-                                    int(agg["fdr_mask"][i]) if i<agg["fdr_mask"].size else 0,
-                                    float(agg["frac_sig"][i])
+                                    int(agg["fdr_mask"][i]) if i < agg["fdr_mask"].size else 0
                                 ])
 
             with open(out_dir / "pairdiff_group_manifest.json","w") as f:
                 json.dump(dict(tag=tag,monkey=mk,pairs=pairs),f,indent=2)
 
     print("[ok] aggregation complete.")
-
-def _plot_pvals_trace(out_png: Path, title: str, t, p_meta, alpha: float):
-    t=as1d(t)
-    plt.figure(figsize=(8.6,4.0),dpi=160)
-    tolog=lambda p: -np.log10(np.maximum(as1d(p),1e-300))
-    plt.plot(t, tolog(p_meta), lw=2.0, label="-log10 meta p (DIFF)")
-    plt.axhline(-np.log10(alpha), color="k", ls=":", lw=1, label=f"α={alpha}")
-    plt.title(title); plt.xlabel("Time (s)"); plt.ylabel("-log10 p")
-    plt.legend(frameon=False); plt.tight_layout(); plt.savefig(out_png); plt.close()
 
 if __name__=="__main__":
     main()
