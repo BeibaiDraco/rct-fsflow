@@ -254,7 +254,7 @@ def plot_group_overlay_diff(repo: Path, group_tag: str, monkey: str, diff_pair: 
     fig = plt.figure(figsize=figsize, dpi=200)
     ax = fig.add_axes(AX_BOX_SINGLE)
     ax.fill_between(t, lo, hi, color=DIFF_BAND_COLOR, alpha=0.20, linewidth=0, label="mean ± SEM")
-    ax.plot(t, mean_diff, color=DIFF_LINE_COLOR, lw=2.4, label="Directional difference (FEF↔LIP)")
+    ax.plot(t, mean_diff, color=DIFF_LINE_COLOR, lw=2.4, label="Net difference (FEF↔LIP)")
     ax.plot(t, null_mu, color="tab:gray", lw=1.5, ls="--", alpha=0.9, label="Mean null μ (difference)")
     ax.axvline(0, color="k", ls="--", lw=1.0)
     ax.axhline(0, color="k", ls=":",  lw=1.0)
@@ -402,7 +402,7 @@ def plot_combined_vertical(repo: Path, group_tag: str, monkey: str, bidir_pair: 
     # Top axes
     ax1 = fig.add_axes(AX_BOX_TOP)
     ax1.fill_between(t_top, lo, hi, color=DIFF_BAND_COLOR, alpha=0.20, linewidth=0, label="mean ± SEM")
-    ax1.plot(t_top, mean_diff, color=DIFF_LINE_COLOR, lw=2.4, label="Directional difference (FEF↔LIP)")
+    ax1.plot(t_top, mean_diff, color=DIFF_LINE_COLOR, lw=2.4, label="Net difference (FEF↔LIP)")
     ax1.plot(t_top, null_mu, color="tab:gray", lw=1.5, ls="--", alpha=0.9, label="Mean null μ")
     ax1.axvline(0, color="k", ls="--", lw=1.0)
     ax1.axhline(0, color="k", ls=":", lw=1.0)
