@@ -119,7 +119,7 @@ def _ci95(arr2d: np.ndarray):
     n=np.sum(np.isfinite(arr2d),axis=0).astype(float)
     sd=np.nanstd(arr2d,axis=0,ddof=1)
     sem=np.divide(sd,np.sqrt(np.maximum(n,1.0)),out=np.zeros_like(sd),where=n>0)
-    lo=m-1.96*sem; hi=m+1.96*sem
+    lo=m-sem; hi=m+sem
     return m,lo,hi,n
 
 def _sigbar_y(series):
@@ -424,7 +424,7 @@ def main():
                         # A→B vs B→A overlay for metrics (mean±CI)
                         plot_group_metrics4_overlay_bidir(
                             out_dir / f"metrics_BIDIR_{feat}_{base}_{series}.png",
-                            f"{feat} {series} — how-far metrics (mean±95% CI) — {A}↔{B}",
+                            f"{feat} {series} — how-far metrics (mean±SEM) — {A}↔{B}",
                             t,
                             agg["S_fwd"], agg["S_rev"],
                             agg["zrob_fwd"], agg["zrob_rev"],
