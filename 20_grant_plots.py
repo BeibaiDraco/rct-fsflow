@@ -27,6 +27,17 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+# Set larger font sizes for better readability when figures are shrunk
+plt.rcParams.update({
+    'font.size': 16,           # Base font size
+    'axes.titlesize': 16,      # Title font size
+    'axes.labelsize': 16,      # Axis label font size
+    'xtick.labelsize': 16,     # X-axis tick label size
+    'ytick.labelsize': 16,     # Y-axis tick label size
+    'legend.fontsize': 16,     # Legend font size
+    'figure.titlesize': 18     # Figure title size
+})
+
 # custom color for delta/DIFF lines & band
 DIFF_LINE_COLOR = "#1f6feb"   # pick your blue (e.g., "#377eb8", "#2a6fef", "#005bbb")
 DIFF_BAND_COLOR = "#9ec1ff"   # a lighter matching blue for the band (optional)
@@ -175,10 +186,10 @@ def plot_group_metrics_sbits(repo: Path, group_tag: str, monkey: str, bidir_pair
     fig = plt.figure(figsize=figsize, dpi=200)
     ax = fig.add_axes(AX_BOX_SINGLE)
     ax.fill_between(tm, lf, hf, color=col_fwd, alpha=0.20, linewidth=0)
-    ax.plot(tm, mf, color=col_fwd, lw=2.2, label=lab_fwd)
+    ax.plot(tm, mf, color=col_fwd, lw=3.0, label=lab_fwd)
     ax.fill_between(tm, lr, hr, color=col_rev, alpha=0.20, linewidth=0)
-    ax.plot(tm, mr, color=col_rev, lw=2.2, label=lab_rev)
-    ax.axvline(0, color="k", ls="--", lw=1.0)
+    ax.plot(tm, mr, color=col_rev, lw=3.0, label=lab_rev)
+    ax.axvline(0, color="k", ls="--", lw=1.5)
     if xlim: ax.set_xlim(xlim)
     ax.set_xlabel("Time from Stimulus Onset (ms)")
     ax.set_ylabel("Category S bits (−log₂ p)")
@@ -254,10 +265,10 @@ def plot_group_overlay_diff(repo: Path, group_tag: str, monkey: str, diff_pair: 
     fig = plt.figure(figsize=figsize, dpi=200)
     ax = fig.add_axes(AX_BOX_SINGLE)
     ax.fill_between(t, lo, hi, color=DIFF_BAND_COLOR, alpha=0.20, linewidth=0, label="mean ± SEM")
-    ax.plot(t, mean_diff, color=DIFF_LINE_COLOR, lw=2.4, label="Net difference (FEF↔LIP)")
-    ax.plot(t, null_mu, color="tab:gray", lw=1.5, ls="--", alpha=0.9, label="Mean null μ (difference)")
-    ax.axvline(0, color="k", ls="--", lw=1.0)
-    ax.axhline(0, color="k", ls=":",  lw=1.0)
+    ax.plot(t, mean_diff, color=DIFF_LINE_COLOR, lw=3.2, label="Net difference (FEF↔LIP)")
+    ax.plot(t, null_mu, color="tab:gray", lw=2.0, ls="--", alpha=0.9, label="Mean null μ (difference)")
+    ax.axvline(0, color="k", ls="--", lw=1.5)
+    ax.axhline(0, color="k", ls=":",  lw=1.5)
     if xlim: ax.set_xlim(xlim)
 
     # black dots when significant
@@ -265,7 +276,7 @@ def plot_group_overlay_diff(repo: Path, group_tag: str, monkey: str, diff_pair: 
         rng = np.nanmax(mean_diff) - np.nanmin(mean_diff)
         if not np.isfinite(rng) or rng <= 0: rng = 1e-6
         ybar = float(np.nanmin(mean_diff) - 0.05*rng)
-        ax.plot(t[sigmask], np.full(sigmask.sum(), ybar), ".", ms=6, color="k", label=f"p < {alpha:g}")
+        ax.plot(t[sigmask], np.full(sigmask.sum(), ybar), ".", ms=8, color="k", label=f"p < {alpha:g}")
 
     ax.set_xlabel("Time from Stimulus Onset (ms)")
     ylab_unit = "bits" if flow_unit == "bits" else "nats"
@@ -296,7 +307,7 @@ def plot_session_overlay(repo: Path, sid: str, session_tag: str, outdir: Path, f
 
     tm = ms(t)
     col_fwd, col_rev = "tab:blue", "tab:red"
-    lab_fwd, lab_rev = "MFEF → MLIP", "MLIP → MFEF"
+    lab_fwd, lab_rev = "FEF → LIP", "LIP → FEF"
 
     ddir = ensure_dir(outdir / "data")
     csv_out = ddir / f"data_session_overlay_category_MFEF_MLIP_raw_{sid}_{flow_unit}.csv"
@@ -307,17 +318,17 @@ def plot_session_overlay(repo: Path, sid: str, session_tag: str, outdir: Path, f
 
     fig = plt.figure(figsize=figsize, dpi=200)
     ax = fig.add_axes(AX_BOX_SINGLE)
-    ax.plot(tm, mu_f, ls="--", lw=1.2, color="tab:gray", alpha=0.9, label="null μ (MFEF → MLIP)")
-    ax.plot(tm, mu_r, ls="--", lw=1.2, color="lightcoral", alpha=0.9, label="null μ (MLIP → MFEF)")
-    ax.plot(tm, fwd, color=col_fwd, lw=2.4, label=lab_fwd)
-    ax.plot(tm, rev, color=col_rev, lw=2.4, label=lab_rev)
-    ax.axvline(0, color="k", ls="--", lw=1.0)
-    ax.axhline(0, color="k", ls=":", lw=1.0)
+    ax.plot(tm, fwd, color=col_fwd, lw=3.2, label=lab_fwd)
+    ax.plot(tm, rev, color=col_rev, lw=3.2, label=lab_rev)
+    ax.plot(tm, mu_f, ls="--", lw=2.0, color="tab:gray", alpha=0.9, label="null μ (FEF → LIP)")
+    ax.plot(tm, mu_r, ls="--", lw=2.0, color="lightcoral", alpha=0.9, label="null μ (LIP → FEF)")
+    ax.axvline(0, color="k", ls="--", lw=1.5)
+    ax.axhline(0, color="k", ls=":", lw=1.5)
     if xlim: ax.set_xlim(xlim)
     ax.set_xlabel("Time from Stimulus Onset (ms)")
     ylab_unit = "bits" if flow_unit == "bits" else "nats"
     ax.set_ylabel(f"Category flow ({ylab_unit})")
-    ax.legend(frameon=False, ncol=2)
+    ax.legend(frameon=False, ncol=1)
     ax.grid(alpha=0.15)
 
     base = outdir / f"grant_session_overlay_category_MFEF_MLIP_raw_{sid}_{flow_unit}"
@@ -402,40 +413,40 @@ def plot_combined_vertical(repo: Path, group_tag: str, monkey: str, bidir_pair: 
     # Top axes
     ax1 = fig.add_axes(AX_BOX_TOP)
     ax1.fill_between(t_top, lo, hi, color=DIFF_BAND_COLOR, alpha=0.20, linewidth=0, label="mean ± SEM")
-    ax1.plot(t_top, mean_diff, color=DIFF_LINE_COLOR, lw=2.4, label="Net difference (FEF↔LIP)")
-    ax1.plot(t_top, null_mu, color="tab:gray", lw=1.5, ls="--", alpha=0.9, label="Mean null μ")
-    ax1.axvline(0, color="k", ls="--", lw=1.0)
-    ax1.axhline(0, color="k", ls=":", lw=1.0)
+    ax1.plot(t_top, mean_diff, color=DIFF_LINE_COLOR, lw=3.2, label="Net difference (FEF↔LIP)")
+    ax1.plot(t_top, null_mu, color="tab:gray", lw=2.0, ls="--", alpha=0.9, label="Mean null μ")
+    ax1.axvline(0, color="k", ls="--", lw=1.5)
+    ax1.axhline(0, color="k", ls=":", lw=1.5)
     if xlim: ax1.set_xlim(xlim)
     if sigmask is not None and sigmask.size == t_top.size and np.any(sigmask):
         rng = np.nanmax(mean_diff) - np.nanmin(mean_diff);  rng = max(rng, 1e-6)
         ybar = float(np.nanmin(mean_diff) - 0.05*rng)
-        ax1.plot(t_top[sigmask], np.full(sigmask.sum(), ybar), ".", ms=6, color="k", label=f"p < {alpha:g}")
+        ax1.plot(t_top[sigmask], np.full(sigmask.sum(), ybar), ".", ms=8, color="k", label=f"p < {alpha:g}")
     ax1.set_ylabel(f"Δ Category flow ({'bits' if k!=1 else 'nats'})")
     ax1.legend(frameon=False); ax1.grid(alpha=0.15)
 
     # Middle axes (S-bits)
     ax2 = fig.add_axes(AX_BOX_MID)
     ax2.fill_between(t_mid, lf, hf, color=col_fwd, alpha=0.20, linewidth=0)
-    ax2.plot(t_mid, mf, color=col_fwd, lw=2.2, label=lab_fwd)
+    ax2.plot(t_mid, mf, color=col_fwd, lw=3.0, label=lab_fwd)
     ax2.fill_between(t_mid, lr, hr, color=col_rev, alpha=0.20, linewidth=0)
-    ax2.plot(t_mid, mr, color=col_rev, lw=2.2, label=lab_rev)
-    ax2.axvline(0, color="k", ls="--", lw=1.0)
+    ax2.plot(t_mid, mr, color=col_rev, lw=3.0, label=lab_rev)
+    ax2.axvline(0, color="k", ls="--", lw=1.5)
     if xlim: ax2.set_xlim(xlim)
     ax2.set_ylabel("Category S bits (−log₂ p)")
     ax2.legend(frameon=False, ncol=2); ax2.grid(alpha=0.15)
 
     # Bottom axes (single session)
     ax3 = fig.add_axes(AX_BOX_BOT)
-    ax3.plot(t_bot, mu_f, ls="--", lw=1.2, color="tab:gray", alpha=0.9, label="null μ (MFEF → MLIP)")
-    ax3.plot(t_bot, mu_r, ls="--", lw=1.2, color="lightcoral", alpha=0.9, label="null μ (MLIP → MFEF)")
-    ax3.plot(t_bot, fwd, color="tab:blue", lw=2.4, label="MFEF → MLIP")
-    ax3.plot(t_bot, rev, color="tab:red", lw=2.4, label="MLIP → MFEF")
-    ax3.axvline(0, color="k", ls="--", lw=1.0); ax3.axhline(0, color="k", ls=":", lw=1.0)
+    ax3.plot(t_bot, fwd, color="tab:blue", lw=3.2, label="FEF → LIP")
+    ax3.plot(t_bot, rev, color="tab:red", lw=3.2, label="LIP → FEF")
+    ax3.plot(t_bot, mu_f, ls="--", lw=2.0, color="tab:gray", alpha=0.9, label="null μ (FEF → LIP)")
+    ax3.plot(t_bot, mu_r, ls="--", lw=2.0, color="lightcoral", alpha=0.9, label="null μ (LIP → FEF)")
+    ax3.axvline(0, color="k", ls="--", lw=1.5); ax3.axhline(0, color="k", ls=":", lw=1.5)
     if xlim: ax3.set_xlim(xlim)
     ax3.set_xlabel("Time from Stimulus Onset (ms)")
     ax3.set_ylabel(f"Category flow ({'bits' if k!=1 else 'nats'})")
-    ax3.legend(frameon=False, ncol=2); ax3.grid(alpha=0.15)
+    ax3.legend(frameon=False, ncol=1); ax3.grid(alpha=0.15)
 
     base = outdir / f"grant_combined_vertical_{group_tag}_{monkey}_{sid}_{'bits' if k!=1 else 'nats'}"
     for ext in ("svg", "png", "pdf"):
@@ -451,7 +462,7 @@ def main():
     ap.add_argument("--monkey", default="M", choices=["M","S"])
     ap.add_argument("--bidir-pair", default="MLIPtoMFEF", type=str, help="AtoB for metrics (S bits) overlay")
     ap.add_argument("--diff-pair", default="MFEFtoMLIP", type=str, help="AtoB for DIFF overlay (Category)")
-    ap.add_argument("--sid", default="20200327", type=str)
+    ap.add_argument("--sid", default="20201001", type=str)
     ap.add_argument("--session-tag", default="induced_k5_win016_p500", type=str)
     ap.add_argument("--outdir", default="grant_plot", type=str)
     ap.add_argument("--figsize", default="8.6,3.6",
