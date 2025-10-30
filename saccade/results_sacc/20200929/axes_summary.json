@@ -1,0 +1,35 @@
+{
+  "sid": "20200929",
+  "trainC": [
+    -0.3,
+    -0.1
+  ],
+  "trainS": [
+    -0.1,
+    -0.03
+  ],
+  "orientation": "vertical",
+  "areas": {
+    "MFEF": {
+      "sC_auc_mean": 0.5769087093914436,
+      "sSraw_auc_mean": 0.9494521548575602,
+      "cos_sSraw_sC": 0.12340711974230768,
+      "auc_C_from_sSraw": 0.5473821086431547,
+      "auc_C_from_sSinv": 0.519889605392352
+    },
+    "MLIP": {
+      "sC_auc_mean": 0.5970968099405171,
+      "sSraw_auc_mean": 0.6596055514974435,
+      "cos_sSraw_sC": 0.01513456565555045,
+      "auc_C_from_sSraw": 0.5265769710479526,
+      "auc_C_from_sSinv": 0.5241090146750524
+    },
+    "MSC": {
+      "sC_auc_mean": 0.533725566946923,
+      "sSraw_auc_mean": 0.5265157048940832,
+      "cos_sSraw_sC": 0.485232068551273,
+      "auc_C_from_sSraw": 0.5643658944351564,
+      "auc_C_from_sSinv": 0.530610620173553
+    }
+  }
+}

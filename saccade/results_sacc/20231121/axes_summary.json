@@ -1,0 +1,35 @@
+{
+  "sid": "20231121",
+  "trainC": [
+    -0.3,
+    -0.1
+  ],
+  "trainS": [
+    -0.1,
+    -0.03
+  ],
+  "orientation": "vertical",
+  "areas": {
+    "SFEF": {
+      "sC_auc_mean": 0.5725976470588237,
+      "sSraw_auc_mean": 0.6687909745404819,
+      "cos_sSraw_sC": 0.032319680566513645,
+      "auc_C_from_sSraw": 0.4972016695124265,
+      "auc_C_from_sSinv": 0.4908145196989818
+    },
+    "SLIP": {
+      "sC_auc_mean": 0.531852549019608,
+      "sSraw_auc_mean": 0.5082089852391103,
+      "cos_sSraw_sC": 0.3858932234051247,
+      "auc_C_from_sSraw": 0.555745272876747,
+      "auc_C_from_sSinv": 0.49800796812749004
+    },
+    "SSC": {
+      "sC_auc_mean": 0.5913819607843138,
+      "sSraw_auc_mean": 0.7229397096086554,
+      "cos_sSraw_sC": 0.4439156453190134,
+      "auc_C_from_sSraw": 0.48030101814962367,
+      "auc_C_from_sSinv": 0.43162271548725734
+    }
+  }
+}

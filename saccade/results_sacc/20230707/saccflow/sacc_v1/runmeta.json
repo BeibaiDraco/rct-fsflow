@@ -1,0 +1,25 @@
+{
+  "sid": "20230707",
+  "orientation": "vertical",
+  "areas": [
+    "SFEF",
+    "SLIP"
+  ],
+  "pairs": [
+    [
+      "SFEF",
+      "SLIP"
+    ],
+    [
+      "SLIP",
+      "SFEF"
+    ]
+  ],
+  "lags_ms": 30.0,
+  "perms": 200,
+  "alpha": 1.0,
+  "induced": true,
+  "condC": true,
+  "pt_cov": false,
+  "tag": "sacc_v1"
+}

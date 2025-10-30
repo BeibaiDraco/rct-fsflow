@@ -1,14 +1,27 @@
 #!/usr/bin/env python
-import argparse, os, subprocess, json
+import argparse, os, subprocess
 from saccflow.io import list_sessions
+
+VALID_AREAS = {"MFEF","MLIP","MSC","SFEF","SLIP","SSC"}
 
 def run(cmd):
     print("[RUN]", " ".join(cmd)); subprocess.run(cmd, check=True)
 
+def area_count(root: str, sid: str) -> int:
+    aroot = os.path.join(root, sid, "areas")
+    if not os.path.isdir(aroot): return 0
+    cnt = 0
+    for name in os.listdir(aroot):
+        p = os.path.join(aroot, name)
+        if os.path.isdir(p) and name in VALID_AREAS:
+            cnt += 1
+    return cnt
+
 def main():
-    ap = argparse.ArgumentParser(description="Run saccade pipeline for ONE session index (for SLURM arrays).")
+    ap = argparse.ArgumentParser(description="Run saccade pipeline for ONE session.")
     ap.add_argument("--root", required=True, help="RCT_02 root")
-    ap.add_argument("--index", type=int, required=True, help="0-based index into discovered sessions")
+    ap.add_argument("--sid", default=None, help="Session ID (8-digit). If absent, use --index.")
+    ap.add_argument("--index", type=int, default=None, help="0-based index into discovered sessions")
     ap.add_argument("--orientation", choices=["vertical","horizontal"], default="vertical")
     ap.add_argument("--t0", type=float, default=-0.40)
     ap.add_argument("--t1", type=float, default=0.20)
@@ -21,51 +34,95 @@ def main():
     ap.add_argument("--out_root", default="results_sacc")
     args = ap.parse_args()
 
-    sessions = list_sessions(args.root)
-    sid = sessions[args.index]
-    print(f"[info] session={sid} ({args.index}/{len(sessions)-1}), orient={args.orientation}")
+    # Resolve session
+    if args.sid:
+        sid = args.sid
+    else:
+        if args.index is None:
+            raise SystemExit("Provide --sid or --index")
+        sessions = list_sessions(args.root)
+        if args.index < 0 or args.index >= len(sessions):
+            raise SystemExit(f"--index out of range 0..{len(sessions)-1}")
+        sid = sessions[args.index]
 
-    # 31) trials enrich (idempotent)
-    run(["python", "scripts/31_trials_enrich.py", "--root", args.root, "--sid", sid, "--out_root", args.out_root])
+    # Skip thin sessions (<2 areas)
+    n_areas = area_count(args.root, sid)
+    if n_areas < 2:
+        print(f"[skip] {sid}: only {n_areas} area(s) present under {args.root}/{sid}/areas")
+        return
+
+    print(f"[info] session={sid}  orient={args.orientation}  areas>={n_areas}")
+
+    # 31) trials enrich
+    run([
+        "python","scripts/31_trials_enrich.py",
+        "--root", args.root,
+        "--sid",  sid,
+        f"--out_root={args.out_root}"
+    ])
 
     # 32) cache (sacc-aligned)
     run([
-      "python","scripts/32_cache_binned_sacc.py","--root",args.root,"--sid",sid,
-      "--t0",str(args.t0),"--t1",str(args.t1),"--bin_ms",str(args.bin_ms),
-      "--out_root",args.out_root
+        "python","scripts/32_cache_binned_sacc.py",
+        "--root", args.root,
+        "--sid",  sid,
+        f"--t0={args.t0}",
+        f"--t1={args.t1}",
+        f"--bin_ms={args.bin_ms}",
+        f"--out_root={args.out_root}"
     ])
 
-    # 33) axes training
+    # 33) axes training  (NOTE the '=' for trainC/trainS to avoid argparse confusion)
     run([
-      "python","scripts/33_build_axes_sacc.py","--root",args.root,"--sid",sid,
-      "--orientation",args.orientation,"--trainC",args.trainC,"--trainS",args.trainS,
-      "--out_root",args.out_root
+        "python","scripts/33_build_axes_sacc.py",
+        "--root", args.root,
+        "--sid",  sid,
+        "--orientation", args.orientation,
+        f"--trainC={args.trainC}",
+        f"--trainS={args.trainS}",
+        f"--out_root={args.out_root}"
     ])
 
-    # 34) QC (AUC curves & latencies)
+    # 34) QC
     run([
-      "python","scripts/34_axes_qc_sacc.py","--sid",sid,"--orientation",args.orientation,
-      "--out_root",args.out_root
+        "python","scripts/34_axes_qc_sacc.py",
+        "--sid",  sid,
+        "--orientation", args.orientation,
+        f"--out_root={args.out_root}"
     ])
 
-    # 35) flows (all ordered pairs)
+    # 35) flows
     run([
-      "python","scripts/35_fsflow_sacc_timesliding.py","--sid",sid,"--orientation",args.orientation,
-      "--all_pairs","--lags_ms",str(args.lags_ms),"--perms",str(args.perms),
-      "--tag",args.tag,"--out_root",args.out_root
+        "python","scripts/35_fsflow_sacc_timesliding.py",
+        "--sid", sid,
+        "--orientation", args.orientation,
+        "--all_pairs",
+        f"--lags_ms={args.lags_ms}",
+        f"--perms={args.perms}",
+        f"--tag={args.tag}",
+        f"--out_root={args.out_root}"
     ])
 
-    # 36) overlays (with null means)
+    # 36) overlays
     run([
-      "python","scripts/36_session_overlays_sacc.py","--sid",sid,"--tag",args.tag,
-      "--orientation",args.orientation,"--out_root",args.out_root,"--shade_null"
+        "python","scripts/36_session_overlays_sacc.py",
+        "--sid", sid,
+        "--tag", args.tag,
+        "--orientation", args.orientation,
+        f"--out_root={args.out_root}",
+        "--shade_null"
     ])
 
-    # 37) pair-diff (paired null), all ordered pairs
+    # 37) pair-diff
     run([
-      "python","scripts/37_pairdiff_sacc_session.py","--sid",sid,"--orientation",args.orientation,
-      "--all_pairs","--lags_ms",str(args.lags_ms),"--perms",str(args.perms),
-      "--tag",args.tag,"--out_root",args.out_root
+        "python","scripts/37_pairdiff_sacc_session.py",
+        "--sid", sid,
+        "--orientation", args.orientation,
+        "--all_pairs",
+        f"--lags_ms={args.lags_ms}",
+        f"--perms={args.perms}",
+        f"--tag={args.tag}",
+        f"--out_root={args.out_root}"
     ])
 
 if __name__ == "__main__":

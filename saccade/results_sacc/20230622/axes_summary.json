@@ -1,0 +1,28 @@
+{
+  "sid": "20230622",
+  "trainC": [
+    -0.3,
+    -0.1
+  ],
+  "trainS": [
+    -0.1,
+    -0.03
+  ],
+  "orientation": "vertical",
+  "areas": {
+    "SFEF": {
+      "sC_auc_mean": 0.7670533423872039,
+      "sSraw_auc_mean": 0.7418628675763982,
+      "cos_sSraw_sC": 0.06718705206377205,
+      "auc_C_from_sSraw": 0.564649932060359,
+      "auc_C_from_sSinv": 0.5225988700564972
+    },
+    "SLIP": {
+      "sC_auc_mean": 0.5956994114984155,
+      "sSraw_auc_mean": 0.54696088794926,
+      "cos_sSraw_sC": -0.07311094735263099,
+      "auc_C_from_sSraw": 0.4941714939569477,
+      "auc_C_from_sSinv": 0.5012515197024959
+    }
+  }
+}
