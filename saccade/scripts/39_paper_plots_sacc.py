@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+"""python scripts/39_paper_plots_sacc.py \
+  --tag sacc_v1 \
+  --orientation vertical \
+  --run_all \
+  --out_root results_sacc"""
 import argparse, os, numpy as np, matplotlib.pyplot as plt
 
 def load_group(base, mk, pair):

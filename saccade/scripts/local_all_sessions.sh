@@ -6,8 +6,8 @@ export PYTHONPATH="$(pwd):${PYTHONPATH:-}"
 
 # ---- knobs you’ll tweak locally ----
 ROOT=RCT_02
-ORIENT=vertical
-TAG=sacc_v1
+ORIENT=horizontal #vertical
+TAG=sacc_h1
 T0=-0.40
 T1=0.20
 BIN_MS=5

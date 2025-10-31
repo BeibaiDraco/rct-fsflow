@@ -8,21 +8,21 @@
     -0.1,
     -0.03
   ],
-  "orientation": "vertical",
+  "orientation": "horizontal",
   "areas": {
     "MFEF": {
-      "sC_auc_mean": 0.7526050420168069,
-      "sSraw_auc_mean": 0.7547346514047868,
-      "cos_sSraw_sC": -0.02767065260429093,
-      "auc_C_from_sSraw": 0.48447058823529415,
-      "auc_C_from_sSinv": 0.4956638655462185
+      "sC_auc_mean": 0.7413668841255049,
+      "sSraw_auc_mean": 0.9717003567181927,
+      "cos_sSraw_sC": 0.135461535368515,
+      "auc_C_from_sSraw": 0.522510181414291,
+      "auc_C_from_sSinv": 0.47204738985560907
     },
     "MLIP": {
-      "sC_auc_mean": 0.6678991596638656,
-      "sSraw_auc_mean": 0.8784989594172737,
-      "cos_sSraw_sC": 0.017065983675517274,
-      "auc_C_from_sSraw": 0.5016806722689076,
-      "auc_C_from_sSinv": 0.49757983193277316
+      "sC_auc_mean": 0.6531780055917987,
+      "sSraw_auc_mean": 0.8561236623067776,
+      "cos_sSraw_sC": -0.11504618298160305,
+      "auc_C_from_sSraw": 0.4809700111069974,
+      "auc_C_from_sSinv": 0.5077748981858571
     }
   }
 }

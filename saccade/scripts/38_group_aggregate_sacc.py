@@ -1,4 +1,12 @@
 #!/usr/bin/env python
+"""export PYTHONPATH="$PWD:$PYTHONPATH"
+python scripts/38_group_aggregate_sacc.py \
+  --tag sacc_v1 \
+  --orientation vertical \
+  --by_monkey separate \
+  --out_root results_sacc \
+  --root_sessions RCT_02
+"""
 import argparse, os, json, numpy as np, matplotlib.pyplot as plt
 import math
 from glob import glob

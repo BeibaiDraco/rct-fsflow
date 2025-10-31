@@ -1,0 +1,25 @@
+{
+  "sid": "20200327",
+  "orientation": "horizontal",
+  "areas": [
+    "MFEF",
+    "MLIP"
+  ],
+  "pairs": [
+    [
+      "MFEF",
+      "MLIP"
+    ],
+    [
+      "MLIP",
+      "MFEF"
+    ]
+  ],
+  "lags_ms": 30.0,
+  "perms": 200,
+  "alpha": 1.0,
+  "induced": true,
+  "condC": true,
+  "pt_cov": false,
+  "tag": "sacc_h1"
+}
