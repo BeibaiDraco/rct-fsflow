@@ -1,0 +1,13 @@
+conda activate saccflow 
+# === paper_project canonical paths ===
+export PAPER_HOME="/Users/dracoxu/Documents/Research/rct-fsflow/paper_project"
+export PAPER_DATA="/Users/dracoxu/Documents/Research/rct-fsflow/saccade/RCT_02"
+export PYTHONPATH="$PAPER_HOME:$PYTHONPATH"
+
+export PAPER_HOME="/Users/dracoxu/Documents/Research/rct-fsflow/paper_project"   # on HPC: /project/.../rct-fsflow/paper_project
+export PAPER_DATA="/Users/dracoxu/Documents/Research/rct-fsflow/saccade/RCT_02"   # on HPC: /project/.../saccade/RCT_02
+export PYTHONPATH="$PAPER_HOME:$PYTHONPATH"
+
+
+alias ppds='python "$PAPER_HOME/cli/check_dataset.py" --root "$PAPER_DATA" --out "$PAPER_HOME/out/dataset_scan.json"'
+source ~/.zshrc   # or: source ~/.bashrc
