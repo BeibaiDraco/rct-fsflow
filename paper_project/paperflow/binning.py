@@ -16,9 +16,11 @@ def _time_edges(t0: float, t1: float, bin_s: float) -> np.ndarray:
 def _bin_one_unit(spike_sec: np.ndarray, event_sec: np.ndarray, edges: np.ndarray, t0: float, t1: float) -> np.ndarray:
     nT = event_sec.shape[0]; nB = edges.shape[0] - 1
     out = np.zeros((nT, nB), dtype=np.float32)
+    if spike_sec.size == 0:  # no spikes
+        return out
     for i, ev in enumerate(event_sec):
-        if spike_sec.size == 0: continue
-        mask = (spike_sec >= ev + t0) & (spike_sec < ev + t1)
+        w0, w1 = ev + t0, ev + t1
+        mask = (spike_sec >= w0) & (spike_sec < w1)
         if not np.any(mask): continue
         rel = spike_sec[mask] - ev
         out[i, :] = np.histogram(rel, bins=edges)[0]
@@ -59,31 +61,34 @@ def _read_trials(root: str, sid: str) -> pd.DataFrame:
 def build_cache_for_session(
     root: str, sid: str, align: str,
     t0: float, t1: float, bin_s: float,
-    out_root: str, correct_only: bool = True
+    out_root: str,
+    correct_only: bool = True,
+    stim_targets_vert_only: bool = True,
 ) -> List[str]:
     """
     Build caches for all areas in <sid>, aligned to 'stim' or 'sacc'.
+    For align='stim', optionally keep only vertical-layout trials (targets_vert==1) to match legacy fairness.
     Writes: <out_root>/<align>/<sid>/caches/area_<AREA>.npz
     Returns list of saved paths.
     """
     # trials & labels
     df = _read_trials(root, sid)
-    # keep RCT trials with timestamps we need
+
     if align == "sacc":
         df = df[~df["Align_to_sacc_on"].isna()]
         event = df["Align_to_sacc_on"].to_numpy(float)
     elif align == "stim":
         df = df[~df["Align_to_cat_stim_on"].isna()]
+        if stim_targets_vert_only and "targets_vert" in df.columns:
+            df = df[(df["targets_vert"].fillna(0) == 1)]
         event = df["Align_to_cat_stim_on"].to_numpy(float)
     else:
         raise ValueError("align must be 'stim' or 'sacc'")
 
     if correct_only and "trial_error" in df.columns:
-        df = df[df["trial_error"].fillna(0) == 0]
-        if align == "sacc":
-            event = df["Align_to_sacc_on"].to_numpy(float)
-        else:
-            event = df["Align_to_cat_stim_on"].to_numpy(float)
+        ok = (df["trial_error"].fillna(0) == 0)
+        df = df[ok]
+        event = event[ok.values]
 
     nT = len(df)
     if nT == 0: return []
@@ -91,8 +96,9 @@ def build_cache_for_session(
     # labels we store (present-or-NaN ok)
     def col(name, default=np.nan):
         return df[name].to_numpy(float) if name in df.columns else np.full(nT, default, float)
+
     C  = col("category")
-    R  = col("direction")  # we can map to {1,2,3} later if needed
+    R  = col("direction")  # kept raw; mapping to {1,2,3} for R happens in axes stage if needed
     S  = col("saccade_location_sign")
     OR = np.where(df.get("targets_vert", pd.Series([np.nan]*nT)).to_numpy(float) == 1, "vertical", "horizontal").astype(object)
     PT = col("PT_ms")
@@ -123,7 +129,9 @@ def build_cache_for_session(
         meta = {
             "sid": sid, "area": area, "align_event": align,
             "window": [float(t0), float(t1)], "bin_s": float(bin_s),
-            "n_trials": int(nT), "n_units": int(X.shape[-1])
+            "n_trials": int(nT), "n_units": int(X.shape[-1]),
+            "stim_targets_vert_only": bool(stim_targets_vert_only) if align=="stim" else False,
+            "correct_only": bool(correct_only),
         }
 
         out_dir = os.path.join(out_root, align, sid, "caches")
