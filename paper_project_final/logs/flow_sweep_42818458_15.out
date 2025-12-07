@@ -1,0 +1,319 @@
+[info] task=15 SID=20230707
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/axes/axes_sweep-stim-vertical/axes_SFEF.npz
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/axes/axes_sweep-stim-vertical/axes_SLIP.npz
+[ok] session summary → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/axes/axes_sweep-stim-vertical/axes_summary.json
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/qc/axes_sweep-stim-vertical/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/qc/axes_sweep-stim-vertical/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SFEF->SLIP] [crsweep-stim-vertical-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-vertical-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-trial/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-vertical-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-circ/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-vertical-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-circ/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-circ/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-vertical-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-trial/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-vertical-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-trial/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-trial/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-vertical-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-circ/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-vertical-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-circ/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-circ/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-vertical-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-trial/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-vertical-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-trial/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-trial/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-vertical-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-circ/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-vertical-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-circ/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-none-circ/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-vertical-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-trial/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-vertical-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-trial/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-trial/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-vertical-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-circ/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-vertical-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-circ/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-vertical-zreg-circ/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/axes/axes_sweep-stim-horizontal/axes_SFEF.npz
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/axes/axes_sweep-stim-horizontal/axes_SLIP.npz
+[ok] session summary → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/axes/axes_sweep-stim-horizontal/axes_summary.json
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/qc/axes_sweep-stim-horizontal/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/qc/axes_sweep-stim-horizontal/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SFEF->SLIP] [crsweep-stim-horizontal-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-horizontal-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-trial/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-horizontal-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-circ/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-horizontal-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-circ/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-circ/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-horizontal-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-trial/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-horizontal-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-trial/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-trial/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-horizontal-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-circ/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-horizontal-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-circ/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-circ/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-horizontal-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-trial/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-horizontal-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-trial/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-trial/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-horizontal-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-circ/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-horizontal-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-circ/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-none-circ/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-horizontal-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-trial/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-horizontal-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-trial/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-trial/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-horizontal-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-circ/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-horizontal-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-circ/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-horizontal-zreg-circ/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/axes/axes_sweep-stim-pooled/axes_SFEF.npz
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/axes/axes_sweep-stim-pooled/axes_SLIP.npz
+[ok] session summary → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/axes/axes_sweep-stim-pooled/axes_summary.json
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/qc/axes_sweep-stim-pooled/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/qc/axes_sweep-stim-pooled/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SFEF->SLIP] [crsweep-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-trial/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-circ/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-circ/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-circ/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-trial/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-trial/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-trial/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-circ/C/flow_C_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-circ/C/flow_C_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-circ/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-trial/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-trial/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-trial/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-circ/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-circ/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-none-circ/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-trial/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-trial/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-trial/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF->SLIP] [crsweep-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-circ/R/flow_R_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-circ/R/flow_R_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230707/flow/crsweep-stim-pooled-zreg-circ/R/figs/SFEF_vs_SLIP_flow_R.pdf
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_sweep-sacc-vertical/axes_SFEF.npz
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_sweep-sacc-vertical/axes_SLIP.npz
+[ok] session summary → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_sweep-sacc-vertical/axes_summary.json
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/qc/axes_sweep-sacc-vertical/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/qc/axes_sweep-sacc-vertical/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SFEF->SLIP] [crsweep-sacc-vertical-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-none-trial/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-vertical-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-none-trial/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-none-trial/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20230707][SFEF->SLIP] [crsweep-sacc-vertical-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-none-circ/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-vertical-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-none-circ/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-none-circ/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20230707][SFEF->SLIP] [crsweep-sacc-vertical-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-zreg-trial/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-vertical-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-zreg-trial/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-zreg-trial/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20230707][SFEF->SLIP] [crsweep-sacc-vertical-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-zreg-circ/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-vertical-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-zreg-circ/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-vertical-zreg-circ/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_sweep-sacc-horizontal/axes_SFEF.npz
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_sweep-sacc-horizontal/axes_SLIP.npz
+[ok] session summary → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_sweep-sacc-horizontal/axes_summary.json
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/qc/axes_sweep-sacc-horizontal/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/qc/axes_sweep-sacc-horizontal/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SFEF->SLIP] [crsweep-sacc-horizontal-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-none-trial/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-horizontal-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-none-trial/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-none-trial/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20230707][SFEF->SLIP] [crsweep-sacc-horizontal-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-none-circ/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-horizontal-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-none-circ/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-none-circ/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20230707][SFEF->SLIP] [crsweep-sacc-horizontal-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-zreg-trial/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-horizontal-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-zreg-trial/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-zreg-trial/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20230707][SFEF->SLIP] [crsweep-sacc-horizontal-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-zreg-circ/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-horizontal-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-zreg-circ/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-horizontal-zreg-circ/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_sweep-sacc-pooled/axes_SFEF.npz
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_sweep-sacc-pooled/axes_SLIP.npz
+[ok] session summary → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_sweep-sacc-pooled/axes_summary.json
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/qc/axes_sweep-sacc-pooled/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/qc/axes_sweep-sacc-pooled/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20230707][SFEF->SLIP] [crsweep-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-none-trial/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-none-trial/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-none-trial/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20230707][SFEF->SLIP] [crsweep-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-none-circ/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-none-circ/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-none-circ/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20230707][SFEF->SLIP] [crsweep-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-zreg-trial/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-zreg-trial/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-zreg-trial/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20230707][SFEF->SLIP] [crsweep-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-zreg-circ/S/flow_S_SFEFtoSLIP.npz
+[20230707][SLIP->SFEF] [crsweep-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-zreg-circ/S/flow_S_SLIPtoSFEF.npz
+[20230707] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/flow/crsweep-sacc-pooled-zreg-circ/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[info] SID=20230707
+[info] orientations      = ['vertical', 'horizontal', 'pooled']
+[info] standardize_modes = ['none', 'zscore_regressors']
+[info] null_methods      = ['trial_shuffle', 'circular_shift']
+
+[align=stim] SID=20230707
+
+[block] ori=vertical
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --orientation vertical --tag axes_sweep-stim-vertical --pt_min_ms_stim 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --orientation vertical --tag axes_sweep-stim-vertical --pt_min_ms_stim 200.0
+
+[combo] sid=20230707, align=stim, ori=vertical, feat=C, std=none, null=trial_shuffle → flow_tag=crsweep-stim-vertical-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation vertical --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-vertical --flow_tag_base crsweep-stim-vertical --axes_tag axes_sweep-stim-vertical --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation vertical --tag crsweep-stim-vertical-none-trial
+
+[combo] sid=20230707, align=stim, ori=vertical, feat=C, std=none, null=circular_shift → flow_tag=crsweep-stim-vertical-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation vertical --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-vertical --flow_tag_base crsweep-stim-vertical --axes_tag axes_sweep-stim-vertical --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation vertical --tag crsweep-stim-vertical-none-circ
+
+[combo] sid=20230707, align=stim, ori=vertical, feat=C, std=zscore_regressors, null=trial_shuffle → flow_tag=crsweep-stim-vertical-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation vertical --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-vertical --flow_tag_base crsweep-stim-vertical --axes_tag axes_sweep-stim-vertical --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation vertical --tag crsweep-stim-vertical-zreg-trial
+
+[combo] sid=20230707, align=stim, ori=vertical, feat=C, std=zscore_regressors, null=circular_shift → flow_tag=crsweep-stim-vertical-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation vertical --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-vertical --flow_tag_base crsweep-stim-vertical --axes_tag axes_sweep-stim-vertical --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation vertical --tag crsweep-stim-vertical-zreg-circ
+
+[combo] sid=20230707, align=stim, ori=vertical, feat=R, std=none, null=trial_shuffle → flow_tag=crsweep-stim-vertical-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation vertical --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-vertical --flow_tag_base crsweep-stim-vertical --axes_tag axes_sweep-stim-vertical --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation vertical --tag crsweep-stim-vertical-none-trial
+
+[combo] sid=20230707, align=stim, ori=vertical, feat=R, std=none, null=circular_shift → flow_tag=crsweep-stim-vertical-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation vertical --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-vertical --flow_tag_base crsweep-stim-vertical --axes_tag axes_sweep-stim-vertical --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation vertical --tag crsweep-stim-vertical-none-circ
+
+[combo] sid=20230707, align=stim, ori=vertical, feat=R, std=zscore_regressors, null=trial_shuffle → flow_tag=crsweep-stim-vertical-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation vertical --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-vertical --flow_tag_base crsweep-stim-vertical --axes_tag axes_sweep-stim-vertical --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation vertical --tag crsweep-stim-vertical-zreg-trial
+
+[combo] sid=20230707, align=stim, ori=vertical, feat=R, std=zscore_regressors, null=circular_shift → flow_tag=crsweep-stim-vertical-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation vertical --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-vertical --flow_tag_base crsweep-stim-vertical --axes_tag axes_sweep-stim-vertical --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation vertical --tag crsweep-stim-vertical-zreg-circ
+
+[block] ori=horizontal
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --orientation horizontal --tag axes_sweep-stim-horizontal --pt_min_ms_stim 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --orientation horizontal --tag axes_sweep-stim-horizontal --pt_min_ms_stim 200.0
+
+[combo] sid=20230707, align=stim, ori=horizontal, feat=C, std=none, null=trial_shuffle → flow_tag=crsweep-stim-horizontal-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation horizontal --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-horizontal --flow_tag_base crsweep-stim-horizontal --axes_tag axes_sweep-stim-horizontal --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation horizontal --tag crsweep-stim-horizontal-none-trial
+
+[combo] sid=20230707, align=stim, ori=horizontal, feat=C, std=none, null=circular_shift → flow_tag=crsweep-stim-horizontal-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation horizontal --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-horizontal --flow_tag_base crsweep-stim-horizontal --axes_tag axes_sweep-stim-horizontal --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation horizontal --tag crsweep-stim-horizontal-none-circ
+
+[combo] sid=20230707, align=stim, ori=horizontal, feat=C, std=zscore_regressors, null=trial_shuffle → flow_tag=crsweep-stim-horizontal-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation horizontal --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-horizontal --flow_tag_base crsweep-stim-horizontal --axes_tag axes_sweep-stim-horizontal --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation horizontal --tag crsweep-stim-horizontal-zreg-trial
+
+[combo] sid=20230707, align=stim, ori=horizontal, feat=C, std=zscore_regressors, null=circular_shift → flow_tag=crsweep-stim-horizontal-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation horizontal --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-horizontal --flow_tag_base crsweep-stim-horizontal --axes_tag axes_sweep-stim-horizontal --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation horizontal --tag crsweep-stim-horizontal-zreg-circ
+
+[combo] sid=20230707, align=stim, ori=horizontal, feat=R, std=none, null=trial_shuffle → flow_tag=crsweep-stim-horizontal-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation horizontal --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-horizontal --flow_tag_base crsweep-stim-horizontal --axes_tag axes_sweep-stim-horizontal --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation horizontal --tag crsweep-stim-horizontal-none-trial
+
+[combo] sid=20230707, align=stim, ori=horizontal, feat=R, std=none, null=circular_shift → flow_tag=crsweep-stim-horizontal-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation horizontal --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-horizontal --flow_tag_base crsweep-stim-horizontal --axes_tag axes_sweep-stim-horizontal --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation horizontal --tag crsweep-stim-horizontal-none-circ
+
+[combo] sid=20230707, align=stim, ori=horizontal, feat=R, std=zscore_regressors, null=trial_shuffle → flow_tag=crsweep-stim-horizontal-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation horizontal --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-horizontal --flow_tag_base crsweep-stim-horizontal --axes_tag axes_sweep-stim-horizontal --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation horizontal --tag crsweep-stim-horizontal-zreg-trial
+
+[combo] sid=20230707, align=stim, ori=horizontal, feat=R, std=zscore_regressors, null=circular_shift → flow_tag=crsweep-stim-horizontal-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation horizontal --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-horizontal --flow_tag_base crsweep-stim-horizontal --axes_tag axes_sweep-stim-horizontal --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation horizontal --tag crsweep-stim-horizontal-zreg-circ
+
+[block] ori=pooled
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --orientation pooled --tag axes_sweep-stim-pooled --pt_min_ms_stim 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --orientation pooled --tag axes_sweep-stim-pooled --pt_min_ms_stim 200.0
+
+[combo] sid=20230707, align=stim, ori=pooled, feat=C, std=none, null=trial_shuffle → flow_tag=crsweep-stim-pooled-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-pooled --flow_tag_base crsweep-stim-pooled --axes_tag axes_sweep-stim-pooled --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation pooled --tag crsweep-stim-pooled-none-trial
+
+[combo] sid=20230707, align=stim, ori=pooled, feat=C, std=none, null=circular_shift → flow_tag=crsweep-stim-pooled-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-pooled --flow_tag_base crsweep-stim-pooled --axes_tag axes_sweep-stim-pooled --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation pooled --tag crsweep-stim-pooled-none-circ
+
+[combo] sid=20230707, align=stim, ori=pooled, feat=C, std=zscore_regressors, null=trial_shuffle → flow_tag=crsweep-stim-pooled-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-pooled --flow_tag_base crsweep-stim-pooled --axes_tag axes_sweep-stim-pooled --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation pooled --tag crsweep-stim-pooled-zreg-trial
+
+[combo] sid=20230707, align=stim, ori=pooled, feat=C, std=zscore_regressors, null=circular_shift → flow_tag=crsweep-stim-pooled-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-pooled --flow_tag_base crsweep-stim-pooled --axes_tag axes_sweep-stim-pooled --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature C --orientation pooled --tag crsweep-stim-pooled-zreg-circ
+
+[combo] sid=20230707, align=stim, ori=pooled, feat=R, std=none, null=trial_shuffle → flow_tag=crsweep-stim-pooled-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-pooled --flow_tag_base crsweep-stim-pooled --axes_tag axes_sweep-stim-pooled --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation pooled --tag crsweep-stim-pooled-none-trial
+
+[combo] sid=20230707, align=stim, ori=pooled, feat=R, std=none, null=circular_shift → flow_tag=crsweep-stim-pooled-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-pooled --flow_tag_base crsweep-stim-pooled --axes_tag axes_sweep-stim-pooled --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation pooled --tag crsweep-stim-pooled-none-circ
+
+[combo] sid=20230707, align=stim, ori=pooled, feat=R, std=zscore_regressors, null=trial_shuffle → flow_tag=crsweep-stim-pooled-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-pooled --flow_tag_base crsweep-stim-pooled --axes_tag axes_sweep-stim-pooled --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation pooled --tag crsweep-stim-pooled-zreg-trial
+
+[combo] sid=20230707, align=stim, ori=pooled, feat=R, std=zscore_regressors, null=circular_shift → flow_tag=crsweep-stim-pooled-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-stim-pooled --flow_tag_base crsweep-stim-pooled --axes_tag axes_sweep-stim-pooled --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230707 --feature R --orientation pooled --tag crsweep-stim-pooled-zreg-circ
+
+[align=sacc] SID=20230707
+
+[block] ori=vertical
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --orientation vertical --tag axes_sweep-sacc-vertical --pt_min_ms_sacc 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --orientation vertical --tag axes_sweep-sacc-vertical --pt_min_ms_sacc 200.0
+
+[combo] sid=20230707, align=sacc, ori=vertical, feat=S, std=none, null=trial_shuffle → flow_tag=crsweep-sacc-vertical-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation vertical --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-vertical --flow_tag_base crsweep-sacc-vertical --axes_tag axes_sweep-sacc-vertical --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation vertical --tag crsweep-sacc-vertical-none-trial
+
+[combo] sid=20230707, align=sacc, ori=vertical, feat=S, std=none, null=circular_shift → flow_tag=crsweep-sacc-vertical-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation vertical --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-vertical --flow_tag_base crsweep-sacc-vertical --axes_tag axes_sweep-sacc-vertical --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation vertical --tag crsweep-sacc-vertical-none-circ
+
+[combo] sid=20230707, align=sacc, ori=vertical, feat=S, std=zscore_regressors, null=trial_shuffle → flow_tag=crsweep-sacc-vertical-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation vertical --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-vertical --flow_tag_base crsweep-sacc-vertical --axes_tag axes_sweep-sacc-vertical --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation vertical --tag crsweep-sacc-vertical-zreg-trial
+
+[combo] sid=20230707, align=sacc, ori=vertical, feat=S, std=zscore_regressors, null=circular_shift → flow_tag=crsweep-sacc-vertical-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation vertical --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-vertical --flow_tag_base crsweep-sacc-vertical --axes_tag axes_sweep-sacc-vertical --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation vertical --tag crsweep-sacc-vertical-zreg-circ
+
+[block] ori=horizontal
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --orientation horizontal --tag axes_sweep-sacc-horizontal --pt_min_ms_sacc 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --orientation horizontal --tag axes_sweep-sacc-horizontal --pt_min_ms_sacc 200.0
+
+[combo] sid=20230707, align=sacc, ori=horizontal, feat=S, std=none, null=trial_shuffle → flow_tag=crsweep-sacc-horizontal-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation horizontal --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-horizontal --flow_tag_base crsweep-sacc-horizontal --axes_tag axes_sweep-sacc-horizontal --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation horizontal --tag crsweep-sacc-horizontal-none-trial
+
+[combo] sid=20230707, align=sacc, ori=horizontal, feat=S, std=none, null=circular_shift → flow_tag=crsweep-sacc-horizontal-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation horizontal --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-horizontal --flow_tag_base crsweep-sacc-horizontal --axes_tag axes_sweep-sacc-horizontal --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation horizontal --tag crsweep-sacc-horizontal-none-circ
+
+[combo] sid=20230707, align=sacc, ori=horizontal, feat=S, std=zscore_regressors, null=trial_shuffle → flow_tag=crsweep-sacc-horizontal-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation horizontal --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-horizontal --flow_tag_base crsweep-sacc-horizontal --axes_tag axes_sweep-sacc-horizontal --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation horizontal --tag crsweep-sacc-horizontal-zreg-trial
+
+[combo] sid=20230707, align=sacc, ori=horizontal, feat=S, std=zscore_regressors, null=circular_shift → flow_tag=crsweep-sacc-horizontal-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation horizontal --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-horizontal --flow_tag_base crsweep-sacc-horizontal --axes_tag axes_sweep-sacc-horizontal --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation horizontal --tag crsweep-sacc-horizontal-zreg-circ
+
+[block] ori=pooled
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --orientation pooled --tag axes_sweep-sacc-pooled --pt_min_ms_sacc 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --orientation pooled --tag axes_sweep-sacc-pooled --pt_min_ms_sacc 200.0
+
+[combo] sid=20230707, align=sacc, ori=pooled, feat=S, std=none, null=trial_shuffle → flow_tag=crsweep-sacc-pooled-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-pooled --flow_tag_base crsweep-sacc-pooled --axes_tag axes_sweep-sacc-pooled --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation pooled --tag crsweep-sacc-pooled-none-trial
+
+[combo] sid=20230707, align=sacc, ori=pooled, feat=S, std=none, null=circular_shift → flow_tag=crsweep-sacc-pooled-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-pooled --flow_tag_base crsweep-sacc-pooled --axes_tag axes_sweep-sacc-pooled --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation pooled --tag crsweep-sacc-pooled-none-circ
+
+[combo] sid=20230707, align=sacc, ori=pooled, feat=S, std=zscore_regressors, null=trial_shuffle → flow_tag=crsweep-sacc-pooled-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-pooled --flow_tag_base crsweep-sacc-pooled --axes_tag axes_sweep-sacc-pooled --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation pooled --tag crsweep-sacc-pooled-zreg-trial
+
+[combo] sid=20230707, align=sacc, ori=pooled, feat=S, std=zscore_regressors, null=circular_shift → flow_tag=crsweep-sacc-pooled-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crsweep-sacc-pooled --flow_tag_base crsweep-sacc-pooled --axes_tag axes_sweep-sacc-pooled --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --feature S --orientation pooled --tag crsweep-sacc-pooled-zreg-circ
+
+[done] SID=20230707 sweep complete.

@@ -32,8 +32,8 @@ export NUMEXPR_NUM_THREADS=1
 # paper_project_final canonical paths
 export PAPER_HOME="$PROJECT"
 export PAPER_DATA="/project/bdoiron/dracoxu/rct-fsflow/saccade/RCT_02"
-export PYTHONPATH="$PAPER_HOME:$PYTHONPATH"
-
+# Safely prepend PAPER_HOME even if PYTHONPATH is not set
+export PYTHONPATH="$PAPER_HOME${PYTHONPATH:+:$PYTHONPATH}"
 cd "$PROJECT"
 mkdir -p logs
 

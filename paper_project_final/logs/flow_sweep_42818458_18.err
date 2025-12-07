@@ -1,0 +1,23 @@
+Traceback (most recent call last):
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/train_axes.py", line 145, in <module>
+    main()
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/train_axes.py", line 77, in main
+    pack = train_axes_for_area(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/paperflow/axes.py", line 317, in train_axes_for_area
+    sR_full[maskR, :] = sR_small
+    ~~~~~~~^^^^^^^^^^
+ValueError: shape mismatch: value array of shape (72,3) could not be broadcast to indexing result of shape (72,4)
+[ERROR] command failed (exit 1): /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231103 --orientation horizontal --tag axes_sweep-stim-horizontal --pt_min_ms_stim 200.0
+Traceback (most recent call last):
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/run_one_session_sweep.py", line 233, in <module>
+    main()
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/run_one_session_sweep.py", line 154, in main
+    rc = run(train_cmd, dry=args.dry_run, continue_on_error=args.continue_on_error)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/run_one_session_sweep.py", line 40, in run
+    res = subprocess.run(cmd, check=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/software/python-3.11.9-el8-x86_64/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python', 'cli/train_axes.py', '--out_root', '/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out', '--align', 'stim', '--sid', '20231103', '--orientation', 'horizontal', '--tag', 'axes_sweep-stim-horizontal', '--pt_min_ms_stim', '200.0']' returned non-zero exit status 1.
