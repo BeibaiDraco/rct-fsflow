@@ -1,0 +1,25 @@
+{
+  "sid": "20200929",
+  "align": "stim",
+  "features": [
+    "C",
+    "R"
+  ],
+  "winC": [
+    0.1,
+    0.3
+  ],
+  "winR": [
+    0.05,
+    0.2
+  ],
+  "winS": null,
+  "pt_min_ms": 200.0,
+  "orientation": "vertical",
+  "areas": [
+    "MFEF",
+    "MLIP",
+    "MSC"
+  ],
+  "tag": "axes_vertTrain-stim-vertical"
+}

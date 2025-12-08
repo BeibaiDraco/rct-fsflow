@@ -1,0 +1,186 @@
+[info] task=11 SID=20201216
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[20201216][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/axes/axes_vertTrain-stim-vertical/axes_MFEF.npz
+[20201216][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/axes/axes_vertTrain-stim-vertical/axes_MLIP.npz
+[20201216][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/axes/axes_vertTrain-stim-vertical/axes_MSC.npz
+[ok] session summary → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/axes/axes_vertTrain-stim-vertical/axes_summary.json
+[20201216][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/qc/axes_vertTrain-stim-vertical/qc_axes_MFEF.pdf (+ .png, .json)   lat(ms): C=185.0000023841858, Sraw=None, Sinv=None
+[20201216][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/qc/axes_vertTrain-stim-vertical/qc_axes_MLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20201216][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/qc/axes_vertTrain-stim-vertical/qc_axes_MSC.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20201216][MFEF->MLIP] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/C/flow_C_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/C/flow_C_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/C/flow_C_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/C/flow_C_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/C/flow_C_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/C/flow_C_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/C/figs/MFEF_vs_MLIP_flow_C.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/C/figs/MFEF_vs_MSC_flow_C.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/C/figs/MLIP_vs_MSC_flow_C.pdf
+[20201216][MFEF->MLIP] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/C/flow_C_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/C/flow_C_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/C/flow_C_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/C/flow_C_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/C/flow_C_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/C/flow_C_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/C/figs/MFEF_vs_MLIP_flow_C.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/C/figs/MFEF_vs_MSC_flow_C.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/C/figs/MLIP_vs_MSC_flow_C.pdf
+[20201216][MFEF->MLIP] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/C/flow_C_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/C/flow_C_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/C/flow_C_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/C/flow_C_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/C/flow_C_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/C/flow_C_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/C/figs/MFEF_vs_MLIP_flow_C.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/C/figs/MFEF_vs_MSC_flow_C.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/C/figs/MLIP_vs_MSC_flow_C.pdf
+[20201216][MFEF->MLIP] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/C/flow_C_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/C/flow_C_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/C/flow_C_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/C/flow_C_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/C/flow_C_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/C/flow_C_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/C/figs/MFEF_vs_MLIP_flow_C.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/C/figs/MFEF_vs_MSC_flow_C.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/C/figs/MLIP_vs_MSC_flow_C.pdf
+[20201216][MFEF->MLIP] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/R/flow_R_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/R/flow_R_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/R/flow_R_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/R/flow_R_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/R/flow_R_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/R/flow_R_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/R/figs/MFEF_vs_MLIP_flow_R.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/R/figs/MFEF_vs_MSC_flow_R.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-trial/R/figs/MLIP_vs_MSC_flow_R.pdf
+[20201216][MFEF->MLIP] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/R/flow_R_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/R/flow_R_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/R/flow_R_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/R/flow_R_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/R/flow_R_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/R/flow_R_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/R/figs/MFEF_vs_MLIP_flow_R.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/R/figs/MFEF_vs_MSC_flow_R.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-none-circ/R/figs/MLIP_vs_MSC_flow_R.pdf
+[20201216][MFEF->MLIP] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/R/flow_R_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/R/flow_R_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/R/flow_R_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/R/flow_R_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/R/flow_R_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/R/flow_R_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/R/figs/MFEF_vs_MLIP_flow_R.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/R/figs/MFEF_vs_MSC_flow_R.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-trial/R/figs/MLIP_vs_MSC_flow_R.pdf
+[20201216][MFEF->MLIP] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/R/flow_R_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/R/flow_R_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/R/flow_R_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/R/flow_R_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/R/flow_R_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/R/flow_R_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/R/figs/MFEF_vs_MLIP_flow_R.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/R/figs/MFEF_vs_MSC_flow_R.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201216/flow/crvertTrainPooled-stim-pooled-zreg-circ/R/figs/MLIP_vs_MSC_flow_R.pdf
+[20201216][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/axes/axes_vertTrain-sacc-vertical/axes_MFEF.npz
+[20201216][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/axes/axes_vertTrain-sacc-vertical/axes_MLIP.npz
+[20201216][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/axes/axes_vertTrain-sacc-vertical/axes_MSC.npz
+[ok] session summary → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/axes/axes_vertTrain-sacc-vertical/axes_summary.json
+[20201216][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/qc/axes_vertTrain-sacc-vertical/qc_axes_MFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20201216][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/qc/axes_vertTrain-sacc-vertical/qc_axes_MLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20201216][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/qc/axes_vertTrain-sacc-vertical/qc_axes_MSC.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20201216][MFEF->MLIP] [crvertTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-trial/S/flow_S_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-trial/S/flow_S_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-trial/S/flow_S_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-trial/S/flow_S_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-trial/S/flow_S_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-trial/S/flow_S_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-trial/S/figs/MFEF_vs_MLIP_flow_S.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-trial/S/figs/MFEF_vs_MSC_flow_S.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-trial/S/figs/MLIP_vs_MSC_flow_S.pdf
+[20201216][MFEF->MLIP] [crvertTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-circ/S/flow_S_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-circ/S/flow_S_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-circ/S/flow_S_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-circ/S/flow_S_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-circ/S/flow_S_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-circ/S/flow_S_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-circ/S/figs/MFEF_vs_MLIP_flow_S.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-circ/S/figs/MFEF_vs_MSC_flow_S.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-none-circ/S/figs/MLIP_vs_MSC_flow_S.pdf
+[20201216][MFEF->MLIP] [crvertTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-trial/S/flow_S_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-trial/S/flow_S_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-trial/S/flow_S_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-trial/S/flow_S_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-trial/S/flow_S_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-trial/S/flow_S_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-trial/S/figs/MFEF_vs_MLIP_flow_S.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-trial/S/figs/MFEF_vs_MSC_flow_S.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-trial/S/figs/MLIP_vs_MSC_flow_S.pdf
+[20201216][MFEF->MLIP] [crvertTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-circ/S/flow_S_MFEFtoMLIP.npz
+[20201216][MFEF->MSC] [crvertTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-circ/S/flow_S_MFEFtoMSC.npz
+[20201216][MLIP->MFEF] [crvertTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-circ/S/flow_S_MLIPtoMFEF.npz
+[20201216][MLIP->MSC] [crvertTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-circ/S/flow_S_MLIPtoMSC.npz
+[20201216][MSC->MFEF] [crvertTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-circ/S/flow_S_MSCtoMFEF.npz
+[20201216][MSC->MLIP] [crvertTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-circ/S/flow_S_MSCtoMLIP.npz
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-circ/S/figs/MFEF_vs_MLIP_flow_S.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-circ/S/figs/MFEF_vs_MSC_flow_S.pdf
+[20201216] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201216/flow/crvertTrainPooled-sacc-pooled-zreg-circ/S/figs/MLIP_vs_MSC_flow_S.pdf
+[info] SID=20201216
+[info] standardize_modes = ['none', 'zscore_regressors']
+[info] null_methods      = ['trial_shuffle', 'circular_shift']
+
+[align=stim] SID=20201216
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --orientation vertical --tag axes_vertTrain-stim-vertical --pt_min_ms_stim 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --orientation vertical --tag axes_vertTrain-stim-vertical --pt_min_ms_stim 200.0
+
+[combo] SID=20201216, align=stim, train_ori=vertical, flow_ori=pooled, feat=C, std=none, null=trial_shuffle → flow_tag=crvertTrainPooled-stim-pooled-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-stim-pooled --flow_tag_base crvertTrainPooled-stim-pooled --axes_tag axes_vertTrain-stim-vertical --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature C --orientation pooled --tag crvertTrainPooled-stim-pooled-none-trial
+
+[combo] SID=20201216, align=stim, train_ori=vertical, flow_ori=pooled, feat=C, std=none, null=circular_shift → flow_tag=crvertTrainPooled-stim-pooled-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-stim-pooled --flow_tag_base crvertTrainPooled-stim-pooled --axes_tag axes_vertTrain-stim-vertical --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature C --orientation pooled --tag crvertTrainPooled-stim-pooled-none-circ
+
+[combo] SID=20201216, align=stim, train_ori=vertical, flow_ori=pooled, feat=C, std=zscore_regressors, null=trial_shuffle → flow_tag=crvertTrainPooled-stim-pooled-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-stim-pooled --flow_tag_base crvertTrainPooled-stim-pooled --axes_tag axes_vertTrain-stim-vertical --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature C --orientation pooled --tag crvertTrainPooled-stim-pooled-zreg-trial
+
+[combo] SID=20201216, align=stim, train_ori=vertical, flow_ori=pooled, feat=C, std=zscore_regressors, null=circular_shift → flow_tag=crvertTrainPooled-stim-pooled-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-stim-pooled --flow_tag_base crvertTrainPooled-stim-pooled --axes_tag axes_vertTrain-stim-vertical --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature C --orientation pooled --tag crvertTrainPooled-stim-pooled-zreg-circ
+
+[combo] SID=20201216, align=stim, train_ori=vertical, flow_ori=pooled, feat=R, std=none, null=trial_shuffle → flow_tag=crvertTrainPooled-stim-pooled-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-stim-pooled --flow_tag_base crvertTrainPooled-stim-pooled --axes_tag axes_vertTrain-stim-vertical --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature R --orientation pooled --tag crvertTrainPooled-stim-pooled-none-trial
+
+[combo] SID=20201216, align=stim, train_ori=vertical, flow_ori=pooled, feat=R, std=none, null=circular_shift → flow_tag=crvertTrainPooled-stim-pooled-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-stim-pooled --flow_tag_base crvertTrainPooled-stim-pooled --axes_tag axes_vertTrain-stim-vertical --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature R --orientation pooled --tag crvertTrainPooled-stim-pooled-none-circ
+
+[combo] SID=20201216, align=stim, train_ori=vertical, flow_ori=pooled, feat=R, std=zscore_regressors, null=trial_shuffle → flow_tag=crvertTrainPooled-stim-pooled-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-stim-pooled --flow_tag_base crvertTrainPooled-stim-pooled --axes_tag axes_vertTrain-stim-vertical --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature R --orientation pooled --tag crvertTrainPooled-stim-pooled-zreg-trial
+
+[combo] SID=20201216, align=stim, train_ori=vertical, flow_ori=pooled, feat=R, std=zscore_regressors, null=circular_shift → flow_tag=crvertTrainPooled-stim-pooled-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-stim-pooled --flow_tag_base crvertTrainPooled-stim-pooled --axes_tag axes_vertTrain-stim-vertical --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201216 --feature R --orientation pooled --tag crvertTrainPooled-stim-pooled-zreg-circ
+
+[align=sacc] SID=20201216
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201216 --orientation vertical --tag axes_vertTrain-sacc-vertical --pt_min_ms_sacc 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201216 --orientation vertical --tag axes_vertTrain-sacc-vertical --pt_min_ms_sacc 200.0
+
+[combo] SID=20201216, align=sacc, train_ori=vertical, flow_ori=pooled, feat=S, std=none, null=trial_shuffle → flow_tag=crvertTrainPooled-sacc-pooled-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201216 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-sacc-pooled --flow_tag_base crvertTrainPooled-sacc-pooled --axes_tag axes_vertTrain-sacc-vertical --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201216 --feature S --orientation pooled --tag crvertTrainPooled-sacc-pooled-none-trial
+
+[combo] SID=20201216, align=sacc, train_ori=vertical, flow_ori=pooled, feat=S, std=none, null=circular_shift → flow_tag=crvertTrainPooled-sacc-pooled-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201216 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-sacc-pooled --flow_tag_base crvertTrainPooled-sacc-pooled --axes_tag axes_vertTrain-sacc-vertical --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201216 --feature S --orientation pooled --tag crvertTrainPooled-sacc-pooled-none-circ
+
+[combo] SID=20201216, align=sacc, train_ori=vertical, flow_ori=pooled, feat=S, std=zscore_regressors, null=trial_shuffle → flow_tag=crvertTrainPooled-sacc-pooled-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201216 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-sacc-pooled --flow_tag_base crvertTrainPooled-sacc-pooled --axes_tag axes_vertTrain-sacc-vertical --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201216 --feature S --orientation pooled --tag crvertTrainPooled-sacc-pooled-zreg-trial
+
+[combo] SID=20201216, align=sacc, train_ori=vertical, flow_ori=pooled, feat=S, std=zscore_regressors, null=circular_shift → flow_tag=crvertTrainPooled-sacc-pooled-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201216 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crvertTrainPooled-sacc-pooled --flow_tag_base crvertTrainPooled-sacc-pooled --axes_tag axes_vertTrain-sacc-vertical --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201216 --feature S --orientation pooled --tag crvertTrainPooled-sacc-pooled-zreg-circ
+
+[done] SID=20201216 vertical-axes + pooled-flow sweep complete.
