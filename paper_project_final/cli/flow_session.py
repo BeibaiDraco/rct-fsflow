@@ -34,7 +34,7 @@ def main():
     ap.add_argument("--out_root", default=os.path.join(os.environ.get("PAPER_HOME","."),"out"))
     ap.add_argument("--align", choices=["stim","sacc"], required=True)
     ap.add_argument("--sid", required=True)
-    ap.add_argument("--feature", choices=["C","R","S"], required=True)
+    ap.add_argument("--feature", choices=["C","R","S","O"], required=True)
     ap.add_argument("--orientation", choices=["vertical","horizontal","pooled"], default="vertical")
     ap.add_argument("--lags_ms", type=float, default=50.0)
     ap.add_argument("--verbose", action="store_true", help="Print per-pair shapes and masks")
@@ -90,6 +90,8 @@ def main():
                     v = ax.get("sC", np.array([]))
                 elif feat == "R":
                     v = ax.get("sR", np.array([[]]))
+                elif feat == "O":
+                    v = ax.get("sO", np.array([]))
                 else:  # S
                     v = ax.get("sS_inv", np.array([]))
                     if v.size == 0:

@@ -53,6 +53,7 @@ def _axis_matrix(axes_npz: Dict, feature: str) -> Optional[np.ndarray]:
     C: sC (U,) or (U,1)
     R: sR (U,Kr)
     S: sS_inv (preferred), else sS_raw (U,) or (U,1)
+    O: sO (U,) or (U,1) - context / orientation axis
     """
     if feature == "C":
         a = axes_npz.get("sC", np.array([]))
@@ -62,6 +63,8 @@ def _axis_matrix(axes_npz: Dict, feature: str) -> Optional[np.ndarray]:
         a = axes_npz.get("sS_inv", np.array([]))
         if a.size == 0:
             a = axes_npz.get("sS_raw", np.array([]))
+    elif feature == "O":  # NEW: context / orientation axis
+        a = axes_npz.get("sO", np.array([]))
     else:
         a = np.array([])
     if a.size == 0:
@@ -203,7 +206,7 @@ def _null_descriptions(null_method: str) -> Tuple[str, str]:
 def compute_flow_timecourse_for_pair(
     cacheA: Dict, cacheB: Dict,
     axesA: Dict, axesB: Dict,
-    feature: str,                   # 'C' | 'R' | 'S'
+    feature: str,                   # 'C' | 'R' | 'S' | 'O'
     align: str,                     # 'stim' | 'sacc'
     orientation: Optional[str],
     pt_min_ms: Optional[float],
@@ -274,10 +277,11 @@ def compute_flow_timecourse_for_pair(
     labs_induce = None
     if induced:
         if feature == "C":
-            labs_induce = _label_vec(cacheA, "lab_R", mask)
+            labs_induce = _label_vec(cacheA, "lab_R", mask)  # remove direction means
         elif feature == "R":
-            labs_induce = _label_vec(cacheA, "lab_C", mask)
-        elif feature == "S":
+            labs_induce = _label_vec(cacheA, "lab_C", mask)  # remove category means
+        elif feature in ("S", "O"):
+            # For S and O, subtract per-(C,R) means and keep residual fluctuations
             labs_induce = _encode_joint_labels(cacheA, mask, ("lab_C", "lab_R"))
     YA = _induce_by_strata_multi(YA_full, labs_induce) if induced else YA_full
     YB = _induce_by_strata_multi(YB_full, labs_induce) if induced else YB_full
@@ -530,9 +534,11 @@ def compute_flow_timecourse_for_pair(
             standardize_mode=str(standardize_mode),
             H0_description=H0_desc,
             H1_description=H1_desc,
-            induced_labels=("CR" if (feature=="S" and induced) else
-                            ("R" if (feature=="C" and induced) else
-                             ("C" if (feature=="R" and induced) else "none"))),
+            induced_labels=(
+                "CR" if (feature in ("S","O") and induced) else
+                ("R" if (feature=="C" and induced) else
+                 ("C" if (feature=="R" and induced) else "none"))
+            ),
             N=int(mask.sum()),
             K_A=int(K_A), K_B=int(K_B),
             U_A=int(cacheA["Z"].shape[2]), U_B=int(cacheB["Z"].shape[2]),

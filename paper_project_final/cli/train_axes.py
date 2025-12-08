@@ -55,14 +55,14 @@ def main():
     feats = list(dict.fromkeys([f for f in args.features]))  # unique preserve order
     # choose windows by alignment
     if args.align == "stim":
-        feats = [f for f in feats if f in ("C","R")]
-        winC = _parse_range_arg(args.winC_stim) if "C" in feats else None
+        feats = [f for f in feats if f in ("C","R","O")]  # keep O for stim
+        winC = _parse_range_arg(args.winC_stim) if ("C" in feats or "O" in feats) else None
         winR = _parse_range_arg(args.winR_stim) if "R" in feats else None
         winS = None
         pt_min = (None if args.no_pt_filter else args.pt_min_ms_stim)
     else:
-        feats = [f for f in feats if f in ("C","S")]
-        winC = _parse_range_arg(args.winC_sacc) if "C" in feats else None
+        feats = [f for f in feats if f in ("C","S","O")]  # allow O for sacc if desired
+        winC = _parse_range_arg(args.winC_sacc) if ("C" in feats or "O" in feats) else None
         winR = None
         winS = _parse_range_arg(args.winS_sacc) if "S" in feats else None
         pt_min = (None if args.no_pt_filter else args.pt_min_ms_sacc)
@@ -108,13 +108,13 @@ def main():
     print(f"[ok] session summary → {os.path.join(summary_dir, 'axes_summary.json')}")
 
 def new_argparser():
-    ap = argparse.ArgumentParser(description="Train C/R/S subspaces per area for one session.")
+    ap = argparse.ArgumentParser(description="Train C/R/S/O subspaces per area for one session.")
     ap.add_argument("--out_root", default=os.path.join(os.environ.get("PAPER_HOME","."), "out"), help="Where to write outputs (default: $PAPER_HOME/out)")
     ap.add_argument("--align", choices=["stim","sacc"], required=True)
     ap.add_argument("--sid", required=True)
     apartment = ap.add_argument
     ap.add_argument("--areas", nargs="*", default=None)
-    ap.add_argument("--features", nargs="+", default=["C","R","S"], choices=["C","R","S"])
+    ap.add_argument("--features", nargs="+", default=["C","R","S","O"], choices=["C","R","S","O"])
     ap.add_argument("--orientation", choices=["vertical","horizontal","pooled"], default="vertical")
     ap.add_argument("--tag", default=None,
                     help="Optional tag; if set, write axes to out/<align>/<sid>/axes/<tag>/")

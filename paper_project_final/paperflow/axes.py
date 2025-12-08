@@ -136,11 +136,12 @@ class AxisPack:
     sR: Optional[np.ndarray]         # (U, R_dim) or None
     sS_raw: Optional[np.ndarray]
     sS_inv: Optional[np.ndarray]
-    meta: Dict
+    meta: Dict = None
+    sO: Optional[np.ndarray] = None  # NEW: context / orientation axis
 
 def train_axes_for_area(
     cache: Dict,
-    feature_set: List[str],                # any of ["C","R","S"]
+    feature_set: List[str],                # any of ["C","R","S","O"]
     time_s: np.array,
     winC: Optional[Tuple[float,float]] = None,
     winR: Optional[Tuple[float,float]] = None,
@@ -179,7 +180,7 @@ def train_axes_for_area(
         keep &= np.isfinite(PT) & (PT >= float(pt_min_ms))
 
     # apply trial mask
-    Z = Z[keep]; C = C[keep]; R = R[keep]; S = S[keep]
+    Z = Z[keep]; C = C[keep]; R = R[keep]; S = S[keep]; OR = OR[keep]
     meta = dict(
         n_trials=int(Z.shape[0]), n_bins=int(Z.shape[1]), n_units=int(Z.shape[2]),
         orientation=orientation, pt_min_ms=(float(pt_min_ms) if pt_min_ms is not None else None),
@@ -193,6 +194,7 @@ def train_axes_for_area(
     sR_mat = None
     sS_raw = None
     sS_inv = None
+    sO_vec = None  # NEW: context / orientation axis
 
     # ---------- Train sC ----------
     if "C" in feature_set and winC is not None:
@@ -368,9 +370,50 @@ def train_axes_for_area(
             meta["sSraw_auc_mean"] = float(aucS); meta["sS_C"] = float(CbestS); meta["sS_n"] = int(Xs.shape[0])
             meta["cos_sSraw_sC"] = (None if cos is None else float(cos))
 
+    # ---------- Train sO (context / orientation axis) ----------
+    if "O" in feature_set and winC is not None:
+        # Use the same window as C by default
+        mO = window_mask(time_s, winC)
+        Xo_full = avg_over_window(Z, mO)  # (N, U)
+
+        # Orientation labels: +1 vertical, -1 horizontal
+        # Note: OR is already filtered by `keep` along with Z, C, R, S
+        OR_str = np.asarray(OR).astype(str)
+        yO = np.full(Z.shape[0], np.nan, dtype=float)
+        yO[OR_str == "vertical"] = +1.0
+        yO[OR_str == "horizontal"] = -1.0
+
+        ok = np.isfinite(yO)
+        Xo = Xo_full[ok]
+        yO2 = yO[ok]
+
+        if Xo.shape[0] >= 20 and np.unique(yO2).size == 2:
+            # Balance across (C,O) to avoid just reusing C
+            Ck = C[ok]
+            w = np.ones_like(yO2, dtype=float)
+            for c_sign in (-1.0, +1.0):
+                for o_sign in (-1.0, +1.0):
+                    m = (Ck == c_sign) & (yO2 == o_sign)
+                    cnt = m.sum()
+                    if cnt > 0:
+                        w[m] = 1.0 / cnt
+
+            clfO, aucO, CbestO = cv_logreg_binary(Xo, yO2, Cworth, sample_weight=w)
+            wO = clfO.coef_.ravel().astype(np.float64)
+
+            # Optionally orthogonalize sO to sC to get "pure context"
+            if sC_vec is not None:
+                wO, cos_sO_sC = orthogonalize(wO, sC_vec)
+                meta["cos_sO_sC"] = float(cos_sO_sC) if cos_sO_sC is not None else None
+
+            sO_vec = unit_vec(wO)
+            meta["sO_auc_mean"] = float(aucO)
+            meta["sO_C"] = float(CbestO)
+            meta["sO_n"] = int(Xo.shape[0])
+
     # finalize meta with simple AUC checks for trained axes
     res = dict(meta)
-    return AxisPack(sC=sC_vec, sR=sR_mat, sS_raw=sS_raw, sS_inv=sS_inv, meta=res)
+    return AxisPack(sC=sC_vec, sR=sR_mat, sS_raw=sS_raw, sS_inv=sS_inv, meta=res, sO=sO_vec)
 
 def save_axes(out_dir: str, area: str, pack: AxisPack) -> str:
     os.makedirs(out_dir, exist_ok=True)
@@ -381,6 +424,7 @@ def save_axes(out_dir: str, area: str, pack: AxisPack) -> str:
         sR=(pack.sR if pack.sR is not None else np.array([[]])),
         sS_raw=(pack.sS_raw if pack.sS_raw is not None else np.array([])),
         sS_inv=(pack.sS_inv if pack.sS_inv is not None else np.array([])),
+        sO=(pack.sO if pack.sO is not None else np.array([])),  # NEW
         meta=json.dumps(pack.meta),
     )
     return path

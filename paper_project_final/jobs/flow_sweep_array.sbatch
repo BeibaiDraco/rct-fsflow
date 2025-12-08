@@ -3,10 +3,10 @@
 #SBATCH --partition=voltron
 #SBATCH --qos=voltron
 #SBATCH --account=pi-bdoiron
-#SBATCH --time=08:00:00
+#SBATCH --time=10:00:00
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
-# Adjust 1-23 to number of sessions; %32 limits concurrency to 32 nodes
+# Adjust 1-23 to number of sessions; %32 limits concurrency
 #SBATCH --array=1-23%32
 #SBATCH -o logs/flow_sweep_%A_%a.out
 #SBATCH -e logs/flow_sweep_%A_%a.err
@@ -32,8 +32,9 @@ export NUMEXPR_NUM_THREADS=1
 # paper_project_final canonical paths
 export PAPER_HOME="$PROJECT"
 export PAPER_DATA="/project/bdoiron/dracoxu/rct-fsflow/saccade/RCT_02"
-# Safely prepend PAPER_HOME even if PYTHONPATH is not set
+# Safely prepend PAPER_HOME even if PYTHONPATH is unset
 export PYTHONPATH="$PAPER_HOME${PYTHONPATH:+:$PYTHONPATH}"
+
 cd "$PROJECT"
 mkdir -p logs
 

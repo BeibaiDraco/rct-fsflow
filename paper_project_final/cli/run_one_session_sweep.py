@@ -174,7 +174,10 @@ def main():
                 return
 
             # Features per align
-            feats = ["C", "R"] if align == "stim" else ["S"]
+            if align == "stim":
+                feats = ["C", "R", "O"]  # add context flow
+            else:
+                feats = ["S"]            # you can add "O" here too later if you want
             lags_ms = args.lags_ms_stim if align == "stim" else args.lags_ms_sacc
             pt_thr = None if args.no_pt_filter else (
                 args.pt_min_ms_stim if align == "stim" else args.pt_min_ms_sacc
