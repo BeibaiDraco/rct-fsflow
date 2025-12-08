@@ -1,0 +1,18 @@
+usage: flow_overlays.py [-h] [--out_root OUT_ROOT] --align {stim,sacc} --sid
+                        SID --feature {C,R,S}
+                        [--orientation {vertical,horizontal,pooled}]
+                        [--tag TAG] [--alpha ALPHA]
+flow_overlays.py: error: argument --feature: invalid choice: 'O' (choose from 'C', 'R', 'S')
+[ERROR] command failed (exit 2): /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201204 --feature O --orientation vertical --tag crsweep-stim-vertical-none-trial
+Traceback (most recent call last):
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/run_one_session_sweep.py", line 236, in <module>
+    main()
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/run_one_session_sweep.py", line 228, in main
+    rc = run(ovl_cmd, dry=args.dry_run, continue_on_error=args.continue_on_error)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/run_one_session_sweep.py", line 40, in run
+    res = subprocess.run(cmd, check=True)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/software/python-3.11.9-el8-x86_64/lib/python3.11/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python', 'cli/flow_overlays.py', '--out_root', '/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out', '--align', 'stim', '--sid', '20201204', '--feature', 'O', '--orientation', 'vertical', '--tag', 'crsweep-stim-vertical-none-trial']' returned non-zero exit status 2.

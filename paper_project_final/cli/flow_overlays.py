@@ -190,7 +190,7 @@ def main():
     ap.add_argument("--out_root", default=os.path.join(os.environ.get("PAPER_HOME","."),"out"))
     ap.add_argument("--align", choices=["stim","sacc"], required=True)
     ap.add_argument("--sid", required=True)
-    ap.add_argument("--feature", choices=["C","R","S"], required=True)
+    ap.add_argument("--feature", choices=["C","R","S","O"], required=True)
     ap.add_argument("--orientation", choices=["vertical","horizontal","pooled"], default="vertical",
                     help="Used only to locate the right flow tag directory; not applied here since flow has been computed.")
     ap.add_argument("--tag", default="flow_v1")
