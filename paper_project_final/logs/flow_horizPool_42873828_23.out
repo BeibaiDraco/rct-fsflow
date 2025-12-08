@@ -1,0 +1,190 @@
+[info] task=23 SID=20231205
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[20231205][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/axes/axes_horizTrain-stim-horizontal/axes_SFEF.npz
+[20231205][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/axes/axes_horizTrain-stim-horizontal/axes_SLIP.npz
+[20231205][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/axes/axes_horizTrain-stim-horizontal/axes_SSC.npz
+[ok] session summary → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/axes/axes_horizTrain-stim-horizontal/axes_summary.json
+[20231205][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/qc/axes_horizTrain-stim-horizontal/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=194.99999284744263, Sraw=None, Sinv=None
+[20231205][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/qc/axes_horizTrain-stim-horizontal/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20231205][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/qc/axes_horizTrain-stim-horizontal/qc_axes_SSC.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20231205][SFEF->SLIP] [crhorizTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20231205][SFEF->SSC] [crhorizTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/C/flow_C_SFEFtoSSC.npz
+[20231205][SLIP->SFEF] [crhorizTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20231205][SLIP->SSC] [crhorizTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/C/flow_C_SLIPtoSSC.npz
+[20231205][SSC->SFEF] [crhorizTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/C/flow_C_SSCtoSFEF.npz
+[20231205][SSC->SLIP] [crhorizTrainPooled-stim-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/C/flow_C_SSCtoSLIP.npz
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/C/figs/SFEF_vs_SSC_flow_C.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/C/figs/SLIP_vs_SSC_flow_C.pdf
+[20231205][SFEF->SLIP] [crhorizTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/C/flow_C_SFEFtoSLIP.npz
+[20231205][SFEF->SSC] [crhorizTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/C/flow_C_SFEFtoSSC.npz
+[20231205][SLIP->SFEF] [crhorizTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/C/flow_C_SLIPtoSFEF.npz
+[20231205][SLIP->SSC] [crhorizTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/C/flow_C_SLIPtoSSC.npz
+[20231205][SSC->SFEF] [crhorizTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/C/flow_C_SSCtoSFEF.npz
+[20231205][SSC->SLIP] [crhorizTrainPooled-stim-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/C/flow_C_SSCtoSLIP.npz
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/C/figs/SFEF_vs_SSC_flow_C.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/C/figs/SLIP_vs_SSC_flow_C.pdf
+[20231205][SFEF->SLIP] [crhorizTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/C/flow_C_SFEFtoSLIP.npz
+[20231205][SFEF->SSC] [crhorizTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/C/flow_C_SFEFtoSSC.npz
+[20231205][SLIP->SFEF] [crhorizTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/C/flow_C_SLIPtoSFEF.npz
+[20231205][SLIP->SSC] [crhorizTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/C/flow_C_SLIPtoSSC.npz
+[20231205][SSC->SFEF] [crhorizTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/C/flow_C_SSCtoSFEF.npz
+[20231205][SSC->SLIP] [crhorizTrainPooled-stim-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/C/flow_C_SSCtoSLIP.npz
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/C/figs/SFEF_vs_SSC_flow_C.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/C/figs/SLIP_vs_SSC_flow_C.pdf
+[20231205][SFEF->SLIP] [crhorizTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/C/flow_C_SFEFtoSLIP.npz
+[20231205][SFEF->SSC] [crhorizTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/C/flow_C_SFEFtoSSC.npz
+[20231205][SLIP->SFEF] [crhorizTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/C/flow_C_SLIPtoSFEF.npz
+[20231205][SLIP->SSC] [crhorizTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/C/flow_C_SLIPtoSSC.npz
+[20231205][SSC->SFEF] [crhorizTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/C/flow_C_SSCtoSFEF.npz
+[20231205][SSC->SLIP] [crhorizTrainPooled-stim-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/C/flow_C_SSCtoSLIP.npz
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/C/figs/SFEF_vs_SLIP_flow_C.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/C/figs/SFEF_vs_SSC_flow_C.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/C/figs/SLIP_vs_SSC_flow_C.pdf
+[skip] SFEF->SLIP: Missing R axis in one of the areas.
+[skip] SFEF->SSC: Missing R axis in one of the areas.
+[skip] SLIP->SFEF: Missing R axis in one of the areas.
+[skip] SLIP->SSC: Missing R axis in one of the areas.
+[skip] SSC->SFEF: Missing R axis in one of the areas.
+[skip] SSC->SLIP: Missing R axis in one of the areas.
+[skip] SFEF<->SLIP: Missing pair files for SFEF<->SLIP: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/R/flow_R_SFEFtoSLIP.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/R/flow_R_SLIPtoSFEF.npz
+[skip] SFEF<->SSC: Missing pair files for SFEF<->SSC: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/R/flow_R_SFEFtoSSC.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/R/flow_R_SSCtoSFEF.npz
+[skip] SLIP<->SSC: Missing pair files for SLIP<->SSC: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/R/flow_R_SLIPtoSSC.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-trial/R/flow_R_SSCtoSLIP.npz
+[warn] no pairs had both directions available; nothing drawn.
+[skip] SFEF->SLIP: Missing R axis in one of the areas.
+[skip] SFEF->SSC: Missing R axis in one of the areas.
+[skip] SLIP->SFEF: Missing R axis in one of the areas.
+[skip] SLIP->SSC: Missing R axis in one of the areas.
+[skip] SSC->SFEF: Missing R axis in one of the areas.
+[skip] SSC->SLIP: Missing R axis in one of the areas.
+[skip] SFEF<->SLIP: Missing pair files for SFEF<->SLIP: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/R/flow_R_SFEFtoSLIP.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/R/flow_R_SLIPtoSFEF.npz
+[skip] SFEF<->SSC: Missing pair files for SFEF<->SSC: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/R/flow_R_SFEFtoSSC.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/R/flow_R_SSCtoSFEF.npz
+[skip] SLIP<->SSC: Missing pair files for SLIP<->SSC: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/R/flow_R_SLIPtoSSC.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-none-circ/R/flow_R_SSCtoSLIP.npz
+[warn] no pairs had both directions available; nothing drawn.
+[skip] SFEF->SLIP: Missing R axis in one of the areas.
+[skip] SFEF->SSC: Missing R axis in one of the areas.
+[skip] SLIP->SFEF: Missing R axis in one of the areas.
+[skip] SLIP->SSC: Missing R axis in one of the areas.
+[skip] SSC->SFEF: Missing R axis in one of the areas.
+[skip] SSC->SLIP: Missing R axis in one of the areas.
+[skip] SFEF<->SLIP: Missing pair files for SFEF<->SLIP: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/R/flow_R_SFEFtoSLIP.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/R/flow_R_SLIPtoSFEF.npz
+[skip] SFEF<->SSC: Missing pair files for SFEF<->SSC: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/R/flow_R_SFEFtoSSC.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/R/flow_R_SSCtoSFEF.npz
+[skip] SLIP<->SSC: Missing pair files for SLIP<->SSC: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/R/flow_R_SLIPtoSSC.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-trial/R/flow_R_SSCtoSLIP.npz
+[warn] no pairs had both directions available; nothing drawn.
+[skip] SFEF->SLIP: Missing R axis in one of the areas.
+[skip] SFEF->SSC: Missing R axis in one of the areas.
+[skip] SLIP->SFEF: Missing R axis in one of the areas.
+[skip] SLIP->SSC: Missing R axis in one of the areas.
+[skip] SSC->SFEF: Missing R axis in one of the areas.
+[skip] SSC->SLIP: Missing R axis in one of the areas.
+[skip] SFEF<->SLIP: Missing pair files for SFEF<->SLIP: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/R/flow_R_SFEFtoSLIP.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/R/flow_R_SLIPtoSFEF.npz
+[skip] SFEF<->SSC: Missing pair files for SFEF<->SSC: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/R/flow_R_SFEFtoSSC.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/R/flow_R_SSCtoSFEF.npz
+[skip] SLIP<->SSC: Missing pair files for SLIP<->SSC: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/R/flow_R_SLIPtoSSC.npz or /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231205/flow/crhorizTrainPooled-stim-pooled-zreg-circ/R/flow_R_SSCtoSLIP.npz
+[warn] no pairs had both directions available; nothing drawn.
+[20231205][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/axes/axes_horizTrain-sacc-horizontal/axes_SFEF.npz
+[20231205][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/axes/axes_horizTrain-sacc-horizontal/axes_SLIP.npz
+[20231205][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/axes/axes_horizTrain-sacc-horizontal/axes_SSC.npz
+[ok] session summary → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/axes/axes_horizTrain-sacc-horizontal/axes_summary.json
+[20231205][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/qc/axes_horizTrain-sacc-horizontal/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=-97.49999642372131
+[20231205][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/qc/axes_horizTrain-sacc-horizontal/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=-77.50000059604645, Sinv=-77.50000059604645
+[20231205][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/qc/axes_horizTrain-sacc-horizontal/qc_axes_SSC.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None
+[20231205][SFEF->SLIP] [crhorizTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-trial/S/flow_S_SFEFtoSLIP.npz
+[20231205][SFEF->SSC] [crhorizTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-trial/S/flow_S_SFEFtoSSC.npz
+[20231205][SLIP->SFEF] [crhorizTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-trial/S/flow_S_SLIPtoSFEF.npz
+[20231205][SLIP->SSC] [crhorizTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-trial/S/flow_S_SLIPtoSSC.npz
+[20231205][SSC->SFEF] [crhorizTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-trial/S/flow_S_SSCtoSFEF.npz
+[20231205][SSC->SLIP] [crhorizTrainPooled-sacc-pooled-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-trial/S/flow_S_SSCtoSLIP.npz
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-trial/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-trial/S/figs/SFEF_vs_SSC_flow_S.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-trial/S/figs/SLIP_vs_SSC_flow_S.pdf
+[20231205][SFEF->SLIP] [crhorizTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-circ/S/flow_S_SFEFtoSLIP.npz
+[20231205][SFEF->SSC] [crhorizTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-circ/S/flow_S_SFEFtoSSC.npz
+[20231205][SLIP->SFEF] [crhorizTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-circ/S/flow_S_SLIPtoSFEF.npz
+[20231205][SLIP->SSC] [crhorizTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-circ/S/flow_S_SLIPtoSSC.npz
+[20231205][SSC->SFEF] [crhorizTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-circ/S/flow_S_SSCtoSFEF.npz
+[20231205][SSC->SLIP] [crhorizTrainPooled-sacc-pooled-none-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-circ/S/flow_S_SSCtoSLIP.npz
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-circ/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-circ/S/figs/SFEF_vs_SSC_flow_S.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-none-circ/S/figs/SLIP_vs_SSC_flow_S.pdf
+[20231205][SFEF->SLIP] [crhorizTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-trial/S/flow_S_SFEFtoSLIP.npz
+[20231205][SFEF->SSC] [crhorizTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-trial/S/flow_S_SFEFtoSSC.npz
+[20231205][SLIP->SFEF] [crhorizTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-trial/S/flow_S_SLIPtoSFEF.npz
+[20231205][SLIP->SSC] [crhorizTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-trial/S/flow_S_SLIPtoSSC.npz
+[20231205][SSC->SFEF] [crhorizTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-trial/S/flow_S_SSCtoSFEF.npz
+[20231205][SSC->SLIP] [crhorizTrainPooled-sacc-pooled-zreg-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-trial/S/flow_S_SSCtoSLIP.npz
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-trial/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-trial/S/figs/SFEF_vs_SSC_flow_S.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-trial/S/figs/SLIP_vs_SSC_flow_S.pdf
+[20231205][SFEF->SLIP] [crhorizTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-circ/S/flow_S_SFEFtoSLIP.npz
+[20231205][SFEF->SSC] [crhorizTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-circ/S/flow_S_SFEFtoSSC.npz
+[20231205][SLIP->SFEF] [crhorizTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-circ/S/flow_S_SLIPtoSFEF.npz
+[20231205][SLIP->SSC] [crhorizTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-circ/S/flow_S_SLIPtoSSC.npz
+[20231205][SSC->SFEF] [crhorizTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-circ/S/flow_S_SSCtoSFEF.npz
+[20231205][SSC->SLIP] [crhorizTrainPooled-sacc-pooled-zreg-circ] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-circ/S/flow_S_SSCtoSLIP.npz
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-circ/S/figs/SFEF_vs_SLIP_flow_S.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-circ/S/figs/SFEF_vs_SSC_flow_S.pdf
+[20231205] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231205/flow/crhorizTrainPooled-sacc-pooled-zreg-circ/S/figs/SLIP_vs_SSC_flow_S.pdf
+[info] SID=20231205
+[info] standardize_modes = ['none', 'zscore_regressors']
+[info] null_methods      = ['trial_shuffle', 'circular_shift']
+
+[align=stim] SID=20231205
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --orientation horizontal --tag axes_horizTrain-stim-horizontal --pt_min_ms_stim 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --orientation horizontal --tag axes_horizTrain-stim-horizontal --pt_min_ms_stim 200.0
+
+[combo] SID=20231205, align=stim, train_ori=horizontal, flow_ori=pooled, feat=C, std=none, null=trial_shuffle → flow_tag=crhorizTrainPooled-stim-pooled-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-stim-pooled --flow_tag_base crhorizTrainPooled-stim-pooled --axes_tag axes_horizTrain-stim-horizontal --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature C --orientation pooled --tag crhorizTrainPooled-stim-pooled-none-trial
+
+[combo] SID=20231205, align=stim, train_ori=horizontal, flow_ori=pooled, feat=C, std=none, null=circular_shift → flow_tag=crhorizTrainPooled-stim-pooled-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-stim-pooled --flow_tag_base crhorizTrainPooled-stim-pooled --axes_tag axes_horizTrain-stim-horizontal --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature C --orientation pooled --tag crhorizTrainPooled-stim-pooled-none-circ
+
+[combo] SID=20231205, align=stim, train_ori=horizontal, flow_ori=pooled, feat=C, std=zscore_regressors, null=trial_shuffle → flow_tag=crhorizTrainPooled-stim-pooled-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-stim-pooled --flow_tag_base crhorizTrainPooled-stim-pooled --axes_tag axes_horizTrain-stim-horizontal --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature C --orientation pooled --tag crhorizTrainPooled-stim-pooled-zreg-trial
+
+[combo] SID=20231205, align=stim, train_ori=horizontal, flow_ori=pooled, feat=C, std=zscore_regressors, null=circular_shift → flow_tag=crhorizTrainPooled-stim-pooled-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-stim-pooled --flow_tag_base crhorizTrainPooled-stim-pooled --axes_tag axes_horizTrain-stim-horizontal --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature C --orientation pooled --tag crhorizTrainPooled-stim-pooled-zreg-circ
+
+[combo] SID=20231205, align=stim, train_ori=horizontal, flow_ori=pooled, feat=R, std=none, null=trial_shuffle → flow_tag=crhorizTrainPooled-stim-pooled-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-stim-pooled --flow_tag_base crhorizTrainPooled-stim-pooled --axes_tag axes_horizTrain-stim-horizontal --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature R --orientation pooled --tag crhorizTrainPooled-stim-pooled-none-trial
+
+[combo] SID=20231205, align=stim, train_ori=horizontal, flow_ori=pooled, feat=R, std=none, null=circular_shift → flow_tag=crhorizTrainPooled-stim-pooled-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-stim-pooled --flow_tag_base crhorizTrainPooled-stim-pooled --axes_tag axes_horizTrain-stim-horizontal --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature R --orientation pooled --tag crhorizTrainPooled-stim-pooled-none-circ
+
+[combo] SID=20231205, align=stim, train_ori=horizontal, flow_ori=pooled, feat=R, std=zscore_regressors, null=trial_shuffle → flow_tag=crhorizTrainPooled-stim-pooled-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-stim-pooled --flow_tag_base crhorizTrainPooled-stim-pooled --axes_tag axes_horizTrain-stim-horizontal --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature R --orientation pooled --tag crhorizTrainPooled-stim-pooled-zreg-trial
+
+[combo] SID=20231205, align=stim, train_ori=horizontal, flow_ori=pooled, feat=R, std=zscore_regressors, null=circular_shift → flow_tag=crhorizTrainPooled-stim-pooled-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature R --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-stim-pooled --flow_tag_base crhorizTrainPooled-stim-pooled --axes_tag axes_horizTrain-stim-horizontal --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231205 --feature R --orientation pooled --tag crhorizTrainPooled-stim-pooled-zreg-circ
+
+[align=sacc] SID=20231205
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231205 --orientation horizontal --tag axes_horizTrain-sacc-horizontal --pt_min_ms_sacc 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231205 --orientation horizontal --tag axes_horizTrain-sacc-horizontal --pt_min_ms_sacc 200.0
+
+[combo] SID=20231205, align=sacc, train_ori=horizontal, flow_ori=pooled, feat=S, std=none, null=trial_shuffle → flow_tag=crhorizTrainPooled-sacc-pooled-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231205 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-sacc-pooled --flow_tag_base crhorizTrainPooled-sacc-pooled --axes_tag axes_horizTrain-sacc-horizontal --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231205 --feature S --orientation pooled --tag crhorizTrainPooled-sacc-pooled-none-trial
+
+[combo] SID=20231205, align=sacc, train_ori=horizontal, flow_ori=pooled, feat=S, std=none, null=circular_shift → flow_tag=crhorizTrainPooled-sacc-pooled-none-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231205 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-sacc-pooled --flow_tag_base crhorizTrainPooled-sacc-pooled --axes_tag axes_horizTrain-sacc-horizontal --null_method circular_shift --standardize_mode none --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231205 --feature S --orientation pooled --tag crhorizTrainPooled-sacc-pooled-none-circ
+
+[combo] SID=20231205, align=sacc, train_ori=horizontal, flow_ori=pooled, feat=S, std=zscore_regressors, null=trial_shuffle → flow_tag=crhorizTrainPooled-sacc-pooled-zreg-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231205 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-sacc-pooled --flow_tag_base crhorizTrainPooled-sacc-pooled --axes_tag axes_horizTrain-sacc-horizontal --null_method trial_shuffle --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231205 --feature S --orientation pooled --tag crhorizTrainPooled-sacc-pooled-zreg-trial
+
+[combo] SID=20231205, align=sacc, train_ori=horizontal, flow_ori=pooled, feat=S, std=zscore_regressors, null=circular_shift → flow_tag=crhorizTrainPooled-sacc-pooled-zreg-circ
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231205 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag crhorizTrainPooled-sacc-pooled --flow_tag_base crhorizTrainPooled-sacc-pooled --axes_tag axes_horizTrain-sacc-horizontal --null_method circular_shift --standardize_mode zscore_regressors --pt_min_ms 200.0
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_overlays.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231205 --feature S --orientation pooled --tag crhorizTrainPooled-sacc-pooled-zreg-circ
+
+[done] SID=20231205 horizontal-axes + pooled-flow sweep complete.
