@@ -49,7 +49,7 @@ Usage examples (from paper_project_final/):
 """
 
 from __future__ import annotations
-import argparse, os, json
+import argparse, os, json, warnings
 from pathlib import Path
 from typing import List, Tuple, Dict, Optional
 
@@ -85,6 +85,22 @@ def discover_tags(out_root: Path, align: str, sids: List[str]) -> List[str]:
     return sorted(tags)
 
 
+def discover_features(out_root: Path, align: str, tag: str, sids: List[str]) -> List[str]:
+    """
+    Discover available features for a given tag by checking what feature
+    directories exist across sessions. Returns sorted list of feature names.
+    """
+    features = set()
+    for sid in sids:
+        tag_root = out_root / align / sid / "flow" / tag
+        if not tag_root.is_dir():
+            continue
+        for feat_dir in tag_root.iterdir():
+            if feat_dir.is_dir():
+                features.add(feat_dir.name)
+    return sorted(features)
+
+
 def canonical_pairs(monkey_label: str) -> List[Tuple[str, str]]:
     """
     Canonical area pairs per monkey type.
@@ -112,12 +128,17 @@ def safe_z(bits: np.ndarray, mu: np.ndarray, sd: np.ndarray) -> np.ndarray:
 def nanmean_se(arr: np.ndarray, axis: int = 0) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Return (mean, se, n_valid) along axis, ignoring NaNs.
+    Suppresses warnings for empty slices or insufficient degrees of freedom.
     """
-    mean = np.nanmean(arr, axis=axis)
-    n = np.sum(np.isfinite(arr), axis=axis).astype(float)
-    std = np.nanstd(arr, axis=axis, ddof=1)
-    with np.errstate(invalid="ignore", divide="ignore"):
-        se = std / np.sqrt(n)
+    with warnings.catch_warnings():
+        # Suppress numpy warnings about empty slices and insufficient degrees of freedom
+        warnings.filterwarnings("ignore", category=RuntimeWarning, message="Mean of empty slice")
+        warnings.filterwarnings("ignore", category=RuntimeWarning, message="Degrees of freedom <= 0")
+        with np.errstate(invalid="ignore", divide="ignore"):
+            mean = np.nanmean(arr, axis=axis)
+            n = np.sum(np.isfinite(arr), axis=axis).astype(float)
+            std = np.nanstd(arr, axis=axis, ddof=1)
+            se = std / np.sqrt(n)
     return mean, se, n
 
 
@@ -506,17 +527,22 @@ def main():
             print(f"[warn] No flow tags found for align={align}")
             continue
 
-        # choose features
-        if args.features:
-            feats = args.features
-        else:
-            feats = ["C", "R"] if align == "stim" else ["S"]
-
-        print(f"[info] align={align}, sessions={len(sids)}, tags={tags}, features={feats}")
+        print(f"[info] align={align}, sessions={len(sids)}, tags={tags}")
 
         win = win_stim if align == "stim" else win_sacc
 
         for tag in tags:
+            # discover features for this tag if not explicitly provided
+            if args.features:
+                feats = args.features
+            else:
+                feats = discover_features(out_root, align, tag, sids)
+                if not feats:
+                    print(f"[warn] No features found for tag={tag}, align={align}, skipping")
+                    continue
+            
+            print(f"[tag={tag}] features: {feats}")
+            
             for feat in feats:
                 print(f"\n[tag={tag}] align={align}, feature={feat}")
                 summarize_for_tag_align_feature(
