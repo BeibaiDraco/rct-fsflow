@@ -55,6 +55,10 @@ def main():
         default="none",
         choices=["none", "zscore_regressors"],
         help="Standardization for regressors: none, or zscore_regressors.")
+    ap.add_argument("--evoked_subtract", action="store_true",
+                    help="Subtract global evoked PSTH (mean across trials per time bin) before flow.")
+    ap.add_argument("--evoked_sigma_ms", type=float, default=0.0,
+                    help="Gaussian smoothing sigma for evoked PSTH (ms). Default 0 (no smoothing).")
     ap.add_argument("--flow_tag_base", default=None,
         help="Base name for flow tag; final tag = <flow_tag_base>-<std>-<null>. "
              "Default: use --tag.")
@@ -119,6 +123,8 @@ def main():
                 perm_within=args.perm_within,
                 null_method=args.null_method,
                 standardize_mode=args.standardize_mode,
+                evoked_subtract=bool(args.evoked_subtract),
+                evoked_sigma_ms=float(args.evoked_sigma_ms),
             )
         except ValueError as e:
             print(f"[skip] {A}->{B}: {e}")

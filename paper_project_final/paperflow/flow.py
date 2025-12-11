@@ -6,6 +6,11 @@ import numpy as np
 
 from paperflow.standardize import compute_regressor_scaling, apply_regressor_scaling
 
+try:
+    from scipy.ndimage import gaussian_filter1d
+except Exception:
+    gaussian_filter1d = None
+
 # ---------- label helpers (numeric, mask-safe) ----------
 
 def _label_vec(cache: Dict, key: str, mask: np.ndarray) -> Optional[np.ndarray]:
@@ -82,6 +87,23 @@ def _project_multi(cache: Dict, A: np.ndarray, mask: np.ndarray) -> np.ndarray:
     if A is None or A.shape[0] != Z.shape[2]:
         raise ValueError("Axis size mismatch.")
     return np.tensordot(Z, A, axes=([2],[0]))  # (N,B,K)
+
+def _subtract_global_evoked(Y: np.ndarray, sigma_bins: float = 0.0) -> np.ndarray:
+    """
+    Subtract global evoked response: mean across trials per time bin.
+    Y: (N, B, K)
+    """
+    if Y.size == 0:
+        return Y
+    mu = np.nanmean(Y, axis=0, keepdims=True)  # (1,B,K)
+
+    if sigma_bins and sigma_bins > 0 and gaussian_filter1d is not None:
+        mu2 = mu.copy()
+        for k in range(mu.shape[2]):
+            mu2[0, :, k] = gaussian_filter1d(mu[0, :, k], sigma=sigma_bins, mode="nearest")
+        mu = mu2
+
+    return Y - mu
 
 # -------------------- induced removal & lags --------------------
 
@@ -219,6 +241,8 @@ def compute_flow_timecourse_for_pair(
     perm_within: str = "CR",        # 'CR', 'other', 'C', 'R', 'none'
     null_method: str = "trial_shuffle",      # 'trial_shuffle', 'circular_shift', 'phase_randomize'
     standardize_mode: str = "none",          # 'none', 'zscore_regressors'
+    evoked_subtract: bool = False,
+    evoked_sigma_ms: float = 0.0,
 ) -> Dict[str, np.ndarray]:
     """
     Compute time-resolved information flow from area A to area B.
@@ -272,6 +296,14 @@ def compute_flow_timecourse_for_pair(
     # 4) projections
     YA_full = _project_multi(cacheA, Aaxis, mask)  # (N,B,K_A)
     YB_full = _project_multi(cacheB, Baxis, mask)  # (N,B,K_B)
+
+    # Optional old-style evoked subtraction (global PSTH across trials)
+    if evoked_subtract:
+        sigma_bins = 0.0
+        if evoked_sigma_ms and evoked_sigma_ms > 0:
+            sigma_bins = float(evoked_sigma_ms) / (bin_s * 1000.0)  # ms -> bins
+        YA_full = _subtract_global_evoked(YA_full, sigma_bins=sigma_bins)
+        YB_full = _subtract_global_evoked(YB_full, sigma_bins=sigma_bins)
 
     # 5) induced removal (per-time per-stratum mean)
     labs_induce = None
@@ -532,6 +564,8 @@ def compute_flow_timecourse_for_pair(
             perm_within=str(perm_within),
             null_method=str(null_method),
             standardize_mode=str(standardize_mode),
+            evoked_subtract=bool(evoked_subtract),
+            evoked_sigma_ms=float(evoked_sigma_ms),
             H0_description=H0_desc,
             H1_description=H1_desc,
             induced_labels=(

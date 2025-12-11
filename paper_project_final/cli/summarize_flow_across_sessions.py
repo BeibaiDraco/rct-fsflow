@@ -142,6 +142,67 @@ def nanmean_se(arr: np.ndarray, axis: int = 0) -> Tuple[np.ndarray, np.ndarray, 
     return mean, se, n
 
 
+def rebin_timeseries(
+    time: np.ndarray,
+    data_arr: np.ndarray,
+    win_size_s: float,
+    step_s: float,
+) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Re-bin time-series data into overlapping windows.
+
+    Parameters
+    ----------
+    time : (T,) array
+        Time points (seconds).
+    data_arr : (N_sessions, T) array
+        Data values for each session at each time bin.
+    win_size_s : float
+        Window size in seconds (e.g. 0.05 for 50 ms).
+    step_s : float
+        Step size in seconds between window centers (e.g. 0.02).
+
+    Returns
+    -------
+    new_time : (T_win,) array
+        Centers of the rebinned windows (seconds).
+    rebinned_data : (N_sessions, T_win) array
+        For each session, mean of data within each window.
+    """
+    if win_size_s is None or step_s is None:
+        return time, data_arr
+
+    T = time.shape[0]
+    tmin, tmax = float(time[0]), float(time[-1])
+    window_masks = []
+    centers = []
+
+    t = tmin
+    while t + win_size_s <= tmax + 1e-12:
+        a = t
+        b = t + win_size_s
+        mask = (time >= a) & (time < b)
+        if np.any(mask):
+            window_masks.append(mask)
+            centers.append(0.5 * (a + b))
+        t += step_s
+
+    if not window_masks:
+        return time, data_arr
+
+    window_masks = np.stack(window_masks, axis=0)  # (T_win, T)
+    centers = np.array(centers)
+
+    rebinned = []
+    for i in range(data_arr.shape[0]):  # over sessions
+        row = data_arr[i]  # (T,)
+        vals = np.array([np.nanmean(row[m]) for m in window_masks])
+        rebinned.append(vals)
+    rebinned = np.stack(rebinned, axis=0)  # (N_sessions, T_win)
+
+    return centers, rebinned
+
+
 def plot_summary_figure(
     out_path_pdf: Path,
     time: np.ndarray,
@@ -158,19 +219,40 @@ def plot_summary_figure(
     frac_sig_AB: np.ndarray,
     win: Tuple[float, float],
     title: str,
+    # NEW arguments for rebinned panel
+    rebin_time_arr: Optional[np.ndarray] = None,
+    mean_z_AB_rebin: Optional[np.ndarray] = None,
+    se_z_AB_rebin: Optional[np.ndarray] = None,
+    mean_z_BA_rebin: Optional[np.ndarray] = None,
+    se_z_BA_rebin: Optional[np.ndarray] = None,
 ) -> None:
     """
     Make a summary figure with:
       - Panel 1: bits ± SE (A->B, B->A)
       - Panel 2: z ± SE
       - Panel 3: diff bits ± SE + frac_sig_AB(t)
+      - Panel 4 (optional): rebinned z ± SE (if rebin parameters provided)
     """
     t_ms = time * 1000.0
     w_start_ms = win[0] * 1000.0
     w_end_ms = win[1] * 1000.0
 
-    fig, axes = plt.subplots(3, 1, figsize=(7.5, 8.5), sharex=True)
-    ax1, ax2, ax3 = axes
+    # Decide layout: 3 panels normally, 4 if rebin curves provided
+    have_rebin = (
+        rebin_time_arr is not None
+        and mean_z_AB_rebin is not None
+        and se_z_AB_rebin is not None
+        and mean_z_BA_rebin is not None
+        and se_z_BA_rebin is not None
+    )
+
+    n_panels = 4 if have_rebin else 3
+    fig, axes = plt.subplots(n_panels, 1, figsize=(7.5, 8.5 + (n_panels - 3) * 2.0), sharex=True)
+    if n_panels == 3:
+        ax1, ax2, ax3 = axes
+        ax4 = None
+    else:
+        ax1, ax2, ax3, ax4 = axes
 
     # Panel 1: bits
     ax1.axvline(0, ls="--", c="k", lw=0.8)
@@ -247,7 +329,43 @@ def plot_summary_figure(
     lines2, labels2 = ax3b.get_legend_handles_labels()
     ax3b.legend(lines1 + lines2, labels1 + labels2, loc="upper left", frameon=False)
 
-    ax3.set_xlabel("Time (ms)")
+    # Only set xlabel on ax3 if there's no 4th panel
+    if ax4 is None:
+        ax3.set_xlabel("Time (ms)")
+
+    # Panel 4: rebinned z-scores (if available)
+    if ax4 is not None:
+        t_win_ms = rebin_time_arr * 1000.0
+
+        ax4.axvline(0, ls="--", c="k", lw=0.8)
+        ax4.axhline(0, ls=":", c="k", lw=0.8)
+        ax4.axvspan(w_start_ms, w_end_ms, color="0.9", alpha=0.5)
+
+        # A->B rebinned z
+        ax4.plot(t_win_ms, mean_z_AB_rebin, color="C0", lw=2.0, label="A→B z (rebinned)")
+        ax4.fill_between(
+            t_win_ms,
+            mean_z_AB_rebin - se_z_AB_rebin,
+            mean_z_AB_rebin + se_z_AB_rebin,
+            color="C0",
+            alpha=0.25,
+            linewidth=0,
+        )
+
+        # B->A rebinned z
+        ax4.plot(t_win_ms, mean_z_BA_rebin, color="C1", lw=2.0, label="B→A z (rebinned)")
+        ax4.fill_between(
+            t_win_ms,
+            mean_z_BA_rebin - se_z_BA_rebin,
+            mean_z_BA_rebin + se_z_BA_rebin,
+            color="C1",
+            alpha=0.25,
+            linewidth=0,
+        )
+
+        ax4.set_ylabel("Z (rebinned)")
+        ax4.set_xlabel("Time (ms)")
+        ax4.legend(loc="upper left", frameon=False)
 
     fig.tight_layout()
     out_dir = out_path_pdf.parent
@@ -267,10 +385,19 @@ def summarize_for_tag_align_feature(
     sids: List[str],
     alpha: float,
     win: Tuple[float, float],
+    rebin_win_s: Optional[float] = None,
+    rebin_step_s: Optional[float] = None,
 ) -> None:
     """
     Summarize flows across sessions for one (align, tag, feature).
     Writes one .npz + .pdf/.png per canonical pair (A,B).
+    
+    Parameters
+    ----------
+    rebin_win_s : float, optional
+        Window size in seconds for rebinned z panel (e.g. 0.05 for 50 ms).
+    rebin_step_s : float, optional
+        Step size in seconds between rebinned windows (e.g. 0.02 for 20 ms).
     """
     for monkey_label in ("M", "S"):
         pairs = canonical_pairs(monkey_label)
@@ -383,6 +510,21 @@ def summarize_for_tag_align_feature(
             mean_z_BA,   se_z_BA,   _     = nanmean_se(z_BA_arr,   axis=0)
             mean_diff,   se_diff,   _     = nanmean_se(diff_arr,   axis=0)
 
+            # Optional time rebinning for a 4th panel
+            rebin_time_arr = None
+            mean_z_AB_rebin = None
+            se_z_AB_rebin = None
+            mean_z_BA_rebin = None
+            se_z_BA_rebin = None
+
+            if rebin_win_s is not None and rebin_step_s is not None:
+                # rebin z across time using sliding window
+                rebin_time_arr, z_AB_reb = rebin_timeseries(time, z_AB_arr, rebin_win_s, rebin_step_s)
+                _,              z_BA_reb = rebin_timeseries(time, z_BA_arr, rebin_win_s, rebin_step_s)
+
+                mean_z_AB_rebin, se_z_AB_rebin, _ = nanmean_se(z_AB_reb, axis=0)
+                mean_z_BA_rebin, se_z_BA_rebin, _ = nanmean_se(z_BA_reb, axis=0)
+
             # fraction of sessions sig at each time
             with np.errstate(invalid="ignore", divide="ignore"):
                 frac_sig_AB = np.nanmean(sig_AB_arr, axis=0)
@@ -480,6 +622,12 @@ def summarize_for_tag_align_feature(
                 frac_sig_AB=frac_sig_AB,
                 win=win,
                 title=title,
+                # NEW rebinned z for panel 4
+                rebin_time_arr=rebin_time_arr,
+                mean_z_AB_rebin=mean_z_AB_rebin,
+                se_z_AB_rebin=se_z_AB_rebin,
+                mean_z_BA_rebin=mean_z_BA_rebin,
+                se_z_BA_rebin=se_z_BA_rebin,
             )
 
 
@@ -500,7 +648,18 @@ def main():
                     help="Window [start:end] in seconds for sacc-align summary (default: -0.20:0.10)")
     ap.add_argument("--features", nargs="*",
                     help="Features to include. Default: stim→['C','R'], sacc→['S']")
+    # NEW: time rebin parameters
+    ap.add_argument("--rebin_win", type=float, default=None,
+                    help="Optional time window size in seconds for rebinned z panel "
+                         "(e.g. 0.05 for 50 ms). If None, no rebin panel.")
+    ap.add_argument("--rebin_step", type=float, default=None,
+                    help="Optional step size in seconds between rebinned windows "
+                         "(e.g. 0.02 for 20 ms). Default: equal to rebin_win.")
     args = ap.parse_args()
+    
+    # Parse rebin parameters
+    rebin_win = args.rebin_win
+    rebin_step = args.rebin_step if args.rebin_step is not None else args.rebin_win
 
     out_root = Path(args.out_root)
     aligns = []
@@ -553,6 +712,8 @@ def main():
                     sids=sids,
                     alpha=args.alpha,
                     win=win,
+                    rebin_win_s=rebin_win,
+                    rebin_step_s=rebin_step,
                 )
 
     print("\n[done] summary + figures completed.")

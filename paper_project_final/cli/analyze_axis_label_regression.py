@@ -264,3 +264,7 @@ def main():
                 maybe_reg(sC_horiz, "C_horiz")
 
     print(f"\n[done] wrote {out_tsv}")
+
+
+if __name__ == "__main__":
+    main()
