@@ -1,0 +1,32 @@
+[info] task=22 SID=20231130
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[20231130][SFEF->SLIP] [evoked_subtract_pooled-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231130/flow/evoked_subtract_pooled-stim-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20231130][SFEF->SSC] [evoked_subtract_pooled-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231130/flow/evoked_subtract_pooled-stim-none-trial/C/flow_C_SFEFtoSSC.npz
+[20231130][SLIP->SFEF] [evoked_subtract_pooled-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231130/flow/evoked_subtract_pooled-stim-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20231130][SLIP->SSC] [evoked_subtract_pooled-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231130/flow/evoked_subtract_pooled-stim-none-trial/C/flow_C_SLIPtoSSC.npz
+[20231130][SSC->SFEF] [evoked_subtract_pooled-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231130/flow/evoked_subtract_pooled-stim-none-trial/C/flow_C_SSCtoSFEF.npz
+[20231130][SSC->SLIP] [evoked_subtract_pooled-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231130/flow/evoked_subtract_pooled-stim-none-trial/C/flow_C_SSCtoSLIP.npz
+[20231130][SFEF->SLIP] [evoked_subtract_pooled-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231130/flow/evoked_subtract_pooled-sacc-none-trial/S/flow_S_SFEFtoSLIP.npz
+[20231130][SFEF->SSC] [evoked_subtract_pooled-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231130/flow/evoked_subtract_pooled-sacc-none-trial/S/flow_S_SFEFtoSSC.npz
+[20231130][SLIP->SFEF] [evoked_subtract_pooled-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231130/flow/evoked_subtract_pooled-sacc-none-trial/S/flow_S_SLIPtoSFEF.npz
+[20231130][SLIP->SSC] [evoked_subtract_pooled-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231130/flow/evoked_subtract_pooled-sacc-none-trial/S/flow_S_SLIPtoSSC.npz
+[20231130][SSC->SFEF] [evoked_subtract_pooled-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231130/flow/evoked_subtract_pooled-sacc-none-trial/S/flow_S_SSCtoSFEF.npz
+[20231130][SSC->SLIP] [evoked_subtract_pooled-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231130/flow/evoked_subtract_pooled-sacc-none-trial/S/flow_S_SSCtoSLIP.npz
+[info] SID=20231130
+[info] axes_tag_base=axes_sweep
+[info] flow_tag_base=evoked_subtract_pooled
+[info] orientation=pooled
+[info] evoked_sigma_ms=10.0
+
+[align=stim] SID=20231130
+
+[combo] SID=20231130, align=stim, feat=C, axes_tag=axes_sweep-stim-pooled → flow_tag=evoked_subtract_pooled-stim-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231130 --feature C --orientation pooled --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag evoked_subtract_pooled-stim --flow_tag_base evoked_subtract_pooled-stim --axes_tag axes_sweep-stim-pooled --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0 --no_induced --evoked_subtract --evoked_sigma_ms 10.0
+
+[align=sacc] SID=20231130
+
+[combo] SID=20231130, align=sacc, feat=S, axes_tag=axes_sweep-sacc-pooled → flow_tag=evoked_subtract_pooled-sacc-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231130 --feature S --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag evoked_subtract_pooled-sacc --flow_tag_base evoked_subtract_pooled-sacc --axes_tag axes_sweep-sacc-pooled --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0 --no_induced --evoked_subtract --evoked_sigma_ms 10.0
+
+[done] SID=20231130 evoked subtraction flow complete.

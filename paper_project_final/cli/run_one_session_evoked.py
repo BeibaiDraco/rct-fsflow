@@ -6,8 +6,15 @@ For each alignment (stim, sacc):
   - stim: feature C
   - sacc: feature S
 
-Uses pre-existing axes (axes_sweep-stim-vertical).
+Uses pre-existing axes (axes_sweep-<align>-<axes_orientation>).
 Only runs flow_session.py (assumes axes already exist).
+
+Supports:
+  --orientation: flow orientation (vertical, horizontal, pooled)
+  --axes_orientation: which axes to load (defaults to --orientation)
+
+Example: vertical axes + pooled flow:
+  --axes_orientation vertical --orientation pooled
 """
 
 from __future__ import annotations
@@ -56,9 +63,15 @@ def main():
                     choices=["CR", "other", "C", "R", "none"],
                     help="Stratification for trial-shuffle null (default: CR)")
     ap.add_argument("--axes_tag_base", default="axes_sweep",
-                    help="Base for axes tags; final = <base>-<align>-vertical (default: axes_sweep)")
+                    help="Base for axes tags; final = <base>-<align>-<orientation> (default: axes_sweep)")
     ap.add_argument("--flow_tag_base", default="evoked_subtract",
                     help="Base for flow tags (default: evoked_subtract)")
+    ap.add_argument("--orientation", default="vertical",
+                    choices=["vertical", "horizontal", "pooled"],
+                    help="Orientation for flow (default: vertical)")
+    ap.add_argument("--axes_orientation", default=None,
+                    choices=["vertical", "horizontal", "pooled"],
+                    help="Orientation for axes tag; defaults to --orientation if not specified")
     ap.add_argument("--evoked_sigma_ms", type=float, default=10.0,
                     help="Gaussian smoothing sigma for evoked PSTH (ms) (default: 10)")
     ap.add_argument("--python", default=sys.executable,
@@ -71,9 +84,14 @@ def main():
 
     out_root = Path(args.out_root)
 
+    # Resolve axes_orientation (defaults to orientation if not specified)
+    axes_orientation = args.axes_orientation or args.orientation
+
     print(f"[info] SID={args.sid}")
     print(f"[info] axes_tag_base={args.axes_tag_base}")
     print(f"[info] flow_tag_base={args.flow_tag_base}")
+    print(f"[info] orientation={args.orientation}")
+    print(f"[info] axes_orientation={axes_orientation}")
     print(f"[info] evoked_sigma_ms={args.evoked_sigma_ms}")
 
     # Detect which alignments exist
@@ -89,8 +107,8 @@ def main():
     for align in aligns:
         print(f"\n[align={align}] SID={args.sid}")
 
-        # Construct axes tag per alignment
-        axes_tag = f"{args.axes_tag_base}-{align}-vertical"
+        # Construct axes tag per alignment (uses axes_orientation)
+        axes_tag = f"{args.axes_tag_base}-{align}-{axes_orientation}"
 
         # Features per align
         if align == "stim":
@@ -112,7 +130,7 @@ def main():
                     "--align", align,
                     "--sid", args.sid,
                     "--feature", feat,
-                    "--orientation", "vertical",
+                    "--orientation", args.orientation,
                     "--lags_ms", str(lags_ms),
                     "--ridge", str(args.ridge),
                     "--perms", str(args.perms),

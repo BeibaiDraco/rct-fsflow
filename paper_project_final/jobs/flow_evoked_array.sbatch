@@ -59,7 +59,7 @@ python cli/run_one_session_evoked.py \
   --out_root "$OUT_ROOT" \
   --sid "$SID" \
   --axes_tag_base axes_sweep \
-  --flow_tag_base evoked_subtract \
+  --flow_tag_base evoked_subtract_vert \
   --lags_ms_stim 50 \
   --lags_ms_sacc 30 \
   --ridge 1e-2 \
