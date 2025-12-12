@@ -6,6 +6,8 @@ and per canonical pair, separately for each monkey (M vs S via area prefixes).
 For each (align, tag, feature, pair A-B, monkey_label) it:
 
   - finds all sessions with both directions present (A->B and B->A)
+  - applies SYMMETRIC QC filtering: if either area in a pair fails QC for the
+    feature, that session is excluded for that pair (ensures same N for both directions)
   - loads bits, null means/SDs, p-values
   - computes per-session:
         bits_AtoB(t), bits_BtoA(t),
@@ -584,8 +586,9 @@ def summarize_for_tag_align_feature(
         Step size in seconds between rebinned windows (e.g. 0.02 for 20 ms).
     qc_threshold : float, optional
         QC threshold (e.g., 0.75). If None, QC filtering is disabled.
-        If provided, flow results are filtered: A->B is excluded if area A fails QC,
-        and B->A is excluded if area B fails QC.
+        If provided, SYMMETRIC rejection is applied: for a pair (A, B), if EITHER
+        area fails QC for this feature, the entire session is excluded for that pair.
+        This ensures both directions (A->B and B->A) have the same session count.
     """
     for monkey_label in ("M", "S"):
         pairs = canonical_pairs(monkey_label)
@@ -615,22 +618,22 @@ def summarize_for_tag_align_feature(
                     continue
 
                 # QC filtering: check if areas pass QC threshold
-                qc_pass_A = True
-                qc_pass_B = True
+                # SYMMETRIC rejection: if EITHER area fails QC, skip the entire session
+                # for this pair. This ensures both directions have the same session count.
                 if qc_threshold is not None:
-                    # A->B flow: area A must pass QC (A is the source)
                     qc_pass_A = check_area_qc(out_root, align, sid, tag, A, feature, qc_threshold)
-                    # B->A flow: area B must pass QC (B is the source)
                     qc_pass_B = check_area_qc(out_root, align, sid, tag, B, feature, qc_threshold)
                     
-                    # Skip session if both directions fail QC
-                    if not qc_pass_A and not qc_pass_B:
-                        print(f"[qc-filter] {sid}: {A} and {B} both fail QC (threshold={qc_threshold}), skipping session")
+                    # Skip session if EITHER area fails QC (symmetric rejection)
+                    if not qc_pass_A or not qc_pass_B:
+                        failed_areas = []
+                        if not qc_pass_A:
+                            failed_areas.append(A)
+                        if not qc_pass_B:
+                            failed_areas.append(B)
+                        print(f"[qc-filter] {sid}: {', '.join(failed_areas)} fails QC "
+                              f"(threshold={qc_threshold}), skipping {A}-{B} pair")
                         continue
-                    elif not qc_pass_A:
-                        print(f"[qc-filter] {sid}: {A} fails QC (threshold={qc_threshold}), excluding A->B")
-                    elif not qc_pass_B:
-                        print(f"[qc-filter] {sid}: {B} fails QC (threshold={qc_threshold}), excluding B->A")
 
                 Zf = np.load(p_fwd, allow_pickle=True)
                 Zr = np.load(p_rev, allow_pickle=True)
@@ -645,8 +648,8 @@ def summarize_for_tag_align_feature(
                             f"pair {A}->{B}, sid={sid}"
                         )
 
-                bits_AB_raw = np.asarray(Zf["bits_AtoB"], dtype=float)
-                bits_BA_raw = np.asarray(Zr["bits_AtoB"], dtype=float)
+                bits_AB = np.asarray(Zf["bits_AtoB"], dtype=float)
+                bits_BA = np.asarray(Zr["bits_AtoB"], dtype=float)
                 mu_AB = np.asarray(Zf["null_mean_AtoB"], dtype=float)
                 sd_AB = np.asarray(Zf["null_std_AtoB"], dtype=float)
                 mu_BA = np.asarray(Zr["null_mean_AtoB"], dtype=float)
@@ -654,17 +657,13 @@ def summarize_for_tag_align_feature(
                 p_AB = np.asarray(Zf["p_AtoB"], dtype=float)
                 p_BA = np.asarray(Zr["p_BtoA"], dtype=float) if "p_BtoA" in Zr else np.asarray(Zr["p_AtoB"], dtype=float)
 
-                # Apply QC filtering: set to NaN if QC fails
-                bits_AB = bits_AB_raw.copy() if qc_pass_A else np.full_like(bits_AB_raw, np.nan)
-                bits_BA = bits_BA_raw.copy() if qc_pass_B else np.full_like(bits_BA_raw, np.nan)
-
+                # At this point, both areas have passed QC (symmetric rejection above)
                 z_AB = safe_z(bits_AB, mu_AB, sd_AB)
                 z_BA = safe_z(bits_BA, mu_BA, sd_BA)
                 diff_bits = bits_AB - bits_BA
 
-                # Only mark as significant if QC passes
-                sig_AB = (p_AB < alpha) & np.isfinite(p_AB) & qc_pass_A
-                sig_BA = (p_BA < alpha) & np.isfinite(p_BA) & qc_pass_B
+                sig_AB = (p_AB < alpha) & np.isfinite(p_AB)
+                sig_BA = (p_BA < alpha) & np.isfinite(p_BA)
 
                 # window mask in seconds
                 ws, we = win
@@ -869,9 +868,10 @@ def main():
                     help="Optional step size in seconds between rebinned windows "
                          "(e.g. 0.02 for 20 ms). Default: equal to rebin_win.")
     ap.add_argument("--qc_threshold", type=float, default=None,
-                    help="QC threshold for filtering (e.g., 0.75). If provided, flow results "
-                         "are filtered: A->B is excluded if area A fails QC, and B->A is "
-                         "excluded if area B fails QC. If None, no QC filtering is applied.")
+                    help="QC threshold for filtering (e.g., 0.75). If provided, SYMMETRIC "
+                         "rejection is applied: for pair (A,B), if EITHER area fails QC, "
+                         "the session is excluded for that pair. This ensures both directions "
+                         "have the same N. If None, no QC filtering is applied.")
     args = ap.parse_args()
     
     # Parse rebin parameters
