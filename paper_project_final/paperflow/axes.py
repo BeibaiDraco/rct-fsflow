@@ -136,12 +136,13 @@ class AxisPack:
     sR: Optional[np.ndarray]         # (U, R_dim) or None
     sS_raw: Optional[np.ndarray]
     sS_inv: Optional[np.ndarray]
+    sT: Optional[np.ndarray] = None  # target configuration axis (binary)
     meta: Dict = None
     sO: Optional[np.ndarray] = None  # NEW: context / orientation axis
 
 def train_axes_for_area(
     cache: Dict,
-    feature_set: List[str],                # any of ["C","R","S","O"]
+    feature_set: List[str],                # any of ["C","R","S","T","O"]
     time_s: np.array,
     winC: Optional[Tuple[float,float]] = None,
     winR: Optional[Tuple[float,float]] = None,
@@ -168,6 +169,13 @@ def train_axes_for_area(
     C = cache.get("lab_C", np.full(Z.shape[0], np.nan)).astype(np.float64)
     R = cache.get("lab_R", np.full(Z.shape[0], np.nan)).astype(np.float64)
     S = cache.get("lab_S", np.full(Z.shape[0], np.nan)).astype(np.float64)
+    # Target configuration (T): category × saccade_location_sign
+    # Prefer stored lab_T if present; otherwise derive it lazily (lets us run on older caches).
+    if "lab_T" in cache:
+        Tcfg = cache.get("lab_T", np.full(Z.shape[0], np.nan)).astype(np.float64)
+    else:
+        Tcfg = np.sign(C) * np.sign(S)
+        Tcfg[~(np.isfinite(C) & np.isfinite(S))] = np.nan
     OR = cache.get("lab_orientation", np.array(["pooled"] * Z.shape[0], dtype=object))
     PT = cache.get("lab_PT_ms", None)  # ms
     IC = cache.get("lab_is_correct", np.ones(Z.shape[0], dtype=bool))
@@ -180,11 +188,11 @@ def train_axes_for_area(
         keep &= np.isfinite(PT) & (PT >= float(pt_min_ms))
 
     # apply trial mask
-    Z = Z[keep]; C = C[keep]; R = R[keep]; S = S[keep]; OR = OR[keep]
+    Z = Z[keep]; C = C[keep]; R = R[keep]; S = S[keep]; Tcfg = Tcfg[keep]; OR = OR[keep]
     meta = dict(
         n_trials=int(Z.shape[0]), n_bins=int(Z.shape[1]), n_units=int(Z.shape[2]),
         orientation=orientation, pt_min_ms=(float(pt_min_ms) if pt_min_ms is not None else None),
-        feature_set=feature_set, winC=winC, winR=winR, winS=winS,
+        feature_set=feature_set, winC=winC, winR=winR, winS=winS, winT=winC,
         C_dim=int(C_dim), R_dim=int(R_dim), S_dim=int(S_dim),
         select_mode=(select_mode or "none"), select_frac=float(select_mode and select_frac or 1.0),
         sC_invariance=None,  # filled below if trained
@@ -194,6 +202,7 @@ def train_axes_for_area(
     sR_mat = None
     sS_raw = None
     sS_inv = None
+    sT_vec = None
     sO_vec = None  # NEW: context / orientation axis
 
     # ---------- Train sC ----------
@@ -370,6 +379,29 @@ def train_axes_for_area(
             meta["sSraw_auc_mean"] = float(aucS); meta["sS_C"] = float(CbestS); meta["sS_n"] = int(Xs.shape[0])
             meta["cos_sSraw_sC"] = (None if cos is None else float(cos))
 
+    # ---------- Train sT (target configuration) ----------
+    # For now we use the same training window as C (winC). This is typically a stim-aligned axis.
+    if "T" in feature_set and winC is not None:
+        mT = window_mask(time_s, winC)
+        Xt_full = avg_over_window(Z, mT)  # (N x U)
+        yt = Tcfg.copy()
+        okt = ~np.isnan(yt)
+        Xt = Xt_full[okt]; yT = yt[okt]
+        if Xt.shape[0] >= 20 and np.unique(np.sign(yT)).size >= 2:
+            clfT, aucT, CbestT = cv_logreg_binary(Xt, yT, Cworth, sample_weight=None)
+            wT = clfT.coef_.ravel().astype(np.float64)
+            sT_vec = unit_vec(wT)
+            # orient to positive AUC
+            t_scores = Xt @ sT_vec
+            aucT0 = auc_binary_scores(t_scores, yT)
+            if np.isfinite(aucT0) and aucT0 < 0.5:
+                sT_vec = -sT_vec
+                aucT0 = 1.0 - aucT0
+            meta["sT_auc_mean"] = float(aucT)
+            meta["sT_auc_proj"] = float(aucT0) if np.isfinite(aucT0) else np.nan
+            meta["sT_C"] = float(CbestT)
+            meta["sT_n"] = int(Xt.shape[0])
+
     # ---------- Train sO (context / orientation axis) ----------
     if "O" in feature_set and winC is not None:
         # Use the same window as C by default
@@ -413,7 +445,7 @@ def train_axes_for_area(
 
     # finalize meta with simple AUC checks for trained axes
     res = dict(meta)
-    return AxisPack(sC=sC_vec, sR=sR_mat, sS_raw=sS_raw, sS_inv=sS_inv, meta=res, sO=sO_vec)
+    return AxisPack(sC=sC_vec, sR=sR_mat, sS_raw=sS_raw, sS_inv=sS_inv, sT=sT_vec, meta=res, sO=sO_vec)
 
 def save_axes(out_dir: str, area: str, pack: AxisPack) -> str:
     os.makedirs(out_dir, exist_ok=True)
@@ -424,6 +456,7 @@ def save_axes(out_dir: str, area: str, pack: AxisPack) -> str:
         sR=(pack.sR if pack.sR is not None else np.array([[]])),
         sS_raw=(pack.sS_raw if pack.sS_raw is not None else np.array([])),
         sS_inv=(pack.sS_inv if pack.sS_inv is not None else np.array([])),
+        sT=(pack.sT if pack.sT is not None else np.array([])),
         sO=(pack.sO if pack.sO is not None else np.array([])),  # NEW
         meta=json.dumps(pack.meta),
     )

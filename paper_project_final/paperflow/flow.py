@@ -58,6 +58,7 @@ def _axis_matrix(axes_npz: Dict, feature: str) -> Optional[np.ndarray]:
     C: sC (U,) or (U,1)
     R: sR (U,Kr)
     S: sS_inv (preferred), else sS_raw (U,) or (U,1)
+    T: sT (U,) or (U,1) - target configuration axis
     O: sO (U,) or (U,1) - context / orientation axis
     """
     if feature == "C":
@@ -68,6 +69,8 @@ def _axis_matrix(axes_npz: Dict, feature: str) -> Optional[np.ndarray]:
         a = axes_npz.get("sS_inv", np.array([]))
         if a.size == 0:
             a = axes_npz.get("sS_raw", np.array([]))
+    elif feature == "T":
+        a = axes_npz.get("sT", np.array([]))
     elif feature == "O":  # NEW: context / orientation axis
         a = axes_npz.get("sO", np.array([]))
     else:
@@ -228,7 +231,7 @@ def _null_descriptions(null_method: str) -> Tuple[str, str]:
 def compute_flow_timecourse_for_pair(
     cacheA: Dict, cacheB: Dict,
     axesA: Dict, axesB: Dict,
-    feature: str,                   # 'C' | 'R' | 'S' | 'O'
+    feature: str,                   # 'C' | 'R' | 'S' | 'T' | 'O'
     align: str,                     # 'stim' | 'sacc'
     orientation: Optional[str],
     pt_min_ms: Optional[float],
@@ -312,6 +315,9 @@ def compute_flow_timecourse_for_pair(
             labs_induce = _label_vec(cacheA, "lab_R", mask)  # remove direction means
         elif feature == "R":
             labs_induce = _label_vec(cacheA, "lab_C", mask)  # remove category means
+        elif feature == "T":
+            # For target configuration, default to removing direction means (same choice as C).
+            labs_induce = _label_vec(cacheA, "lab_R", mask)
         elif feature in ("S", "O"):
             # For S and O, subtract per-(C,R) means and keep residual fluctuations
             labs_induce = _encode_joint_labels(cacheA, mask, ("lab_C", "lab_R"))
@@ -571,7 +577,8 @@ def compute_flow_timecourse_for_pair(
             induced_labels=(
                 "CR" if (feature in ("S","O") and induced) else
                 ("R" if (feature=="C" and induced) else
-                 ("C" if (feature=="R" and induced) else "none"))
+                 ("C" if (feature=="R" and induced) else
+                  ("R" if (feature=="T" and induced) else "none")))
             ),
             N=int(mask.sum()),
             K_A=int(K_A), K_B=int(K_B),

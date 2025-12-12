@@ -100,6 +100,12 @@ def build_cache_for_session(
     C  = col("category")
     R  = col("direction")  # kept raw; mapping to {1,2,3} for R happens in axes stage if needed
     S  = col("saccade_location_sign")
+    # Target configuration: category × saccade target sign.
+    # Expected coding: category ∈ {±1}, saccade_location_sign ∈ {±1}.
+    # Use sign() to be robust to accidental +1/-1 floats.
+    Tcfg = np.sign(C) * np.sign(S)
+    # If either input is missing/NaN, mark Tcfg as NaN.
+    Tcfg[~(np.isfinite(C) & np.isfinite(S))] = np.nan
     OR = np.where(df.get("targets_vert", pd.Series([np.nan]*nT)).to_numpy(float) == 1, "vertical", "horizontal").astype(object)
     PT = col("PT_ms")
     IC = (df.get("trial_error", pd.Series([0]*nT)).fillna(0).to_numpy(int) == 0)
@@ -140,7 +146,7 @@ def build_cache_for_session(
         np.savez_compressed(
             out_npz,
             X=X, Z=Z, time=((edges[:-1] + edges[1:]) / 2.0).astype(np.float32),
-            lab_C=C, lab_R=R, lab_S=S, lab_orientation=OR,
+            lab_C=C, lab_R=R, lab_S=S, lab_T=Tcfg, lab_orientation=OR,
             lab_PT_ms=PT, lab_is_correct=IC, lab_trial_index=df.get("trial_index", pd.Series(range(nT))).to_numpy(int),
             meta=json.dumps(meta)
         )

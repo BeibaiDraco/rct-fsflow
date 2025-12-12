@@ -68,6 +68,8 @@ def _axis_matrix(axes_npz: Dict, feature: str) -> Optional[np.ndarray]:
         a = axes_npz.get("sS_inv", np.array([]))
         if a.size == 0:
             a = axes_npz.get("sS_raw", np.array([]))
+    elif feature == "T":
+        a = axes_npz.get("sT", np.array([]))
     else:
         a = np.array([])
     if a.size == 0:
@@ -378,7 +380,7 @@ def main():
     ap.add_argument("--out_root", default="out")
     ap.add_argument("--align", default="stim")
     ap.add_argument("--areas", nargs=2, required=True, metavar=("A", "B"))
-    ap.add_argument("--feature", default="C", choices=["C", "R", "S"])
+    ap.add_argument("--feature", default="C", choices=["C", "R", "S", "T"])
     ap.add_argument("--tag", default=None)
     ap.add_argument("--orientation", default="vertical")
     ap.add_argument("--pt_min_ms", type=float, default=200.0)

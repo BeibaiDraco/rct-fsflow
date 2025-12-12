@@ -55,13 +55,13 @@ def main():
     feats = list(dict.fromkeys([f for f in args.features]))  # unique preserve order
     # choose windows by alignment
     if args.align == "stim":
-        feats = [f for f in feats if f in ("C","R","O")]  # keep O for stim
-        winC = _parse_range_arg(args.winC_stim) if ("C" in feats or "O" in feats) else None
+        feats = [f for f in feats if f in ("C","R","T","O")]  # allow T for stim
+        winC = _parse_range_arg(args.winC_stim) if (("C" in feats) or ("T" in feats) or ("O" in feats)) else None
         winR = _parse_range_arg(args.winR_stim) if "R" in feats else None
         winS = None
         pt_min = (None if args.no_pt_filter else args.pt_min_ms_stim)
     else:
-        feats = [f for f in feats if f in ("C","S","O")]  # allow O for sacc if desired
+        feats = [f for f in feats if f in ("C","S","T","O")]  # allow T for sacc if desired
         winC = _parse_range_arg(args.winC_sacc) if ("C" in feats or "O" in feats) else None
         winR = None
         winS = _parse_range_arg(args.winS_sacc) if "S" in feats else None
@@ -114,7 +114,7 @@ def new_argparser():
     ap.add_argument("--sid", required=True)
     apartment = ap.add_argument
     ap.add_argument("--areas", nargs="*", default=None)
-    ap.add_argument("--features", nargs="+", default=["C","R","S","O"], choices=["C","R","S","O"])
+    ap.add_argument("--features", nargs="+", default=["C","R","S","T","O"], choices=["C","R","S","T","O"])
     ap.add_argument("--orientation", choices=["vertical","horizontal","pooled"], default="vertical")
     ap.add_argument("--tag", default=None,
                     help="Optional tag; if set, write axes to out/<align>/<sid>/axes/<tag>/")

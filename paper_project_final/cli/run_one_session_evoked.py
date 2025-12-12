@@ -19,20 +19,28 @@ Example: vertical axes + pooled flow:
 
 from __future__ import annotations
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
 from typing import List
 
 CLI_FLOW = "cli/flow_session.py"
+CLI_TRAIN = "cli/train_axes.py"
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 def run(cmd, dry=False, continue_on_error=False):
     print("[RUN]", " ".join(cmd))
     if dry:
         return 0
     try:
-        res = subprocess.run(cmd, check=True)
+        env = os.environ.copy()
+        # Make CLI scripts runnable even if PYTHONPATH wasn't set by the caller.
+        # (Cluster sbatch scripts already do this, but local runs often don't.)
+        pp = str(PROJECT_ROOT)
+        env["PYTHONPATH"] = pp + (f":{env['PYTHONPATH']}" if env.get("PYTHONPATH") else "")
+        res = subprocess.run(cmd, check=True, env=env)
         return res.returncode
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] command failed (exit {e.returncode}): {' '.join(cmd)}", file=sys.stderr)
@@ -74,6 +82,20 @@ def main():
                     help="Orientation for axes tag; defaults to --orientation if not specified")
     ap.add_argument("--evoked_sigma_ms", type=float, default=10.0,
                     help="Gaussian smoothing sigma for evoked PSTH (ms) (default: 10)")
+    ap.add_argument("--stim_feature", default="C",
+                    choices=["C", "R", "T", "O"],
+                    help="Feature to run for stim alignment (default: C)")
+    ap.add_argument("--sacc_feature", default="S",
+                    choices=["S", "C", "T", "O", "none"],
+                    help="Feature to run for sacc alignment; use 'none' to skip sacc (default: S)")
+    ap.add_argument("--train_axes", action="store_true",
+                    help="Train axes before running flow (writes axes into the requested axes_tag).")
+    ap.add_argument("--train_features_stim", nargs="+", default=None,
+                    choices=["C", "R", "T", "O"],
+                    help="Features to train for stim axes when --train_axes is set (default: [stim_feature])")
+    ap.add_argument("--train_features_sacc", nargs="+", default=None,
+                    choices=["C", "S", "T", "O"],
+                    help="Features to train for sacc axes when --train_axes is set (default: [sacc_feature] if not 'none')")
     ap.add_argument("--python", default=sys.executable,
                     help="Python interpreter to use (default: current)")
     ap.add_argument("--dry_run", action="store_true",
@@ -93,13 +115,17 @@ def main():
     print(f"[info] orientation={args.orientation}")
     print(f"[info] axes_orientation={axes_orientation}")
     print(f"[info] evoked_sigma_ms={args.evoked_sigma_ms}")
+    print(f"[info] stim_feature={args.stim_feature}")
+    print(f"[info] sacc_feature={args.sacc_feature}")
+    print(f"[info] train_axes={args.train_axes}")
 
     # Detect which alignments exist
     aligns: List[str] = []
     if (out_root / "stim" / args.sid / "caches").is_dir():
         aligns.append("stim")
     if (out_root / "sacc" / args.sid / "caches").is_dir():
-        aligns.append("sacc")
+        if args.sacc_feature != "none":
+            aligns.append("sacc")
     if not aligns:
         print(f"[WARN] No caches found for SID={args.sid} under {out_root}/stim or /sacc")
         return
@@ -112,11 +138,30 @@ def main():
 
         # Features per align
         if align == "stim":
-            feat = "C"
+            feat = args.stim_feature
             lags_ms = args.lags_ms_stim
         else:  # sacc
-            feat = "S"
+            feat = args.sacc_feature
             lags_ms = args.lags_ms_sacc
+
+        # Optionally train axes first (writes into the same axes_tag we will load)
+        if args.train_axes:
+            if align == "stim":
+                feats_train = args.train_features_stim or [feat]
+            else:
+                feats_train = args.train_features_sacc or [feat]
+            # filter out accidental 'none'
+            feats_train = [f for f in feats_train if f != "none"]
+            train_cmd = [args.python, CLI_TRAIN,
+                         "--out_root", str(out_root),
+                         "--align", align,
+                         "--sid", args.sid,
+                         "--orientation", axes_orientation,
+                         "--tag", axes_tag,
+                         "--features", *feats_train]
+            rc = run(train_cmd, dry=args.dry_run, continue_on_error=args.continue_on_error)
+            if rc and not args.continue_on_error:
+                return
 
         # Flow tag
         flow_tag_base_align = f"{args.flow_tag_base}-{align}"
