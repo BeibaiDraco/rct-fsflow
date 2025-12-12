@@ -118,6 +118,189 @@ def parse_window(s: str) -> Tuple[float, float]:
     return float(a), float(b)
 
 
+def find_qc_tag_for_flow_tag(out_root: Path, align: str, sid: str, flow_tag: str) -> Optional[str]:
+    """
+    Try to find a QC tag that corresponds to a flow tag.
+    Looks for QC directories under out/<align>/<sid>/qc/ and tries to match
+    based on common patterns (e.g., flow tag might have extra suffixes).
+    
+    Flow tags often have format like: "crsweep-stim-vertical-none-trial"
+    QC tags often have format like: "axes_sweep-stim-vertical"
+    
+    Returns the QC tag if found, None otherwise.
+    """
+    qc_base = out_root / align / sid / "qc"
+    if not qc_base.exists():
+        return None
+    
+    # Try exact match first
+    if (qc_base / flow_tag).exists():
+        return flow_tag
+    
+    # Try to find a QC tag that's a prefix of the flow tag
+    # Flow tags often have suffixes like "-none-trial", "-zreg-trial", etc.
+    # QC tags might be the base part
+    flow_parts = flow_tag.split("-")
+    for i in range(len(flow_parts), 0, -1):
+        candidate = "-".join(flow_parts[:i])
+        if (qc_base / candidate).exists():
+            return candidate
+    
+    # Try converting flow tag pattern to QC tag pattern
+    # e.g., "crsweep-stim-vertical-none-trial" -> "axes_sweep-stim-vertical"
+    # Remove common flow suffixes: "-none-trial", "-zreg-trial", "-none-circ", etc.
+    flow_clean = flow_tag
+    for suffix in ["-none-trial", "-zreg-trial", "-none-circ", "-zreg-circ", 
+                   "-none-phase", "-zreg-phase", "-trial", "-circ", "-phase"]:
+        if flow_clean.endswith(suffix):
+            flow_clean = flow_clean[:-len(suffix)]
+            break
+    
+    # Try replacing "cr" prefix with "axes_" prefix
+    if flow_clean.startswith("cr"):
+        qc_candidate = "axes" + flow_clean[2:]  # "crsweep" -> "axessweep"
+        if (qc_base / qc_candidate).exists():
+            return qc_candidate
+        # Also try with underscore: "axes_sweep"
+        qc_candidate2 = "axes_" + flow_clean[2:]
+        if (qc_base / qc_candidate2).exists():
+            return qc_candidate2
+    
+    # Try matching by key components (align and orientation)
+    flow_parts_set = set(flow_parts)
+    best_match = None
+    best_score = 0
+    for qc_dir in qc_base.iterdir():
+        if qc_dir.is_dir():
+            qc_tag_name = qc_dir.name
+            qc_parts_set = set(qc_tag_name.split("-"))
+            # Count matching parts
+            common = flow_parts_set & qc_parts_set
+            # Prefer matches that include align and orientation
+            score = len(common)
+            if align in common:
+                score += 2
+            if any(ori in common for ori in ["vertical", "horizontal", "pooled"]):
+                score += 2
+            if score > best_score:
+                best_score = score
+                best_match = qc_tag_name
+    
+    # Only return if we have a reasonable match (at least 2 common parts)
+    if best_score >= 2:
+        return best_match
+    
+    return None
+
+
+def load_qc_json(out_root: Path, align: str, sid: str, qc_tag: str, area: str) -> Optional[Dict]:
+    """
+    Load QC JSON file for a given area.
+    Returns the parsed JSON dict, or None if file doesn't exist.
+    """
+    qc_path = out_root / align / sid / "qc" / qc_tag / f"qc_axes_{area}.json"
+    if not qc_path.exists():
+        return None
+    try:
+        with open(qc_path, "r") as f:
+            return json.load(f)
+    except (json.JSONDecodeError, IOError) as e:
+        warnings.warn(f"Failed to load QC JSON {qc_path}: {e}")
+        return None
+
+
+def feature_to_qc_metric(feature: str) -> str:
+    """
+    Map feature name to QC metric name.
+    C -> auc_C, R -> acc_R_macro, S -> auc_S_inv (prefer inv over raw)
+    """
+    mapping = {
+        "C": "auc_C",
+        "R": "acc_R_macro",
+        "S": "auc_S_inv",  # prefer inverse over raw
+    }
+    return mapping.get(feature.upper(), "auc_C")  # default to auc_C
+
+
+def check_qc_passes(qc_data: Dict, metric: str, threshold: float) -> bool:
+    """
+    Check if a QC metric ever reaches the threshold.
+    
+    Parameters
+    ----------
+    qc_data : dict
+        Parsed QC JSON data
+    metric : str
+        Metric name (e.g., "auc_C", "acc_R_macro", "auc_S_inv")
+    threshold : float
+        Threshold value (e.g., 0.75)
+    
+    Returns
+    -------
+    bool
+        True if the metric reaches threshold at any time point, False otherwise
+    """
+    # For S feature, try auc_S_inv first, fall back to auc_S_raw
+    if metric == "auc_S_inv":
+        if metric in qc_data and qc_data[metric] is not None:
+            metric_to_check = metric
+        elif "auc_S_raw" in qc_data and qc_data["auc_S_raw"] is not None:
+            metric_to_check = "auc_S_raw"
+        else:
+            return False
+    else:
+        metric_to_check = metric
+    
+    if metric_to_check not in qc_data:
+        return False
+    
+    metric_values = qc_data[metric_to_check]
+    if metric_values is None:
+        return False
+    
+    # Check if any value reaches threshold
+    metric_arr = np.asarray(metric_values, dtype=float)
+    valid_mask = np.isfinite(metric_arr)
+    if not np.any(valid_mask):
+        return False
+    
+    return bool(np.any(metric_arr[valid_mask] >= threshold))
+
+
+def check_area_qc(
+    out_root: Path,
+    align: str,
+    sid: str,
+    flow_tag: str,
+    area: str,
+    feature: str,
+    qc_threshold: float,
+) -> bool:
+    """
+    Check if an area passes QC for a given feature.
+    
+    Returns True if QC passes (or if QC data is unavailable), False if QC fails.
+    """
+    # Find corresponding QC tag
+    qc_tag = find_qc_tag_for_flow_tag(out_root, align, sid, flow_tag)
+    if qc_tag is None:
+        # If no QC tag found, we can't check - default to passing
+        # (could also return False to be strict, but user might want to be lenient)
+        return True
+    
+    # Load QC data
+    qc_data = load_qc_json(out_root, align, sid, qc_tag, area)
+    if qc_data is None:
+        # No QC data available - default to passing
+        return True
+    
+    # Get the appropriate metric for this feature
+    metric = feature_to_qc_metric(feature)
+    
+    # Check if metric reaches threshold
+    return check_qc_passes(qc_data, metric, qc_threshold)
+
+
 def safe_z(bits: np.ndarray, mu: np.ndarray, sd: np.ndarray) -> np.ndarray:
     z = np.full_like(bits, np.nan, dtype=float)
     mask = np.isfinite(bits) & np.isfinite(mu) & np.isfinite(sd) & (sd > 0)
@@ -387,6 +570,7 @@ def summarize_for_tag_align_feature(
     win: Tuple[float, float],
     rebin_win_s: Optional[float] = None,
     rebin_step_s: Optional[float] = None,
+    qc_threshold: Optional[float] = None,
 ) -> None:
     """
     Summarize flows across sessions for one (align, tag, feature).
@@ -398,6 +582,10 @@ def summarize_for_tag_align_feature(
         Window size in seconds for rebinned z panel (e.g. 0.05 for 50 ms).
     rebin_step_s : float, optional
         Step size in seconds between rebinned windows (e.g. 0.02 for 20 ms).
+    qc_threshold : float, optional
+        QC threshold (e.g., 0.75). If None, QC filtering is disabled.
+        If provided, flow results are filtered: A->B is excluded if area A fails QC,
+        and B->A is excluded if area B fails QC.
     """
     for monkey_label in ("M", "S"):
         pairs = canonical_pairs(monkey_label)
@@ -426,6 +614,24 @@ def summarize_for_tag_align_feature(
                 if not (p_fwd.is_file() and p_rev.is_file()):
                     continue
 
+                # QC filtering: check if areas pass QC threshold
+                qc_pass_A = True
+                qc_pass_B = True
+                if qc_threshold is not None:
+                    # A->B flow: area A must pass QC (A is the source)
+                    qc_pass_A = check_area_qc(out_root, align, sid, tag, A, feature, qc_threshold)
+                    # B->A flow: area B must pass QC (B is the source)
+                    qc_pass_B = check_area_qc(out_root, align, sid, tag, B, feature, qc_threshold)
+                    
+                    # Skip session if both directions fail QC
+                    if not qc_pass_A and not qc_pass_B:
+                        print(f"[qc-filter] {sid}: {A} and {B} both fail QC (threshold={qc_threshold}), skipping session")
+                        continue
+                    elif not qc_pass_A:
+                        print(f"[qc-filter] {sid}: {A} fails QC (threshold={qc_threshold}), excluding A->B")
+                    elif not qc_pass_B:
+                        print(f"[qc-filter] {sid}: {B} fails QC (threshold={qc_threshold}), excluding B->A")
+
                 Zf = np.load(p_fwd, allow_pickle=True)
                 Zr = np.load(p_rev, allow_pickle=True)
 
@@ -439,8 +645,8 @@ def summarize_for_tag_align_feature(
                             f"pair {A}->{B}, sid={sid}"
                         )
 
-                bits_AB = np.asarray(Zf["bits_AtoB"], dtype=float)
-                bits_BA = np.asarray(Zr["bits_AtoB"], dtype=float)
+                bits_AB_raw = np.asarray(Zf["bits_AtoB"], dtype=float)
+                bits_BA_raw = np.asarray(Zr["bits_AtoB"], dtype=float)
                 mu_AB = np.asarray(Zf["null_mean_AtoB"], dtype=float)
                 sd_AB = np.asarray(Zf["null_std_AtoB"], dtype=float)
                 mu_BA = np.asarray(Zr["null_mean_AtoB"], dtype=float)
@@ -448,12 +654,17 @@ def summarize_for_tag_align_feature(
                 p_AB = np.asarray(Zf["p_AtoB"], dtype=float)
                 p_BA = np.asarray(Zr["p_BtoA"], dtype=float) if "p_BtoA" in Zr else np.asarray(Zr["p_AtoB"], dtype=float)
 
+                # Apply QC filtering: set to NaN if QC fails
+                bits_AB = bits_AB_raw.copy() if qc_pass_A else np.full_like(bits_AB_raw, np.nan)
+                bits_BA = bits_BA_raw.copy() if qc_pass_B else np.full_like(bits_BA_raw, np.nan)
+
                 z_AB = safe_z(bits_AB, mu_AB, sd_AB)
                 z_BA = safe_z(bits_BA, mu_BA, sd_BA)
                 diff_bits = bits_AB - bits_BA
 
-                sig_AB = (p_AB < alpha) & np.isfinite(p_AB)
-                sig_BA = (p_BA < alpha) & np.isfinite(p_BA)
+                # Only mark as significant if QC passes
+                sig_AB = (p_AB < alpha) & np.isfinite(p_AB) & qc_pass_A
+                sig_BA = (p_BA < alpha) & np.isfinite(p_BA) & qc_pass_B
 
                 # window mask in seconds
                 ws, we = win
@@ -569,6 +780,8 @@ def summarize_for_tag_align_feature(
                 win_end_s=float(win[1]),
                 n_sessions=n_sessions,
             )
+            if qc_threshold is not None:
+                meta["qc_threshold"] = float(qc_threshold)
             meta_json = json.dumps(meta)
 
             out_path_npz = summary_dir / f"summary_{pair_name}.npz"
@@ -655,6 +868,10 @@ def main():
     ap.add_argument("--rebin_step", type=float, default=None,
                     help="Optional step size in seconds between rebinned windows "
                          "(e.g. 0.02 for 20 ms). Default: equal to rebin_win.")
+    ap.add_argument("--qc_threshold", type=float, default=None,
+                    help="QC threshold for filtering (e.g., 0.75). If provided, flow results "
+                         "are filtered: A->B is excluded if area A fails QC, and B->A is "
+                         "excluded if area B fails QC. If None, no QC filtering is applied.")
     args = ap.parse_args()
     
     # Parse rebin parameters
@@ -714,6 +931,7 @@ def main():
                     win=win,
                     rebin_win_s=rebin_win,
                     rebin_step_s=rebin_step,
+                    qc_threshold=args.qc_threshold,
                 )
 
     print("\n[done] summary + figures completed.")

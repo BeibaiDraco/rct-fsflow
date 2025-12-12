@@ -42,5 +42,6 @@ echo "[info] OUT_ROOT=$OUT_ROOT"
 python cli/summarize_flow_across_sessions.py \
   --out_root "$OUT_ROOT" \
   --align both \
-  --alpha 0.05
+  --alpha 0.05 \
+  --qc_threshold 0.75
 
