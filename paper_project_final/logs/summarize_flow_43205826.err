@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/summarize_flow_across_sessions.py", line 1154, in <module>
+    main()
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/summarize_flow_across_sessions.py", line 1133, in main
+    summarize_for_tag_align_feature(
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/summarize_flow_across_sessions.py", line 811, in summarize_for_tag_align_feature
+    raise ValueError(
+ValueError: Missing null_samps_AtoB in 20200402 stim cr-none-trial C. Re-run flow_session with --save_null_samples.

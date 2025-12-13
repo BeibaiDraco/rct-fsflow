@@ -102,6 +102,8 @@ def main():
                     help="Print commands only; do not execute")
     ap.add_argument("--continue_on_error", action="store_true",
                     help="Continue if a command fails")
+    ap.add_argument("--save_null_samples", action="store_true",
+                    help="Save per-permutation null samples (needed for old-style group p(t) DIFF).")
     args = ap.parse_args()
 
     out_root = Path(args.out_root)
@@ -189,6 +191,9 @@ def main():
                     "--no_induced",
                     "--evoked_subtract",
                     "--evoked_sigma_ms", str(args.evoked_sigma_ms)]
+
+        if args.save_null_samples:
+            flow_cmd.append("--save_null_samples")
 
         rc = run(flow_cmd, dry=args.dry_run, continue_on_error=args.continue_on_error)
         if rc and not args.continue_on_error:

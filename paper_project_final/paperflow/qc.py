@@ -14,9 +14,11 @@ class QCAreaCurves:
     auc_S_raw: Optional[np.ndarray]
     auc_S_inv: Optional[np.ndarray]
     acc_R_macro: Optional[np.ndarray]
+    auc_T: Optional[np.ndarray]           # NEW: T (target config) axis AUC
     lat_C_ms: Optional[float]
     lat_S_raw_ms: Optional[float]
     lat_S_inv_ms: Optional[float]
+    lat_T_ms: Optional[float]             # NEW: T latency
     meta: Dict
 
 def first_k_above(y: np.ndarray, thr: float, k: int) -> int:
@@ -61,6 +63,12 @@ def qc_curves_for_area(
     C = cache.get("lab_C", np.full(Z.shape[0], np.nan)).astype(np.float64)
     R = cache.get("lab_R", np.full(Z.shape[0], np.nan)).astype(np.float64)
     S = cache.get("lab_S", np.full(Z.shape[0], np.nan)).astype(np.float64)
+    # T = category × saccade_location_sign; derive if not stored
+    if "lab_T" in cache:
+        T = cache.get("lab_T", np.full(Z.shape[0], np.nan)).astype(np.float64)
+    else:
+        T = np.sign(C) * np.sign(S)
+        T[~(np.isfinite(C) & np.isfinite(S))] = np.nan
     OR = cache.get("lab_orientation", np.array(["pooled"]*Z.shape[0], dtype=object))
     PT = cache.get("lab_PT_ms", None)
     IC = cache.get("lab_is_correct", np.ones(Z.shape[0], dtype=bool))
@@ -72,7 +80,7 @@ def qc_curves_for_area(
     if pt_min_ms is not None and (PT is not None):
         keep &= np.isfinite(PT) & (PT >= float(pt_min_ms))
 
-    Z = Z[keep]; C = C[keep]; R = R[keep]; S = S[keep]
+    Z = Z[keep]; C = C[keep]; R = R[keep]; S = S[keep]; T = T[keep]
     meta = dict(align=align, orientation=orientation, pt_min_ms=(float(pt_min_ms) if pt_min_ms is not None else None),
                 n_trials=int(Z.shape[0]), n_bins=int(Z.shape[1]), n_units=int(Z.shape[2]), thr=float(thr), k_bins=int(k_bins))
 
@@ -80,12 +88,14 @@ def qc_curves_for_area(
     sR = (axes["sR"] if "sR" in axes and axes["sR"].ndim==2 and axes["sR"].size>0 else None)
     sSr = (axes["sS_raw"] if "sS_raw" in axes and axes["sS_raw"].size else None)
     sSi = (axes["sS_inv"] if "sS_inv" in axes and axes["sS_inv"].size else None)
+    sT = (axes["sT"] if "sT" in axes and axes["sT"].size else None)
 
     B = time_s.size
     aucC  = np.full(B, np.nan)
     aucSr = np.full(B, np.nan)
     aucSi = np.full(B, np.nan)
     accR  = np.full(B, np.nan)
+    aucT  = np.full(B, np.nan)
 
     # Precompute R whitening in its window if present in meta
     mu_R = None; std_R = None
@@ -150,6 +160,17 @@ def qc_curves_for_area(
                 acc = float(np.mean(vals))
                 accR[b] = acc
 
+        # T (target configuration) AUC — stim alignment typically
+        if sT is not None:
+            st = Xb @ sT
+            yT = (T > 0).astype(int)
+            okT = np.isfinite(T)
+            if okT.sum() >= 10 and np.unique(yT[okT]).size == 2:
+                try:
+                    aucT[b] = float(roc_auc_score(yT[okT], st[okT]))
+                except Exception:
+                    pass
+
     # latencies
     idxC = first_k_above(aucC, thr, k_bins) if np.any(np.isfinite(aucC)) else -1
     latC = float(time_s[idxC]*1000.0) if idxC >= 0 else None
@@ -161,6 +182,10 @@ def qc_curves_for_area(
     if np.any(np.isfinite(aucSi)):
         idxSi = first_k_above(aucSi, thr, k_bins)
         latSi = float(time_s[idxSi]*1000.0) if idxSi >= 0 else None
+    latT = None
+    if np.any(np.isfinite(aucT)):
+        idxT = first_k_above(aucT, thr, k_bins)
+        latT = float(time_s[idxT]*1000.0) if idxT >= 0 else None
 
     return QCAreaCurves(
         time=time_s,
@@ -168,7 +193,8 @@ def qc_curves_for_area(
         auc_S_raw=aucSr if (sSr is not None or sSi is not None) else None,
         auc_S_inv=aucSi if sSi is not None else None,
         acc_R_macro=accR if sR is not None else None,
-        lat_C_ms=latC, lat_S_raw_ms=latSr, lat_S_inv_ms=latSi,
+        auc_T=aucT if sT is not None else None,
+        lat_C_ms=latC, lat_S_raw_ms=latSr, lat_S_inv_ms=latSi, lat_T_ms=latT,
         meta=meta,
     )
 

@@ -43,5 +43,9 @@ python cli/summarize_flow_across_sessions.py \
   --out_root "$OUT_ROOT" \
   --align both \
   --alpha 0.05 \
-  --qc_threshold 0.75
+  --qc_threshold 0.75 \
+  --group_diff_p \
+  --group_null_B 4096 \
+  --group_null_seed 12345 \
+  --smooth_ms 50
 

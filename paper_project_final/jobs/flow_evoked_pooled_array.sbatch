@@ -67,5 +67,6 @@ python cli/run_one_session_evoked.py \
   --perms 500 \
   --pt_min_ms 200 \
   --perm-within CR \
-  --evoked_sigma_ms 10
+  --evoked_sigma_ms 10 \
+  --save_null_samples
 

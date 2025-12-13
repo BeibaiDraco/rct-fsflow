@@ -67,6 +67,9 @@ def main():
     ap.add_argument("--axes_tag", default=None,
                     help="If set, read axes from axes/<axes_tag>/... "
                          "(default: try axes/<tag>/ then legacy axes/)")
+    ap.add_argument("--save_null_samples", action="store_true",
+                    help="Save per-permutation null samples into the flow_*.npz "
+                         "(needed for old-style group DIFF p(t)). Warning: large files.")
     args = ap.parse_args()
 
     areas = _areas(args.out_root, args.align, args.sid)
@@ -125,6 +128,7 @@ def main():
                 standardize_mode=args.standardize_mode,
                 evoked_subtract=bool(args.evoked_subtract),
                 evoked_sigma_ms=float(args.evoked_sigma_ms),
+                save_null_samples=bool(args.save_null_samples),
             )
         except ValueError as e:
             print(f"[skip] {A}->{B}: {e}")

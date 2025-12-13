@@ -41,7 +41,8 @@ def _save_json(curves, out_json):
         auc_S_raw=None if curves.auc_S_raw is None else curves.auc_S_raw.tolist(),
         auc_S_inv=None if curves.auc_S_inv is None else curves.auc_S_inv.tolist(),
         acc_R_macro=None if curves.acc_R_macro is None else curves.acc_R_macro.tolist(),
-        latencies_ms=dict(C=curves.lat_C_ms, S_raw=curves.lat_S_raw_ms, S_inv=curves.lat_S_inv_ms),
+        auc_T=None if curves.auc_T is None else curves.auc_T.tolist(),
+        latencies_ms=dict(C=curves.lat_C_ms, S_raw=curves.lat_S_raw_ms, S_inv=curves.lat_S_inv_ms, T=curves.lat_T_ms),
         meta=curves.meta,
     )
     with open(out_json, "w") as f:
@@ -62,6 +63,9 @@ def _plot_curves(curves, out_pdf, area):
     if curves.acc_R_macro is not None:
         h = plt.plot(tms, curves.acc_R_macro, lw=2.2, label="ACC(R | sR) (within C)")[0]
         plt.axhline(1.0/3.0, ls=":", c=h.get_color(), lw=1.0)
+    if curves.auc_T is not None:
+        h = plt.plot(tms, curves.auc_T, lw=2.2, label="AUC(T | sT)")[0]
+        plt.axhline(0.5, ls=":", c=h.get_color(), lw=1.0)
 
     plt.xlabel("Time (ms)")
     plt.ylabel("AUC / Accuracy")
@@ -117,7 +121,7 @@ def main():
         _plot_curves(curves, pdf, area)
         _save_json(curves, os.path.join(qc_dir, f"qc_axes_{area}.json"))
         print(f"[{args.sid}][{area}] wrote {pdf} (+ .png, .json)   "
-              f"lat(ms): C={curves.lat_C_ms}, Sraw={curves.lat_S_raw_ms}, Sinv={curves.lat_S_inv_ms}")
+              f"lat(ms): C={curves.lat_C_ms}, Sraw={curves.lat_S_raw_ms}, Sinv={curves.lat_S_inv_ms}, T={curves.lat_T_ms}")
 
 if __name__ == "__main__":
     main()

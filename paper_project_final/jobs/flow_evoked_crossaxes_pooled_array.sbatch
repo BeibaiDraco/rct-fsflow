@@ -70,7 +70,8 @@ python cli/run_one_session_evoked.py \
   --perms 500 \
   --pt_min_ms 200 \
   --perm-within CR \
-  --evoked_sigma_ms 10
+  --evoked_sigma_ms 10 \
+  --save_null_samples
 
 # ------------ 2) Horizontal axes + Pooled flow ------------
 echo ""
@@ -88,7 +89,8 @@ python cli/run_one_session_evoked.py \
   --perms 500 \
   --pt_min_ms 200 \
   --perm-within CR \
-  --evoked_sigma_ms 10
+  --evoked_sigma_ms 10 \
+  --save_null_samples
 
 echo ""
 echo "[done] Both cross-axes pooled flows complete for SID=$SID"

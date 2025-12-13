@@ -246,6 +246,7 @@ def compute_flow_timecourse_for_pair(
     standardize_mode: str = "none",          # 'none', 'zscore_regressors'
     evoked_subtract: bool = False,
     evoked_sigma_ms: float = 0.0,
+    save_null_samples: bool = False,
 ) -> Dict[str, np.ndarray]:
     """
     Compute time-resolved information flow from area A to area B.
@@ -556,9 +557,19 @@ def compute_flow_timecourse_for_pair(
         null_std_B[start_b:]  = null_std_r
         p_B[start_b:]         = pB_full
 
+    # Optionally save full null sample matrices (for group-level DIFF p(t))
+    null_samps_AtoB = None
+    null_samps_BtoA = None
+    if perms > 0 and save_null_samples:
+        # Pad to full time length with NaNs before start_b
+        null_samps_AtoB = np.full((perms, Bbins), np.nan, dtype=np.float32)
+        null_samps_BtoA = np.full((perms, Bbins), np.nan, dtype=np.float32)
+        null_samps_AtoB[:, start_b:] = all_A.astype(np.float32)
+        null_samps_BtoA[:, start_b:] = all_B.astype(np.float32)
+
     H0_desc, H1_desc = _null_descriptions(null_method)
 
-    return dict(
+    out = dict(
         time=time,
         bits_AtoB=bits_AtoB, bits_BtoA=bits_BtoA,
         null_mean_AtoB=null_mean_A, null_std_AtoB=null_std_A, p_AtoB=p_A,
@@ -585,5 +596,13 @@ def compute_flow_timecourse_for_pair(
             U_A=int(cacheA["Z"].shape[2]), U_B=int(cacheB["Z"].shape[2]),
             n_strata=len(strata_counts) if perms > 0 else 0,
             strata_sizes=strata_counts if perms > 0 else {},
+            save_null_samples=bool(save_null_samples),
         )
     )
+
+    # Add null samples if requested
+    if save_null_samples and (null_samps_AtoB is not None):
+        out["null_samps_AtoB"] = null_samps_AtoB
+        out["null_samps_BtoA"] = null_samps_BtoA
+
+    return out

@@ -310,6 +310,133 @@ def safe_z(bits: np.ndarray, mu: np.ndarray, sd: np.ndarray) -> np.ndarray:
     return z
 
 
+def uniform_smooth_1d(arr: np.ndarray, win_bins: int) -> np.ndarray:
+    """
+    Apply uniform (boxcar) moving average along the last axis.
+    Preserves shape; edges use partial windows (same-padding style via cumsum).
+    
+    Parameters
+    ----------
+    arr : (..., T) array
+        Input array, smoothing applied along last axis.
+    win_bins : int
+        Window size in bins. Must be >= 1.
+    
+    Returns
+    -------
+    smoothed : (..., T) array
+        Smoothed array, same shape as input.
+    """
+    if win_bins <= 1:
+        return arr.copy()
+    
+    # Handle NaN by treating as 0 in sum, track counts
+    orig_shape = arr.shape
+    T = orig_shape[-1]
+    arr_flat = arr.reshape(-1, T)  # (N, T)
+    
+    result = np.empty_like(arr_flat)
+    for i in range(arr_flat.shape[0]):
+        row = arr_flat[i]
+        valid = np.isfinite(row)
+        row_clean = np.where(valid, row, 0.0)
+        
+        # Cumsum trick for O(T) moving average
+        cumsum = np.cumsum(row_clean)
+        cumcount = np.cumsum(valid.astype(float))
+        
+        half = win_bins // 2
+        smoothed = np.empty(T, dtype=float)
+        for t in range(T):
+            lo = max(0, t - half)
+            hi = min(T - 1, t + half)
+            
+            if lo == 0:
+                s = cumsum[hi]
+                c = cumcount[hi]
+            else:
+                s = cumsum[hi] - cumsum[lo - 1]
+                c = cumcount[hi] - cumcount[lo - 1]
+            
+            if c > 0:
+                smoothed[t] = s / c
+            else:
+                smoothed[t] = np.nan
+        
+        result[i] = smoothed
+    
+    return result.reshape(orig_shape)
+
+
+def group_null_p_for_mean_diff(
+    mean_diff: np.ndarray,
+    dnull_list: List[np.ndarray],
+    B: int = 4096,
+    seed: int = 12345,
+    smooth_bins: int = 0,
+) -> np.ndarray:
+    """
+    Old-style empirical group null for DIFF:
+      - For each replicate b=1..B, sample one permutation row from each
+        session's dnull and average across sessions.
+      - p(t) = Pr{ group-null-mean(t) >= observed-mean-diff(t) } (one-sided).
+
+    Parameters
+    ----------
+    mean_diff : (T,) array
+        Observed across-session mean DIFF(t) = mean(bits_AtoB - bits_BtoA).
+    dnull_list : list of (P, T) arrays
+        Per-session null difference matrices: fnull - rnull.
+    B : int
+        Number of group-null replicates.
+    seed : int
+        RNG seed for reproducibility.
+    smooth_bins : int
+        If > 0, apply uniform moving average of this width (in bins) to both
+        observed mean_diff and group null before computing p-values.
+
+    Returns
+    -------
+    p : (T,) array
+        Empirical p-value at each time bin.
+    """
+    rng = np.random.default_rng(seed)
+    T = mean_diff.size
+    S = len(dnull_list)
+    if S == 0:
+        return np.full(T, np.nan)
+
+    acc = np.zeros((B, T), dtype=float)
+    for dnull in dnull_list:
+        P = dnull.shape[0]
+        idx = rng.integers(0, P, size=B)
+        acc += dnull[idx, :]  # (B, T)
+
+    group_mean_null = acc / float(S)  # (B, T)
+
+    # Apply smoothing if requested
+    if smooth_bins > 1:
+        mean_diff_smooth = uniform_smooth_1d(mean_diff[None, :], smooth_bins)[0]
+        group_mean_null_smooth = uniform_smooth_1d(group_mean_null, smooth_bins)
+    else:
+        mean_diff_smooth = mean_diff
+        group_mean_null_smooth = group_mean_null
+
+    p = np.full(T, np.nan, dtype=float)
+    for t in range(T):
+        obs = mean_diff_smooth[t]
+        if not np.isfinite(obs):
+            continue
+        col = group_mean_null_smooth[:, t]
+        m = np.isfinite(col)
+        nv = int(np.sum(m))
+        if nv == 0:
+            continue
+        ge = int(np.sum(col[m] >= obs))
+        p[t] = (1 + ge) / (1 + nv)
+    return p
+
+
 def nanmean_se(arr: np.ndarray, axis: int = 0) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Return (mean, se, n_valid) along axis, ignoring NaNs.
@@ -410,6 +537,8 @@ def plot_summary_figure(
     se_z_AB_rebin: Optional[np.ndarray] = None,
     mean_z_BA_rebin: Optional[np.ndarray] = None,
     se_z_BA_rebin: Optional[np.ndarray] = None,
+    # Group DIFF significance
+    sig_group_diff: Optional[np.ndarray] = None,
 ) -> None:
     """
     Make a summary figure with:
@@ -509,6 +638,16 @@ def plot_summary_figure(
     ax3b.set_ylabel("Fraction p<α")
     ax3b.set_ylim(0, 1.0)
 
+    # Plot significance dots for group DIFF p(t) at bottom of panel 3
+    if sig_group_diff is not None and np.any(sig_group_diff):
+        sig_mask = sig_group_diff.astype(bool)
+        ylim = ax3.get_ylim()
+        y_marker = ylim[0] + 0.05 * (ylim[1] - ylim[0])  # 5% from bottom
+        ax3.scatter(
+            t_ms[sig_mask], np.full(np.sum(sig_mask), y_marker),
+            marker="o", s=12, c="C3", zorder=5, label="p<α (group)"
+        )
+
     # Combined legend for panel 3
     lines1, labels1 = ax3.get_legend_handles_labels()
     lines2, labels2 = ax3b.get_legend_handles_labels()
@@ -573,6 +712,10 @@ def summarize_for_tag_align_feature(
     rebin_win_s: Optional[float] = None,
     rebin_step_s: Optional[float] = None,
     qc_threshold: Optional[float] = None,
+    group_diff_p: bool = False,
+    group_null_B: int = 4096,
+    group_null_seed: int = 12345,
+    smooth_ms: float = 0.0,
 ) -> None:
     """
     Summarize flows across sessions for one (align, tag, feature).
@@ -589,6 +732,17 @@ def summarize_for_tag_align_feature(
         If provided, SYMMETRIC rejection is applied: for a pair (A, B), if EITHER
         area fails QC for this feature, the entire session is excluded for that pair.
         This ensures both directions (A->B and B->A) have the same session count.
+    group_diff_p : bool
+        If True, compute old-style group empirical p(t) for DIFF using saved
+        null samples. Requires flow_*.npz files to contain null_samps_AtoB.
+    group_null_B : int
+        Number of group-null replicates for DIFF p(t) (default: 4096).
+    group_null_seed : int
+        RNG seed for group-null sampling (default: 12345).
+    smooth_ms : float
+        Smoothing window in milliseconds. If > 0, applies uniform moving average
+        to both observed DIFF and group null before computing p-values. Keeps
+        original time resolution. Default 0 (no smoothing).
     """
     for monkey_label in ("M", "S"):
         pairs = canonical_pairs(monkey_label)
@@ -606,6 +760,9 @@ def summarize_for_tag_align_feature(
             win_z_BA = []
             win_diff = []
             win_sig_AB = []
+
+            # For old-style group DIFF p(t)
+            dnull_list = []
 
             session_ids = []
             time = None
@@ -647,6 +804,18 @@ def summarize_for_tag_align_feature(
                             f"Inconsistent time grid for {align}, tag={tag}, feature={feature}, "
                             f"pair {A}->{B}, sid={sid}"
                         )
+
+                # Collect null samples for old-style group DIFF p(t)
+                if group_diff_p:
+                    if "null_samps_AtoB" not in Zf.files or "null_samps_AtoB" not in Zr.files:
+                        # Skip this session for group_diff_p; it was run without --save_null_samples
+                        pass  # dnull_list will be shorter; handled gracefully below
+                    else:
+                        fnull = np.asarray(Zf["null_samps_AtoB"], dtype=float)  # (P, T) from A->B file
+                        rnull = np.asarray(Zr["null_samps_AtoB"], dtype=float)  # (P, T) from B->A file
+                        if fnull.shape != rnull.shape:
+                            raise ValueError(f"Null sample shape mismatch in {sid} for pair {A}-{B}")
+                        dnull_list.append(fnull - rnull)  # (P, T)
 
                 bits_AB = np.asarray(Zf["bits_AtoB"], dtype=float)
                 bits_BA = np.asarray(Zr["bits_AtoB"], dtype=float)
@@ -704,6 +873,16 @@ def summarize_for_tag_align_feature(
                 # no sessions had this pair for this tag/feature/monkey
                 continue
 
+            # Compute smooth_bins from smooth_ms and time array
+            smooth_bins = 0
+            if smooth_ms > 0 and time is not None and len(time) > 1:
+                bin_s = float(time[1] - time[0])  # bin size in seconds
+                bin_ms = bin_s * 1000.0
+                smooth_bins = max(1, int(round(smooth_ms / bin_ms)))
+                if smooth_bins > 1:
+                    print(f"  [smooth] {smooth_ms:.1f}ms -> {smooth_bins} bins "
+                          f"(bin_size={bin_ms:.1f}ms)")
+
             # stack into (N_sessions, T)
             bits_AB_arr = np.vstack(all_bits_AB)
             bits_BA_arr = np.vstack(all_bits_BA)
@@ -719,6 +898,26 @@ def summarize_for_tag_align_feature(
             mean_z_AB,   se_z_AB,   _     = nanmean_se(z_AB_arr,   axis=0)
             mean_z_BA,   se_z_BA,   _     = nanmean_se(z_BA_arr,   axis=0)
             mean_diff,   se_diff,   _     = nanmean_se(diff_arr,   axis=0)
+
+            # Compute old-style group empirical p(t) for DIFF if requested
+            p_group_diff = None
+            sig_group_diff = None
+            if group_diff_p:
+                if len(dnull_list) == 0:
+                    print(f"  [warn] --group_diff_p requested but no sessions have null_samps_AtoB "
+                          f"for {tag}/{feature}/{A}-{B}. Skipping group p(t).")
+                elif len(dnull_list) < len(session_ids):
+                    print(f"  [warn] Only {len(dnull_list)}/{len(session_ids)} sessions have null samples "
+                          f"for {tag}/{feature}/{A}-{B}. Group p(t) uses subset.")
+            if group_diff_p and len(dnull_list) > 0:
+                p_group_diff = group_null_p_for_mean_diff(
+                    mean_diff=mean_diff,
+                    dnull_list=dnull_list,
+                    B=group_null_B,
+                    seed=group_null_seed,
+                    smooth_bins=smooth_bins,
+                )
+                sig_group_diff = (p_group_diff < alpha) & np.isfinite(p_group_diff)
 
             # Optional time rebinning for a 4th panel
             rebin_time_arr = None
@@ -799,6 +998,8 @@ def summarize_for_tag_align_feature(
                 frac_sig_BtoA=frac_sig_BA,
                 mean_diff_bits=mean_diff,
                 se_diff_bits=se_diff,
+                p_group_diff=p_group_diff if p_group_diff is not None else np.array([]),
+                sig_group_diff=sig_group_diff.astype(int) if sig_group_diff is not None else np.array([], dtype=int),
                 win_mean_excess_bits_AtoB=w_mean_excess_AB,
                 win_se_excess_bits_AtoB=w_se_excess_AB,
                 win_mean_excess_bits_BtoA=w_mean_excess_BA,
@@ -840,6 +1041,8 @@ def summarize_for_tag_align_feature(
                 se_z_AB_rebin=se_z_AB_rebin,
                 mean_z_BA_rebin=mean_z_BA_rebin,
                 se_z_BA_rebin=se_z_BA_rebin,
+                # Group DIFF significance
+                sig_group_diff=sig_group_diff,
             )
 
 
@@ -872,6 +1075,18 @@ def main():
                          "rejection is applied: for pair (A,B), if EITHER area fails QC, "
                          "the session is excluded for that pair. This ensures both directions "
                          "have the same N. If None, no QC filtering is applied.")
+    ap.add_argument("--group_diff_p", action="store_true",
+                    help="Compute old-style group empirical p(t) for DIFF using saved "
+                         "null samples. Requires flow_*.npz files to have null_samps_AtoB.")
+    ap.add_argument("--group_null_B", type=int, default=4096,
+                    help="Number of group-null replicates for DIFF p(t) (default: 4096)")
+    ap.add_argument("--group_null_seed", type=int, default=12345,
+                    help="RNG seed for group-null sampling (default: 12345)")
+    ap.add_argument("--smooth_ms", type=float, default=0.0,
+                    help="Smoothing window (ms) for group DIFF p(t). If > 0, applies "
+                         "uniform moving average to both observed DIFF and group null "
+                         "before computing p-values. Keeps original time resolution. "
+                         "E.g., --smooth_ms 50 for 50ms window. Default: 0 (no smoothing).")
     args = ap.parse_args()
     
     # Parse rebin parameters
@@ -932,6 +1147,10 @@ def main():
                     rebin_win_s=rebin_win,
                     rebin_step_s=rebin_step,
                     qc_threshold=args.qc_threshold,
+                    group_diff_p=args.group_diff_p,
+                    group_null_B=args.group_null_B,
+                    group_null_seed=args.group_null_seed,
+                    smooth_ms=args.smooth_ms,
                 )
 
     print("\n[done] summary + figures completed.")

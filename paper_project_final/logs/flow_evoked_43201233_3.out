@@ -1,0 +1,28 @@
+[info] task=3 SID=20200401
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[20200401][MFEF->MLIP] [evoked_subtract_vert-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20200401/flow/evoked_subtract_vert-stim-none-trial/C/flow_C_MFEFtoMLIP.npz
+[20200401][MLIP->MFEF] [evoked_subtract_vert-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20200401/flow/evoked_subtract_vert-stim-none-trial/C/flow_C_MLIPtoMFEF.npz
+[20200401][MFEF->MLIP] [evoked_subtract_vert-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20200401/flow/evoked_subtract_vert-sacc-none-trial/S/flow_S_MFEFtoMLIP.npz
+[20200401][MLIP->MFEF] [evoked_subtract_vert-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20200401/flow/evoked_subtract_vert-sacc-none-trial/S/flow_S_MLIPtoMFEF.npz
+[info] SID=20200401
+[info] axes_tag_base=axes_sweep
+[info] flow_tag_base=evoked_subtract_vert
+[info] orientation=vertical
+[info] axes_orientation=vertical
+[info] evoked_sigma_ms=10.0
+[info] stim_feature=C
+[info] sacc_feature=S
+[info] train_axes=False
+
+[align=stim] SID=20200401
+
+[combo] SID=20200401, align=stim, feat=C, axes_tag=axes_sweep-stim-vertical → flow_tag=evoked_subtract_vert-stim-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20200401 --feature C --orientation vertical --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag evoked_subtract_vert-stim --flow_tag_base evoked_subtract_vert-stim --axes_tag axes_sweep-stim-vertical --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0 --no_induced --evoked_subtract --evoked_sigma_ms 10.0 --save_null_samples
+
+[align=sacc] SID=20200401
+
+[combo] SID=20200401, align=sacc, feat=S, axes_tag=axes_sweep-sacc-vertical → flow_tag=evoked_subtract_vert-sacc-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20200401 --feature S --orientation vertical --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag evoked_subtract_vert-sacc --flow_tag_base evoked_subtract_vert-sacc --axes_tag axes_sweep-sacc-vertical --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0 --no_induced --evoked_subtract --evoked_sigma_ms 10.0 --save_null_samples
+
+[done] SID=20200401 evoked subtraction flow complete.

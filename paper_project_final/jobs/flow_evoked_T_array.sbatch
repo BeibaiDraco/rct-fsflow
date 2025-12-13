@@ -3,7 +3,7 @@
 #SBATCH --partition=voltron
 #SBATCH --qos=voltron
 #SBATCH --account=pi-bdoiron
-#SBATCH --time=10:00:00
+#SBATCH --time=6:00:00
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 # Adjust 1-23 to number of sessions; %32 limits concurrency

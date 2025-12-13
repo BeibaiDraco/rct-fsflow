@@ -1,0 +1,36 @@
+[info] task=17 SID=20231025
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[20231025][SFEF->SLIP] [evoked_subtract_horiz-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231025/flow/evoked_subtract_horiz-stim-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20231025][SFEF->SSC] [evoked_subtract_horiz-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231025/flow/evoked_subtract_horiz-stim-none-trial/C/flow_C_SFEFtoSSC.npz
+[20231025][SLIP->SFEF] [evoked_subtract_horiz-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231025/flow/evoked_subtract_horiz-stim-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20231025][SLIP->SSC] [evoked_subtract_horiz-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231025/flow/evoked_subtract_horiz-stim-none-trial/C/flow_C_SLIPtoSSC.npz
+[20231025][SSC->SFEF] [evoked_subtract_horiz-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231025/flow/evoked_subtract_horiz-stim-none-trial/C/flow_C_SSCtoSFEF.npz
+[20231025][SSC->SLIP] [evoked_subtract_horiz-stim-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231025/flow/evoked_subtract_horiz-stim-none-trial/C/flow_C_SSCtoSLIP.npz
+[20231025][SFEF->SLIP] [evoked_subtract_horiz-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/flow/evoked_subtract_horiz-sacc-none-trial/S/flow_S_SFEFtoSLIP.npz
+[20231025][SFEF->SSC] [evoked_subtract_horiz-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/flow/evoked_subtract_horiz-sacc-none-trial/S/flow_S_SFEFtoSSC.npz
+[20231025][SLIP->SFEF] [evoked_subtract_horiz-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/flow/evoked_subtract_horiz-sacc-none-trial/S/flow_S_SLIPtoSFEF.npz
+[20231025][SLIP->SSC] [evoked_subtract_horiz-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/flow/evoked_subtract_horiz-sacc-none-trial/S/flow_S_SLIPtoSSC.npz
+[20231025][SSC->SFEF] [evoked_subtract_horiz-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/flow/evoked_subtract_horiz-sacc-none-trial/S/flow_S_SSCtoSFEF.npz
+[20231025][SSC->SLIP] [evoked_subtract_horiz-sacc-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/flow/evoked_subtract_horiz-sacc-none-trial/S/flow_S_SSCtoSLIP.npz
+[info] SID=20231025
+[info] axes_tag_base=axes_sweep
+[info] flow_tag_base=evoked_subtract_horiz
+[info] orientation=horizontal
+[info] axes_orientation=horizontal
+[info] evoked_sigma_ms=10.0
+[info] stim_feature=C
+[info] sacc_feature=S
+[info] train_axes=False
+
+[align=stim] SID=20231025
+
+[combo] SID=20231025, align=stim, feat=C, axes_tag=axes_sweep-stim-horizontal → flow_tag=evoked_subtract_horiz-stim-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20231025 --feature C --orientation horizontal --lags_ms 50.0 --ridge 0.01 --perms 500 --perm-within CR --tag evoked_subtract_horiz-stim --flow_tag_base evoked_subtract_horiz-stim --axes_tag axes_sweep-stim-horizontal --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0 --no_induced --evoked_subtract --evoked_sigma_ms 10.0 --save_null_samples
+
+[align=sacc] SID=20231025
+
+[combo] SID=20231025, align=sacc, feat=S, axes_tag=axes_sweep-sacc-horizontal → flow_tag=evoked_subtract_horiz-sacc-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231025 --feature S --orientation horizontal --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag evoked_subtract_horiz-sacc --flow_tag_base evoked_subtract_horiz-sacc --axes_tag axes_sweep-sacc-horizontal --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0 --no_induced --evoked_subtract --evoked_sigma_ms 10.0 --save_null_samples
+
+[done] SID=20231025 evoked subtraction flow complete.
