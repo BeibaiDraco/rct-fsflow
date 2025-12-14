@@ -1,0 +1,31 @@
+[info] task=10 SID=20201211
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[20201211][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20201211/axes/axes_sweep-targ-pooled/axes_MFEF.npz
+[20201211][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20201211/axes/axes_sweep-targ-pooled/axes_MLIP.npz
+[20201211][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20201211/axes/axes_sweep-targ-pooled/axes_MSC.npz
+[ok] session summary → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20201211/axes/axes_sweep-targ-pooled/axes_summary.json
+[20201211][MFEF->MLIP] [evoked_subtract_T_pooled-targ-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20201211/flow/evoked_subtract_T_pooled-targ-none-trial/T/flow_T_MFEFtoMLIP.npz
+[20201211][MFEF->MSC] [evoked_subtract_T_pooled-targ-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20201211/flow/evoked_subtract_T_pooled-targ-none-trial/T/flow_T_MFEFtoMSC.npz
+[20201211][MLIP->MFEF] [evoked_subtract_T_pooled-targ-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20201211/flow/evoked_subtract_T_pooled-targ-none-trial/T/flow_T_MLIPtoMFEF.npz
+[20201211][MLIP->MSC] [evoked_subtract_T_pooled-targ-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20201211/flow/evoked_subtract_T_pooled-targ-none-trial/T/flow_T_MLIPtoMSC.npz
+[20201211][MSC->MFEF] [evoked_subtract_T_pooled-targ-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20201211/flow/evoked_subtract_T_pooled-targ-none-trial/T/flow_T_MSCtoMFEF.npz
+[20201211][MSC->MLIP] [evoked_subtract_T_pooled-targ-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20201211/flow/evoked_subtract_T_pooled-targ-none-trial/T/flow_T_MSCtoMLIP.npz
+[info] SID=20201211
+[info] axes_tag_base=axes_sweep
+[info] flow_tag_base=evoked_subtract_T_pooled
+[info] orientation=pooled
+[info] axes_orientation=pooled
+[info] evoked_sigma_ms=10.0
+[info] stim_feature=none
+[info] sacc_feature=none
+[info] targ_feature=T
+[info] train_axes=True
+
+[align=targ] SID=20201211
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align targ --sid 20201211 --orientation pooled --tag axes_sweep-targ-pooled --features T
+
+[combo] SID=20201211, align=targ, feat=T, axes_tag=axes_sweep-targ-pooled → flow_tag=evoked_subtract_T_pooled-targ-none-trial
+[RUN] /project/bdoiron/dracoxu/rct-fsflow/runtime/venv/bin/python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align targ --sid 20201211 --feature T --orientation pooled --lags_ms 30.0 --ridge 0.01 --perms 500 --perm-within CR --tag evoked_subtract_T_pooled-targ --flow_tag_base evoked_subtract_T_pooled-targ --axes_tag axes_sweep-targ-pooled --null_method trial_shuffle --standardize_mode none --pt_min_ms 200.0 --no_induced --evoked_subtract --evoked_sigma_ms 10.0 --save_null_samples
+
+[done] SID=20201211 evoked subtraction flow complete.

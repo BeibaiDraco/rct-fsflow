@@ -3,6 +3,11 @@
 Summarize flow results across sessions, per tag/config, per align, per feature,
 and per canonical pair, separately for each monkey (M vs S via area prefixes).
 
+Supports three alignments:
+  - stim: aligned to stimulus onset (features: C, R)
+  - sacc: aligned to saccade onset (features: S)
+  - targ: aligned to target onset (features: T)
+
 For each (align, tag, feature, pair A-B, monkey_label) it:
 
   - finds all sessions with both directions present (A->B and B->A)
@@ -37,17 +42,23 @@ The .npz contains:
 
 Usage examples (from paper_project_final/):
 
-  # summarize everything we have (stim + sacc, all tags, default windows)
+  # summarize stim + sacc (default 'both')
   python cli/summarize_flow_across_sessions.py \
       --out_root out \
       --align both \
       --alpha 0.05
 
-  # summarize stim-align only, specific tags
+  # summarize all alignments including targ
   python cli/summarize_flow_across_sessions.py \
       --out_root out \
-      --align stim \
-      --tags crsweep-stim-vertical-none-trial crsweep-stim-vertical-zreg-trial
+      --align all \
+      --alpha 0.05
+
+  # summarize targ-align only
+  python cli/summarize_flow_across_sessions.py \
+      --out_root out \
+      --align targ \
+      --alpha 0.05
 """
 
 from __future__ import annotations
@@ -169,15 +180,28 @@ def find_qc_tag_for_flow_tag(out_root: Path, align: str, sid: str, flow_tag: str
             return qc_candidate2
     
     # Try matching by key components (align and orientation)
-    flow_parts_set = set(flow_parts)
+    # Expand flow_parts to handle abbreviations (vert->vertical, horiz->horizontal)
+    flow_parts_expanded = set(flow_parts)
+    if "vert" in flow_parts_expanded:
+        flow_parts_expanded.add("vertical")
+    if "horiz" in flow_parts_expanded:
+        flow_parts_expanded.add("horizontal")
+    
     best_match = None
     best_score = 0
     for qc_dir in qc_base.iterdir():
         if qc_dir.is_dir():
             qc_tag_name = qc_dir.name
             qc_parts_set = set(qc_tag_name.split("-"))
+            # Also expand QC parts for matching
+            qc_parts_expanded = set(qc_parts_set)
+            if "vert" in qc_parts_expanded:
+                qc_parts_expanded.add("vertical")
+            if "horiz" in qc_parts_expanded:
+                qc_parts_expanded.add("horizontal")
+            
             # Count matching parts
-            common = flow_parts_set & qc_parts_set
+            common = flow_parts_expanded & qc_parts_expanded
             # Prefer matches that include align and orientation
             score = len(common)
             if align in common:
@@ -214,12 +238,13 @@ def load_qc_json(out_root: Path, align: str, sid: str, qc_tag: str, area: str) -
 def feature_to_qc_metric(feature: str) -> str:
     """
     Map feature name to QC metric name.
-    C -> auc_C, R -> acc_R_macro, S -> auc_S_inv (prefer inv over raw)
+    C -> auc_C, R -> acc_R_macro, S -> auc_S_inv (prefer inv over raw), T -> auc_T
     """
     mapping = {
         "C": "auc_C",
         "R": "acc_R_macro",
         "S": "auc_S_inv",  # prefer inverse over raw
+        "T": "auc_T",      # target configuration
     }
     return mapping.get(feature.upper(), "auc_C")  # default to auc_C
 
@@ -1049,9 +1074,9 @@ def summarize_for_tag_align_feature(
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out_root", default="out",
-                    help="Root under which stim/sacc live (default: out)")
-    ap.add_argument("--align", choices=["stim", "sacc", "both"], default="both",
-                    help="Which alignments to summarize (default: both)")
+                    help="Root under which stim/sacc/targ live (default: out)")
+    ap.add_argument("--align", choices=["stim", "sacc", "targ", "both", "all"], default="both",
+                    help="Which alignments to summarize. 'both' = stim+sacc, 'all' = stim+sacc+targ (default: both)")
     ap.add_argument("--tags", nargs="*",
                     help="Flow tags to summarize (e.g. crsweep-stim-vertical-none-trial). "
                          "If omitted, auto-detect per align.")
@@ -1061,8 +1086,10 @@ def main():
                     help="Window [start:end] in seconds for stim-align summary (default: 0.10:0.30)")
     ap.add_argument("--win_sacc", default="-0.20:0.10",
                     help="Window [start:end] in seconds for sacc-align summary (default: -0.20:0.10)")
+    ap.add_argument("--win_targ", default="0.10:0.30",
+                    help="Window [start:end] in seconds for targ-align summary (default: 0.10:0.30)")
     ap.add_argument("--features", nargs="*",
-                    help="Features to include. Default: stim→['C','R'], sacc→['S']")
+                    help="Features to include. Default: stim→['C','R'], sacc→['S'], targ→['T']")
     # NEW: time rebin parameters
     ap.add_argument("--rebin_win", type=float, default=None,
                     help="Optional time window size in seconds for rebinned z panel "
@@ -1095,13 +1122,16 @@ def main():
 
     out_root = Path(args.out_root)
     aligns = []
-    if args.align in ("stim", "both"):
+    if args.align in ("stim", "both", "all"):
         aligns.append("stim")
-    if args.align in ("sacc", "both"):
+    if args.align in ("sacc", "both", "all"):
         aligns.append("sacc")
+    if args.align in ("targ", "all"):
+        aligns.append("targ")
 
     win_stim = parse_window(args.win_stim)
     win_sacc = parse_window(args.win_sacc)
+    win_targ = parse_window(args.win_targ)
 
     for align in aligns:
         sids = find_sessions(out_root, align)
@@ -1120,7 +1150,12 @@ def main():
 
         print(f"[info] align={align}, sessions={len(sids)}, tags={tags}")
 
-        win = win_stim if align == "stim" else win_sacc
+        if align == "stim":
+            win = win_stim
+        elif align == "sacc":
+            win = win_sacc
+        else:  # targ
+            win = win_targ
 
         for tag in tags:
             # discover features for this tag if not explicitly provided

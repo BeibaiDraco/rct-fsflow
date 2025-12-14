@@ -1,0 +1,20 @@
+[info] task=22 SID=20231130
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+
+========== QC: T axes (targ-aligned, vertical) ==========
+[20231130][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20231130/qc/axes_sweep-targ-vertical/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None, T=None
+[20231130][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20231130/qc/axes_sweep-targ-vertical/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None, T=None
+[20231130][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20231130/qc/axes_sweep-targ-vertical/qc_axes_SSC.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None, T=None
+
+========== QC: T axes (targ-aligned, horizontal) ==========
+[20231130][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20231130/qc/axes_sweep-targ-horizontal/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None, T=None
+[20231130][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20231130/qc/axes_sweep-targ-horizontal/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None, T=None
+[20231130][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20231130/qc/axes_sweep-targ-horizontal/qc_axes_SSC.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None, T=None
+
+========== QC: T axes (targ-aligned, pooled) ==========
+[20231130][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20231130/qc/axes_sweep-targ-pooled/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None, T=None
+[20231130][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20231130/qc/axes_sweep-targ-pooled/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None, T=None
+[20231130][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/targ/20231130/qc/axes_sweep-targ-pooled/qc_axes_SSC.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None, T=None
+
+[done] targ-aligned T axes QC complete for SID=20231130 (vertical+horizontal+pooled)

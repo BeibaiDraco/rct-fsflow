@@ -39,9 +39,10 @@ echo "[info] PAPER_HOME=$PAPER_HOME"
 echo "[info] OUT_ROOT=$OUT_ROOT"
 
 # ------------ Run summary across sessions ------------
+# Use --align all to include stim, sacc, and targ alignments
 python cli/summarize_flow_across_sessions.py \
   --out_root "$OUT_ROOT" \
-  --align both \
+  --align all \
   --alpha 0.05 \
   --qc_threshold 0.75 \
   --group_diff_p \

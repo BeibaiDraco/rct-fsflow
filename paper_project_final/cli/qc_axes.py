@@ -80,7 +80,7 @@ def _plot_curves(curves, out_pdf, area):
 def main():
     ap = argparse.ArgumentParser(description="QC curves for trained axes (per area).")
     ap.add_argument("--out_root", default=os.path.join(os.environ.get("PAPER_HOME","."),"out"))
-    ap.add_argument("--align", choices=["stim","sacc"], required=True)
+    ap.add_argument("--align", choices=["stim","sacc","targ"], required=True)
     ap.add_argument("--sid", required=True)
     ap.add_argument("--areas", nargs="*", default=None)
     ap.add_argument("--orientation", choices=["vertical","horizontal","pooled"], default="vertical")
@@ -90,6 +90,7 @@ def main():
     ap.add_argument("--k", type=int, default=5)
     ap.add_argument("--pt_min_ms_sacc", type=float, default=200.0)
     ap.add_argument("--pt_min_ms_stim", type=float, default=200.0)
+    ap.add_argument("--pt_min_ms_targ", type=float, default=200.0)
     ap.add_argument("--no_pt_filter", action="store_true")
     args = ap.parse_args()
 
@@ -101,7 +102,14 @@ def main():
     time_s = any_cache["time"].astype(float)
 
     ori = None if args.orientation == "pooled" else args.orientation
-    pt_thr = None if args.no_pt_filter else (args.pt_min_ms_sacc if args.align=="sacc" else args.pt_min_ms_stim)
+    if args.no_pt_filter:
+        pt_thr = None
+    elif args.align == "sacc":
+        pt_thr = args.pt_min_ms_sacc
+    elif args.align == "targ":
+        pt_thr = args.pt_min_ms_targ
+    else:
+        pt_thr = args.pt_min_ms_stim
 
     for area in areas:
         cache = _load_cache(args.out_root, args.align, args.sid, area)
