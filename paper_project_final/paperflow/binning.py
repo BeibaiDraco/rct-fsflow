@@ -66,8 +66,8 @@ def build_cache_for_session(
     stim_targets_vert_only: bool = True,
 ) -> List[str]:
     """
-    Build caches for all areas in <sid>, aligned to 'stim' or 'sacc'.
-    For align='stim', optionally keep only vertical-layout trials (targets_vert==1) to match legacy fairness.
+    Build caches for all areas in <sid>, aligned to 'stim', 'sacc', or 'targ'.
+    For align='stim' or 'targ', optionally keep only vertical-layout trials (targets_vert==1) to match legacy fairness.
     Writes: <out_root>/<align>/<sid>/caches/area_<AREA>.npz
     Returns list of saved paths.
     """
@@ -82,8 +82,13 @@ def build_cache_for_session(
         if stim_targets_vert_only and "targets_vert" in df.columns:
             df = df[(df["targets_vert"].fillna(0) == 1)]
         event = df["Align_to_cat_stim_on"].to_numpy(float)
+    elif align == "targ":
+        df = df[~df["Align_to_targets_on"].isna()]
+        if stim_targets_vert_only and "targets_vert" in df.columns:
+            df = df[(df["targets_vert"].fillna(0) == 1)]
+        event = df["Align_to_targets_on"].to_numpy(float)
     else:
-        raise ValueError("align must be 'stim' or 'sacc'")
+        raise ValueError("align must be 'stim', 'sacc', or 'targ'")
 
     if correct_only and "trial_error" in df.columns:
         ok = (df["trial_error"].fillna(0) == 0)
@@ -136,7 +141,7 @@ def build_cache_for_session(
             "sid": sid, "area": area, "align_event": align,
             "window": [float(t0), float(t1)], "bin_s": float(bin_s),
             "n_trials": int(nT), "n_units": int(X.shape[-1]),
-            "stim_targets_vert_only": bool(stim_targets_vert_only) if align=="stim" else False,
+            "stim_targets_vert_only": bool(stim_targets_vert_only) if align in ("stim", "targ") else False,
             "correct_only": bool(correct_only),
         }
 

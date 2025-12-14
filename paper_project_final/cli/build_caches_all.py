@@ -6,12 +6,12 @@ from paperflow.io import list_sessions, list_areas
 from paperflow.binning import build_cache_for_session
 
 def main():
-    ap = argparse.ArgumentParser(description="Build binned caches for MANY sessions (stim or sacc).")
+    ap = argparse.ArgumentParser(description="Build binned caches for MANY sessions (stim, sacc, or targ).")
     ap.add_argument("--root", default=os.environ.get("PAPER_DATA",""),
                     help="RCT_02 root (has manifest.json and <sid>/...)")
     ap.add_argument("--out_root", default=os.path.join(os.environ.get("PAPER_HOME","."),"out"),
                     help="Output root (default: $PAPER_HOME/out)")
-    ap.add_argument("--align", choices=["stim","sacc"], default="stim",
+    ap.add_argument("--align", choices=["stim","sacc","targ"], default="stim",
                     help="Which alignment to build caches for (default: stim)")
     ap.add_argument("--min_areas", type=int, default=2,
                     help="Only build for sessions having at least this many valid areas (default: 2)")
@@ -24,6 +24,11 @@ def main():
     ap.add_argument("--sacc_t0", type=float, default=-0.40)
     ap.add_argument("--sacc_t1", type=float, default=+0.30)
     ap.add_argument("--sacc_bin_ms", type=float, default=5.0)
+    ap.add_argument("--targ_t0", type=float, default=-0.20)
+    ap.add_argument("--targ_t1", type=float, default=+0.35)
+    ap.add_argument("--targ_bin_ms", type=float, default=5.0)
+    ap.add_argument("--targ_targets_vert_only", action="store_true", default=False,
+                    help="For targ-align, keep only vertical trials (default: keep both orientations).")
     # optional explicit overrides
     ap.add_argument("--t0", type=float, default=None)
     ap.add_argument("--t1", type=float, default=None)
@@ -47,15 +52,20 @@ def main():
         t1 = args.stim_t1 if args.t1 is None else args.t1
         bin_ms = args.stim_bin_ms if args.bin_ms is None else args.bin_ms
         vert_only = args.stim_targets_vert_only
-    else:
+    elif args.align == "sacc":
         t0 = args.sacc_t0 if args.t0 is None else args.t0
         t1 = args.sacc_t1 if args.t1 is None else args.t1
         bin_ms = args.sacc_bin_ms if args.bin_ms is None else args.bin_ms
         vert_only = False  # never drop orientations at cache time for sacc-align
+    else:  # targ
+        t0 = args.targ_t0 if args.t0 is None else args.t0
+        t1 = args.targ_t1 if args.t1 is None else args.t1
+        bin_ms = args.targ_bin_ms if args.bin_ms is None else args.bin_ms
+        vert_only = args.targ_targets_vert_only
 
     print(f"[info] building caches: align={args.align}  sessions={len(sids)}  "
           f"t0={t0} t1={t1} bin_ms={bin_ms}  min_areas={args.min_areas}  "
-          f"stim_vert_only={vert_only if args.align=='stim' else False}")
+          f"vert_only={vert_only if args.align in ('stim','targ') else False}")
 
     built = 0
     skipped = 0

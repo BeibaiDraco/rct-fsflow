@@ -8,7 +8,7 @@ def main():
     ap = argparse.ArgumentParser(description="Build binned caches for a session (stim- or saccade-aligned).")
     ap.add_argument("--root", default=os.environ.get("PAPER_DATA",""), help="RCT_02 root")
     ap.add_argument("--out_root", default=os.path.join(os.environ.get("PAPER_HOME","."),"out"))
-    ap.add_argument("--align", choices=["stim","sacc"], required=True)
+    ap.add_argument("--align", choices=["stim","sacc","targ"], required=True)
     ap.add_argument("--sid", default=None, help="Session id (8 digits). If absent, use --index.")
     ap.add_argument("--index", type=int, default=None, help="Index into discovered sessions")
 
@@ -21,6 +21,11 @@ def main():
     ap.add_argument("--sacc_t0", type=float, default=-0.40)
     ap.add_argument("--sacc_t1", type=float, default=+0.20)
     ap.add_argument("--sacc_bin_ms", type=float, default=5.0)
+
+    ap.add_argument("--targ_t0", type=float, default=-0.20)
+    ap.add_argument("--targ_t1", type=float, default=+0.35)
+    ap.add_argument("--targ_bin_ms", type=float, default=5.0)
+    ap.add_argument("--targ_targets_vert_only", action="store_true", default=False)
 
     # OPTIONAL explicit overrides
     ap.add_argument("--t0", type=float, default=None)
@@ -50,11 +55,16 @@ def main():
         t1 = args.stim_t1 if args.t1 is None else args.t1
         bin_ms = args.stim_bin_ms if args.bin_ms is None else args.bin_ms
         vert_only = args.stim_targets_vert_only
-    else:
+    elif args.align == "sacc":
         t0 = args.sacc_t0 if args.t0 is None else args.t0
         t1 = args.sacc_t1 if args.t1 is None else args.t1
         bin_ms = args.sacc_bin_ms if args.bin_ms is None else args.bin_ms
         vert_only = False  # never drop orientation at cache time for sacc-align
+    else:  # targ
+        t0 = args.targ_t0 if args.t0 is None else args.t0
+        t1 = args.targ_t1 if args.t1 is None else args.t1
+        bin_ms = args.targ_bin_ms if args.bin_ms is None else args.bin_ms
+        vert_only = args.targ_targets_vert_only
 
     saved = build_cache_for_session(
         root=args.root, sid=sid, align=args.align,

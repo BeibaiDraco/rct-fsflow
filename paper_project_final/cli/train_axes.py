@@ -59,13 +59,22 @@ def main():
         winC = _parse_range_arg(args.winC_stim) if (("C" in feats) or ("T" in feats) or ("O" in feats)) else None
         winR = _parse_range_arg(args.winR_stim) if "R" in feats else None
         winS = None
+        winT = None  # Use winC for T in stim alignment
         pt_min = (None if args.no_pt_filter else args.pt_min_ms_stim)
-    else:
+    elif args.align == "sacc":
         feats = [f for f in feats if f in ("C","S","T","O")]  # allow T for sacc if desired
         winC = _parse_range_arg(args.winC_sacc) if ("C" in feats or "O" in feats) else None
         winR = None
         winS = _parse_range_arg(args.winS_sacc) if "S" in feats else None
+        winT = None  # Use winC for T in sacc alignment
         pt_min = (None if args.no_pt_filter else args.pt_min_ms_sacc)
+    else:  # targ
+        feats = [f for f in feats if f in ("T","O")]  # T is main feature for targ alignment
+        winC = None
+        winR = None
+        winS = None
+        winT = _parse_range_arg(args.winT_targ) if "T" in feats else None
+        pt_min = (None if args.no_pt_filter else args.pt_min_ms_stim)  # use stim PT threshold
 
 
     if not feats:
@@ -78,7 +87,7 @@ def main():
             cache=cache,
             feature_set=feats,
             time_s=time_s,
-            winC=winC, winR=winR, winS=winS,
+            winC=winC, winR=winR, winS=winS, winT=winT,
             orientation=(None if args.orientation == "pooled" else args.orientation),
             C_dim=args.dimC, R_dim=args.dimR, S_dim=args.dimS,
             make_S_invariant=(not args.no_S_invariant),
@@ -96,7 +105,7 @@ def main():
 
     summary = dict(
         sid=args.sid, align=args.align, features=feats,
-        winC=winC, winR=winR, winS=winS,
+        winC=winC, winR=winR, winS=winS, winT=winT,
         pt_min_ms=pt_min,
         orientation=args.orientation,
         areas=areas,
@@ -108,9 +117,9 @@ def main():
     print(f"[ok] session summary → {os.path.join(summary_dir, 'axes_summary.json')}")
 
 def new_argparser():
-    ap = argparse.ArgumentParser(description="Train C/R/S/O subspaces per area for one session.")
+    ap = argparse.ArgumentParser(description="Train C/R/S/T/O subspaces per area for one session.")
     ap.add_argument("--out_root", default=os.path.join(os.environ.get("PAPER_HOME","."), "out"), help="Where to write outputs (default: $PAPER_HOME/out)")
-    ap.add_argument("--align", choices=["stim","sacc"], required=True)
+    ap.add_argument("--align", choices=["stim","sacc","targ"], required=True)
     ap.add_argument("--sid", required=True)
     apartment = ap.add_argument
     ap.add_argument("--areas", nargs="*", default=None)
@@ -124,6 +133,8 @@ def new_argparser():
     ap.add_argument("--winR_stim", nargs="+", default=["0.05:0.20"])
     ap.add_argument("--winC_sacc", nargs="+", default=["-0.30:-0.18"])
     ap.add_argument("--winS_sacc", nargs="+", default=["-0.10:-0.03"])
+    # targ-aligned windows (for T axis training: 50ms to 200ms after targets onset)
+    ap.add_argument("--winT_targ", nargs="+", default=["0.05:0.20"])
 
     # dims
     ap.add_argument("--dimC", type=int, default=1)

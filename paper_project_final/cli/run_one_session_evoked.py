@@ -2,9 +2,10 @@
 """
 Run old-style evoked subtraction flow analysis for ONE session.
 
-For each alignment (stim, sacc):
-  - stim: feature C
-  - sacc: feature S
+For each alignment (stim, sacc, targ):
+  - stim: feature C (default)
+  - sacc: feature S (default)
+  - targ: feature T (target configuration aligned to targets onset)
 
 Uses pre-existing axes (axes_sweep-<align>-<axes_orientation>).
 Only runs flow_session.py (assumes axes already exist).
@@ -15,6 +16,9 @@ Supports:
 
 Example: vertical axes + pooled flow:
   --axes_orientation vertical --orientation pooled
+
+Example: run T flow aligned to targets onset:
+  --targ_feature T --train_axes
 """
 
 from __future__ import annotations
@@ -51,16 +55,18 @@ def run(cmd, dry=False, continue_on_error=False):
 
 def main():
     ap = argparse.ArgumentParser(
-        description="Run evoked subtraction flow for one session (stim: C, sacc: S)."
+        description="Run evoked subtraction flow for one session (stim: C, sacc: S, targ: T)."
     )
     ap.add_argument("--out_root", default="out",
-                    help="Root under which stim/sacc live (default: out)")
+                    help="Root under which stim/sacc/targ live (default: out)")
     ap.add_argument("--sid", required=True,
-                    help="Session ID (under out/stim and/or out/sacc)")
+                    help="Session ID (under out/stim, out/sacc, and/or out/targ)")
     ap.add_argument("--lags_ms_stim", type=float, default=50.0,
                     help="Lags (ms) for stim-aligned flows (default: 50)")
     ap.add_argument("--lags_ms_sacc", type=float, default=30.0,
                     help="Lags (ms) for sacc-aligned flows (default: 30)")
+    ap.add_argument("--lags_ms_targ", type=float, default=30.0,
+                    help="Lags (ms) for targ-aligned flows (default: 30)")
     ap.add_argument("--ridge", type=float, default=1e-2,
                     help="Ridge penalty (default: 1e-2)")
     ap.add_argument("--perms", type=int, default=500,
@@ -83,11 +89,14 @@ def main():
     ap.add_argument("--evoked_sigma_ms", type=float, default=10.0,
                     help="Gaussian smoothing sigma for evoked PSTH (ms) (default: 10)")
     ap.add_argument("--stim_feature", default="C",
-                    choices=["C", "R", "T", "O"],
-                    help="Feature to run for stim alignment (default: C)")
+                    choices=["C", "R", "T", "O", "none"],
+                    help="Feature to run for stim alignment; use 'none' to skip stim (default: C)")
     ap.add_argument("--sacc_feature", default="S",
                     choices=["S", "C", "T", "O", "none"],
                     help="Feature to run for sacc alignment; use 'none' to skip sacc (default: S)")
+    ap.add_argument("--targ_feature", default="none",
+                    choices=["T", "O", "none"],
+                    help="Feature to run for targ alignment (targets onset); use 'none' to skip (default: none)")
     ap.add_argument("--train_axes", action="store_true",
                     help="Train axes before running flow (writes axes into the requested axes_tag).")
     ap.add_argument("--train_features_stim", nargs="+", default=None,
@@ -96,6 +105,9 @@ def main():
     ap.add_argument("--train_features_sacc", nargs="+", default=None,
                     choices=["C", "S", "T", "O"],
                     help="Features to train for sacc axes when --train_axes is set (default: [sacc_feature] if not 'none')")
+    ap.add_argument("--train_features_targ", nargs="+", default=None,
+                    choices=["T", "O"],
+                    help="Features to train for targ axes when --train_axes is set (default: [targ_feature] if not 'none')")
     ap.add_argument("--python", default=sys.executable,
                     help="Python interpreter to use (default: current)")
     ap.add_argument("--dry_run", action="store_true",
@@ -119,17 +131,22 @@ def main():
     print(f"[info] evoked_sigma_ms={args.evoked_sigma_ms}")
     print(f"[info] stim_feature={args.stim_feature}")
     print(f"[info] sacc_feature={args.sacc_feature}")
+    print(f"[info] targ_feature={args.targ_feature}")
     print(f"[info] train_axes={args.train_axes}")
 
     # Detect which alignments exist
     aligns: List[str] = []
     if (out_root / "stim" / args.sid / "caches").is_dir():
-        aligns.append("stim")
+        if args.stim_feature != "none":
+            aligns.append("stim")
     if (out_root / "sacc" / args.sid / "caches").is_dir():
         if args.sacc_feature != "none":
             aligns.append("sacc")
+    if (out_root / "targ" / args.sid / "caches").is_dir():
+        if args.targ_feature != "none":
+            aligns.append("targ")
     if not aligns:
-        print(f"[WARN] No caches found for SID={args.sid} under {out_root}/stim or /sacc")
+        print(f"[WARN] No caches found for SID={args.sid} under {out_root}/stim, /sacc, or /targ (or all features set to 'none')")
         return
 
     for align in aligns:
@@ -142,16 +159,21 @@ def main():
         if align == "stim":
             feat = args.stim_feature
             lags_ms = args.lags_ms_stim
-        else:  # sacc
+        elif align == "sacc":
             feat = args.sacc_feature
             lags_ms = args.lags_ms_sacc
+        else:  # targ
+            feat = args.targ_feature
+            lags_ms = args.lags_ms_targ
 
         # Optionally train axes first (writes into the same axes_tag we will load)
         if args.train_axes:
             if align == "stim":
                 feats_train = args.train_features_stim or [feat]
-            else:
+            elif align == "sacc":
                 feats_train = args.train_features_sacc or [feat]
+            else:  # targ
+                feats_train = args.train_features_targ or [feat]
             # filter out accidental 'none'
             feats_train = [f for f in feats_train if f != "none"]
             train_cmd = [args.python, CLI_TRAIN,

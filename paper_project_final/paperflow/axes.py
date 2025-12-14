@@ -147,6 +147,7 @@ def train_axes_for_area(
     winC: Optional[Tuple[float,float]] = None,
     winR: Optional[Tuple[float,float]] = None,
     winS: Optional[Tuple[float,float]] = None,
+    winT: Optional[Tuple[float,float]] = None,  # window for T axis (default: winC if None)
     orientation: Optional[str] = None,     # 'vertical'|'horizontal'|None
     C_dim: int = 1,
     R_dim: int = 2,
@@ -189,10 +190,12 @@ def train_axes_for_area(
 
     # apply trial mask
     Z = Z[keep]; C = C[keep]; R = R[keep]; S = S[keep]; Tcfg = Tcfg[keep]; OR = OR[keep]
+    # Use explicit winT if provided, else fall back to winC
+    winT_used = winT if winT is not None else winC
     meta = dict(
         n_trials=int(Z.shape[0]), n_bins=int(Z.shape[1]), n_units=int(Z.shape[2]),
         orientation=orientation, pt_min_ms=(float(pt_min_ms) if pt_min_ms is not None else None),
-        feature_set=feature_set, winC=winC, winR=winR, winS=winS, winT=winC,
+        feature_set=feature_set, winC=winC, winR=winR, winS=winS, winT=winT_used,
         C_dim=int(C_dim), R_dim=int(R_dim), S_dim=int(S_dim),
         select_mode=(select_mode or "none"), select_frac=float(select_mode and select_frac or 1.0),
         sC_invariance=None,  # filled below if trained
@@ -380,9 +383,10 @@ def train_axes_for_area(
             meta["cos_sSraw_sC"] = (None if cos is None else float(cos))
 
     # ---------- Train sT (target configuration) ----------
-    # For now we use the same training window as C (winC). This is typically a stim-aligned axis.
-    if "T" in feature_set and winC is not None:
-        mT = window_mask(time_s, winC)
+    # Use winT if provided, else fall back to winC.
+    winT_actual = winT if winT is not None else winC
+    if "T" in feature_set and winT_actual is not None:
+        mT = window_mask(time_s, winT_actual)
         Xt_full = avg_over_window(Z, mT)  # (N x U)
         yt = Tcfg.copy()
         okt = ~np.isnan(yt)

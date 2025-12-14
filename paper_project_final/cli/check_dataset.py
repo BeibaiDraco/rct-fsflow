@@ -23,6 +23,7 @@ def scan_session(root: str, sid: str) -> Dict:
         "saccade_location_sign": has_col(df,"saccade_location_sign"),
         "Align_to_cat_stim_on": has_col(df,"Align_to_cat_stim_on"),
         "Align_to_sacc_on": has_col(df,"Align_to_sacc_on"),
+        "Align_to_targets_on": has_col(df,"Align_to_targets_on"),
         "PT_ms": has_col(df,"PT_ms"),
         "trial_error": has_col(df,"trial_error"),
     }
@@ -30,6 +31,7 @@ def scan_session(root: str, sid: str) -> Dict:
     pct = {
         "pct_has_cat_stim": safe_pct(df["Align_to_cat_stim_on"]) if cols["Align_to_cat_stim_on"] else 0.0,
         "pct_has_sacc_on":  safe_pct(df["Align_to_sacc_on"])     if cols["Align_to_sacc_on"] else 0.0,
+        "pct_has_targets_on": safe_pct(df["Align_to_targets_on"]) if cols["Align_to_targets_on"] else 0.0,
         "pct_has_sacc_sign":safe_pct(df["saccade_location_sign"])if cols["saccade_location_sign"] else 0.0,
         "pct_targets_vert": safe_pct(df["targets_vert"])          if cols["targets_vert"] else 0.0,
     }
@@ -65,6 +67,10 @@ def main():
     work_r = [r["session"] for r in rows if r["ok2"]
               and r["cols"].get("Align_to_cat_stim_on", False)
               and r["cols"].get("direction", False)]
+    work_t = [r["session"] for r in rows if r["ok2"]
+              and r["cols"].get("Align_to_targets_on", False)
+              and r["cols"].get("category", False)
+              and r["cols"].get("saccade_location_sign", False)]
 
     summary = dict(
         root=args.root,
@@ -73,13 +79,14 @@ def main():
         worklists=dict(
             S=work_s,   # saccade: needs sacc_on + sacc_sign
             C=work_c,   # category: needs cat_stim_on + category
-            R=work_r    # direction: needs cat_stim_on + direction
+            R=work_r,   # direction: needs cat_stim_on + direction
+            T=work_t    # target config: needs targets_on + category + saccade_sign
         ),
         sessions=rows
     )
     write_json(summary, args.out)
     print(f"[ok] wrote {args.out}")
-    print(f"[info] eligible: S={len(work_s)}  C={len(work_c)}  R={len(work_r)}")
+    print(f"[info] eligible: S={len(work_s)}  C={len(work_c)}  R={len(work_r)}  T={len(work_t)}")
 
 if __name__ == "__main__":
     main()

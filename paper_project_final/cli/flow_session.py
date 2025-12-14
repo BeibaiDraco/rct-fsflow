@@ -32,7 +32,7 @@ def _ordered_pairs(areas: List[str], subset: Optional[List[str]] = None) -> List
 def main():
     ap = argparse.ArgumentParser(description="Compute session-level flow for all ordered pairs (or a chosen pair).")
     ap.add_argument("--out_root", default=os.path.join(os.environ.get("PAPER_HOME","."),"out"))
-    ap.add_argument("--align", choices=["stim","sacc"], required=True)
+    ap.add_argument("--align", choices=["stim","sacc","targ"], required=True)
     ap.add_argument("--sid", required=True)
     ap.add_argument("--feature", choices=["C","R","S","T","O"], required=True)
     ap.add_argument("--orientation", choices=["vertical","horizontal","pooled"], default="vertical")
