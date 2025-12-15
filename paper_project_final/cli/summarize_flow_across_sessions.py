@@ -564,6 +564,9 @@ def plot_summary_figure(
     se_z_BA_rebin: Optional[np.ndarray] = None,
     # Group DIFF significance
     sig_group_diff: Optional[np.ndarray] = None,
+    # Optional labels for reverse perspective
+    label_A: str = "A",
+    label_B: str = "B",
 ) -> None:
     """
     Make a summary figure with:
@@ -596,7 +599,7 @@ def plot_summary_figure(
     # Panel 1: bits
     ax1.axvline(0, ls="--", c="k", lw=0.8)
     ax1.axvspan(w_start_ms, w_end_ms, color="0.9", alpha=0.5, label="window")
-    ax1.plot(t_ms, mean_bits_AB, color="C0", lw=2.0, label="A→B bits")
+    ax1.plot(t_ms, mean_bits_AB, color="C0", lw=2.0, label=f"{label_A}→{label_B} bits")
     ax1.fill_between(
         t_ms,
         mean_bits_AB - se_bits_AB,
@@ -605,7 +608,7 @@ def plot_summary_figure(
         alpha=0.25,
         linewidth=0,
     )
-    ax1.plot(t_ms, mean_bits_BA, color="C1", lw=2.0, label="B→A bits")
+    ax1.plot(t_ms, mean_bits_BA, color="C1", lw=2.0, label=f"{label_B}→{label_A} bits")
     ax1.fill_between(
         t_ms,
         mean_bits_BA - se_bits_BA,
@@ -622,7 +625,7 @@ def plot_summary_figure(
     ax2.axvline(0, ls="--", c="k", lw=0.8)
     ax2.axhline(0, ls=":", c="k", lw=0.8)
     ax2.axvspan(w_start_ms, w_end_ms, color="0.9", alpha=0.5)
-    ax2.plot(t_ms, mean_z_AB, color="C0", lw=2.0, label="A→B z")
+    ax2.plot(t_ms, mean_z_AB, color="C0", lw=2.0, label=f"{label_A}→{label_B} z")
     ax2.fill_between(
         t_ms,
         mean_z_AB - se_z_AB,
@@ -631,7 +634,7 @@ def plot_summary_figure(
         alpha=0.25,
         linewidth=0,
     )
-    ax2.plot(t_ms, mean_z_BA, color="C1", lw=2.0, label="B→A z")
+    ax2.plot(t_ms, mean_z_BA, color="C1", lw=2.0, label=f"{label_B}→{label_A} z")
     ax2.fill_between(
         t_ms,
         mean_z_BA - se_z_BA,
@@ -647,7 +650,7 @@ def plot_summary_figure(
     ax3.axvline(0, ls="--", c="k", lw=0.8)
     ax3.axhline(0, ls=":", c="k", lw=0.8)
     ax3.axvspan(w_start_ms, w_end_ms, color="0.9", alpha=0.5)
-    ax3.plot(t_ms, mean_diff, color="C3", lw=2.0, label="A→B − B→A")
+    ax3.plot(t_ms, mean_diff, color="C3", lw=2.0, label=f"{label_A}→{label_B} − {label_B}→{label_A}")
     ax3.fill_between(
         t_ms,
         mean_diff - se_diff,
@@ -659,7 +662,7 @@ def plot_summary_figure(
     ax3.set_ylabel("ΔΔLL (bits)")
 
     ax3b = ax3.twinx()
-    ax3b.plot(t_ms, frac_sig_AB, color="k", lw=1.5, ls="--", label="Frac sig A→B")
+    ax3b.plot(t_ms, frac_sig_AB, color="k", lw=1.5, ls="--", label=f"Frac sig {label_A}→{label_B}")
     ax3b.set_ylabel("Fraction p<α")
     ax3b.set_ylim(0, 1.0)
 
@@ -691,7 +694,7 @@ def plot_summary_figure(
         ax4.axvspan(w_start_ms, w_end_ms, color="0.9", alpha=0.5)
 
         # A->B rebinned z
-        ax4.plot(t_win_ms, mean_z_AB_rebin, color="C0", lw=2.0, label="A→B z (rebinned)")
+        ax4.plot(t_win_ms, mean_z_AB_rebin, color="C0", lw=2.0, label=f"{label_A}→{label_B} z (rebinned)")
         ax4.fill_between(
             t_win_ms,
             mean_z_AB_rebin - se_z_AB_rebin,
@@ -702,7 +705,7 @@ def plot_summary_figure(
         )
 
         # B->A rebinned z
-        ax4.plot(t_win_ms, mean_z_BA_rebin, color="C1", lw=2.0, label="B→A z (rebinned)")
+        ax4.plot(t_win_ms, mean_z_BA_rebin, color="C1", lw=2.0, label=f"{label_B}→{label_A} z (rebinned)")
         ax4.fill_between(
             t_win_ms,
             mean_z_BA_rebin - se_z_BA_rebin,
@@ -1040,7 +1043,7 @@ def summarize_for_tag_align_feature(
                 meta_json=np.array(meta_json),
             )
 
-            # Save figure
+            # Save figure for A vs B
             title = (f"{align.upper()} | {tag} | {feature} | {A} vs {B} "
                      f"| monkey={monkey_label} | N={n_sessions}")
             fig_path_pdf = figs_dir / f"{pair_name}.pdf"
@@ -1068,6 +1071,58 @@ def summarize_for_tag_align_feature(
                 se_z_BA_rebin=se_z_BA_rebin,
                 # Group DIFF significance
                 sig_group_diff=sig_group_diff,
+            )
+
+            # Also create reverse figure (B vs A) to show significance from the other perspective
+            # For reverse: diff = B->A - A->B (negative of original), swap all data
+            pair_name_rev = f"{B}_vs_{A}"
+            title_rev = (f"{align.upper()} | {tag} | {feature} | {B} vs {A} "
+                         f"| monkey={monkey_label} | N={n_sessions}")
+            fig_path_pdf_rev = figs_dir / f"{pair_name_rev}.pdf"
+            
+            # Compute group diff p-value for reverse direction (using negative dnull_list)
+            p_group_diff_rev = None
+            sig_group_diff_rev = None
+            if group_diff_p and len(dnull_list) > 0:
+                # For reverse: mean_diff_rev = -mean_diff, dnull_rev = -dnull
+                mean_diff_rev = -mean_diff
+                dnull_list_rev = [-dnull for dnull in dnull_list]  # negate each dnull
+                p_group_diff_rev = group_null_p_for_mean_diff(
+                    mean_diff=mean_diff_rev,
+                    dnull_list=dnull_list_rev,
+                    B=group_null_B,
+                    seed=group_null_seed,
+                    smooth_bins=smooth_bins,
+                )
+                sig_group_diff_rev = (p_group_diff_rev < alpha) & np.isfinite(p_group_diff_rev)
+            
+            plot_summary_figure(
+                out_path_pdf=fig_path_pdf_rev,
+                time=time,
+                mean_bits_AB=mean_bits_BA,  # swapped: B->A becomes first
+                se_bits_AB=se_bits_BA,
+                mean_bits_BA=mean_bits_AB,  # swapped: A->B becomes second
+                se_bits_BA=se_bits_AB,
+                mean_z_AB=mean_z_BA,  # swapped
+                se_z_AB=se_z_BA,
+                mean_z_BA=mean_z_AB,  # swapped
+                se_z_BA=se_z_AB,
+                mean_diff=-mean_diff,  # reverse diff: B->A - A->B
+                se_diff=se_diff,  # SE is same (symmetric)
+                frac_sig_AB=frac_sig_BA,  # show frac_sig_BA in panel 3
+                win=win,
+                title=title_rev,
+                # Rebinned z swapped
+                rebin_time_arr=rebin_time_arr,
+                mean_z_AB_rebin=mean_z_BA_rebin if mean_z_BA_rebin is not None else None,
+                se_z_AB_rebin=se_z_BA_rebin if se_z_BA_rebin is not None else None,
+                mean_z_BA_rebin=mean_z_AB_rebin if mean_z_AB_rebin is not None else None,
+                se_z_BA_rebin=se_z_AB_rebin if se_z_AB_rebin is not None else None,
+                # Group DIFF significance for reverse
+                sig_group_diff=sig_group_diff_rev,
+                # Labels for reverse perspective
+                label_A=B,  # swapped: B becomes first area
+                label_B=A,  # swapped: A becomes second area
             )
 
 
