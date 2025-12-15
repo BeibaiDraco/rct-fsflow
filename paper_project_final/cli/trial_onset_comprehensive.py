@@ -601,8 +601,8 @@ def main():
     
     ap.add_argument("--search_stim", default="0.00:0.5",
                     help="Search window (sec) for stim alignment (default: 0.00:0.60)")
-    ap.add_argument("--search_sacc", default="-0.20:0.30",
-                    help="Search window (sec) for sacc alignment (default: -0.20:0.30)")
+    ap.add_argument("--search_sacc", default="-0.30:0.20",
+                    help="Search window (sec) for sacc alignment (default: -0.30:0.20)")
     ap.add_argument("--search_targ", default="0.00:0.35",
                     help="Search window (sec) for targ alignment (default: 0.00:0.35)")
     
@@ -800,9 +800,25 @@ def main():
                           f"pooled mean(dt)={p_pool_2['obs']:.2f} ms (N_trials={p_pool_2['n_trials']}), "
                           f"p(two)={p_pool_2['p']:.4g}, p(later)={p_pool_1['p']:.4g}")
                     
-                    # Create plot (square figure)
-                    fig = plt.figure(figsize=(7.0, 7.0))
-                    ax = fig.add_subplot(1, 1, 1)
+                    # Create plot with explicit 5x5 inch plot area
+                    # This ensures exact size matching with panel plots in summarize_flow_across_sessions.py
+                    plot_size_in = 5.0  # 5x5 inch plot area
+                    margin_left_in = 1.0
+                    margin_right_in = 0.5
+                    margin_bottom_in = 0.8
+                    margin_top_in = 0.7
+                    
+                    fig_width = plot_size_in + margin_left_in + margin_right_in
+                    fig_height = plot_size_in + margin_bottom_in + margin_top_in
+                    
+                    fig = plt.figure(figsize=(fig_width, fig_height))
+                    # Position axes explicitly: [left, bottom, width, height] in figure fraction
+                    ax = fig.add_axes([
+                        margin_left_in / fig_width,
+                        margin_bottom_in / fig_height,
+                        plot_size_in / fig_width,
+                        plot_size_in / fig_height
+                    ])
                     ax.set_aspect('equal', adjustable='box')  # Square plot area
                     
                     # Clean area names for axis labels (remove monkey prefix)
@@ -823,12 +839,9 @@ def main():
                     ax.plot(median_t1, median_t2, "bs", ms=12, markerfacecolor="blue", 
                             markeredgecolor="darkblue", markeredgewidth=2, zorder=5, label="median")
                     
-                    # Compute axis limits with padding and round to nice numbers
-                    data_lo = np.nanmin(np.r_[t1_all, t2_all])
-                    data_hi = np.nanmax(np.r_[t1_all, t2_all])
-                    # Round down to nearest 100 for min, round up for max, then add padding
-                    axis_lo = np.floor(data_lo / 100) * 100 - 10  # small padding below
-                    axis_hi = np.ceil(data_hi / 100) * 100 + 10   # small padding above
+                    # Use search window for axis limits (convert from sec to ms)
+                    axis_lo = search[0] * 1000.0  # e.g., -0.30 sec = -300 ms
+                    axis_hi = search[1] * 1000.0  # e.g., 0.20 sec = 200 ms
                     
                     # Diagonal line (using full axis range)
                     ax.plot([axis_lo, axis_hi], [axis_lo, axis_hi], "r--", lw=1.5, label="y=x", alpha=0.7)
@@ -843,11 +856,11 @@ def main():
                     tick_values = list(range(tick_lo, tick_hi + 1, 100))
                     ax.set_xticks(tick_values)
                     ax.set_yticks(tick_values)
-                    ax.tick_params(axis='both', which='major', labelsize=14)
+                    ax.tick_params(axis='both', which='major', labelsize=16)
                     
                     # Axis labels (bigger font, clean names)
-                    ax.set_xlabel(f"{a1_label} latency (ms)", fontsize=16)
-                    ax.set_ylabel(f"{a2_label} latency (ms)", fontsize=16)
+                    ax.set_xlabel(f"{a1_label} Latency (ms)", fontsize=18)
+                    ax.set_ylabel(f"{a2_label} Latency (ms)", fontsize=18)
                     
                     # Title with all statistics
                     title = f"{monkey_name} ({a1_name} vs {a2_name}) - {feature_name} [{align}]\n"
@@ -857,16 +870,16 @@ def main():
                     title += f"p(two)={p_pool_2['p']:.3g}, p(later)={p_pool_1['p']:.3g}"
                     ax.set_title(title, fontsize=11)
                     
-                    ax.legend(frameon=False, loc="lower right", fontsize=14)
+                    ax.legend(frameon=False, loc="lower right", fontsize=15)
                     # No grid
                     ax.grid(False)
-                    fig.tight_layout()
+                    # No tight_layout() - we use explicit axes positioning
                     
                     # Save
                     out_png = out_dir / f"monkey_{monkey}_{area1}_vs_{area2}_{feature_name}_summary.png"
                     out_pdf = out_dir / f"monkey_{monkey}_{area1}_vs_{area2}_{feature_name}_summary.pdf"
                     out_svg = out_dir / f"monkey_{monkey}_{area1}_vs_{area2}_{feature_name}_summary.svg"
-                    fig.savefig(out_png, dpi=300)
+                    fig.savefig(out_png, dpi=500)
                     fig.savefig(out_pdf)
                     fig.savefig(out_svg)
                     plt.close(fig)

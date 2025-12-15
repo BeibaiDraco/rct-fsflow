@@ -540,6 +540,202 @@ def rebin_timeseries(
     return centers, rebinned
 
 
+def plot_panel_a_paper(
+    out_path: Path,
+    time: np.ndarray,
+    mean_bits_AB: np.ndarray,
+    se_bits_AB: np.ndarray,
+    mean_bits_BA: np.ndarray,
+    se_bits_BA: np.ndarray,
+    label_A: str,
+    label_B: str,
+    t_min_ms: Optional[float] = None,
+    t_max_ms: Optional[float] = None,
+) -> None:
+    """
+    Paper-quality Panel A figure: bits ± SE (A->B, B->A).
+    - Uses real area names instead of "A -> B bits"
+    - No grey time window
+    - Font sizes matched to trial_onset_comprehensive.py
+    - Plot area height matches the square scatter plot (5 inches)
+    - Plot area width is 2x height (10 inches)
+    
+    Parameters
+    ----------
+    t_min_ms, t_max_ms : float, optional
+        Time range limits in milliseconds. If provided, restricts x-axis.
+    """
+    t_ms = time * 1000.0
+    
+    # Define plot area dimensions (in inches) to match scatter plot height
+    # Scatter plot: 7x7 figure with ~5x5 inch plot area after tight_layout
+    # Panel plot: want 10x5 inch plot area (2:1 aspect, same height)
+    plot_width_in = 10.0
+    plot_height_in = 5.0
+    # Add margins for labels (approximate)
+    margin_left_in = 1.0
+    margin_right_in = 0.5
+    margin_bottom_in = 0.8
+    margin_top_in = 0.5
+    
+    fig_width = plot_width_in + margin_left_in + margin_right_in
+    fig_height = plot_height_in + margin_bottom_in + margin_top_in
+    
+    fig = plt.figure(figsize=(fig_width, fig_height))
+    # Position axes explicitly: [left, bottom, width, height] in figure fraction
+    ax = fig.add_axes([
+        margin_left_in / fig_width,
+        margin_bottom_in / fig_height,
+        plot_width_in / fig_width,
+        plot_height_in / fig_height
+    ])
+    
+    # Vertical line at t=0
+    ax.axvline(0, ls="--", c="k", lw=0.8)
+    
+    # Plot A->B
+    ax.plot(t_ms, mean_bits_AB, color="C0", lw=2.0, label=f"{label_A}→{label_B}")
+    ax.fill_between(
+        t_ms,
+        mean_bits_AB - se_bits_AB,
+        mean_bits_AB + se_bits_AB,
+        color="C0",
+        alpha=0.25,
+        linewidth=0,
+    )
+    
+    # Plot B->A
+    ax.plot(t_ms, mean_bits_BA, color="C1", lw=2.0, label=f"{label_B}→{label_A}")
+    ax.fill_between(
+        t_ms,
+        mean_bits_BA - se_bits_BA,
+        mean_bits_BA + se_bits_BA,
+        color="C1",
+        alpha=0.25,
+        linewidth=0,
+    )
+    
+    # Labels with matched font sizes (from trial_onset_comprehensive.py)
+    ax.set_xlabel("Time (ms)", fontsize=18)
+    ax.set_ylabel("ΔLL (bits)", fontsize=18)
+    ax.tick_params(axis='both', which='major', labelsize=16)
+    ax.legend(loc="upper left", frameon=False, fontsize=15)
+    
+    # Set time range if specified
+    if t_min_ms is not None and t_max_ms is not None:
+        ax.set_xlim(t_min_ms, t_max_ms)
+    
+    # No tight_layout() - we use explicit axes positioning
+    out_dir = out_path.parent
+    out_dir.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path)
+    fig.savefig(out_path.with_suffix(".png"), dpi=300)
+    fig.savefig(out_path.with_suffix(".svg"))
+    plt.close(fig)
+
+
+def plot_panel_c_paper(
+    out_path: Path,
+    time: np.ndarray,
+    mean_diff: np.ndarray,
+    se_diff: np.ndarray,
+    sig_group_diff: Optional[np.ndarray] = None,
+    t_min_ms: Optional[float] = None,
+    t_max_ms: Optional[float] = None,
+    y_min: Optional[float] = None,
+    y_max: Optional[float] = None,
+) -> None:
+    """
+    Paper-quality Panel C figure: Net Flow (diff bits ± SE).
+    - No grey time window
+    - No frac sig secondary axis
+    - Blue color instead of red
+    - Label: "Net Flow"
+    - Significance dots in black
+    - Font sizes matched to trial_onset_comprehensive.py
+    - Plot area height matches the square scatter plot (5 inches)
+    - Plot area width is 2x height (10 inches)
+    
+    Parameters
+    ----------
+    t_min_ms, t_max_ms : float, optional
+        Time range limits in milliseconds. If provided, restricts x-axis.
+    y_min, y_max : float, optional
+        Y-axis limits. If provided, restricts y-axis.
+    """
+    t_ms = time * 1000.0
+    
+    # Define plot area dimensions (in inches) to match scatter plot height
+    # Scatter plot: 7x7 figure with ~5x5 inch plot area after tight_layout
+    # Panel plot: want 10x5 inch plot area (2:1 aspect, same height)
+    plot_width_in = 10.0
+    plot_height_in = 5.0
+    # Add margins for labels (approximate)
+    margin_left_in = 1.0
+    margin_right_in = 0.5
+    margin_bottom_in = 0.8
+    margin_top_in = 0.5
+    
+    fig_width = plot_width_in + margin_left_in + margin_right_in
+    fig_height = plot_height_in + margin_bottom_in + margin_top_in
+    
+    fig = plt.figure(figsize=(fig_width, fig_height))
+    # Position axes explicitly: [left, bottom, width, height] in figure fraction
+    ax = fig.add_axes([
+        margin_left_in / fig_width,
+        margin_bottom_in / fig_height,
+        plot_width_in / fig_width,
+        plot_height_in / fig_height
+    ])
+    
+    # Vertical and horizontal reference lines
+    ax.axvline(0, ls="--", c="k", lw=0.8)
+    ax.axhline(0, ls=":", c="k", lw=0.8)
+    
+    # Plot Net Flow in indigo
+    ax.plot(t_ms, mean_diff, color="darkcyan", lw=3, label="Net Flow")
+    ax.fill_between(
+        t_ms,
+        mean_diff - se_diff,
+        mean_diff + se_diff,
+        color="darkcyan",
+        alpha=0.25,
+        linewidth=0,
+    )
+    
+    # Set y-axis limits if specified (before plotting significance dots)
+    if y_min is not None and y_max is not None:
+        ax.set_ylim(y_min, y_max)
+    
+    # Plot significance dots in black (larger size)
+    if sig_group_diff is not None and np.any(sig_group_diff):
+        sig_mask = sig_group_diff.astype(bool)
+        ylim = ax.get_ylim()
+        y_marker = ylim[0] + 0.05 * (ylim[1] - ylim[0])  # 5% from bottom
+        ax.scatter(
+            t_ms[sig_mask], np.full(np.sum(sig_mask), y_marker),
+            marker="o", s=14, c="black", zorder=5, label="p<α"
+        )
+    
+    # Labels with matched font sizes (from trial_onset_comprehensive.py)
+    ax.set_xlabel("Time (ms)", fontsize=18)
+    ax.set_ylabel("Net Flow (bits)", fontsize=20)
+    ax.tick_params(axis='both', which='major', labelsize=18)
+    ax.legend(loc="upper right", frameon=False, fontsize=20)
+    
+    # Set time range if specified
+    if t_min_ms is not None and t_max_ms is not None:
+        ax.set_xlim(t_min_ms, t_max_ms)
+    
+    # No tight_layout() - we use explicit axes positioning
+    out_dir = out_path.parent
+    out_dir.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path)
+    fig.savefig(out_path.with_suffix(".png"), dpi=300)
+    fig.savefig(out_path.with_suffix(".svg"))
+    plt.close(fig)
+
+
 def plot_summary_figure(
     out_path_pdf: Path,
     time: np.ndarray,
@@ -1072,6 +1268,52 @@ def summarize_for_tag_align_feature(
                 # Group DIFF significance
                 sig_group_diff=sig_group_diff,
             )
+            
+            # Determine time range for paper-quality figures based on feature
+            # Category (C), Direction (R): -100 to 500 ms (stim-aligned)
+            # Saccade (S): -300 to 200 ms (sacc-aligned)
+            # Target (T): no change (use full time range)
+            if feature in ("C", "R"):
+                paper_t_min_ms, paper_t_max_ms = -100.0, 500.0
+            elif feature == "S":
+                paper_t_min_ms, paper_t_max_ms = -300.0, 200.0
+            else:
+                paper_t_min_ms, paper_t_max_ms = None, None
+            
+            # Y-axis limits for panel C: -10 to +20 for category, direction, and saccade
+            if feature in ("C", "R", "S"):
+                paper_y_min, paper_y_max = -10.0, 20.0
+            else:
+                paper_y_min, paper_y_max = None, None
+            
+            # Save paper-quality Panel A figure separately
+            fig_path_panel_a = figs_dir / f"{pair_name}_panel_a.pdf"
+            plot_panel_a_paper(
+                out_path=fig_path_panel_a,
+                time=time,
+                mean_bits_AB=mean_bits_AB,
+                se_bits_AB=se_bits_AB,
+                mean_bits_BA=mean_bits_BA,
+                se_bits_BA=se_bits_BA,
+                label_A=A,
+                label_B=B,
+                t_min_ms=paper_t_min_ms,
+                t_max_ms=paper_t_max_ms,
+            )
+            
+            # Save paper-quality Panel C figure separately
+            fig_path_panel_c = figs_dir / f"{pair_name}_panel_c.pdf"
+            plot_panel_c_paper(
+                out_path=fig_path_panel_c,
+                time=time,
+                mean_diff=mean_diff,
+                se_diff=se_diff,
+                sig_group_diff=sig_group_diff,
+                t_min_ms=paper_t_min_ms,
+                t_max_ms=paper_t_max_ms,
+                y_min=paper_y_min,
+                y_max=paper_y_max,
+            )
 
             # Also create reverse figure (B vs A) to show significance from the other perspective
             # For reverse: diff = B->A - A->B (negative of original), swap all data
@@ -1124,6 +1366,35 @@ def summarize_for_tag_align_feature(
                 label_A=B,  # swapped: B becomes first area
                 label_B=A,  # swapped: A becomes second area
             )
+            
+            # Save paper-quality Panel A figure separately (reverse perspective)
+            fig_path_panel_a_rev = figs_dir / f"{pair_name_rev}_panel_a.pdf"
+            plot_panel_a_paper(
+                out_path=fig_path_panel_a_rev,
+                time=time,
+                mean_bits_AB=mean_bits_BA,  # swapped: B->A becomes first
+                se_bits_AB=se_bits_BA,
+                mean_bits_BA=mean_bits_AB,  # swapped: A->B becomes second
+                se_bits_BA=se_bits_AB,
+                label_A=B,  # swapped: B becomes first area
+                label_B=A,  # swapped: A becomes second area
+                t_min_ms=paper_t_min_ms,
+                t_max_ms=paper_t_max_ms,
+            )
+            
+            # Save paper-quality Panel C figure separately (reverse perspective)
+            fig_path_panel_c_rev = figs_dir / f"{pair_name_rev}_panel_c.pdf"
+            plot_panel_c_paper(
+                out_path=fig_path_panel_c_rev,
+                time=time,
+                mean_diff=-mean_diff,  # reverse diff: B->A - A->B
+                se_diff=se_diff,
+                sig_group_diff=sig_group_diff_rev,
+                t_min_ms=paper_t_min_ms,
+                t_max_ms=paper_t_max_ms,
+                y_min=paper_y_min,
+                y_max=paper_y_max,
+            )
 
 
 def main():
@@ -1135,6 +1406,9 @@ def main():
     ap.add_argument("--tags", nargs="*",
                     help="Flow tags to summarize (e.g. crsweep-stim-vertical-none-trial). "
                          "If omitted, auto-detect per align.")
+    ap.add_argument("--tag_prefix", default="evoked",
+                    help="Only process tags starting with this prefix (default: 'evoked'). "
+                         "Set to empty string '' or 'all' to process all tags.")
     ap.add_argument("--alpha", type=float, default=0.05,
                     help="Significance threshold for p-values (default: 0.05)")
     ap.add_argument("--win_stim", default="0.10:0.30",
@@ -1199,6 +1473,15 @@ def main():
             tags = args.tags
         else:
             tags = discover_tags(out_root, align, sids)
+        
+        # Filter tags by prefix if specified
+        tag_prefix = args.tag_prefix
+        if tag_prefix and tag_prefix.lower() != "all":
+            tags = [t for t in tags if t.startswith(tag_prefix)]
+            if not tags:
+                print(f"[warn] No flow tags starting with '{tag_prefix}' found for align={align}")
+                continue
+        
         if not tags:
             print(f"[warn] No flow tags found for align={align}")
             continue
