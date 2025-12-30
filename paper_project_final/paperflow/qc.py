@@ -7,6 +7,8 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, accuracy_score
 
+from paperflow.norm import get_Z, get_axes_norm, get_axes_norm_mode, get_axes_baseline_win
+
 @dataclass
 class QCAreaCurves:
     time: np.ndarray
@@ -14,11 +16,11 @@ class QCAreaCurves:
     auc_S_raw: Optional[np.ndarray]
     auc_S_inv: Optional[np.ndarray]
     acc_R_macro: Optional[np.ndarray]
-    auc_T: Optional[np.ndarray]           # NEW: T (target config) axis AUC
+    auc_T: Optional[np.ndarray]           # T (target config) axis AUC
     lat_C_ms: Optional[float]
     lat_S_raw_ms: Optional[float]
     lat_S_inv_ms: Optional[float]
-    lat_T_ms: Optional[float]             # NEW: T latency
+    lat_T_ms: Optional[float]             # T latency
     meta: Dict
 
 def first_k_above(y: np.ndarray, thr: float, k: int) -> int:
@@ -57,32 +59,97 @@ def qc_curves_for_area(
     thr: float = 0.75,
     k_bins: int = 5,
     pt_min_ms: Optional[float] = None,
+    # === NEW: normalization override ===
+    norm: Optional[str] = None,
+    baseline_win: Optional[Tuple[float, float]] = None,
 ) -> QCAreaCurves:
-    """Compute time-resolved QC curves using *exactly* the same masking and preprocessing as in training."""
-    Z = cache["Z"].astype(np.float64)
-    C = cache.get("lab_C", np.full(Z.shape[0], np.nan)).astype(np.float64)
-    R = cache.get("lab_R", np.full(Z.shape[0], np.nan)).astype(np.float64)
-    S = cache.get("lab_S", np.full(Z.shape[0], np.nan)).astype(np.float64)
+    """
+    Compute time-resolved QC curves using *exactly* the same masking and 
+    normalization as in training.
+    
+    Parameters
+    ----------
+    cache : dict
+        Cache dictionary with Z, X, labels.
+    axes : dict
+        Axes dictionary loaded from axes_*.npz.
+    align : str
+        Alignment ('stim', 'sacc', 'targ').
+    time_s : np.ndarray
+        Time array in seconds.
+    orientation : str or None
+        Orientation filter ('vertical', 'horizontal', or None for pooled).
+    thr : float
+        Threshold for latency detection (default: 0.75).
+    k_bins : int
+        Number of consecutive bins above threshold (default: 5).
+    pt_min_ms : float or None
+        PT threshold in ms.
+    norm : str or None
+        Normalization mode override. If None, uses axes meta.
+    baseline_win : tuple or None
+        Baseline window override. If None, uses axes meta.
+    
+    Returns
+    -------
+    QCAreaCurves
+        Dataclass with time-resolved curves and latencies.
+    """
+    # === Determine normalization mode ===
+    if norm is None:
+        # Use axes meta
+        norm_mode = get_axes_norm_mode(axes)
+    else:
+        norm_mode = norm
+    
+    # === Get baseline window ===
+    if baseline_win is None and norm_mode == "baseline":
+        baseline_win = get_axes_baseline_win(axes)
+    
+    # === Get axes normalization parameters ===
+    axes_norm = get_axes_norm(axes)
+    
+    # === Build trial mask ===
+    N_total = cache["Z"].shape[0]
+    C = cache.get("lab_C", np.full(N_total, np.nan)).astype(np.float64)
+    R = cache.get("lab_R", np.full(N_total, np.nan)).astype(np.float64)
+    S = cache.get("lab_S", np.full(N_total, np.nan)).astype(np.float64)
     # T = category × saccade_location_sign; derive if not stored
     if "lab_T" in cache:
-        T = cache.get("lab_T", np.full(Z.shape[0], np.nan)).astype(np.float64)
+        T = cache.get("lab_T", np.full(N_total, np.nan)).astype(np.float64)
     else:
         T = np.sign(C) * np.sign(S)
         T[~(np.isfinite(C) & np.isfinite(S))] = np.nan
-    OR = cache.get("lab_orientation", np.array(["pooled"]*Z.shape[0], dtype=object))
+    OR = cache.get("lab_orientation", np.array(["pooled"]*N_total, dtype=object))
     PT = cache.get("lab_PT_ms", None)
-    IC = cache.get("lab_is_correct", np.ones(Z.shape[0], dtype=bool))
+    IC = cache.get("lab_is_correct", np.ones(N_total, dtype=bool))
 
-    keep = np.ones(Z.shape[0], dtype=bool)
+    keep = np.ones(N_total, dtype=bool)
     keep &= IC
     if orientation is not None and "lab_orientation" in cache:
         keep &= (OR.astype(str) == orientation)
     if pt_min_ms is not None and (PT is not None):
         keep &= np.isfinite(PT) & (PT >= float(pt_min_ms))
 
-    Z = Z[keep]; C = C[keep]; R = R[keep]; S = S[keep]; T = T[keep]
-    meta = dict(align=align, orientation=orientation, pt_min_ms=(float(pt_min_ms) if pt_min_ms is not None else None),
-                n_trials=int(Z.shape[0]), n_bins=int(Z.shape[1]), n_units=int(Z.shape[2]), thr=float(thr), k_bins=int(k_bins))
+    # === Get normalized data ===
+    Z, norm_meta = get_Z(cache, time_s, keep, norm_mode, baseline_win, axes_norm)
+    
+    # Apply mask to labels
+    C = C[keep]
+    R = R[keep]
+    S = S[keep]
+    T = T[keep]
+    
+    meta = dict(
+        align=align, orientation=orientation, 
+        pt_min_ms=(float(pt_min_ms) if pt_min_ms is not None else None),
+        n_trials=int(Z.shape[0]), n_bins=int(Z.shape[1]), n_units=int(Z.shape[2]), 
+        thr=float(thr), k_bins=int(k_bins),
+        # === NEW: normalization metadata ===
+        norm=norm_mode,
+        baseline_win=list(baseline_win) if baseline_win else None,
+        used_axes_mu_sd=norm_meta.get("used_axes_mu_sd", False),
+    )
 
     sC = (axes["sC"] if "sC" in axes and axes["sC"].size else None)
     sR = (axes["sR"] if "sR" in axes and axes["sR"].ndim==2 and axes["sR"].size>0 else None)
@@ -197,4 +264,3 @@ def qc_curves_for_area(
         lat_C_ms=latC, lat_S_raw_ms=latSr, lat_S_inv_ms=latSi, lat_T_ms=latT,
         meta=meta,
     )
-

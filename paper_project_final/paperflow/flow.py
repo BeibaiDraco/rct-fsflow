@@ -5,6 +5,7 @@ from typing import Dict, Tuple, Optional
 import numpy as np
 
 from paperflow.standardize import compute_regressor_scaling, apply_regressor_scaling
+from paperflow.norm import get_Z, get_axes_norm, get_axes_norm_mode, get_axes_baseline_win
 
 try:
     from scipy.ndimage import gaussian_filter1d
@@ -71,7 +72,7 @@ def _axis_matrix(axes_npz: Dict, feature: str) -> Optional[np.ndarray]:
             a = axes_npz.get("sS_raw", np.array([]))
     elif feature == "T":
         a = axes_npz.get("sT", np.array([]))
-    elif feature == "O":  # NEW: context / orientation axis
+    elif feature == "O":  # context / orientation axis
         a = axes_npz.get("sO", np.array([]))
     else:
         a = np.array([])
@@ -82,8 +83,29 @@ def _axis_matrix(axes_npz: Dict, feature: str) -> Optional[np.ndarray]:
         a = a[:, None]
     return a  # (U,K)
 
+
+def _project_multi_normalized(
+    cache: Dict, 
+    A: np.ndarray, 
+    mask: np.ndarray,
+    time_s: np.ndarray,
+    norm_mode: str,
+    baseline_win: Optional[Tuple[float, float]],
+    axes_norm: Optional[Dict],
+) -> np.ndarray:
+    """
+    Get normalized Z and project onto axis A.
+    Z: (N,B,U); A: (U,K) -> Y: (N,B,K)
+    """
+    Z, _ = get_Z(cache, time_s, mask, norm_mode, baseline_win, axes_norm)
+    if A is None or A.shape[0] != Z.shape[2]:
+        raise ValueError("Axis size mismatch.")
+    return np.tensordot(Z, A, axes=([2],[0]))  # (N,B,K)
+
+
 def _project_multi(cache: Dict, A: np.ndarray, mask: np.ndarray) -> np.ndarray:
     """
+    Legacy projection using cache["Z"] directly.
     Z: (N,B,U); A: (U,K) -> Y: (N,B,K)
     """
     Z = cache["Z"][mask].astype(np.float64)
@@ -247,6 +269,9 @@ def compute_flow_timecourse_for_pair(
     evoked_subtract: bool = False,
     evoked_sigma_ms: float = 0.0,
     save_null_samples: bool = False,
+    # === NEW: normalization parameters ===
+    norm: Optional[str] = None,              # 'auto', 'global', 'baseline', 'none'
+    baseline_win: Optional[Tuple[float, float]] = None,
 ) -> Dict[str, np.ndarray]:
     """
     Compute time-resolved information flow from area A to area B.
@@ -260,6 +285,12 @@ def compute_flow_timecourse_for_pair(
       'none'             : use regressors as-is
       'zscore_regressors': per-bin z-scoring of regressors (except intercept), parameters
                            computed on observed data and reused for null permutations.
+    
+    norm
+      None or 'auto'     : use normalization from axes meta (recommended)
+      'global'           : use cache["Z"] (global z-score)
+      'baseline'         : z-score from baseline window
+      'none'             : use cache["X"] (raw counts)
     """
 
     if standardize_mode not in ("none", "zscore_regressors"):
@@ -297,9 +328,34 @@ def compute_flow_timecourse_for_pair(
     K_A = Aaxis.shape[1]
     K_B = Baxis.shape[1]
 
-    # 4) projections
-    YA_full = _project_multi(cacheA, Aaxis, mask)  # (N,B,K_A)
-    YB_full = _project_multi(cacheB, Baxis, mask)  # (N,B,K_B)
+    # === Determine normalization mode ===
+    # Use axesA for normalization settings (assume consistent between A and B)
+    if norm is None or norm == "auto":
+        norm_mode = get_axes_norm_mode(axesA)
+    else:
+        norm_mode = norm
+    
+    # Get baseline window
+    if baseline_win is None and norm_mode == "baseline":
+        baseline_win = get_axes_baseline_win(axesA)
+    
+    # Get normalization parameters from axes
+    axes_normA = get_axes_norm(axesA)
+    axes_normB = get_axes_norm(axesB)
+
+    # 4) projections with proper normalization
+    if norm_mode == "global":
+        # Legacy behavior: use cache["Z"] directly
+        YA_full = _project_multi(cacheA, Aaxis, mask)  # (N,B,K_A)
+        YB_full = _project_multi(cacheB, Baxis, mask)  # (N,B,K_B)
+    else:
+        # Use proper normalization
+        YA_full = _project_multi_normalized(
+            cacheA, Aaxis, mask, time, norm_mode, baseline_win, axes_normA
+        )
+        YB_full = _project_multi_normalized(
+            cacheB, Baxis, mask, time, norm_mode, baseline_win, axes_normB
+        )
 
     # Optional old-style evoked subtraction (global PSTH across trials)
     if evoked_subtract:
@@ -597,6 +653,9 @@ def compute_flow_timecourse_for_pair(
             n_strata=len(strata_counts) if perms > 0 else 0,
             strata_sizes=strata_counts if perms > 0 else {},
             save_null_samples=bool(save_null_samples),
+            # === NEW: normalization metadata ===
+            norm=norm_mode,
+            baseline_win=list(baseline_win) if baseline_win else None,
         )
     )
 

@@ -9,6 +9,9 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+# Import normalization utilities
+from paperflow.norm import get_Z, get_axes_norm, get_axes_norm_mode, get_axes_baseline_win
+
 
 def parse_window(s: str) -> Tuple[float, float]:
     a, b = s.split(":")
@@ -382,6 +385,9 @@ def process_one_session(
     area2: str,    # Second area
     tag: str,
     qc_threshold: float = 0.75,  # QC threshold (default: 0.75)
+    # === NEW: normalization parameters ===
+    norm: Optional[str] = None,  # 'auto', 'global', 'baseline', 'none'
+    norm_baseline_win: Optional[Tuple[float, float]] = None,
 ) -> Optional[Dict]:
     """Process one session for one pair and feature. Returns dict with results or None if failed."""
     
@@ -459,8 +465,29 @@ def process_one_session(
             return None
         
         time = cache1["time"].astype(float)
-        Z1 = cache1["Z"][keep].astype(float)  # (N,B,U)
-        Z2 = cache2["Z"][keep].astype(float)
+        
+        # === Apply proper normalization ===
+        # Determine normalization mode from axes if auto
+        if norm is None or norm == "auto":
+            norm_mode = get_axes_norm_mode(axes1)
+        else:
+            norm_mode = norm
+        
+        # Get baseline window for normalization
+        if norm_baseline_win is not None:
+            bwin = norm_baseline_win
+        elif norm_mode == "baseline":
+            bwin = get_axes_baseline_win(axes1)
+        else:
+            bwin = None
+        
+        # Get normalization parameters from axes
+        axes_norm1 = get_axes_norm(axes1)
+        axes_norm2 = get_axes_norm(axes2)
+        
+        # Get normalized data
+        Z1, _ = get_Z(cache1, time, keep, norm_mode, bwin, axes_norm1)
+        Z2, _ = get_Z(cache2, time, keep, norm_mode, bwin, axes_norm2)
         
         if feature == "C":
             C = cache1["lab_C"][keep].astype(float)
@@ -624,6 +651,21 @@ def main():
                     help="QC threshold for target (T) feature (default: uses --qc_threshold)")
     ap.add_argument("--tag", default="trialonset_comprehensive",
                     help="Output subfolder name")
+    
+    # === NEW: normalization args ===
+    ap.add_argument("--norm_stim", choices=["auto", "global", "baseline", "none"], default="auto",
+                    help="Normalization for stim: 'auto' (use axes meta), 'global', 'baseline', 'none'")
+    ap.add_argument("--norm_sacc", choices=["auto", "global", "baseline", "none"], default="auto",
+                    help="Normalization for sacc: 'auto' (use axes meta), 'global', 'baseline', 'none'")
+    ap.add_argument("--norm_targ", choices=["auto", "global", "baseline", "none"], default="auto",
+                    help="Normalization for targ: 'auto' (use axes meta), 'global', 'baseline', 'none'")
+    ap.add_argument("--norm_baseline_win_stim", default=None,
+                    help="Baseline window for stim normalization 'a:b' (uses axes meta if not specified)")
+    ap.add_argument("--norm_baseline_win_sacc", default=None,
+                    help="Baseline window for sacc normalization 'a:b' (uses axes meta if not specified)")
+    ap.add_argument("--norm_baseline_win_targ", default=None,
+                    help="Baseline window for targ normalization 'a:b' (uses axes meta if not specified)")
+    
     args = ap.parse_args()
     
     out_root = Path(args.out_root)
@@ -681,6 +723,17 @@ def main():
             orientation = args.orientation_targ
             features = ["T"]  # Target
         
+        # === Get normalization settings for this alignment ===
+        if align == "stim":
+            norm = None if args.norm_stim == "auto" else args.norm_stim
+            norm_baseline_win = parse_window(args.norm_baseline_win_stim) if args.norm_baseline_win_stim else None
+        elif align == "sacc":
+            norm = None if args.norm_sacc == "auto" else args.norm_sacc
+            norm_baseline_win = parse_window(args.norm_baseline_win_sacc) if args.norm_baseline_win_sacc else None
+        else:  # targ
+            norm = None if args.norm_targ == "auto" else args.norm_targ
+            norm_baseline_win = parse_window(args.norm_baseline_win_targ) if args.norm_baseline_win_targ else None
+        
         print(f"[align={align}] pt_min_ms={pt_min_ms}, axes_tag={axes_tag}")
         print(f"[align={align}] baseline={baseline}, search={search}")
         print(f"[align={align}] orientation={orientation}")
@@ -720,7 +773,9 @@ def main():
                         out_root, align, sid, orientation, pt_min_ms,
                         axes_tag, baseline, search, args.k_sigma, args.runlen,
                         args.smooth_ms, feature, area1, area2, args.tag,
-                        qc_threshold=qc_threshold_feature
+                        qc_threshold=qc_threshold_feature,
+                        norm=norm,
+                        norm_baseline_win=norm_baseline_win,
                     )
                     if result is not None:
                         all_results[key].append(result)

@@ -2,6 +2,7 @@
 from __future__ import annotations
 import argparse, os, json, numpy as np
 from glob import glob
+from typing import Optional, Tuple
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -67,15 +68,30 @@ def _plot_curves(curves, out_pdf, area):
         h = plt.plot(tms, curves.auc_T, lw=2.2, label="AUC(T | sT)")[0]
         plt.axhline(0.5, ls=":", c=h.get_color(), lw=1.0)
 
+    # Build title with normalization info
+    norm_str = curves.meta.get('norm', 'global')
+    title = f"{area} — QC ({curves.meta.get('align','?')}, ori={curves.meta.get('orientation')}, PT≥{curves.meta.get('pt_min_ms')}, norm={norm_str})"
+    
     plt.xlabel("Time (ms)")
     plt.ylabel("AUC / Accuracy")
-    plt.title(f"{area} — QC ({curves.meta.get('align','?')}, ori={curves.meta.get('orientation')}, PT≥{curves.meta.get('pt_min_ms')})")
+    plt.title(title)
     plt.legend(loc="lower right", ncol=2, frameon=False)
     plt.tight_layout()
     os.makedirs(os.path.dirname(out_pdf), exist_ok=True)
     plt.savefig(out_pdf)
     plt.savefig(out_pdf.replace(".pdf", ".png"), dpi=300)
     plt.close()
+
+
+def _parse_range_arg(val) -> Optional[Tuple[float, float]]:
+    """Parse a:b into (float, float) or return None."""
+    if val is None:
+        return None
+    if isinstance(val, str) and ":" in val:
+        a, b = val.split(":")
+        return float(a), float(b)
+    return None
+
 
 def main():
     ap = argparse.ArgumentParser(description="QC curves for trained axes (per area).")
@@ -92,6 +108,15 @@ def main():
     ap.add_argument("--pt_min_ms_stim", type=float, default=200.0)
     ap.add_argument("--pt_min_ms_targ", type=float, default=200.0)
     ap.add_argument("--no_pt_filter", action="store_true")
+    
+    # === NEW: normalization args ===
+    ap.add_argument("--norm", choices=["auto", "global", "baseline", "none"], default="auto",
+                    help="Normalization mode: 'auto' (use axes meta), 'global', 'baseline', 'none'")
+    ap.add_argument("--baseline_win", default=None,
+                    help="Baseline window 'a:b' in seconds (only used if --norm baseline)")
+    ap.add_argument("--force_norm_mismatch", action="store_true",
+                    help="Allow normalization mode to differ from axes training (not recommended)")
+    
     args = ap.parse_args()
 
     areas = args.areas or _areas(args.out_root, args.align, args.sid)
@@ -115,10 +140,29 @@ def main():
         cache = _load_cache(args.out_root, args.align, args.sid, area)
         axes  = _load_axes(args.out_root, args.align, args.sid, area, tag=args.tag)
 
+        # === Determine normalization ===
+        if args.norm == "auto":
+            # Use axes meta - pass None to let qc_curves_for_area handle it
+            norm = None
+            baseline_win = None
+        else:
+            norm = args.norm
+            baseline_win = _parse_range_arg(args.baseline_win)
+            
+            # Check for mismatch with axes training
+            axes_norm = axes.get("meta", {}).get("norm", "global")
+            if norm != axes_norm and not args.force_norm_mismatch:
+                import warnings
+                warnings.warn(
+                    f"Normalization mode '{norm}' differs from axes training mode '{axes_norm}'. "
+                    f"This may lead to inconsistent results. Use --force_norm_mismatch to override."
+                )
+
         curves = qc_curves_for_area(
             cache=cache, axes=axes, align=args.align,
             time_s=time_s, orientation=ori,
-            thr=args.thr, k_bins=args.k, pt_min_ms=pt_thr
+            thr=args.thr, k_bins=args.k, pt_min_ms=pt_thr,
+            norm=norm, baseline_win=baseline_win
         )
 
         qc_dir = (os.path.join(args.out_root, args.align, args.sid, "qc", args.tag)

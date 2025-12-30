@@ -29,6 +29,15 @@ def _ordered_pairs(areas: List[str], subset: Optional[List[str]] = None) -> List
     A = subset if subset else areas
     return [(A[i], A[j]) for i in range(len(A)) for j in range(len(A)) if i != j]
 
+def _parse_range_arg(val) -> Optional[Tuple[float, float]]:
+    """Parse a:b into (float, float) or return None."""
+    if val is None:
+        return None
+    if isinstance(val, str) and ":" in val:
+        a, b = val.split(":")
+        return float(a), float(b)
+    return None
+
 def main():
     ap = argparse.ArgumentParser(description="Compute session-level flow for all ordered pairs (or a chosen pair).")
     ap.add_argument("--out_root", default=os.path.join(os.environ.get("PAPER_HOME","."),"out"))
@@ -70,6 +79,13 @@ def main():
     ap.add_argument("--save_null_samples", action="store_true",
                     help="Save per-permutation null samples into the flow_*.npz "
                          "(needed for old-style group DIFF p(t)). Warning: large files.")
+    
+    # === NEW: normalization args ===
+    ap.add_argument("--norm", choices=["auto", "global", "baseline", "none"], default="auto",
+                    help="Normalization mode: 'auto' (use axes meta), 'global', 'baseline', 'none'")
+    ap.add_argument("--baseline_win", default=None,
+                    help="Baseline window 'a:b' in seconds (only used if --norm baseline)")
+    
     args = ap.parse_args()
 
     areas = _areas(args.out_root, args.align, args.sid)
@@ -77,6 +93,10 @@ def main():
         raise SystemExit(f"No caches under {args.out_root}/{args.align}/{args.sid}/caches")
 
     pairs = [(args.pair[0], args.pair[1])] if args.pair else _ordered_pairs(areas)
+
+    # Parse normalization
+    norm = None if args.norm == "auto" else args.norm
+    baseline_win = _parse_range_arg(args.baseline_win)
 
     for (A, B) in pairs:
         cA = _load_cache(args.out_root, args.align, args.sid, A)
@@ -111,7 +131,7 @@ def main():
             print(f"[dbg] {args.sid} {A}->{B} feature={args.feature} "
                 f"bin_s={bin_s*1000:.1f}ms lags_ms={args.lags_ms} "
                 f"K_A={_K(aA, args.feature)} K_B={_K(aB, args.feature)} "
-                f"perm_within={args.perm_within}")
+                f"perm_within={args.perm_within} norm={args.norm}")
 
 
         try:
@@ -129,6 +149,9 @@ def main():
                 evoked_subtract=bool(args.evoked_subtract),
                 evoked_sigma_ms=float(args.evoked_sigma_ms),
                 save_null_samples=bool(args.save_null_samples),
+                # === NEW: normalization ===
+                norm=norm,
+                baseline_win=baseline_win,
             )
         except ValueError as e:
             print(f"[skip] {A}->{B}: {e}")

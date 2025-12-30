@@ -13,12 +13,17 @@ Only runs flow_session.py (assumes axes already exist).
 Supports:
   --orientation: flow orientation (vertical, horizontal, pooled)
   --axes_orientation: which axes to load (defaults to --orientation)
+  --norm: normalization mode (auto, global, baseline, none)
+  --baseline_win: baseline window for normalization
 
 Example: vertical axes + pooled flow:
   --axes_orientation vertical --orientation pooled
 
 Example: run T flow aligned to targets onset:
   --targ_feature T --train_axes
+
+Example: baseline normalization with SVM:
+  --train_axes --norm baseline --clf_binary svm --searchC
 """
 
 from __future__ import annotations
@@ -108,6 +113,31 @@ def main():
     ap.add_argument("--train_features_targ", nargs="+", default=None,
                     choices=["T", "O"],
                     help="Features to train for targ axes when --train_axes is set (default: [targ_feature] if not 'none')")
+    
+    # === NEW: normalization args ===
+    ap.add_argument("--norm", choices=["auto", "global", "baseline", "none"], default="auto",
+                    help="Normalization mode for axes/flow: 'auto' (use axes meta), 'global', 'baseline', 'none'")
+    ap.add_argument("--baseline_win", default=None,
+                    help="Baseline window 'a:b' in seconds (uses alignment defaults if not specified)")
+    
+    # === NEW: classifier args ===
+    ap.add_argument("--clf_binary", choices=["logreg", "svm", "lda"], default="logreg",
+                    help="Binary classifier for axis training: logreg, svm, or lda (default: logreg)")
+    ap.add_argument("--C_grid", nargs="+", type=float, default=None,
+                    help="Regularization grid for logreg/svm (default: 0.1 0.3 1 3 10)")
+    ap.add_argument("--lda_shrinkage", choices=["auto", "none"], default="auto",
+                    help="LDA shrinkage: 'auto' or 'none' (default: auto)")
+    
+    # === NEW: window search args ===
+    ap.add_argument("--searchC", action="store_true", help="Enable window search for C axis")
+    ap.add_argument("--searchS", action="store_true", help="Enable window search for S axis")
+    ap.add_argument("--searchT", action="store_true", help="Enable window search for T axis")
+    ap.add_argument("--searchR", action="store_true", help="Enable window search for R axis")
+    ap.add_argument("--search_step_ms", type=float, default=20.0,
+                    help="Step size for window search in ms (default: 20)")
+    ap.add_argument("--search_len_ms", nargs="+", type=float, default=[50, 80, 120],
+                    help="Window lengths to try in ms (default: 50 80 120)")
+    
     ap.add_argument("--python", default=sys.executable,
                     help="Python interpreter to use (default: current)")
     ap.add_argument("--dry_run", action="store_true",
@@ -133,6 +163,8 @@ def main():
     print(f"[info] sacc_feature={args.sacc_feature}")
     print(f"[info] targ_feature={args.targ_feature}")
     print(f"[info] train_axes={args.train_axes}")
+    print(f"[info] norm={args.norm}")
+    print(f"[info] clf_binary={args.clf_binary}")
 
     # Detect which alignments exist
     aligns: List[str] = []
@@ -183,6 +215,33 @@ def main():
                          "--orientation", axes_orientation,
                          "--tag", axes_tag,
                          "--features", *feats_train]
+            
+            # === Add normalization args ===
+            if args.norm != "auto":
+                train_cmd.extend(["--norm", args.norm])
+            if args.baseline_win:
+                train_cmd.extend(["--baseline_win", args.baseline_win])
+            
+            # === Add classifier args ===
+            train_cmd.extend(["--clf_binary", args.clf_binary])
+            if args.C_grid:
+                train_cmd.extend(["--C_grid"] + [str(c) for c in args.C_grid])
+            if args.clf_binary == "lda":
+                train_cmd.extend(["--lda_shrinkage", args.lda_shrinkage])
+            
+            # === Add window search args ===
+            if args.searchC:
+                train_cmd.append("--searchC")
+            if args.searchS:
+                train_cmd.append("--searchS")
+            if args.searchT:
+                train_cmd.append("--searchT")
+            if args.searchR:
+                train_cmd.append("--searchR")
+            if any([args.searchC, args.searchS, args.searchT, args.searchR]):
+                train_cmd.extend(["--search_step_ms", str(args.search_step_ms)])
+                train_cmd.extend(["--search_len_ms"] + [str(l) for l in args.search_len_ms])
+            
             rc = run(train_cmd, dry=args.dry_run, continue_on_error=args.continue_on_error)
             if rc and not args.continue_on_error:
                 return
@@ -214,6 +273,11 @@ def main():
                     "--evoked_subtract",
                     "--evoked_sigma_ms", str(args.evoked_sigma_ms)]
 
+        # === Add normalization args to flow ===
+        flow_cmd.extend(["--norm", args.norm])
+        if args.baseline_win:
+            flow_cmd.extend(["--baseline_win", args.baseline_win])
+
         if args.save_null_samples:
             flow_cmd.append("--save_null_samples")
 
@@ -226,4 +290,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
