@@ -259,6 +259,156 @@ def select_topk_units_by_auc(Xmean: np.ndarray, y_pm1: np.ndarray, frac: float) 
 
 # ---------- Window search helpers ----------
 
+def fit_binary_with_param(
+    X: np.ndarray,
+    y01: np.ndarray,
+    method: str,
+    param: Any,
+    lda_shrinkage: str = "auto",
+) -> np.ndarray:
+    """
+    Fit a binary linear classifier with a fixed hyperparameter and return the weight vector.
+    
+    Parameters
+    ----------
+    X : np.ndarray
+        Feature matrix (n_samples, n_features).
+    y01 : np.ndarray
+        Binary labels (0/1).
+    method : str
+        "logreg", "svm", or "lda".
+    param : any
+        Fixed hyperparameter (C for logreg/svm, ignored for lda).
+    lda_shrinkage : str
+        "auto" or "none" for LDA.
+    
+    Returns
+    -------
+    w : np.ndarray
+        Weight vector (n_features,).
+    """
+    if method == "logreg":
+        clf = LogisticRegression(
+            penalty="l2", C=float(param), solver="liblinear",
+            class_weight="balanced", max_iter=2000
+        )
+        clf.fit(X, y01)
+        return clf.coef_.ravel().astype(np.float64)
+    
+    elif method == "svm":
+        n_samples, n_features = X.shape
+        dual = (n_samples < n_features)
+        clf = LinearSVC(
+            C=float(param), class_weight="balanced", max_iter=5000, dual=dual
+        )
+        clf.fit(X, y01)
+        return clf.coef_.ravel().astype(np.float64)
+    
+    elif method == "lda":
+        shrink = lda_shrinkage if lda_shrinkage != "none" else None
+        clf = LinearDiscriminantAnalysis(solver="lsqr", shrinkage=shrink)
+        clf.fit(X, y01)
+        return clf.coef_.ravel().astype(np.float64)
+    
+    else:
+        raise ValueError(f"Unknown method: {method!r}")
+
+
+def cv_bin_auc_for_window(
+    Z: np.ndarray,
+    y_pm1: np.ndarray,
+    time_s: np.ndarray,
+    win: Tuple[float, float],
+    method: str,
+    best_param: Any,
+    lda_shrinkage: str = "auto",
+    n_splits: int = 5,
+    seed: int = 0,
+) -> Optional[Tuple[np.ndarray, np.ndarray]]:
+    """
+    Compute out-of-fold per-bin AUC for a given window.
+    
+    This trains on window-mean data (same objective as cv_fit_binary_linear),
+    but evaluates the trained axis on each time bin within the window using
+    out-of-fold predictions to avoid overfitting.
+    
+    Parameters
+    ----------
+    Z : np.ndarray
+        Normalized data (n_trials, n_bins, n_units).
+    y_pm1 : np.ndarray
+        Labels ±1 (n_trials,).
+    time_s : np.ndarray
+        Time array in seconds.
+    win : tuple of (float, float)
+        Window to evaluate.
+    method : str
+        Classifier method.
+    best_param : any
+        Best hyperparameter from CV.
+    lda_shrinkage : str
+        LDA shrinkage setting.
+    n_splits : int
+        Number of CV folds.
+    seed : int
+        Random seed.
+    
+    Returns
+    -------
+    bins : np.ndarray
+        Indices of time bins within the window.
+    auc_bins : np.ndarray
+        AUC at each bin (computed from out-of-fold predictions).
+    """
+    ok = np.isfinite(y_pm1)
+    Zk = Z[ok]
+    yk = y_pm1[ok]
+    y01 = (yk > 0).astype(int)
+    
+    if np.unique(y01).size < 2:
+        return None
+    
+    mask_t = window_mask(time_s, win)
+    bins = np.where(mask_t)[0]
+    if bins.size == 0:
+        return None
+    
+    # Xw for training: mean-over-window (same as training objective)
+    Xw = avg_over_window(Zk, mask_t)  # (n_trials, n_units)
+    
+    splitter = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
+    
+    # Out-of-fold scores: (n_trials, n_bins_in_win)
+    S = np.full((Xw.shape[0], bins.size), np.nan, dtype=float)
+    
+    for tr, te in splitter.split(Xw, y01):
+        try:
+            w_fold = fit_binary_with_param(Xw[tr], y01[tr], method, best_param, lda_shrinkage)
+            w_fold = unit_vec(w_fold)
+            
+            # Compute bin-wise scores on test fold
+            Zte = Zk[te]  # (n_te, n_bins, n_units)
+            for j, b in enumerate(bins):
+                S[te, j] = Zte[:, b, :] @ w_fold
+        except Exception:
+            continue
+    
+    # Compute AUC per bin
+    auc_bins = np.full(bins.size, np.nan, dtype=float)
+    for j in range(bins.size):
+        s = S[:, j]
+        m = np.isfinite(s)
+        if m.sum() < 10 or np.unique(y01[m]).size < 2:
+            auc_bins[j] = np.nan
+        else:
+            try:
+                auc_bins[j] = roc_auc_score(y01[m], s[m])
+            except Exception:
+                auc_bins[j] = np.nan
+    
+    return bins, auc_bins
+
+
 def make_window_grid(
     search_range: Tuple[float, float],
     lens_ms: List[float],
@@ -304,9 +454,13 @@ def search_best_window_binary(
     C_grid: List[float],
     sample_weight: Optional[np.ndarray] = None,
     lda_shrinkage: str = "auto",
-) -> Tuple[Tuple[float, float], float, Any, np.ndarray]:
+    score_mode: str = "cv_auc",
+    tiebreak: str = "none",
+    tol: float = 0.0,
+    event_time_s: float = 0.0,
+) -> Tuple[Tuple[float, float], float, Any, np.ndarray, Optional[Dict]]:
     """
-    Search for the best training window by CV score.
+    Search for the best training window by CV score with optional peak-bin scoring.
     
     Parameters
     ----------
@@ -326,51 +480,132 @@ def search_best_window_binary(
         Sample weights.
     lda_shrinkage : str
         LDA shrinkage setting.
+    score_mode : str
+        How to score windows:
+        - "cv_auc": CV AUC from window-mean (default, original behavior)
+        - "peak_bin_auc": max per-bin AUC within window (out-of-fold)
+        - "mean_bin_auc": mean per-bin AUC within window (out-of-fold)
+    tiebreak : str
+        Tie-break rule among windows within `tol` of the best score:
+        - "none": just pick best score (original behavior)
+        - "shortest_then_earliest": prefer shorter windows, then earlier start
+        - "shortest_then_closest0": prefer shorter windows, then center closest to event_time_s
+        - "earliest": prefer earliest start time
+    tol : float
+        Tolerance for tie-break (absolute score units). Windows within tol of
+        the best score are considered equivalent for tie-breaking.
+    event_time_s : float
+        Reference time for "closest to 0" tie-break (typically 0.0 for sacc alignment).
     
     Returns
     -------
     best_win : tuple of (float, float)
         Best window.
     best_score : float
-        Best CV score.
+        Best score.
     best_param : any
         Best hyperparameter.
     best_w : np.ndarray
         Weight vector from best window.
+    peak_info : dict or None
+        Additional info for peak-bin scoring (peak_bin, peak_time_s, etc.)
     """
-    best_win = None
-    best_score = -np.inf
-    best_param = None
-    best_w = None
-    
     ok = ~np.isnan(y)
     if ok.sum() < 20 or np.unique(np.sign(y[ok])).size < 2:
         # Not enough data
-        if candidates:
-            return candidates[0], 0.5, None, np.zeros(Z.shape[2])
-        return (0.0, 0.1), 0.5, None, np.zeros(Z.shape[2])
+        default_win = candidates[0] if candidates else (0.0, 0.1)
+        return default_win, 0.5, None, np.zeros(Z.shape[2]), None
+    
+    # Collect results for all candidate windows
+    results = []
     
     for win in candidates:
         mask_t = window_mask(time_s, win)
         if not np.any(mask_t):
             continue
+        
         Xw = avg_over_window(Z[ok], mask_t)
         yw = y[ok]
         sw = sample_weight[ok] if sample_weight is not None else None
         
-        w, score, param = cv_fit_binary_linear(Xw, yw, method, C_grid, sw, lda_shrinkage)
+        # Always train the axis first to get w and cv_auc
+        w_full, cv_auc, best_param = cv_fit_binary_linear(Xw, yw, method, C_grid, sw, lda_shrinkage)
         
-        if score > best_score:
-            best_score = score
-            best_win = win
-            best_param = param
-            best_w = w
+        # Compute score based on score_mode
+        if score_mode == "cv_auc":
+            score = cv_auc
+            peak_info = None
+        else:
+            # Peak-bin or mean-bin scoring
+            out = cv_bin_auc_for_window(Z[ok], yw, time_s, win, method, best_param, lda_shrinkage)
+            if out is None:
+                continue
+            bins, auc_bins = out
+            if np.all(~np.isfinite(auc_bins)):
+                continue
+            
+            if score_mode == "peak_bin_auc":
+                j = int(np.nanargmax(auc_bins))
+                score = float(auc_bins[j])
+                peak_info = dict(
+                    peak_bin=int(bins[j]),
+                    peak_time_s=float(time_s[bins[j]]),
+                    peak_time_ms=float(time_s[bins[j]] * 1000),
+                    peak_auc=score,
+                    mean_bin_auc=float(np.nanmean(auc_bins)),
+                    cv_auc=cv_auc,  # Also store original cv_auc for reference
+                )
+            elif score_mode == "mean_bin_auc":
+                score = float(np.nanmean(auc_bins))
+                peak_info = dict(
+                    mean_bin_auc=score,
+                    max_bin_auc=float(np.nanmax(auc_bins)),
+                    cv_auc=cv_auc,
+                )
+            else:
+                raise ValueError(f"Unknown score_mode: {score_mode!r}")
+        
+        results.append(dict(
+            win=win,
+            score=score,
+            param=best_param,
+            w=w_full,
+            peak_info=peak_info,
+            cv_auc=cv_auc,
+        ))
     
-    if best_win is None:
-        best_win = candidates[0] if candidates else (0.0, 0.1)
-        best_w = np.zeros(Z.shape[2])
+    if not results:
+        default_win = candidates[0] if candidates else (0.0, 0.1)
+        return default_win, 0.5, None, np.zeros(Z.shape[2]), None
     
-    return best_win, best_score, best_param, best_w
+    # Apply tie-break logic
+    Sstar = max(r["score"] for r in results)
+    close = [r for r in results if r["score"] >= Sstar - tol]
+    
+    def key_shortest_then_earliest(r):
+        t0, t1 = r["win"]
+        return (t1 - t0, t0)  # (length, start)
+    
+    def key_shortest_then_closest0(r):
+        t0, t1 = r["win"]
+        center = 0.5 * (t0 + t1)
+        return (t1 - t0, abs(center - event_time_s), t0)  # (length, dist-to-event, start)
+    
+    def key_earliest(r):
+        return r["win"][0]
+    
+    if tiebreak == "none":
+        chosen = max(results, key=lambda r: r["score"])
+    elif tiebreak == "shortest_then_earliest":
+        chosen = sorted(close, key=key_shortest_then_earliest)[0]
+    elif tiebreak == "shortest_then_closest0":
+        chosen = sorted(close, key=key_shortest_then_closest0)[0]
+    elif tiebreak == "earliest":
+        chosen = sorted(close, key=key_earliest)[0]
+    else:
+        raise ValueError(f"Unknown tiebreak: {tiebreak!r}")
+    
+    return chosen["win"], chosen["score"], chosen["param"], chosen["w"], chosen["peak_info"]
 
 
 # ---------- main trainer ----------
@@ -418,6 +653,11 @@ def train_axes_for_area(
     winS_candidates: Optional[List[Tuple[float,float]]] = None,
     winT_candidates: Optional[List[Tuple[float,float]]] = None,
     winR_candidates: Optional[List[Tuple[float,float]]] = None,
+    # === NEW: window search scoring and tiebreak ===
+    search_score_mode: str = "cv_auc",     # "cv_auc"|"peak_bin_auc"|"mean_bin_auc"
+    search_tiebreak: str = "none",         # "none"|"shortest_then_earliest"|"shortest_then_closest0"|"earliest"
+    search_tol: float = 0.0,               # tolerance for tiebreak (absolute score units)
+    search_event_time_s: float = 0.0,      # reference time for "closest to 0" tiebreak
 ) -> AxisPack:
 
     if C_grid is None:
@@ -504,8 +744,10 @@ def train_axes_for_area(
         if winC_candidates is not None and len(winC_candidates) > 0:
             # Window search
             yc = C.copy()
-            best_win, best_score, best_param, wC = search_best_window_binary(
-                Z, yc, time_s, winC_candidates, clf_binary, Cworth, None, lda_shrinkage
+            best_win, best_score, best_param, wC, peak_info = search_best_window_binary(
+                Z, yc, time_s, winC_candidates, clf_binary, Cworth, None, lda_shrinkage,
+                score_mode=search_score_mode, tiebreak=search_tiebreak,
+                tol=search_tol, event_time_s=search_event_time_s
             )
             if wC is not None and np.linalg.norm(wC) > 0:
                 sC_vec = unit_vec(wC)
@@ -516,6 +758,16 @@ def train_axes_for_area(
                 meta["sC_C"] = best_param
                 meta["sC_n"] = int((~np.isnan(yc)).sum())
                 meta["sC_invariance"] = "none"
+                # Store search settings
+                meta["winC_score_mode"] = search_score_mode
+                meta["winC_tiebreak"] = search_tiebreak
+                meta["winC_tol"] = search_tol
+                # Store peak-bin info if available
+                if peak_info is not None:
+                    meta["winC_peak_time_ms"] = peak_info.get("peak_time_ms")
+                    meta["winC_peak_auc"] = peak_info.get("peak_auc")
+                    meta["winC_mean_bin_auc"] = peak_info.get("mean_bin_auc")
+                    meta["winC_cv_auc_original"] = peak_info.get("cv_auc")
         elif winC is not None:
             mC = window_mask(time_s, winC)
             Xc_full = avg_over_window(Z, mC)  # (N x U)
@@ -701,8 +953,10 @@ def train_axes_for_area(
                 sample_weight_full = np.zeros(Z.shape[0])
                 sample_weight_full[ok2] = w
                 
-                best_win, best_score, best_param, wS = search_best_window_binary(
-                    Z[ok2], yb, time_s, winS_candidates, clf_binary, Cworth, w, lda_shrinkage
+                best_win, best_score, best_param, wS, peak_info = search_best_window_binary(
+                    Z[ok2], yb, time_s, winS_candidates, clf_binary, Cworth, w, lda_shrinkage,
+                    score_mode=search_score_mode, tiebreak=search_tiebreak,
+                    tol=search_tol, event_time_s=search_event_time_s
                 )
                 if wS is not None and np.linalg.norm(wS) > 0:
                     sS_raw_vec = unit_vec(wS)
@@ -714,6 +968,16 @@ def train_axes_for_area(
                     meta["sS_C"] = best_param
                     meta["sS_n"] = int(ok2.sum())
                     meta["cos_sSraw_sC"] = (None if cos is None else float(cos))
+                    # Store search settings
+                    meta["winS_score_mode"] = search_score_mode
+                    meta["winS_tiebreak"] = search_tiebreak
+                    meta["winS_tol"] = search_tol
+                    # Store peak-bin info if available
+                    if peak_info is not None:
+                        meta["winS_peak_time_ms"] = peak_info.get("peak_time_ms")
+                        meta["winS_peak_auc"] = peak_info.get("peak_auc")
+                        meta["winS_mean_bin_auc"] = peak_info.get("mean_bin_auc")
+                        meta["winS_cv_auc_original"] = peak_info.get("cv_auc")
         elif winS is not None:
             mS = window_mask(time_s, winS)
             Xs_full = avg_over_window(Z, mS)
@@ -754,8 +1018,10 @@ def train_axes_for_area(
         if winT_candidates is not None and len(winT_candidates) > 0:
             # Window search for T
             yt = Tcfg.copy()
-            best_win, best_score, best_param, wT = search_best_window_binary(
-                Z, yt, time_s, winT_candidates, clf_binary, Cworth, None, lda_shrinkage
+            best_win, best_score, best_param, wT, peak_info = search_best_window_binary(
+                Z, yt, time_s, winT_candidates, clf_binary, Cworth, None, lda_shrinkage,
+                score_mode=search_score_mode, tiebreak=search_tiebreak,
+                tol=search_tol, event_time_s=search_event_time_s
             )
             if wT is not None and np.linalg.norm(wT) > 0:
                 sT_vec = unit_vec(wT)
@@ -776,6 +1042,16 @@ def train_axes_for_area(
                 meta["sT_auc_mean"] = float(best_score)
                 meta["sT_C"] = best_param
                 meta["sT_n"] = int((~np.isnan(yt)).sum())
+                # Store search settings
+                meta["winT_score_mode"] = search_score_mode
+                meta["winT_tiebreak"] = search_tiebreak
+                meta["winT_tol"] = search_tol
+                # Store peak-bin info if available
+                if peak_info is not None:
+                    meta["winT_peak_time_ms"] = peak_info.get("peak_time_ms")
+                    meta["winT_peak_auc"] = peak_info.get("peak_auc")
+                    meta["winT_mean_bin_auc"] = peak_info.get("mean_bin_auc")
+                    meta["winT_cv_auc_original"] = peak_info.get("cv_auc")
         elif winT_actual is not None:
             mT = window_mask(time_s, winT_actual)
             Xt_full = avg_over_window(Z, mT)
@@ -852,5 +1128,167 @@ def save_axes(out_dir: str, area: str, pack: AxisPack) -> str:
         norm_mu=(pack.norm_mu if pack.norm_mu is not None else np.array([])),
         norm_sd=(pack.norm_sd if pack.norm_sd is not None else np.array([])),
         meta=json.dumps(pack.meta),
+    )
+    return path
+
+
+# ==================== TIME-RESOLVED TRAINING ====================
+
+def train_time_resolved_axis(
+    cache: Dict,
+    time_s: np.ndarray,
+    feature: str = "C",  # "C", "S", or "T"
+    orientation: Optional[str] = None,
+    pt_min_ms: Optional[float] = None,
+    norm: str = "global",
+    baseline_win: Optional[Tuple[float, float]] = None,
+    clf_binary: str = "logreg",
+    C_grid: Optional[List[float]] = None,
+    lda_shrinkage: str = "auto",
+    time_range: Optional[Tuple[float, float]] = None,  # restrict training to this range
+) -> Dict:
+    """
+    Train a separate axis for each time bin (time-resolved decoding).
+    
+    Returns a dict with:
+    - 'axes': np.ndarray of shape (n_time_bins, n_units) - one axis per time bin
+    - 'time_s': time array
+    - 'cv_auc': np.ndarray of shape (n_time_bins,) - CV AUC at each bin
+    - 'meta': metadata dict
+    """
+    if C_grid is None:
+        C_grid = [0.1, 0.3, 1.0, 3.0, 10.0]
+    
+    # Build trial mask
+    N_total = cache["Z"].shape[0]
+    n_bins = cache["Z"].shape[1]
+    n_units = cache["Z"].shape[2]
+    
+    C_raw = cache.get("lab_C", np.full(N_total, np.nan)).astype(np.float64)
+    S_raw = cache.get("lab_S", np.full(N_total, np.nan)).astype(np.float64)
+    if "lab_T" in cache:
+        T_raw = cache.get("lab_T", np.full(N_total, np.nan)).astype(np.float64)
+    else:
+        T_raw = np.sign(C_raw) * np.sign(S_raw)
+        T_raw[~(np.isfinite(C_raw) & np.isfinite(S_raw))] = np.nan
+    OR_raw = cache.get("lab_orientation", np.array(["pooled"] * N_total, dtype=object))
+    PT_raw = cache.get("lab_PT_ms", None)
+    IC_raw = cache.get("lab_is_correct", np.ones(N_total, dtype=bool))
+    
+    keep = np.ones(N_total, dtype=bool)
+    keep &= IC_raw
+    if orientation is not None and "lab_orientation" in cache:
+        keep &= (OR_raw.astype(str) == orientation)
+    if pt_min_ms is not None and PT_raw is not None:
+        keep &= np.isfinite(PT_raw) & (PT_raw >= float(pt_min_ms))
+    
+    # Get normalized data
+    norm_mu = None
+    norm_sd = None
+    
+    if norm == "baseline":
+        if baseline_win is None:
+            raise ValueError("norm='baseline' requires baseline_win")
+        if "X" not in cache:
+            raise KeyError("Cache missing 'X'. Cannot use norm='baseline'.")
+        mu, sd = baseline_stats(cache["X"], time_s, baseline_win, keep)
+        norm_mu = mu
+        norm_sd = sd
+        Z, _ = get_Z(cache, time_s, keep, norm, baseline_win, axes_norm={"mu": mu, "sd": sd})
+    else:
+        Z, _ = get_Z(cache, time_s, keep, norm, baseline_win, axes_norm=None)
+    
+    # Select label based on feature
+    if feature == "C":
+        y_raw = C_raw[keep]
+    elif feature == "S":
+        y_raw = S_raw[keep]
+    elif feature == "T":
+        y_raw = T_raw[keep]
+    else:
+        raise ValueError(f"Unknown feature: {feature}")
+    
+    # Valid trials for this feature
+    valid = np.isfinite(y_raw)
+    y = y_raw[valid]
+    Z_valid = Z[valid]  # (n_valid_trials, n_bins, n_units)
+    
+    if np.unique(np.sign(y)).size < 2:
+        raise ValueError(f"Not enough class diversity for feature {feature}")
+    
+    # Determine time bins to train
+    if time_range is not None:
+        bin_mask = (time_s >= time_range[0]) & (time_s <= time_range[1])
+        train_bins = np.where(bin_mask)[0]
+    else:
+        train_bins = np.arange(n_bins)
+    
+    # Initialize output arrays
+    axes = np.zeros((n_bins, n_units), dtype=np.float64)
+    cv_auc = np.full(n_bins, np.nan, dtype=np.float64)
+    best_params = [None] * n_bins
+    
+    print(f"  Training time-resolved axis for {feature} ({len(train_bins)} time bins)...")
+    
+    for i, t_idx in enumerate(train_bins):
+        # Activity at this time bin: (n_trials, n_units)
+        X_t = Z_valid[:, t_idx, :]
+        
+        # Train classifier
+        w, auc, param = cv_fit_binary_linear(X_t, y, clf_binary, C_grid, None, lda_shrinkage)
+        
+        # Normalize to unit vector
+        axes[t_idx] = unit_vec(w)
+        cv_auc[t_idx] = auc
+        best_params[t_idx] = param
+        
+        # Progress every 10 bins
+        if (i + 1) % 10 == 0 or (i + 1) == len(train_bins):
+            print(f"    [{i+1}/{len(train_bins)}] t={time_s[t_idx]*1000:.0f}ms, AUC={auc:.3f}")
+    
+    meta = {
+        "time_resolved": True,
+        "feature": feature,
+        "n_time_bins": int(n_bins),
+        "n_trained_bins": int(len(train_bins)),
+        "n_trials": int(valid.sum()),
+        "norm": norm,
+        "baseline_win": list(baseline_win) if baseline_win else None,
+        "clf_binary": clf_binary,
+        "C_grid": C_grid,
+        "time_range": list(time_range) if time_range else None,
+        "orientation": orientation,
+        "pt_min_ms": pt_min_ms,
+        "mean_cv_auc": float(np.nanmean(cv_auc)),
+        "max_cv_auc": float(np.nanmax(cv_auc)),
+        "peak_time_ms": float(time_s[np.nanargmax(cv_auc)] * 1000) if np.any(np.isfinite(cv_auc)) else None,
+    }
+    
+    return {
+        "axes": axes,  # (n_bins, n_units)
+        "time_s": time_s,
+        "cv_auc": cv_auc,
+        "best_params": best_params,
+        "meta": meta,
+        "norm_mu": norm_mu,
+        "norm_sd": norm_sd,
+    }
+
+
+def save_time_resolved_axes(out_dir: str, area: str, result: Dict) -> str:
+    """Save time-resolved axes to npz file."""
+    os.makedirs(out_dir, exist_ok=True)
+    path = os.path.join(out_dir, f"axes_{area}.npz")
+    np.savez_compressed(
+        path,
+        # Time-resolved axes: (n_bins, n_units)
+        sC_time_resolved=result["axes"],
+        time_s=result["time_s"],
+        cv_auc=result["cv_auc"],
+        # Normalization
+        norm_mu=(result["norm_mu"] if result["norm_mu"] is not None else np.array([])),
+        norm_sd=(result["norm_sd"] if result["norm_sd"] is not None else np.array([])),
+        # Meta
+        meta=json.dumps(result["meta"]),
     )
     return path

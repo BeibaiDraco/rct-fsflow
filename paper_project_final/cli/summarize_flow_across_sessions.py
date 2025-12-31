@@ -302,14 +302,24 @@ def check_area_qc(
     area: str,
     feature: str,
     qc_threshold: float,
+    explicit_qc_tag: Optional[str] = None,
 ) -> bool:
     """
     Check if an area passes QC for a given feature.
     
+    Parameters
+    ----------
+    explicit_qc_tag : str, optional
+        If provided, use this QC tag directly instead of auto-detecting.
+    
     Returns True if QC passes (or if QC data is unavailable), False if QC fails.
     """
-    # Find corresponding QC tag
-    qc_tag = find_qc_tag_for_flow_tag(out_root, align, sid, flow_tag)
+    # Use explicit QC tag if provided, otherwise auto-detect
+    if explicit_qc_tag is not None:
+        qc_tag = explicit_qc_tag
+    else:
+        qc_tag = find_qc_tag_for_flow_tag(out_root, align, sid, flow_tag)
+    
     if qc_tag is None:
         # If no QC tag found, we can't check - default to passing
         # (could also return False to be strict, but user might want to be lenient)
@@ -936,6 +946,7 @@ def summarize_for_tag_align_feature(
     rebin_win_s: Optional[float] = None,
     rebin_step_s: Optional[float] = None,
     qc_threshold: Optional[float] = None,
+    qc_tag: Optional[str] = None,
     group_diff_p: bool = False,
     group_null_B: int = 4096,
     group_null_seed: int = 12345,
@@ -1002,8 +1013,8 @@ def summarize_for_tag_align_feature(
                 # SYMMETRIC rejection: if EITHER area fails QC, skip the entire session
                 # for this pair. This ensures both directions have the same session count.
                 if qc_threshold is not None:
-                    qc_pass_A = check_area_qc(out_root, align, sid, tag, A, feature, qc_threshold)
-                    qc_pass_B = check_area_qc(out_root, align, sid, tag, B, feature, qc_threshold)
+                    qc_pass_A = check_area_qc(out_root, align, sid, tag, A, feature, qc_threshold, qc_tag)
+                    qc_pass_B = check_area_qc(out_root, align, sid, tag, B, feature, qc_threshold, qc_tag)
                     
                     # Skip session if EITHER area fails QC (symmetric rejection)
                     if not qc_pass_A or not qc_pass_B:
@@ -1431,6 +1442,9 @@ def main():
                          "rejection is applied: for pair (A,B), if EITHER area fails QC, "
                          "the session is excluded for that pair. This ensures both directions "
                          "have the same N. If None, no QC filtering is applied.")
+    ap.add_argument("--qc_tag", type=str, default=None,
+                    help="Explicit QC tag to use for filtering (e.g., 'winsearch-stim-vertical'). "
+                         "If not provided, script attempts to auto-detect QC tag from flow tag.")
     ap.add_argument("--group_diff_p", action="store_true",
                     help="Compute old-style group empirical p(t) for DIFF using saved "
                          "null samples. Requires flow_*.npz files to have null_samps_AtoB.")
@@ -1520,6 +1534,7 @@ def main():
                     rebin_win_s=rebin_win,
                     rebin_step_s=rebin_step,
                     qc_threshold=args.qc_threshold,
+                    qc_tag=args.qc_tag,
                     group_diff_p=args.group_diff_p,
                     group_null_B=args.group_null_B,
                     group_null_seed=args.group_null_seed,

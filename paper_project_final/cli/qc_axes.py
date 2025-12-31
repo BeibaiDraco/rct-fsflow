@@ -93,6 +93,160 @@ def _parse_range_arg(val) -> Optional[Tuple[float, float]]:
     return None
 
 
+# ==================== TIME-RESOLVED QC ====================
+
+def _is_time_resolved(axes):
+    """Check if axes are time-resolved (have sC_time_resolved)."""
+    return "sC_time_resolved" in axes and axes["sC_time_resolved"].ndim == 2
+
+def _qc_time_resolved(cache, axes, time_s, orientation, pt_min_ms, align):
+    """
+    QC for time-resolved axes: compute AUC at each time bin using
+    the axis trained at that same time bin (diagonal decoding).
+    """
+    from sklearn.metrics import roc_auc_score
+    from paperflow.norm import get_Z, baseline_stats, get_axes_norm, get_axes_norm_mode, get_axes_baseline_win
+    
+    meta = axes.get("meta", {})
+    if isinstance(meta, str):
+        meta = json.loads(meta)
+    
+    feature = meta.get("feature", "C")
+    
+    # Time-resolved axes: (n_bins, n_units)
+    axes_matrix = axes["sC_time_resolved"]
+    n_bins, n_units = axes_matrix.shape
+    
+    # Build trial mask
+    N_total = cache["Z"].shape[0]
+    C_raw = cache.get("lab_C", np.full(N_total, np.nan)).astype(np.float64)
+    S_raw = cache.get("lab_S", np.full(N_total, np.nan)).astype(np.float64)
+    if "lab_T" in cache:
+        T_raw = cache.get("lab_T", np.full(N_total, np.nan)).astype(np.float64)
+    else:
+        T_raw = np.sign(C_raw) * np.sign(S_raw)
+        T_raw[~(np.isfinite(C_raw) & np.isfinite(S_raw))] = np.nan
+    OR_raw = cache.get("lab_orientation", np.array(["pooled"] * N_total, dtype=object))
+    PT_raw = cache.get("lab_PT_ms", None)
+    IC_raw = cache.get("lab_is_correct", np.ones(N_total, dtype=bool))
+    
+    keep = np.ones(N_total, dtype=bool)
+    keep &= IC_raw
+    if orientation is not None and "lab_orientation" in cache:
+        keep &= (OR_raw.astype(str) == orientation)
+    if pt_min_ms is not None and PT_raw is not None:
+        keep &= np.isfinite(PT_raw) & (PT_raw >= float(pt_min_ms))
+    
+    # Get normalization from axes meta
+    norm_mode = meta.get("norm", "global")
+    baseline_win = meta.get("baseline_win")
+    if baseline_win:
+        baseline_win = tuple(baseline_win)
+    
+    # Get normalized data
+    axes_norm = None
+    if "norm_mu" in axes and len(axes["norm_mu"]) > 0:
+        axes_norm = {"mu": axes["norm_mu"], "sd": axes["norm_sd"]}
+    
+    Z, _ = get_Z(cache, time_s, keep, norm_mode, baseline_win, axes_norm=axes_norm)
+    
+    # Select label
+    if feature == "C":
+        y_raw = C_raw[keep]
+    elif feature == "S":
+        y_raw = S_raw[keep]
+    elif feature == "T":
+        y_raw = T_raw[keep]
+    else:
+        y_raw = C_raw[keep]
+    
+    valid = np.isfinite(y_raw)
+    y = y_raw[valid]
+    Z_valid = Z[valid]
+    
+    # Compute AUC at each time bin using diagonal decoding
+    auc_diagonal = np.full(n_bins, np.nan)
+    y_binary = (y > 0).astype(int)
+    
+    if np.unique(y_binary).size >= 2:
+        for t_idx in range(n_bins):
+            axis_t = axes_matrix[t_idx]
+            if np.linalg.norm(axis_t) < 1e-10:
+                continue
+            # Project activity at time t onto axis trained at time t
+            proj = Z_valid[:, t_idx, :] @ axis_t
+            try:
+                auc_diagonal[t_idx] = roc_auc_score(y_binary, proj)
+            except:
+                pass
+    
+    return {
+        "time": time_s,
+        "auc_diagonal": auc_diagonal,
+        "cv_auc_train": axes.get("cv_auc", np.full(n_bins, np.nan)),
+        "meta": {
+            "time_resolved": True,
+            "feature": feature,
+            "align": align,
+            "orientation": orientation,
+            "pt_min_ms": pt_min_ms,
+            "norm": norm_mode,
+            "n_trials": int(valid.sum()),
+        }
+    }
+
+def _plot_time_resolved_qc(result, out_pdf, area):
+    """Plot time-resolved QC: CV AUC from training (honest estimate)."""
+    tms = result["time"] * 1000.0
+    
+    plt.figure(figsize=(8, 4))
+    plt.axvline(0, ls="--", c="k", lw=0.8)
+    plt.axhline(0.5, ls=":", c="gray", lw=1.0)
+    
+    # CV AUC from training (this is the honest cross-validated estimate)
+    cv_auc = result.get("cv_auc_train", result.get("auc_diagonal"))
+    if cv_auc is not None and np.any(np.isfinite(cv_auc)):
+        plt.plot(tms, cv_auc, lw=2.5, label="CV AUC (per time bin)", color="C0")
+        
+        # Mark peak
+        peak_idx = np.nanargmax(cv_auc)
+        peak_auc = cv_auc[peak_idx]
+        peak_time = tms[peak_idx]
+        plt.scatter([peak_time], [peak_auc], s=100, c="C0", zorder=5, 
+                    marker="*", label=f"Peak: {peak_auc:.3f} @ {peak_time:.0f}ms")
+    
+    feature = result["meta"].get("feature", "C")
+    norm_str = result["meta"].get("norm", "global")
+    n_trials = result["meta"].get("n_trials", "?")
+    title = (f"{area} — Time-Resolved Decoding ({feature})\n"
+             f"align={result['meta'].get('align')}, ori={result['meta'].get('orientation')}, "
+             f"PT≥{result['meta'].get('pt_min_ms')}, norm={norm_str}, n={n_trials}")
+    
+    plt.xlabel("Time (ms)")
+    plt.ylabel("CV AUC (5-fold)")
+    plt.title(title)
+    plt.legend(loc="lower right", frameon=False)
+    plt.ylim(0.4, 1.0)
+    plt.tight_layout()
+    
+    os.makedirs(os.path.dirname(out_pdf), exist_ok=True)
+    plt.savefig(out_pdf)
+    plt.savefig(out_pdf.replace(".pdf", ".png"), dpi=300)
+    plt.close()
+
+def _save_time_resolved_json(result, out_json):
+    """Save time-resolved QC results to JSON."""
+    os.makedirs(os.path.dirname(out_json), exist_ok=True)
+    payload = {
+        "time": result["time"].tolist(),
+        "auc_diagonal": result["auc_diagonal"].tolist(),
+        "cv_auc_train": result["cv_auc_train"].tolist() if "cv_auc_train" in result else None,
+        "meta": result["meta"],
+    }
+    with open(out_json, "w") as f:
+        json.dump(payload, f, indent=2)
+
+
 def main():
     ap = argparse.ArgumentParser(description="QC curves for trained axes (per area).")
     ap.add_argument("--out_root", default=os.path.join(os.environ.get("PAPER_HOME","."),"out"))
@@ -139,6 +293,32 @@ def main():
     for area in areas:
         cache = _load_cache(args.out_root, args.align, args.sid, area)
         axes  = _load_axes(args.out_root, args.align, args.sid, area, tag=args.tag)
+
+        # === Check for time-resolved axes ===
+        if _is_time_resolved(axes):
+            print(f"[{args.sid}][{area}] Detected time-resolved axes...")
+            result = _qc_time_resolved(cache, axes, time_s, ori, pt_thr, args.align)
+            
+            qc_dir = (os.path.join(args.out_root, args.align, args.sid, "qc", args.tag)
+                      if args.tag else
+                      os.path.join(args.out_root, args.align, args.sid, "qc"))
+            os.makedirs(qc_dir, exist_ok=True)
+            
+            pdf = os.path.join(qc_dir, f"qc_axes_{area}.pdf")
+            _plot_time_resolved_qc(result, pdf, area)
+            _save_time_resolved_json(result, os.path.join(qc_dir, f"qc_axes_{area}.json"))
+            
+            # Report CV AUC from training (the honest estimate)
+            cv_auc = result.get("cv_auc_train", result.get("auc_diagonal"))
+            if cv_auc is not None and np.any(np.isfinite(cv_auc)):
+                peak_auc = np.nanmax(cv_auc)
+                peak_idx = np.nanargmax(cv_auc)
+                peak_time = result["time"][peak_idx] * 1000
+                print(f"[{args.sid}][{area}] wrote {pdf} (+ .png, .json)   "
+                      f"peak CV AUC={peak_auc:.3f} at {peak_time:.0f}ms")
+            else:
+                print(f"[{args.sid}][{area}] wrote {pdf} (+ .png, .json)")
+            continue  # Skip standard QC
 
         # === Determine normalization ===
         if args.norm == "auto":

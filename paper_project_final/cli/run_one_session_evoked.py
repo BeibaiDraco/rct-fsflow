@@ -246,11 +246,16 @@ def main():
             if rc and not args.continue_on_error:
                 return
 
-        # Flow tag
-        flow_tag_base_align = f"{args.flow_tag_base}-{align}"
+        # Flow tag: include axes_tag_base and flow orientation for traceability
+        # Format: <flow_base>_<axes_base>-<align>-<flow_ori>-none-trial
+        # e.g., evoked_subtract_winsearch-stim-vert-none-trial
+        ori_short = {"vertical": "vert", "horizontal": "horiz", "pooled": "pooled"}[args.orientation]
+        flow_tag_base_align = f"{args.flow_tag_base}_{args.axes_tag_base}-{align}-{ori_short}"
         flow_tag = f"{flow_tag_base_align}-none-trial"  # standardize_mode=none, null_method=trial_shuffle
 
-        print(f"\n[combo] SID={args.sid}, align={align}, feat={feat}, axes_tag={axes_tag} → flow_tag={flow_tag}")
+        print(f"\n[combo] SID={args.sid}, align={align}, feat={feat}")
+        print(f"        axes_tag={axes_tag} (axes trained on {axes_orientation})")
+        print(f"        flow_tag={flow_tag} (flow computed on {args.orientation})")
 
         # Run flow_session
         flow_cmd = [args.python, CLI_FLOW,

@@ -1,0 +1,97 @@
+{
+  "_meta": {
+    "created": "2025-12-30T21:34:38.279118",
+    "script": "cli/train_axes.py",
+    "version": "2.0"
+  },
+  "cli_args": {
+    "out_root": "out",
+    "align": "stim",
+    "sid": "20231123",
+    "areas": null,
+    "features": [
+      "C"
+    ],
+    "orientation": "vertical",
+    "tag": "winsearch-stim-vertical",
+    "no_auto_tag": false,
+    "time_resolved": false,
+    "time_resolved_range": null,
+    "norm": "global",
+    "baseline_win": null,
+    "clf_binary": "logreg",
+    "C_grid": [
+      0.1,
+      0.3,
+      1.0,
+      3.0,
+      10.0
+    ],
+    "lda_shrinkage": "auto",
+    "searchC": true,
+    "searchS": false,
+    "searchT": false,
+    "searchR": false,
+    "search_step_ms": 20.0,
+    "search_len_ms": [
+      50.0,
+      100.0,
+      150.0,
+      200.0,
+      250.0
+    ],
+    "search_range_C": null,
+    "search_range_S": null,
+    "search_range_T": null,
+    "search_range_R": null,
+    "winC_stim": [
+      "0.10:0.30"
+    ],
+    "winR_stim": [
+      "0.05:0.20"
+    ],
+    "winC_sacc": [
+      "-0.30:-0.18"
+    ],
+    "winS_sacc": [
+      "-0.10:-0.03"
+    ],
+    "winT_targ": [
+      "0.05:0.20"
+    ],
+    "dimC": 1,
+    "dimR": 4,
+    "dimS": 1,
+    "no_S_invariant": false,
+    "pt_min_ms_sacc": 200.0,
+    "pt_min_ms_stim": 200.0,
+    "no_pt_filter": false,
+    "select_mode": "none",
+    "select_frac": 1.0
+  },
+  "resolved": {
+    "auto_tag_generated": true,
+    "final_tag": "winsearch-stim-vertical",
+    "resolved_baseline_win": null,
+    "resolved_winC": [
+      0.1,
+      0.3
+    ],
+    "resolved_winR": null,
+    "resolved_winS": null,
+    "resolved_winT": null,
+    "resolved_pt_min_ms": 200.0,
+    "features_trained": [
+      "C"
+    ],
+    "areas_processed": [
+      "SFEF",
+      "SLIP",
+      "SSC"
+    ],
+    "winC_candidates_count": 91,
+    "winS_candidates_count": 0,
+    "winT_candidates_count": 0,
+    "winR_candidates_count": 0
+  }
+}
