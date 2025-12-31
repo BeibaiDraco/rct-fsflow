@@ -103,8 +103,8 @@ PERM_WITHIN="CR"
 EVOKED_SIGMA_MS=10
 
 # Lags (explicitly included in flow tags)
-LAGS_STIM_MS=50
-LAGS_SACC_MS=30
+LAGS_STIM_MS=80
+LAGS_SACC_MS=50
 
 # Window search grid
 SEARCH_STEP_MS=20

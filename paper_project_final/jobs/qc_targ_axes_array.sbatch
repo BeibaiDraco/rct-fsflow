@@ -96,3 +96,6 @@ python cli/qc_axes.py \
 
 echo ""
 echo "[done] targ-aligned T axes QC complete for SID=$SID (vertical+horizontal+pooled)"
+
+
+
