@@ -633,13 +633,13 @@ def main():
     ap.add_argument("--search_targ", default="0.00:0.35",
                     help="Search window (sec) for targ alignment (default: 0.00:0.35)")
     
-    ap.add_argument("--k_sigma", type=float, default=6,
+    ap.add_argument("--k_sigma", type=float, default=4,
                     help="Threshold = baseline mean + k_sigma*baseline std")
     ap.add_argument("--runlen", type=int, default=5,
                     help="Consecutive bins above threshold")
     ap.add_argument("--smooth_ms", type=float, default=20.0,
                     help="Gaussian smoothing sigma in ms")
-    ap.add_argument("--qc_threshold", type=float, default=0.75,
+    ap.add_argument("--qc_threshold", type=float, default=0.65,
                     help="Default QC threshold for filtering (default: 0.75). Can be overridden by feature-specific thresholds.")
     ap.add_argument("--qc_threshold_C", type=float, default=None,
                     help="QC threshold for category (C) feature (default: uses --qc_threshold)")

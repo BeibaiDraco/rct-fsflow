@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Summarize flow results across sessions, per tag/config, per align, per feature,
 and per canonical pair, separately for each monkey (M vs S via area prefixes).
@@ -1452,11 +1451,11 @@ def main():
                     help="Number of group-null replicates for DIFF p(t) (default: 4096)")
     ap.add_argument("--group_null_seed", type=int, default=12345,
                     help="RNG seed for group-null sampling (default: 12345)")
-    ap.add_argument("--smooth_ms", type=float, default=0.0,
+    ap.add_argument("--smooth_ms", type=float, default=40.0,
                     help="Smoothing window (ms) for group DIFF p(t). If > 0, applies "
                          "uniform moving average to both observed DIFF and group null "
                          "before computing p-values. Keeps original time resolution. "
-                         "E.g., --smooth_ms 50 for 50ms window. Default: 0 (no smoothing).")
+                         "E.g., --smooth_ms 50 for 50ms window. Default: 40.")
     args = ap.parse_args()
     
     # Parse rebin parameters
