@@ -2,13 +2,19 @@
 """
 Plot QC figures for paper: category (stim) and saccade (sacc) AUC curves.
 
-Example session: 20201211
-- Stim category: out/stim/20201211/qc/axes_sweep-vertical
-- Saccade: out/sacc/20201211/qc/axes_sweep-sacc-horizontal
+Monkey M (session 20201211):
+- Stim category: out/stim/20201211/qc/axes_peakbin_stimCR-stim-vertical
+- Saccade: out/sacc/20201211/qc/axes_peakbin_saccS-sacc-horizontal-10msbin
+
+Monkey S (session 20231123):
+- Stim category: out/stim/20231123/qc/axes_peakbin_stimCR-stim-vertical
+- Saccade: out/sacc/20231123/qc/axes_peakbin_saccS-sacc-horizontal-10msbin
 
 Output:
-- out/paper_figures/qc/qc_stim_category.pdf/.png/.svg
-- out/paper_figures/qc/qc_sacc.pdf/.png/.svg
+- out/paper_figures/qc/qc_stim_category_M.pdf/.png/.svg
+- out/paper_figures/qc/qc_sacc_M.pdf/.png/.svg
+- out/paper_figures/qc/qc_stim_category_S.pdf/.png/.svg
+- out/paper_figures/qc/qc_sacc_S.pdf/.png/.svg
 
 Usage:
     python cli/plot_qc_paper.py
@@ -40,17 +46,20 @@ FIG_HEIGHT = PLOT_HEIGHT_IN + MARGIN_BOTTOM_IN + MARGIN_TOP_IN
 AREA_COLORS = {
     "MFEF": "#0e87cc",
     "MLIP": "#f10c45",
-    "MSC": "#9b5fc0",
+    "SFEF": "#0e87cc",
+    "SLIP": "#f10c45",
 }
 
-# Areas to plot (order determines legend order)
-AREAS = ["MFEF", "MLIP", "MSC"]
+# Areas to plot per monkey (order determines legend order)
+AREAS_M = ["MFEF", "MLIP"]
+AREAS_S = ["SFEF", "SLIP"]
 
 # Display names (strip monkey prefix)
 AREA_LABELS = {
     "MFEF": "FEF",
     "MLIP": "LIP",
-    "MSC": "SC",
+    "SFEF": "FEF",
+    "SLIP": "LIP",
 }
 
 
@@ -64,6 +73,7 @@ def load_qc_json(qc_dir: Path, area: str) -> dict:
 def plot_qc_figure(
     out_path: Path,
     qc_data_by_area: dict,
+    areas: list,
     metric: str,
     ylabel: str,
     t_min_ms: float,
@@ -81,6 +91,8 @@ def plot_qc_figure(
         Output path for the figure (PDF). Also saves PNG and SVG.
     qc_data_by_area : dict
         Dictionary mapping area name to QC data dict.
+    areas : list
+        List of area names to plot.
     metric : str
         Metric key in QC data (e.g., "auc_C", "auc_S_inv").
     ylabel : str
@@ -107,7 +119,7 @@ def plot_qc_figure(
     ax.axhline(chance_level, ls=":", c="k", lw=0.8)
     
     # Plot each area
-    for area in AREAS:
+    for area in areas:
         if area not in qc_data_by_area:
             print(f"  [warn] {area}: not in data, skipping")
             continue
@@ -150,77 +162,98 @@ def plot_qc_figure(
 
 def main():
     out_root = Path("out")
-    sid = "20201211"
     
     # Output directory for paper figures
     paper_fig_dir = out_root / "paper_figures" / "qc"
     
-    # ==================== Figure 1: Stimulus Category AUC ====================
-    qc_dir_stim = out_root / "stim" / sid / "qc" / "axes_sweep-vertical"
+    # Monkey-specific configuration
+    monkey_config = {
+        "M": {
+            "sid": "20201211",
+            "areas": AREAS_M,
+            "stim_qc_subdir": "axes_peakbin_stimCR-stim-vertical",
+            "sacc_qc_subdir": "axes_peakbin_saccS-sacc-horizontal-10msbin",
+        },
+        "S": {
+            "sid": "20231123",
+            "areas": AREAS_S,
+            "stim_qc_subdir": "axes_peakbin_stimCR-stim-vertical",
+            "sacc_qc_subdir": "axes_peakbin_saccS-sacc-horizontal-10msbin",
+        },
+    }
     
-    print(f"\n{'='*60}")
-    print(f"Stim Category AUC (from {qc_dir_stim})")
-    print(f"{'='*60}")
-    
-    qc_data_stim = {}
-    for area in AREAS:
-        try:
-            qc_data_stim[area] = load_qc_json(qc_dir_stim, area)
-            print(f"  Loaded {area}")
-        except FileNotFoundError as e:
-            print(f"  [warn] {area}: {e}")
-    
-    plot_qc_figure(
-        out_path=paper_fig_dir / "qc_stim_category.pdf",
-        qc_data_by_area=qc_data_stim,
-        metric="auc_C",
-        ylabel="AUC (Category)",
-        t_min_ms=-100.0,
-        t_max_ms=500.0,
-        y_min=0.35,
-        y_max=1.0,
-        chance_level=0.5,
-    )
-    
-    # ==================== Figure 2: Saccade AUC ====================
-    qc_dir_sacc = out_root / "sacc" / sid / "qc" / "axes_sweep-sacc-horizontal"
-    
-    print(f"\n{'='*60}")
-    print(f"Saccade AUC (from {qc_dir_sacc})")
-    print(f"{'='*60}")
-    
-    qc_data_sacc = {}
-    for area in AREAS:
-        try:
-            qc_data_sacc[area] = load_qc_json(qc_dir_sacc, area)
-            print(f"  Loaded {area}")
-        except FileNotFoundError as e:
-            print(f"  [warn] {area}: {e}")
-    
-    # Use auc_S_inv (preferred for flow analysis, per summarize_flow_across_sessions.py)
-    # Falls back to auc_S_raw if inv is not available
-    metric_sacc = "auc_S_inv"
-    has_inv = any(
-        qc_data_sacc.get(a, {}).get("auc_S_inv") is not None 
-        for a in AREAS if a in qc_data_sacc
-    )
-    if not has_inv:
-        metric_sacc = "auc_S_raw"
-        print(f"  Using auc_S_raw (auc_S_inv not available)")
-    else:
-        print(f"  Using auc_S_inv (preferred for flow analysis)")
-    
-    plot_qc_figure(
-        out_path=paper_fig_dir / "qc_sacc.pdf",
-        qc_data_by_area=qc_data_sacc,
-        metric=metric_sacc,
-        ylabel="AUC (Saccade)",
-        t_min_ms=-300.0,
-        t_max_ms=200.0,
-        y_min=0.35,
-        y_max=1.0,
-        chance_level=0.5,
-    )
+    for monkey, cfg in monkey_config.items():
+        sid = cfg["sid"]
+        areas = cfg["areas"]
+        
+        # ==================== Stimulus Category AUC ====================
+        qc_dir_stim = out_root / "stim" / sid / "qc" / cfg["stim_qc_subdir"]
+        
+        print(f"\n{'='*60}")
+        print(f"Monkey {monkey}: Stim Category AUC (from {qc_dir_stim})")
+        print(f"{'='*60}")
+        
+        qc_data_stim = {}
+        for area in areas:
+            try:
+                qc_data_stim[area] = load_qc_json(qc_dir_stim, area)
+                print(f"  Loaded {area}")
+            except FileNotFoundError as e:
+                print(f"  [warn] {area}: {e}")
+        
+        plot_qc_figure(
+            out_path=paper_fig_dir / f"qc_stim_category_{monkey}.pdf",
+            qc_data_by_area=qc_data_stim,
+            areas=areas,
+            metric="auc_C",
+            ylabel="AUC (Category)",
+            t_min_ms=-100.0,
+            t_max_ms=500.0,
+            y_min=0.35,
+            y_max=1.0,
+            chance_level=0.5,
+        )
+        
+        # ==================== Saccade AUC ====================
+        qc_dir_sacc = out_root / "sacc" / sid / "qc" / cfg["sacc_qc_subdir"]
+        
+        print(f"\n{'='*60}")
+        print(f"Monkey {monkey}: Saccade AUC (from {qc_dir_sacc})")
+        print(f"{'='*60}")
+        
+        qc_data_sacc = {}
+        for area in areas:
+            try:
+                qc_data_sacc[area] = load_qc_json(qc_dir_sacc, area)
+                print(f"  Loaded {area}")
+            except FileNotFoundError as e:
+                print(f"  [warn] {area}: {e}")
+        
+        # Use auc_S_inv (preferred for flow analysis, per summarize_flow_across_sessions.py)
+        # Falls back to auc_S_raw if inv is not available
+        metric_sacc = "auc_S_inv"
+        has_inv = any(
+            qc_data_sacc.get(a, {}).get("auc_S_inv") is not None 
+            for a in areas if a in qc_data_sacc
+        )
+        if not has_inv:
+            metric_sacc = "auc_S_raw"
+            print(f"  Using auc_S_raw (auc_S_inv not available)")
+        else:
+            print(f"  Using auc_S_inv (preferred for flow analysis)")
+        
+        plot_qc_figure(
+            out_path=paper_fig_dir / f"qc_sacc_{monkey}.pdf",
+            qc_data_by_area=qc_data_sacc,
+            areas=areas,
+            metric=metric_sacc,
+            ylabel="AUC (Saccade)",
+            t_min_ms=-290.0,
+            t_max_ms=200.0,
+            y_min=0.35,
+            y_max=1.0,
+            chance_level=0.5,
+        )
     
     print(f"\n{'='*60}")
     print("[done] QC paper figures completed.")

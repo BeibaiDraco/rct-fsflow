@@ -1353,20 +1353,26 @@ def summarize_for_tag_align_feature(
             
             # Determine time range for paper-quality figures based on feature
             # Category (C), Direction (R): -100 to 500 ms (stim-aligned)
-            # Saccade (S): -300 to 200 ms (sacc-aligned)
+            # Saccade (S): -290 to 200 ms (sacc-aligned)
             # Target (T): no change (use full time range)
             if feature in ("C", "R"):
                 paper_t_min_ms, paper_t_max_ms = -100.0, 500.0
             elif feature == "S":
-                paper_t_min_ms, paper_t_max_ms = -300.0, 200.0
+                paper_t_min_ms, paper_t_max_ms = -290.0, 200.0
             else:
                 paper_t_min_ms, paper_t_max_ms = None, None
             
-            # Y-axis limits for panel C: different for monkey M vs S
-            # Monkey M: -10 to 20, Monkey S: -10 to 15
-            if feature in ("C", "R", "S"):
+            # Y-axis limits for panel C: different for monkey M vs S, and stim vs sacc
+            # Stim (C, R): Monkey M: -10 to 20, Monkey S: -8 to 13
+            # Sacc (S): Monkey M: -10 to 25, Monkey S: -8 to 13
+            if feature in ("C", "R"):
                 if monkey_label.upper() == "M":
                     paper_y_min, paper_y_max = -10.0, 20.0
+                else:  # monkey S
+                    paper_y_min, paper_y_max = -8.0, 13.0
+            elif feature == "S":
+                if monkey_label.upper() == "M":
+                    paper_y_min, paper_y_max = -10.0, 39.0
                 else:  # monkey S
                     paper_y_min, paper_y_max = -8.0, 13.0
             else:
@@ -1535,10 +1541,9 @@ def main():
                          "uniform moving average to both observed DIFF and group null "
                          "before computing p-values. Keeps original time resolution. "
                          "E.g., --smooth_ms 50 for 50ms window. Default: 30.")
-    ap.add_argument("--sacc_bin_combine", type=int, default=2,
+    ap.add_argument("--sacc_bin_combine", type=int, default=1,
                     help="Number of adjacent time bins to combine for sacc alignment "
-                         "(default: 2, to match stim's 10ms bins from sacc's 5ms bins). "
-                         "Set to 1 to disable bin combining.")
+                         "(default: 1, no combining). Set to 2 if using 5ms bins and want 10ms output.")
     args = ap.parse_args()
     
     # Parse rebin parameters

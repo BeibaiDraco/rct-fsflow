@@ -8,12 +8,12 @@ This README documents the six figures used in the paper and how to reproduce the
 
 | Figure | File Path | Description |
 |--------|-----------|-------------|
-| 1 | `out/stim/summary/evoked_subtract_vert-stim-none-trial/C/figs/MFEF_vs_MLIP_panel_c.png` | Net Flow: Category information flow (FEF→LIP vs LIP→FEF), stim-aligned |
-| 2 | `out/sacc/summary/evoked_subtract_horiz-sacc-none-trial/S/figs/MFEF_vs_MLIP_panel_c.png` | Net Flow: Saccade information flow (FEF→LIP vs LIP→FEF), sacc-aligned |
-| 3 | `out/stim/trialtiming/trialonset_comprehensive/monkey_M_FEF_vs_LIP_category_summary.png` | Trial onset latency scatter: Category encoding FEF vs LIP |
-| 4 | `out/sacc/trialtiming/trialonset_comprehensive/monkey_M_FEF_vs_LIP_saccade_summary.png` | Trial onset latency scatter: Saccade encoding FEF vs LIP |
-| 5 | `out/paper_figures/qc/qc_stim_category.png` | QC: Category AUC over time (FEF, LIP, SC), stim-aligned |
-| 6 | `out/paper_figures/qc/qc_sacc.png` | QC: Saccade AUC over time (FEF, LIP, SC), sacc-aligned |
+| 1 | `out/stim/summary/evoked_peakbin_stimC_vertical_lag80ms-none-trial/C/figs/MFEF_vs_MLIP_panel_c.png` | Net Flow: Category information flow (FEF→LIP vs LIP→FEF), stim-aligned |
+| 2 | `out/sacc/summary/evoked_peakbin_saccS_horizontal_lag50ms_10msbin-none-trial/S/figs/MFEF_vs_MLIP_panel_c.png` | Net Flow: Saccade information flow (FEF→LIP vs LIP→FEF), sacc-aligned (10ms bins) |
+| 3 | `out/stim/trialtiming/trialonset_axes_peakbin_stimCR/monkey_M_FEF_vs_LIP_category_summary.png` | Trial onset latency scatter: Category encoding FEF vs LIP |
+| 4 | `out/sacc/trialtiming/trialonset_axes_peakbin_saccS_10msbin/monkey_M_FEF_vs_LIP_saccade_summary.png` | Trial onset latency scatter: Saccade encoding FEF vs LIP (10ms bins) |
+| 5 | `out/paper_figures/qc/qc_stim_category_M.png` | QC: Category AUC over time (FEF, LIP), stim-aligned, Monkey M |
+| 6 | `out/paper_figures/qc/qc_sacc_M.png` | QC: Saccade AUC over time (FEF, LIP), sacc-aligned (10ms bins), Monkey M |
 
 ---
 
@@ -33,51 +33,43 @@ These figures show the **Net Flow** (ΔΔLL in bits) between brain areas:
 
 ### Input Data Location
 The script reads flow results from:
-- Stim-aligned: `out/stim/<session_id>/flow/evoked_subtract_vert-stim-none-trial/C/flow_C_<area1>to<area2>.npz`
-- Sacc-aligned: `out/sacc/<session_id>/flow/evoked_subtract_horiz-sacc-none-trial/S/flow_S_<area1>to<area2>.npz`
+- Stim-aligned: `out/stim/<session_id>/flow/evoked_peakbin_stimC_vertical_lag80ms-none-trial/C/flow_C_<area1>to<area2>.npz`
+- Sacc-aligned: `out/sacc/<session_id>/flow/evoked_peakbin_saccS_horizontal_lag50ms_10msbin-none-trial/S/flow_S_<area1>to<area2>.npz`
 
 ### Output Location
-- Stim category: `out/stim/summary/evoked_subtract_vert-stim-none-trial/C/figs/MFEF_vs_MLIP_panel_c.{pdf,png,svg}`
-- Sacc saccade: `out/sacc/summary/evoked_subtract_horiz-sacc-none-trial/S/figs/MFEF_vs_MLIP_panel_c.{pdf,png,svg}`
+- Stim category: `out/stim/summary/evoked_peakbin_stimC_vertical_lag80ms-none-trial/C/figs/MFEF_vs_MLIP_panel_c.{pdf,png,svg}`
+- Sacc saccade: `out/sacc/summary/evoked_peakbin_saccS_horizontal_lag50ms_10msbin-none-trial/S/figs/MFEF_vs_MLIP_panel_c.{pdf,png,svg}`
 
 ### How to Reproduce
 
 **Step 1: Run per-session flow analysis (if not already done)**
 
-For all sessions, run the evoked subtraction flow analysis:
+Use the peakbin workflow batch jobs which run: train_axes → qc_axes → flow_session
 
 ```bash
-# Run for each session in sid_list.txt
-# Stim-aligned (vertical orientation for category)
-python cli/run_one_session_evoked.py \
-    --sid <SESSION_ID> \
-    --orientation vertical \
-    --axes_orientation vertical \
-    --stim_feature C \
-    --sacc_feature none
+# For stim-aligned (lag=80ms) and sacc-aligned (lag=50ms)
+sbatch jobs/peakbin_axes_qc_flow_array_big.sbatch
 
-# Sacc-aligned (horizontal orientation for saccade)
-python cli/run_one_session_evoked.py \
-    --sid <SESSION_ID> \
-    --orientation horizontal \
-    --axes_orientation horizontal \
-    --stim_feature none \
-    --sacc_feature S
+# For sacc-aligned with 10ms bins
+sbatch jobs/peakbin_axes_qc_flow_array_10ms_big.sbatch
 ```
-
-Or use the batch job scripts in `jobs/`:
-- `jobs/flow_evoked_array.sbatch` - for stim-aligned vertical evoked flows
-- `jobs/flow_evoked_horiz_array.sbatch` - for sacc-aligned horizontal evoked flows
 
 **Step 2: Summarize across sessions**
 
+For **stim-aligned** (category):
 ```bash
 python cli/summarize_flow_across_sessions.py \
     --out_root out \
-    --align both \
-    --tag_prefix evoked \
-    --group_diff_p \
-    --save_null_samples
+    --align stim \
+    --tags evoked_peakbin_stimC_vertical_lag80ms-none-trial
+```
+
+For **sacc-aligned** (saccade, 10ms bins):
+```bash
+python cli/summarize_flow_across_sessions.py \
+    --out_root out \
+    --align sacc \
+    --tags evoked_peakbin_saccS_horizontal_lag50ms_10msbin-none-trial
 ```
 
 ### Key Parameters
@@ -86,11 +78,14 @@ python cli/summarize_flow_across_sessions.py \
 |-----------|-----------------|----------------|
 | alignment | stim | sacc |
 | orientation | vertical | horizontal |
-| axes_orientation | vertical | horizontal |
+| axes_tag | axes_peakbin_stimCR-stim-vertical | axes_peakbin_saccS-sacc-horizontal-10msbin |
 | feature | C (category) | S (saccade) |
-| flow_tag | evoked_subtract_vert-stim-none-trial | evoked_subtract_horiz-sacc-none-trial |
-| time range | -100 to 500 ms | -300 to 200 ms |
-| y-axis limits | -10 to +20 bits | -10 to +20 bits |
+| flow_tag | evoked_peakbin_stimC_vertical_lag80ms-none-trial | evoked_peakbin_saccS_horizontal_lag50ms_10msbin-none-trial |
+| lag | 80 ms | 50 ms |
+| bin size | 10 ms | 10 ms (rebinned from 5ms) |
+| time range | -100 to 500 ms | -290 to 200 ms |
+| y-axis limits (Monkey M) | -10 to +20 bits | -10 to +39 bits |
+| y-axis limits (Monkey S) | -8 to +13 bits | -8 to +13 bits |
 
 ### Figure Specifications
 - **Plot area**: 10 × 5 inches
@@ -118,25 +113,29 @@ These scatter plots show per-trial latency of encoding onset:
 - Neural caches: `out/<align>/<session_id>/caches/area_<area>.npz`
 
 ### Output Location
-- Category: `out/stim/trialtiming/trialonset_comprehensive/monkey_M_FEF_vs_LIP_category_summary.{png,pdf,svg,npz}`
-- Saccade: `out/sacc/trialtiming/trialonset_comprehensive/monkey_M_FEF_vs_LIP_saccade_summary.{png,pdf,svg,npz}`
+- Category: `out/stim/trialtiming/trialonset_axes_peakbin_stimCR/monkey_M_FEF_vs_LIP_category_summary.{png,pdf,svg,npz}`
+- Saccade: `out/sacc/trialtiming/trialonset_axes_peakbin_saccS_10msbin/monkey_M_FEF_vs_LIP_saccade_summary.{png,pdf,svg,npz}`
 
 ### How to Reproduce
 
 ```bash
-# Run trial onset comprehensive analysis
+# Run trial onset analysis for stim (category)
 python cli/trial_onset_comprehensive.py \
     --out_root out \
     --sid_list sid_list.txt \
-    --align stim sacc \
+    --align stim \
+    --axes_tag_stim axes_peakbin_stimCR-stim-vertical \
     --orientation_stim vertical \
+    --tag trialonset_axes_peakbin_stimCR
+
+# Run trial onset analysis for sacc (saccade, 10ms bins)
+python cli/trial_onset_comprehensive.py \
+    --out_root out \
+    --sid_list sid_list.txt \
+    --align sacc \
+    --axes_tag_sacc axes_peakbin_saccS-sacc-horizontal-10msbin \
     --orientation_sacc horizontal \
-    --axes_tag_stim axes_sweep-stim-vertical \
-    --axes_tag_sacc axes_sweep-sacc-horizontal \
-    --qc_threshold 0.75 \
-    --k_sigma 6 \
-    --runlen 5 \
-    --smooth_ms 20.0
+    --tag trialonset_axes_peakbin_saccS_10msbin
 ```
 
 ### Key Parameters
@@ -145,14 +144,15 @@ python cli/trial_onset_comprehensive.py \
 |-----------|-----------------|----------------|
 | alignment | stim | sacc |
 | orientation | vertical | horizontal |
-| axes_tag | axes_sweep-stim-vertical | axes_sweep-sacc-horizontal |
+| axes_tag | axes_peakbin_stimCR-stim-vertical | axes_peakbin_saccS-sacc-horizontal-10msbin |
 | feature | C | S |
+| bin size | 10 ms | 10 ms (rebinned) |
 | baseline window | -0.20 to 0.00 s | -0.35 to -0.20 s |
 | search window | 0.00 to 0.50 s | -0.30 to 0.20 s |
-| threshold | baseline_mean + 6σ | baseline_mean + 6σ |
+| threshold | baseline_mean + 4σ | baseline_mean + 4σ |
 | runlen | 5 consecutive bins | 5 consecutive bins |
 | smoothing | 20 ms Gaussian | 20 ms Gaussian |
-| QC threshold | 0.75 | 0.75 |
+| QC threshold | 0.6 | 0.6 |
 
 ### Onset Detection Algorithm
 1. Project neural activity onto encoding axis (sC for category, sS_inv for saccade)
@@ -189,14 +189,18 @@ These figures show the Area Under the Curve (AUC) for decoding accuracy over tim
 `cli/plot_qc_paper.py`
 
 ### Input Data Location
-- Stim category QC: `out/stim/<session_id>/qc/axes_sweep-vertical/qc_axes_<area>.json`
-- Sacc saccade QC: `out/sacc/<session_id>/qc/axes_sweep-sacc-horizontal/qc_axes_<area>.json`
+- Stim category QC: `out/stim/<session_id>/qc/axes_peakbin_stimCR-stim-vertical/qc_axes_<area>.json`
+- Sacc saccade QC: `out/sacc/<session_id>/qc/axes_peakbin_saccS-sacc-horizontal-10msbin/qc_axes_<area>.json`
 
-**Example session used**: `20201211` (hardcoded in the script)
+**Example sessions used**:
+- Monkey M: `20201211`
+- Monkey S: `20231123`
 
 ### Output Location
-- Category AUC: `out/paper_figures/qc/qc_stim_category.{pdf,png,svg}`
-- Saccade AUC: `out/paper_figures/qc/qc_sacc.{pdf,png,svg}`
+- Category AUC (Monkey M): `out/paper_figures/qc/qc_stim_category_M.{pdf,png,svg}`
+- Category AUC (Monkey S): `out/paper_figures/qc/qc_stim_category_S.{pdf,png,svg}`
+- Saccade AUC (Monkey M): `out/paper_figures/qc/qc_sacc_M.{pdf,png,svg}`
+- Saccade AUC (Monkey S): `out/paper_figures/qc/qc_sacc_S.{pdf,png,svg}`
 
 ### How to Reproduce
 
@@ -208,10 +212,12 @@ python cli/plot_qc_paper.py
 
 | Parameter | Category (stim) | Saccade (sacc) |
 |-----------|-----------------|----------------|
-| session | 20201211 | 20201211 |
-| qc_tag | axes_sweep-vertical | axes_sweep-sacc-horizontal |
+| session (M) | 20201211 | 20201211 |
+| session (S) | 20231123 | 20231123 |
+| qc_tag (stim) | axes_peakbin_stimCR-stim-vertical | - |
+| qc_tag (sacc) | - | axes_peakbin_saccS-sacc-horizontal-10msbin |
 | metric | auc_C | auc_S_inv |
-| time range | -100 to 500 ms | -300 to 200 ms |
+| time range | -100 to 500 ms | -290 to 200 ms |
 | y-axis limits | 0.35 to 1.0 | 0.35 to 1.0 |
 | chance level | 0.5 | 0.5 |
 
@@ -288,28 +294,46 @@ All sessions are listed in `sid_list.txt`:
 python cli/build_caches_all.py --align stim --sid_list sid_list.txt
 python cli/build_caches_all.py --align sacc --sid_list sid_list.txt
 
-# Step 2: Train axes (if not already done)
-# This is typically done via batch jobs or run_one_session_sweep.py
+# Step 2: Run peakbin workflow (train axes → QC → flow) via SLURM
+# For stim (lag=80ms) and sacc (lag=50ms, 5ms bins)
+sbatch jobs/peakbin_axes_qc_flow_array_big.sbatch
 
-# Step 3: Run evoked flow for all sessions (typically via SLURM batch jobs)
-# See jobs/flow_evoked_array.sbatch and jobs/flow_evoked_horiz_array.sbatch
+# For sacc with 10ms bins (rebinned)
+sbatch jobs/peakbin_axes_qc_flow_array_10ms_big.sbatch
 
-# Step 4: Summarize flows across sessions
+# Step 3: Summarize flows across sessions
+# Stim-aligned (category)
 python cli/summarize_flow_across_sessions.py \
     --out_root out \
-    --align both \
-    --tag_prefix evoked \
-    --group_diff_p \
-    --alpha 0.05
+    --align stim \
+    --tags evoked_peakbin_stimC_vertical_lag80ms-none-trial
 
-# Step 5: Generate trial onset latency figures
+# Sacc-aligned (saccade, 10ms bins)
+python cli/summarize_flow_across_sessions.py \
+    --out_root out \
+    --align sacc \
+    --tags evoked_peakbin_saccS_horizontal_lag50ms_10msbin-none-trial
+
+# Step 4: Generate trial onset latency figures
+# Stim (category)
 python cli/trial_onset_comprehensive.py \
     --out_root out \
     --sid_list sid_list.txt \
-    --align stim sacc \
-    --tag trialonset_comprehensive
+    --align stim \
+    --axes_tag_stim axes_peakbin_stimCR-stim-vertical \
+    --orientation_stim vertical \
+    --tag trialonset_axes_peakbin_stimCR
 
-# Step 6: Generate QC paper figures
+# Sacc (saccade, 10ms bins)
+python cli/trial_onset_comprehensive.py \
+    --out_root out \
+    --sid_list sid_list.txt \
+    --align sacc \
+    --axes_tag_sacc axes_peakbin_saccS-sacc-horizontal-10msbin \
+    --orientation_sacc horizontal \
+    --tag trialonset_axes_peakbin_saccS_10msbin
+
+# Step 5: Generate QC paper figures
 python cli/plot_qc_paper.py
 ```
 
@@ -339,7 +363,11 @@ Contents:
 - `meta_json`: Metadata (tag, align, feature, pair, N sessions, etc.)
 
 ### Trial Onset NPZ Files
-Located at: `out/<align>/trialtiming/<tag>/monkey_<M>_<area1>_vs_<area2>_<feature>_summary.npz`
+Located at: `out/<align>/trialtiming/<tag>/monkey_<M|S>_<area1>_vs_<area2>_<feature>_summary.npz`
+
+Example paths:
+- Stim: `out/stim/trialtiming/trialonset_axes_peakbin_stimCR/monkey_M_FEF_vs_LIP_category_summary.npz`
+- Sacc: `out/sacc/trialtiming/trialonset_axes_peakbin_saccS_10msbin/monkey_M_FEF_vs_LIP_saccade_summary.npz`
 
 Contents:
 - `t1_ms`, `t2_ms`: Onset times for each area (in ms)
@@ -349,6 +377,10 @@ Contents:
 
 ### QC JSON Files
 Located at: `out/<align>/<sid>/qc/<axes_tag>/qc_axes_<area>.json`
+
+Example paths:
+- Stim: `out/stim/20201211/qc/axes_peakbin_stimCR-stim-vertical/qc_axes_MFEF.json`
+- Sacc: `out/sacc/20201211/qc/axes_peakbin_saccS-sacc-horizontal-10msbin/qc_axes_MFEF.json`
 
 Contents:
 - `time`: Time bins in seconds
@@ -365,13 +397,21 @@ Contents:
    - Monkey S sessions start with "2023" (areas: SFEF, SLIP, SSC)
 
 2. **Orientation conventions**:
-   - "vertical" = up/down saccade targets
-   - "horizontal" = left/right saccade targets
+   - "vertical" = up/down saccade targets (used for stim/category)
+   - "horizontal" = left/right saccade targets (used for sacc/saccade)
    - "pooled" = both orientations combined
 
-3. **QC filtering**: Sessions where either area fails QC (AUC < 0.75) are excluded symmetrically from both directions to ensure fair comparison.
+3. **Bin size conventions**:
+   - Stim-aligned: 10 ms bins (original)
+   - Sacc-aligned: 10 ms bins (rebinned from 5ms using `--rebin_factor 2`)
 
-4. **Group-level significance**: Uses permutation-based null distribution by sampling from per-session null distributions (4096 replicates by default).
+4. **QC filtering**: Sessions where either area fails QC (AUC < 0.6) are excluded symmetrically from both directions to ensure fair comparison.
+
+5. **Group-level significance**: Uses permutation-based null distribution by sampling from per-session null distributions (4096 replicates by default).
+
+6. **Flow tags naming convention**:
+   - `evoked_peakbin_<feature>_<orientation>_lag<X>ms[-10msbin]-none-trial`
+   - The `-10msbin` suffix indicates data was rebinned to 10ms bins
 
 ---
 

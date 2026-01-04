@@ -29,7 +29,7 @@ python cli/summarize_flow_across_sessions.py \
 | `--qc_threshold` | `0.6` | QC AUC threshold for area filtering (symmetric rejection) |
 | `--group_diff_p` | `True` | Compute group-level p-values for net flow |
 | `--smooth_ms` | `30.0` | Smoothing window (ms) for group p-value computation |
-| `--sacc_bin_combine` | `2` | Combine adjacent bins for sacc (5ms → 10ms) |
+| `--sacc_bin_combine` | `1` | Combine adjacent bins for sacc (1=no combining, 2=5ms→10ms) |
 | `--alpha` | `0.05` | Significance threshold |
 | `--win_stim` | `0.10:0.30` | Summary window for stim alignment (sec) |
 | `--win_sacc` | `-0.20:0.10` | Summary window for sacc alignment (sec) |
@@ -86,14 +86,13 @@ out/<align>/summary/<tag>/<feature>/
 
 ## Bin Combining for Saccade Data
 
-Saccade-aligned data uses 5ms bins while stimulus-aligned uses 10ms bins. By default, `--sacc_bin_combine 2` combines adjacent saccade bins:
+Saccade-aligned data may use 5ms or 10ms bins depending on workflow. By default, `--sacc_bin_combine 1` (no combining).
 
+If using the **5ms workflow** and want 10ms output, set `--sacc_bin_combine 2`:
 - Original: 100 bins × 5ms = 500ms
 - Combined: 50 bins × 10ms = 500ms
 
-This ensures consistent temporal resolution across alignments.
-
-To disable: `--sacc_bin_combine 1`
+If using the **10ms workflow** (with `--rebin_factor 2`), keep the default `--sacc_bin_combine 1`.
 
 ## QC Filtering
 
@@ -193,8 +192,8 @@ python cli/flow_session.py \
 python cli/summarize_flow_across_sessions.py \
     --out_root out \
     --align sacc \
-    --tags evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial evoked_peakbin_saccS_horizontal_lag50ms_10msbin-none-trial \
-    --sacc_bin_combine 1  # No additional combining needed - already 10ms
+    --tags evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial evoked_peakbin_saccS_horizontal_lag50ms_10msbin-none-trial
+# No --sacc_bin_combine needed - default is 1 (no combining)
 ```
 
 ### Key differences from 5ms workflow
@@ -205,7 +204,7 @@ python cli/summarize_flow_across_sessions.py \
 | `--rebin_factor` | 1 (default) | 2 |
 | Tag suffix | (none) | `-10msbin` |
 | Time points | ~100 bins | ~50 bins |
-| Summary `--sacc_bin_combine` | 2 | 1 |
+| Summary `--sacc_bin_combine` | 2 (to get 10ms) | 1 (default) |
 
 ## NPZ File Contents
 
