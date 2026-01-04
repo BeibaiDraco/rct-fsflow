@@ -1,0 +1,35 @@
+[info] task=8 SID=20201004
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] DRY_RUN=0 CONTINUE_ON_ERROR=0
+
+========== SACC 10ms: train axes (S) peakbin ==========
+
+[RUN] python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201004 --orientation horizontal --features S --tag axes_peakbin_saccS-sacc-horizontal-10msbin --norm global --clf_binary logreg --C_grid 0.1 0.3 1 3 10 --lda_shrinkage auto --searchS --search_range_S=-0.20:0.05 --search_step_ms 20 --search_len_ms 50 100 150 200 250 --search_score_mode peak_bin_auc --search_tiebreak shortest_then_closest0 --search_tol 0.01 --pt_min_ms_sacc 200 --rebin_factor 2
+[rebin] Combining 2 adjacent bins (e.g., 5ms → 10ms)
+[20201004][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/axes/axes_peakbin_saccS-sacc-horizontal-10msbin/axes_MFEF.npz
+[20201004][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/axes/axes_peakbin_saccS-sacc-horizontal-10msbin/axes_MLIP.npz
+[20201004][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/axes/axes_peakbin_saccS-sacc-horizontal-10msbin/axes_MSC.npz
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/axes/axes_peakbin_saccS-sacc-horizontal-10msbin/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/axes/axes_peakbin_saccS-sacc-horizontal-10msbin/config.json
+
+========== SACC 10ms: QC ==========
+
+[RUN] python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201004 --orientation horizontal --tag axes_peakbin_saccS-sacc-horizontal-10msbin --thr 0.60 --k 5 --pt_min_ms_sacc 200 --norm auto --rebin_factor 2
+[rebin] Combining 2 adjacent bins (e.g., 5ms → 10ms)
+[20201004][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/qc/axes_peakbin_saccS-sacc-horizontal-10msbin/qc_axes_MFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=-155.0000011920929, Sinv=-155.0000011920929, T=None
+[20201004][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/qc/axes_peakbin_saccS-sacc-horizontal-10msbin/qc_axes_MLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=-65.00000134110451, Sinv=-65.00000134110451, T=None
+[20201004][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/qc/axes_peakbin_saccS-sacc-horizontal-10msbin/qc_axes_MSC.pdf (+ .png, .json)   lat(ms): C=None, Sraw=-134.99999791383743, Sinv=-134.99999791383743, T=None
+
+========== SACC 10ms: flow feature=S (save null) ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201004 --feature S --orientation horizontal --lags_ms 30 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_saccS-sacc-horizontal-10msbin --tag evoked_peakbin_saccS_horizontal_lag30ms_10msbin --flow_tag_base evoked_peakbin_saccS_horizontal_lag30ms_10msbin --save_null_samples --norm auto --rebin_factor 2
+[rebin] Combining 2 adjacent bins (e.g., 5ms → 10ms)
+[20201004][MFEF->MLIP] [evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/flow/evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial/S/flow_S_MFEFtoMLIP.npz
+[20201004][MFEF->MSC] [evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/flow/evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial/S/flow_S_MFEFtoMSC.npz
+[20201004][MLIP->MFEF] [evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/flow/evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial/S/flow_S_MLIPtoMFEF.npz
+[20201004][MLIP->MSC] [evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/flow/evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial/S/flow_S_MLIPtoMSC.npz
+[20201004][MSC->MFEF] [evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/flow/evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial/S/flow_S_MSCtoMFEF.npz
+[20201004][MSC->MLIP] [evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201004/flow/evoked_peakbin_saccS_horizontal_lag30ms_10msbin-none-trial/S/flow_S_MSCtoMLIP.npz
+
+[done] SACC 10ms peakbin axes+QC+flow complete for SID=20201004
