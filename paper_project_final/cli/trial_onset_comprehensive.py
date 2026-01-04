@@ -4,6 +4,7 @@ import argparse, json
 import warnings
 from pathlib import Path
 from typing import Tuple, Dict, List, Optional
+from datetime import datetime
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
@@ -639,8 +640,8 @@ def main():
                     help="Consecutive bins above threshold")
     ap.add_argument("--smooth_ms", type=float, default=20.0,
                     help="Gaussian smoothing sigma in ms")
-    ap.add_argument("--qc_threshold", type=float, default=0.65,
-                    help="Default QC threshold for filtering (default: 0.75). Can be overridden by feature-specific thresholds.")
+    ap.add_argument("--qc_threshold", type=float, default=0.6,
+                    help="Default QC threshold for filtering (default: 0.6). Can be overridden by feature-specific thresholds.")
     ap.add_argument("--qc_threshold_C", type=float, default=None,
                     help="QC threshold for category (C) feature (default: uses --qc_threshold)")
     ap.add_argument("--qc_threshold_R", type=float, default=0.6,
@@ -784,6 +785,37 @@ def main():
         # Create output directory
         out_dir = out_root / align / "trialtiming" / args.tag
         out_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Save configuration as JSON
+        config = {
+            "created": datetime.now().isoformat(),
+            "script": "cli/trial_onset_comprehensive.py",
+            "align": align,
+            "orientation": orientation,
+            "pt_min_ms": pt_min_ms,
+            "axes_tag": axes_tag,
+            "baseline": list(baseline),
+            "search": list(search),
+            "k_sigma": float(args.k_sigma),
+            "runlen": int(args.runlen),
+            "smooth_ms": float(args.smooth_ms),
+            "qc_threshold": float(args.qc_threshold),
+            "qc_threshold_C": float(args.qc_threshold_C) if args.qc_threshold_C is not None else None,
+            "qc_threshold_R": float(args.qc_threshold_R) if args.qc_threshold_R is not None else None,
+            "qc_threshold_S": float(args.qc_threshold_S) if args.qc_threshold_S is not None else None,
+            "qc_threshold_T": float(args.qc_threshold_T) if args.qc_threshold_T is not None else None,
+            "tag": args.tag,
+            "features": features,
+            "pairs": [[a1, a2] for a1, a2 in pairs],
+            "n_sessions": len(sids),
+            "session_ids": sids,
+            "norm": norm if norm else "auto",
+            "norm_baseline_win": list(norm_baseline_win) if norm_baseline_win else None,
+        }
+        config_path = out_dir / "config.json"
+        with open(config_path, "w") as f:
+            json.dump(config, f, indent=2)
+        print(f"[ok] wrote {config_path}")
         
         # Aggregate by monkey and create summary plots
         for feature in features:

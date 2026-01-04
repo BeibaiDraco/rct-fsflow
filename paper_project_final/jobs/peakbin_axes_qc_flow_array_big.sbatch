@@ -92,7 +92,8 @@ echo "[info] OUT_ROOT=$OUT_ROOT"
 echo "[info] DRY_RUN=$DRY_RUN CONTINUE_ON_ERROR=$CONTINUE_ON_ERROR"
 
 # ------------ Shared analysis knobs ------------
-ORI="vertical"           # vertical|horizontal|pooled
+ORI_STIM="vertical"      # vertical|horizontal|pooled for stim alignment
+ORI_SACC="horizontal"    # vertical|horizontal|pooled for sacc alignment
 PT_MIN=200               # ms
 QC_THR=0.60
 QC_K=5
@@ -128,12 +129,12 @@ C_GRID=(0.1 0.3 1 3 10)
 LDA_SHRINKAGE="auto"
 
 # ------------ Tags ------------
-AXES_TAG_STIM="axes_peakbin_stimCR-stim-${ORI}"
-AXES_TAG_SACC="axes_peakbin_saccS-sacc-${ORI}"
+AXES_TAG_STIM="axes_peakbin_stimCR-stim-${ORI_STIM}"
+AXES_TAG_SACC="axes_peakbin_saccS-sacc-${ORI_SACC}"
 
-FLOW_TAG_BASE_STIM_C="evoked_peakbin_stimC_${ORI}_lag${LAGS_STIM_MS}ms"
-FLOW_TAG_BASE_STIM_R="evoked_peakbin_stimR_${ORI}_lag${LAGS_STIM_MS}ms"
-FLOW_TAG_BASE_SACC_S="evoked_peakbin_saccS_${ORI}_lag${LAGS_SACC_MS}ms"
+FLOW_TAG_BASE_STIM_C="evoked_peakbin_stimC_${ORI_STIM}_lag${LAGS_STIM_MS}ms"
+FLOW_TAG_BASE_STIM_R="evoked_peakbin_stimR_${ORI_STIM}_lag${LAGS_STIM_MS}ms"
+FLOW_TAG_BASE_SACC_S="evoked_peakbin_saccS_${ORI_SACC}_lag${LAGS_SACC_MS}ms"
 
 # Helper: expand arrays into args
 SEARCH_LEN_ARGS=()
@@ -151,7 +152,7 @@ if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
     python cli/train_axes.py \
       --out_root "$OUT_ROOT" \
       --align stim --sid "$SID" \
-      --orientation "$ORI" \
+      --orientation "$ORI_STIM" \
       --features C R \
       --tag "$AXES_TAG_STIM" \
       --norm "$NORM" \
@@ -172,7 +173,7 @@ if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
     python cli/qc_axes.py \
       --out_root "$OUT_ROOT" \
       --align stim --sid "$SID" \
-      --orientation "$ORI" \
+      --orientation "$ORI_STIM" \
       --tag "$AXES_TAG_STIM" \
       --thr "$QC_THR" --k "$QC_K" \
       --pt_min_ms_stim "$PT_MIN" \
@@ -183,7 +184,7 @@ if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
       --out_root "$OUT_ROOT" \
       --align stim --sid "$SID" \
       --feature C \
-      --orientation "$ORI" \
+      --orientation "$ORI_STIM" \
       --lags_ms "$LAGS_STIM_MS" \
       --ridge "$RIDGE" \
       --perms "$PERMS" \
@@ -204,7 +205,7 @@ if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
       --out_root "$OUT_ROOT" \
       --align stim --sid "$SID" \
       --feature R \
-      --orientation "$ORI" \
+      --orientation "$ORI_STIM" \
       --lags_ms "$LAGS_STIM_MS" \
       --ridge "$RIDGE" \
       --perms "$PERMS" \
@@ -233,7 +234,7 @@ if [[ -d "$OUT_ROOT/sacc/$SID/caches" ]]; then
     python cli/train_axes.py \
       --out_root "$OUT_ROOT" \
       --align sacc --sid "$SID" \
-      --orientation "$ORI" \
+      --orientation "$ORI_SACC" \
       --features S \
       --tag "$AXES_TAG_SACC" \
       --norm "$NORM" \
@@ -253,7 +254,7 @@ if [[ -d "$OUT_ROOT/sacc/$SID/caches" ]]; then
     python cli/qc_axes.py \
       --out_root "$OUT_ROOT" \
       --align sacc --sid "$SID" \
-      --orientation "$ORI" \
+      --orientation "$ORI_SACC" \
       --tag "$AXES_TAG_SACC" \
       --thr "$QC_THR" --k "$QC_K" \
       --pt_min_ms_sacc "$PT_MIN" \
@@ -264,7 +265,7 @@ if [[ -d "$OUT_ROOT/sacc/$SID/caches" ]]; then
       --out_root "$OUT_ROOT" \
       --align sacc --sid "$SID" \
       --feature S \
-      --orientation "$ORI" \
+      --orientation "$ORI_SACC" \
       --lags_ms "$LAGS_SACC_MS" \
       --ridge "$RIDGE" \
       --perms "$PERMS" \

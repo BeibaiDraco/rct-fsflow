@@ -1,0 +1,70 @@
+{
+  "created": "2026-01-03T17:41:27.024105",
+  "script": "cli/trial_onset_comprehensive.py",
+  "align": "sacc",
+  "orientation": "horizontal",
+  "pt_min_ms": 200.0,
+  "axes_tag": "axes_peakbin_saccS-sacc-vertical",
+  "baseline": [
+    -0.35,
+    -0.2
+  ],
+  "search": [
+    -0.3,
+    0.2
+  ],
+  "k_sigma": 4.0,
+  "runlen": 5,
+  "smooth_ms": 20.0,
+  "qc_threshold": 0.6,
+  "qc_threshold_C": null,
+  "qc_threshold_R": 0.6,
+  "qc_threshold_S": null,
+  "qc_threshold_T": null,
+  "tag": "trialonset_axes_peakbin_SaccS",
+  "features": [
+    "S"
+  ],
+  "pairs": [
+    [
+      "SC",
+      "LIP"
+    ],
+    [
+      "SC",
+      "FEF"
+    ],
+    [
+      "FEF",
+      "LIP"
+    ]
+  ],
+  "n_sessions": 23,
+  "session_ids": [
+    "20200327",
+    "20200328",
+    "20200401",
+    "20200402",
+    "20200926",
+    "20200929",
+    "20201001",
+    "20201004",
+    "20201204",
+    "20201211",
+    "20201216",
+    "20230622",
+    "20230627",
+    "20230705",
+    "20230707",
+    "20230710",
+    "20231025",
+    "20231103",
+    "20231109",
+    "20231121",
+    "20231123",
+    "20231130",
+    "20231205"
+  ],
+  "norm": "auto",
+  "norm_baseline_win": null
+}
