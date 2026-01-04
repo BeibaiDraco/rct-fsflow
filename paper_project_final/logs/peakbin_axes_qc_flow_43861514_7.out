@@ -1,0 +1,71 @@
+[info] task=7 SID=20201001
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] DRY_RUN=0 CONTINUE_ON_ERROR=0
+
+========== STIM: train axes (C,R) peakbin ==========
+
+[RUN] python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201001 --orientation vertical --features C R --tag axes_peakbin_stimCR-stim-vertical --norm global --clf_binary logreg --C_grid 0.1 0.3 1 3 10 --lda_shrinkage auto --searchC --searchR --search_range_C=0.00:0.50 --search_range_R=0.00:0.50 --search_step_ms 20 --search_len_ms 50 100 150 200 250 --search_score_mode peak_bin_auc --search_tiebreak shortest_then_earliest --search_tol 0.01 --pt_min_ms_stim 200
+[20201001][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/axes/axes_peakbin_stimCR-stim-vertical/axes_MFEF.npz
+    → winC_selected: [0.21999999999999997, 0.26999999999999996], score: 0.9571, peak@265ms (cv_auc=0.9975)
+[20201001][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/axes/axes_peakbin_stimCR-stim-vertical/axes_MLIP.npz
+    → winC_selected: [0.4200000000000001, 0.4700000000000001], score: 0.8258, peak@465ms (cv_auc=0.9230)
+[20201001][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/axes/axes_peakbin_stimCR-stim-vertical/axes_MSC.npz
+    → winC_selected: [0.34, 0.39], score: 0.7230, peak@375ms (cv_auc=0.7503)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/axes/axes_peakbin_stimCR-stim-vertical/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/axes/axes_peakbin_stimCR-stim-vertical/config.json
+
+========== STIM: QC ==========
+
+[RUN] python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201001 --orientation vertical --tag axes_peakbin_stimCR-stim-vertical --thr 0.60 --k 5 --pt_min_ms_stim 200 --norm auto
+[20201001][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/qc/axes_peakbin_stimCR-stim-vertical/qc_axes_MFEF.pdf (+ .png, .json)   lat(ms): C=144.99999582767487, Sraw=None, Sinv=None, T=None
+[20201001][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/qc/axes_peakbin_stimCR-stim-vertical/qc_axes_MLIP.pdf (+ .png, .json)   lat(ms): C=275.0000059604645, Sraw=None, Sinv=None, T=None
+[20201001][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/qc/axes_peakbin_stimCR-stim-vertical/qc_axes_MSC.pdf (+ .png, .json)   lat(ms): C=335.00000834465027, Sraw=None, Sinv=None, T=None
+
+========== STIM: flow feature=C (save null) ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201001 --feature C --orientation vertical --lags_ms 50 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical --tag evoked_peakbin_stimC_vertical_lag50ms --flow_tag_base evoked_peakbin_stimC_vertical_lag50ms --save_null_samples --norm auto
+[20201001][MFEF->MLIP] [evoked_peakbin_stimC_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimC_vertical_lag50ms-none-trial/C/flow_C_MFEFtoMLIP.npz
+[20201001][MFEF->MSC] [evoked_peakbin_stimC_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimC_vertical_lag50ms-none-trial/C/flow_C_MFEFtoMSC.npz
+[20201001][MLIP->MFEF] [evoked_peakbin_stimC_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimC_vertical_lag50ms-none-trial/C/flow_C_MLIPtoMFEF.npz
+[20201001][MLIP->MSC] [evoked_peakbin_stimC_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimC_vertical_lag50ms-none-trial/C/flow_C_MLIPtoMSC.npz
+[20201001][MSC->MFEF] [evoked_peakbin_stimC_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimC_vertical_lag50ms-none-trial/C/flow_C_MSCtoMFEF.npz
+[20201001][MSC->MLIP] [evoked_peakbin_stimC_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimC_vertical_lag50ms-none-trial/C/flow_C_MSCtoMLIP.npz
+
+========== STIM: flow feature=R (save null) ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20201001 --feature R --orientation vertical --lags_ms 50 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical --tag evoked_peakbin_stimR_vertical_lag50ms --flow_tag_base evoked_peakbin_stimR_vertical_lag50ms --save_null_samples --norm auto
+[20201001][MFEF->MLIP] [evoked_peakbin_stimR_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimR_vertical_lag50ms-none-trial/R/flow_R_MFEFtoMLIP.npz
+[20201001][MFEF->MSC] [evoked_peakbin_stimR_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimR_vertical_lag50ms-none-trial/R/flow_R_MFEFtoMSC.npz
+[20201001][MLIP->MFEF] [evoked_peakbin_stimR_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimR_vertical_lag50ms-none-trial/R/flow_R_MLIPtoMFEF.npz
+[20201001][MLIP->MSC] [evoked_peakbin_stimR_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimR_vertical_lag50ms-none-trial/R/flow_R_MLIPtoMSC.npz
+[20201001][MSC->MFEF] [evoked_peakbin_stimR_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimR_vertical_lag50ms-none-trial/R/flow_R_MSCtoMFEF.npz
+[20201001][MSC->MLIP] [evoked_peakbin_stimR_vertical_lag50ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201001/flow/evoked_peakbin_stimR_vertical_lag50ms-none-trial/R/flow_R_MSCtoMLIP.npz
+
+========== SACC: train axes (S) peakbin ==========
+
+[RUN] python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201001 --orientation horizontal --features S --tag axes_peakbin_saccS-sacc-horizontal --norm global --clf_binary logreg --C_grid 0.1 0.3 1 3 10 --lda_shrinkage auto --searchS --search_range_S=-0.20:0.05 --search_step_ms 20 --search_len_ms 50 100 150 200 250 --search_score_mode peak_bin_auc --search_tiebreak shortest_then_closest0 --search_tol 0.01 --pt_min_ms_sacc 200
+[20201001][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/axes/axes_peakbin_saccS-sacc-horizontal/axes_MFEF.npz
+[20201001][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/axes/axes_peakbin_saccS-sacc-horizontal/axes_MLIP.npz
+[20201001][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/axes/axes_peakbin_saccS-sacc-horizontal/axes_MSC.npz
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/axes/axes_peakbin_saccS-sacc-horizontal/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/axes/axes_peakbin_saccS-sacc-horizontal/config.json
+
+========== SACC: QC ==========
+
+[RUN] python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201001 --orientation horizontal --tag axes_peakbin_saccS-sacc-horizontal --thr 0.60 --k 5 --pt_min_ms_sacc 200 --norm auto
+[20201001][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/qc/axes_peakbin_saccS-sacc-horizontal/qc_axes_MFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=-117.49999970197678, Sinv=-117.49999970197678, T=None
+[20201001][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/qc/axes_peakbin_saccS-sacc-horizontal/qc_axes_MLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=-42.500000447034836, Sinv=-42.500000447034836, T=None
+[20201001][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/qc/axes_peakbin_saccS-sacc-horizontal/qc_axes_MSC.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None, T=None
+
+========== SACC: flow feature=S (save null) ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20201001 --feature S --orientation horizontal --lags_ms 30 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_saccS-sacc-horizontal --tag evoked_peakbin_saccS_horizontal_lag30ms --flow_tag_base evoked_peakbin_saccS_horizontal_lag30ms --save_null_samples --norm auto
+[20201001][MFEF->MLIP] [evoked_peakbin_saccS_horizontal_lag30ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/flow/evoked_peakbin_saccS_horizontal_lag30ms-none-trial/S/flow_S_MFEFtoMLIP.npz
+[20201001][MFEF->MSC] [evoked_peakbin_saccS_horizontal_lag30ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/flow/evoked_peakbin_saccS_horizontal_lag30ms-none-trial/S/flow_S_MFEFtoMSC.npz
+[20201001][MLIP->MFEF] [evoked_peakbin_saccS_horizontal_lag30ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/flow/evoked_peakbin_saccS_horizontal_lag30ms-none-trial/S/flow_S_MLIPtoMFEF.npz
+[20201001][MLIP->MSC] [evoked_peakbin_saccS_horizontal_lag30ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/flow/evoked_peakbin_saccS_horizontal_lag30ms-none-trial/S/flow_S_MLIPtoMSC.npz
+[20201001][MSC->MFEF] [evoked_peakbin_saccS_horizontal_lag30ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/flow/evoked_peakbin_saccS_horizontal_lag30ms-none-trial/S/flow_S_MSCtoMFEF.npz
+[20201001][MSC->MLIP] [evoked_peakbin_saccS_horizontal_lag30ms-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20201001/flow/evoked_peakbin_saccS_horizontal_lag30ms-none-trial/S/flow_S_MSCtoMLIP.npz
+
+[done] peakbin axes+QC+flow complete for SID=20201001
