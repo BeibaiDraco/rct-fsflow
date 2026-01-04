@@ -352,3 +352,112 @@ def get_axes_baseline_win(axes: Dict) -> Optional[Tuple[float, float]]:
         return (float(bw[0]), float(bw[1]))
     return None
 
+
+# ============== TIME REBINNING ==============
+
+def rebin_cache_data(
+    cache: Dict,
+    rebin_factor: int,
+) -> Tuple[Dict, np.ndarray]:
+    """
+    Rebin cache data by combining adjacent time bins.
+    
+    This function modifies the cache in-place and returns the new time array.
+    Combines `rebin_factor` adjacent bins by averaging (for X, Z) or taking
+    the center time point.
+    
+    Parameters
+    ----------
+    cache : dict
+        Cache dictionary with keys "X" (raw counts), "Z" (global z-score),
+        "time" (time array), and optionally others.
+    rebin_factor : int
+        Number of adjacent bins to combine. If 1, returns original data unchanged.
+    
+    Returns
+    -------
+    cache : dict
+        Modified cache with rebinned X, Z, and time arrays.
+    new_time : np.ndarray
+        New time array after rebinning.
+    
+    Notes
+    -----
+    - X and Z are averaged over combined bins (maintains spike rate interpretation)
+    - time is averaged over combined bins (gives bin centers)
+    - Other cache fields (labels, meta) are preserved unchanged
+    - If T % rebin_factor != 0, trailing bins are dropped
+    """
+    if rebin_factor <= 1:
+        return cache, cache["time"].astype(float)
+    
+    time = cache["time"].astype(float)
+    T = time.shape[0]
+    T_new = T // rebin_factor
+    
+    if T_new == 0:
+        warnings.warn(f"rebin_factor={rebin_factor} is larger than T={T}. No rebinning applied.")
+        return cache, time
+    
+    # Truncate to multiple of rebin_factor
+    T_trunc = T_new * rebin_factor
+    
+    # Rebin time array
+    time_trunc = time[:T_trunc]
+    time_reshaped = time_trunc.reshape(T_new, rebin_factor)
+    new_time = np.mean(time_reshaped, axis=1)
+    cache["time"] = new_time
+    
+    # Rebin X if present: (trials, time, units) -> (trials, time_new, units)
+    if "X" in cache:
+        X = cache["X"]
+        if X.ndim == 3:
+            N, T_x, U = X.shape
+            if T_x >= T_trunc:
+                X_trunc = X[:, :T_trunc, :]
+                X_reshaped = X_trunc.reshape(N, T_new, rebin_factor, U)
+                cache["X"] = np.mean(X_reshaped, axis=2)
+    
+    # Rebin Z if present: (trials, time, units) -> (trials, time_new, units)
+    if "Z" in cache:
+        Z = cache["Z"]
+        if Z.ndim == 3:
+            N, T_z, U = Z.shape
+            if T_z >= T_trunc:
+                Z_trunc = Z[:, :T_trunc, :]
+                Z_reshaped = Z_trunc.reshape(N, T_new, rebin_factor, U)
+                cache["Z"] = np.mean(Z_reshaped, axis=2)
+    
+    return cache, new_time
+
+
+def get_rebin_factor_from_meta(cache: Dict) -> int:
+    """
+    Get the rebin factor used when creating the cache (if any).
+    
+    Parameters
+    ----------
+    cache : dict
+        Cache dictionary.
+    
+    Returns
+    -------
+    rebin_factor : int
+        The rebin factor, or 1 if not rebinned.
+    """
+    meta = cache.get("meta", {})
+    if isinstance(meta, str):
+        import json
+        try:
+            meta = json.loads(meta)
+        except Exception:
+            meta = {}
+    elif hasattr(meta, "item"):
+        import json
+        try:
+            meta = json.loads(meta.item())
+        except Exception:
+            meta = {}
+    
+    return meta.get("rebin_factor", 1)
+

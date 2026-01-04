@@ -488,6 +488,56 @@ def nanmean_se(arr: np.ndarray, axis: int = 0) -> Tuple[np.ndarray, np.ndarray, 
     return mean, se, n
 
 
+def downsample_bins(
+    time: np.ndarray,
+    data_2d: np.ndarray,
+    factor: int,
+) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Downsample time series by combining adjacent bins.
+    
+    Parameters
+    ----------
+    time : (T,) array
+        Time points (seconds).
+    data_2d : (N_sessions, T) array
+        Data values for each session at each time bin.
+    factor : int
+        Number of adjacent bins to combine. If 1, returns original data.
+    
+    Returns
+    -------
+    new_time : (T_new,) array
+        Downsampled time points (bin centers).
+    new_data : (N_sessions, T_new) array
+        Downsampled data (mean of combined bins).
+    """
+    if factor <= 1:
+        return time, data_2d
+    
+    T = time.shape[0]
+    T_new = T // factor
+    
+    if T_new == 0:
+        return time, data_2d
+    
+    # Truncate to multiple of factor
+    T_trunc = T_new * factor
+    time_trunc = time[:T_trunc]
+    data_trunc = data_2d[:, :T_trunc]
+    
+    # Reshape and average
+    time_reshaped = time_trunc.reshape(T_new, factor)
+    new_time = np.mean(time_reshaped, axis=1)
+    
+    N = data_trunc.shape[0]
+    data_reshaped = data_trunc.reshape(N, T_new, factor)
+    with np.errstate(invalid="ignore"):
+        new_data = np.nanmean(data_reshaped, axis=2)
+    
+    return new_time, new_data
+
+
 def rebin_timeseries(
     time: np.ndarray,
     data_arr: np.ndarray,
@@ -950,6 +1000,7 @@ def summarize_for_tag_align_feature(
     group_null_B: int = 4096,
     group_null_seed: int = 12345,
     smooth_ms: float = 0.0,
+    bin_combine: int = 1,
 ) -> None:
     """
     Summarize flows across sessions for one (align, tag, feature).
@@ -977,6 +1028,9 @@ def summarize_for_tag_align_feature(
         Smoothing window in milliseconds. If > 0, applies uniform moving average
         to both observed DIFF and group null before computing p-values. Keeps
         original time resolution. Default 0 (no smoothing).
+    bin_combine : int
+        Number of adjacent time bins to combine (default: 1 = no combining).
+        Set to 2 for sacc alignment to match stim's 10ms bins from sacc's 5ms bins.
     """
     for monkey_label in ("M", "S"):
         pairs = canonical_pairs(monkey_label)
@@ -1011,7 +1065,8 @@ def summarize_for_tag_align_feature(
                 # QC filtering: check if areas pass QC threshold
                 # SYMMETRIC rejection: if EITHER area fails QC, skip the entire session
                 # for this pair. This ensures both directions have the same session count.
-                if qc_threshold is not None:
+                # Skip QC filtering if threshold is None, 0, or negative
+                if qc_threshold is not None and qc_threshold > 0:
                     qc_pass_A = check_area_qc(out_root, align, sid, tag, A, feature, qc_threshold, qc_tag)
                     qc_pass_B = check_area_qc(out_root, align, sid, tag, B, feature, qc_threshold, qc_tag)
                     
@@ -1126,6 +1181,22 @@ def summarize_for_tag_align_feature(
             sig_AB_arr = np.vstack(all_sig_AB)
             sig_BA_arr = np.vstack(all_sig_BA)
 
+            # Downsample by combining adjacent bins (e.g., for sacc: 5ms -> 10ms)
+            if bin_combine > 1:
+                orig_time = time.copy()
+                orig_T = time.shape[0]
+                time, bits_AB_arr = downsample_bins(orig_time, bits_AB_arr, bin_combine)
+                _, bits_BA_arr = downsample_bins(orig_time, bits_BA_arr, bin_combine)
+                _, z_AB_arr = downsample_bins(orig_time, z_AB_arr, bin_combine)
+                _, z_BA_arr = downsample_bins(orig_time, z_BA_arr, bin_combine)
+                _, diff_arr = downsample_bins(orig_time, diff_arr, bin_combine)
+                _, sig_AB_arr = downsample_bins(orig_time, sig_AB_arr, bin_combine)
+                _, sig_BA_arr = downsample_bins(orig_time, sig_BA_arr, bin_combine)
+                # Also downsample dnull_list for group p-value computation
+                dnull_list = [downsample_bins(orig_time, dnull, bin_combine)[1] for dnull in dnull_list]
+                new_T = time.shape[0]
+                print(f"  [bin_combine={bin_combine}] {orig_T} bins -> {new_T} bins")
+
             # per-time summaries
             mean_bits_AB, se_bits_AB, n_AB = nanmean_se(bits_AB_arr, axis=0)
             mean_bits_BA, se_bits_BA, n_BA = nanmean_se(bits_BA_arr, axis=0)
@@ -1212,7 +1283,7 @@ def summarize_for_tag_align_feature(
                 win_end_s=float(win[1]),
                 n_sessions=n_sessions,
             )
-            if qc_threshold is not None:
+            if qc_threshold is not None and qc_threshold > 0:
                 meta["qc_threshold"] = float(qc_threshold)
             meta_json = json.dumps(meta)
 
@@ -1250,8 +1321,9 @@ def summarize_for_tag_align_feature(
             )
 
             # Save figure for A vs B
-            title = (f"{align.upper()} | {tag} | {feature} | {A} vs {B} "
-                     f"| monkey={monkey_label} | N={n_sessions}")
+            # Split title into two lines for better readability
+            title = (f"{align.upper()} | {tag} | {feature}\n"
+                     f"{A} vs {B} | monkey={monkey_label} | N={n_sessions}")
             fig_path_pdf = figs_dir / f"{pair_name}.pdf"
             plot_summary_figure(
                 out_path_pdf=fig_path_pdf,
@@ -1290,9 +1362,13 @@ def summarize_for_tag_align_feature(
             else:
                 paper_t_min_ms, paper_t_max_ms = None, None
             
-            # Y-axis limits for panel C: -10 to +20 for category, direction, and saccade
+            # Y-axis limits for panel C: different for monkey M vs S
+            # Monkey M: -10 to 20, Monkey S: -10 to 15
             if feature in ("C", "R", "S"):
-                paper_y_min, paper_y_max = -10.0, 20.0
+                if monkey_label.upper() == "M":
+                    paper_y_min, paper_y_max = -10.0, 20.0
+                else:  # monkey S
+                    paper_y_min, paper_y_max = -8.0, 13.0
             else:
                 paper_y_min, paper_y_max = None, None
             
@@ -1328,8 +1404,9 @@ def summarize_for_tag_align_feature(
             # Also create reverse figure (B vs A) to show significance from the other perspective
             # For reverse: diff = B->A - A->B (negative of original), swap all data
             pair_name_rev = f"{B}_vs_{A}"
-            title_rev = (f"{align.upper()} | {tag} | {feature} | {B} vs {A} "
-                         f"| monkey={monkey_label} | N={n_sessions}")
+            # Split title into two lines for better readability
+            title_rev = (f"{align.upper()} | {tag} | {feature}\n"
+                         f"{B} vs {A} | monkey={monkey_label} | N={n_sessions}")
             fig_path_pdf_rev = figs_dir / f"{pair_name_rev}.pdf"
             
             # Compute group diff p-value for reverse direction (using negative dnull_list)
@@ -1436,26 +1513,32 @@ def main():
     ap.add_argument("--rebin_step", type=float, default=None,
                     help="Optional step size in seconds between rebinned windows "
                          "(e.g. 0.02 for 20 ms). Default: equal to rebin_win.")
-    ap.add_argument("--qc_threshold", type=float, default=None,
-                    help="QC threshold for filtering (e.g., 0.75). If provided, SYMMETRIC "
+    ap.add_argument("--qc_threshold", type=float, default=0.6,
+                    help="QC threshold for filtering (default: 0.6). SYMMETRIC "
                          "rejection is applied: for pair (A,B), if EITHER area fails QC, "
                          "the session is excluded for that pair. This ensures both directions "
-                         "have the same N. If None, no QC filtering is applied.")
+                         "have the same N. Set to 0 or negative to disable QC filtering.")
     ap.add_argument("--qc_tag", type=str, default=None,
                     help="Explicit QC tag to use for filtering (e.g., 'winsearch-stim-vertical'). "
                          "If not provided, script attempts to auto-detect QC tag from flow tag.")
-    ap.add_argument("--group_diff_p", action="store_true",
-                    help="Compute old-style group empirical p(t) for DIFF using saved "
-                         "null samples. Requires flow_*.npz files to have null_samps_AtoB.")
+    ap.add_argument("--group_diff_p", action="store_true", default=True,
+                    help="Compute group empirical p(t) for DIFF using saved "
+                         "null samples (default: True). Requires flow_*.npz files to have null_samps_AtoB.")
+    ap.add_argument("--no_group_diff_p", action="store_false", dest="group_diff_p",
+                    help="Disable group empirical p(t) computation for DIFF.")
     ap.add_argument("--group_null_B", type=int, default=4096,
                     help="Number of group-null replicates for DIFF p(t) (default: 4096)")
     ap.add_argument("--group_null_seed", type=int, default=12345,
                     help="RNG seed for group-null sampling (default: 12345)")
-    ap.add_argument("--smooth_ms", type=float, default=40.0,
+    ap.add_argument("--smooth_ms", type=float, default=30.0,
                     help="Smoothing window (ms) for group DIFF p(t). If > 0, applies "
                          "uniform moving average to both observed DIFF and group null "
                          "before computing p-values. Keeps original time resolution. "
-                         "E.g., --smooth_ms 50 for 50ms window. Default: 40.")
+                         "E.g., --smooth_ms 50 for 50ms window. Default: 30.")
+    ap.add_argument("--sacc_bin_combine", type=int, default=2,
+                    help="Number of adjacent time bins to combine for sacc alignment "
+                         "(default: 2, to match stim's 10ms bins from sacc's 5ms bins). "
+                         "Set to 1 to disable bin combining.")
     args = ap.parse_args()
     
     # Parse rebin parameters
@@ -1522,6 +1605,8 @@ def main():
             
             for feat in feats:
                 print(f"\n[tag={tag}] align={align}, feature={feat}")
+                # Apply bin combining only for sacc alignment
+                bin_combine = args.sacc_bin_combine if align == "sacc" else 1
                 summarize_for_tag_align_feature(
                     out_root=out_root,
                     align=align,
@@ -1538,6 +1623,7 @@ def main():
                     group_null_B=args.group_null_B,
                     group_null_seed=args.group_null_seed,
                     smooth_ms=args.smooth_ms,
+                    bin_combine=bin_combine,
                 )
 
     print("\n[done] summary + figures completed.")

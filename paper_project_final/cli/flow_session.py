@@ -4,14 +4,29 @@ import argparse, os, numpy as np
 from glob import glob
 from typing import List, Tuple, Optional
 from paperflow.flow import compute_flow_timecourse_for_pair
+from paperflow.norm import rebin_cache_data
+import json
 
 def _areas(out_root: str, align: str, sid: str) -> List[str]:
     cdir = os.path.join(out_root, align, sid, "caches")
     if not os.path.isdir(cdir): return []
     return sorted([os.path.basename(p)[5:-4] for p in glob(os.path.join(cdir, "area_*.npz"))])
 
-def _load_cache(out_root: str, align: str, sid: str, area: str):
-    return np.load(os.path.join(out_root, align, sid, "caches", f"area_{area}.npz"), allow_pickle=True)
+def _load_cache(out_root: str, align: str, sid: str, area: str, rebin_factor: int = 1):
+    p = os.path.join(out_root, align, sid, "caches", f"area_{area}.npz")
+    d = np.load(p, allow_pickle=True)
+    meta = json.loads(d["meta"].item()) if "meta" in d else {}
+    cache = {k: d[k] for k in d.files}
+    cache["meta"] = meta
+    
+    # Apply rebinning if requested
+    if rebin_factor > 1:
+        cache, _ = rebin_cache_data(cache, rebin_factor)
+        cache["meta"]["rebin_factor"] = rebin_factor
+        orig_bin_s = meta.get("bin_s", 0.01)
+        cache["meta"]["bin_s"] = orig_bin_s * rebin_factor
+    
+    return cache
 
 def _load_axes(out_root: str, align: str, sid: str, area: str, axes_tag: Optional[str], flow_tag: Optional[str]):
     candidates = []
@@ -86,6 +101,11 @@ def main():
     ap.add_argument("--baseline_win", default=None,
                     help="Baseline window 'a:b' in seconds (only used if --norm baseline)")
     
+    # === Time rebinning ===
+    ap.add_argument("--rebin_factor", type=int, default=1,
+                    help="Number of adjacent time bins to combine (default: 1 = no rebinning). "
+                         "Must match the rebin_factor used in train_axes.py and qc_axes.py.")
+    
     args = ap.parse_args()
 
     areas = _areas(args.out_root, args.align, args.sid)
@@ -98,9 +118,14 @@ def main():
     norm = None if args.norm == "auto" else args.norm
     baseline_win = _parse_range_arg(args.baseline_win)
 
+    # Get rebin factor
+    rebin_factor = args.rebin_factor
+    if rebin_factor > 1:
+        print(f"[rebin] Combining {rebin_factor} adjacent bins (e.g., 5ms → {5*rebin_factor}ms)")
+
     for (A, B) in pairs:
-        cA = _load_cache(args.out_root, args.align, args.sid, A)
-        cB = _load_cache(args.out_root, args.align, args.sid, B)
+        cA = _load_cache(args.out_root, args.align, args.sid, A, rebin_factor=rebin_factor)
+        cB = _load_cache(args.out_root, args.align, args.sid, B, rebin_factor=rebin_factor)
         aA = _load_axes(args.out_root, args.align, args.sid, A, axes_tag=args.axes_tag, flow_tag=args.tag)
         aB = _load_axes(args.out_root, args.align, args.sid, B, axes_tag=args.axes_tag, flow_tag=args.tag)
         

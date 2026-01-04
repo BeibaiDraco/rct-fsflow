@@ -915,16 +915,24 @@ def main():
                     # Scatter plot (larger markers)
                     ax.plot(t1_all, t2_all, "k.", ms=7, alpha=0.5, label=f"N={n_trials} trials")
                     
-                    # Mark mean and median (with legend labels)
+                    # Mark mean and median
                     mean_t1 = np.nanmean(t1_all)
                     mean_t2 = np.nanmean(t2_all)
                     median_t1 = np.nanmedian(t1_all)
                     median_t2 = np.nanmedian(t2_all)
                     
-                    ax.plot(mean_t1, mean_t2, "ro", ms=12, markerfacecolor="red", 
-                            markeredgecolor="darkred", markeredgewidth=2, zorder=5, label="mean")
+                    # Plot median first (lower z-order), then mean on top
                     ax.plot(median_t1, median_t2, "bs", ms=12, markerfacecolor="blue", 
-                            markeredgecolor="darkblue", markeredgewidth=2, zorder=5, label="median")
+                            markeredgecolor="darkblue", markeredgewidth=2, zorder=5)
+                    ax.plot(mean_t1, mean_t2, "ro", ms=12, markerfacecolor="red", 
+                            markeredgecolor="darkred", markeredgewidth=2, zorder=6)
+                    
+                    # Create combined legend entry for mean/median
+                    from matplotlib.lines import Line2D
+                    legend_mean = Line2D([0], [0], marker='o', color='w', markerfacecolor='red',
+                                         markeredgecolor='darkred', markersize=10, markeredgewidth=1.5, label='mean')
+                    legend_median = Line2D([0], [0], marker='s', color='w', markerfacecolor='blue',
+                                           markeredgecolor='darkblue', markersize=10, markeredgewidth=1.5, label='median')
                     
                     # Use search window for axis limits (convert from sec to ms)
                     axis_lo = search[0] * 1000.0  # e.g., -0.30 sec = -300 ms
@@ -957,7 +965,15 @@ def main():
                     title += f"p(two)={p_pool_2['p']:.3g}, p(later)={p_pool_1['p']:.3g}"
                     ax.set_title(title, fontsize=11)
                     
-                    ax.legend(frameon=False, loc="lower right", fontsize=15)
+                    # Custom legend with mean/median on same line
+                    from matplotlib.legend_handler import HandlerTuple
+                    legend_scatter = Line2D([0], [0], marker='', linestyle='', label=f'N={n_trials} trials')
+                    legend_diag = Line2D([0], [0], linestyle='--', color='red', alpha=0.7, lw=1.5, label='y=x')
+                    ax.legend(handles=[legend_scatter, (legend_mean, legend_median), legend_diag],
+                              labels=[f'N={n_trials} trials', 'mean / median', 'y=x'],
+                              handler_map={tuple: HandlerTuple(ndivide=None, pad=0.3)},
+                              frameon=False, fontsize=15, loc='lower right',
+                              handletextpad=0.5, labelspacing=0.4)
                     # No grid
                     ax.grid(False)
                     # No tight_layout() - we use explicit axes positioning

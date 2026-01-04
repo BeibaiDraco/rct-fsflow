@@ -8,7 +8,7 @@ from paperflow.axes import (
     train_axes_for_area, save_axes, make_window_grid,
     train_time_resolved_axis, save_time_resolved_axes
 )
-from paperflow.norm import parse_win
+from paperflow.norm import parse_win, rebin_cache_data
 
 
 def _generate_auto_tag(args) -> str:
@@ -119,7 +119,7 @@ def _parse_range_arg(val):
         return float(a), float(b)
     raise ValueError(f"Bad range arg: {val}")
 
-def _load_cache(out_root: str, align: str, sid: str, area: str):
+def _load_cache(out_root: str, align: str, sid: str, area: str, rebin_factor: int = 1):
     path = os.path.join(out_root, align, sid, "caches", f"area_{area}.npz")
     if not os.path.exists(path):
         raise FileNotFoundError(path)
@@ -127,6 +127,15 @@ def _load_cache(out_root: str, align: str, sid: str, area: str):
     meta = json.loads(d["meta"].item()) if "meta" in d else {}
     cache = {k: d[k] for k in d.files}
     cache["meta"] = meta
+    
+    # Apply rebinning if requested
+    if rebin_factor > 1:
+        cache, _ = rebin_cache_data(cache, rebin_factor)
+        # Update meta to record rebinning
+        cache["meta"]["rebin_factor"] = rebin_factor
+        orig_bin_s = meta.get("bin_s", 0.01)
+        cache["meta"]["bin_s"] = orig_bin_s * rebin_factor
+    
     return cache
 
 def _discover_areas(out_root: str, align: str, sid: str):
@@ -162,7 +171,12 @@ def main():
     if not areas:
         raise SystemExit(f"No caches under {args.out_root}/{args.align}/{args.sid}/caches")
 
-    any_cache = _load_cache(args.out_root, args.align, args.sid, areas[0])
+    # Get rebin factor
+    rebin_factor = args.rebin_factor
+    if rebin_factor > 1:
+        print(f"[rebin] Combining {rebin_factor} adjacent bins (e.g., 5ms → {5*rebin_factor}ms)")
+
+    any_cache = _load_cache(args.out_root, args.align, args.sid, areas[0], rebin_factor=rebin_factor)
     time_s = any_cache["time"].astype(float)
 
     # choose windows by alignment
@@ -222,7 +236,7 @@ def main():
         os.makedirs(axes_dir, exist_ok=True)
         
         for area in areas:
-            cache = _load_cache(args.out_root, args.align, args.sid, area)
+            cache = _load_cache(args.out_root, args.align, args.sid, area, rebin_factor=rebin_factor)
             result = train_time_resolved_axis(
                 cache=cache,
                 time_s=time_s,
@@ -339,7 +353,7 @@ def main():
     per_area_results = {}
     
     for area in areas:
-        cache = _load_cache(args.out_root, args.align, args.sid, area)
+        cache = _load_cache(args.out_root, args.align, args.sid, area, rebin_factor=rebin_factor)
         pack = train_axes_for_area(
             cache=cache,
             feature_set=feats,
@@ -469,6 +483,8 @@ def main():
         search_tol=args.search_tol if has_search else None,
         # === Per-area results (window selections, CV scores) ===
         per_area_results=per_area_results if per_area_results else None,
+        # === Time rebinning ===
+        rebin_factor=rebin_factor if rebin_factor > 1 else None,
     )
     
     # Write axes_summary.json (backward-compatible)
@@ -612,6 +628,11 @@ def new_argparser():
     ap.add_argument("--select_mode", choices=["none","C","R","S"], default="none",
                     help="Restrict features used in training: none, C-based, R-based (variance proxy), or S-based")
     ap.add_argument("--select_frac", type=float, default=1.0)
+    
+    # === Time rebinning ===
+    ap.add_argument("--rebin_factor", type=int, default=1,
+                    help="Number of adjacent time bins to combine (default: 1 = no rebinning). "
+                         "Set to 2 for sacc alignment to convert 5ms bins to 10ms bins.")
     return ap
 
 if __name__ == "__main__":

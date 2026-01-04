@@ -7,13 +7,22 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from paperflow.qc import qc_curves_for_area
+from paperflow.norm import rebin_cache_data
 
-def _load_cache(out_root, align, sid, area):
+def _load_cache(out_root, align, sid, area, rebin_factor: int = 1):
     p = os.path.join(out_root, align, sid, "caches", f"area_{area}.npz")
     d = np.load(p, allow_pickle=True)
     meta = json.loads(d["meta"].item()) if "meta" in d else {}
     cache = {k: d[k] for k in d.files}
     cache["meta"] = meta
+    
+    # Apply rebinning if requested
+    if rebin_factor > 1:
+        cache, _ = rebin_cache_data(cache, rebin_factor)
+        cache["meta"]["rebin_factor"] = rebin_factor
+        orig_bin_s = meta.get("bin_s", 0.01)
+        cache["meta"]["bin_s"] = orig_bin_s * rebin_factor
+    
     return cache
 
 def _load_axes(out_root, align, sid, area, tag=None):
@@ -271,13 +280,23 @@ def main():
     ap.add_argument("--force_norm_mismatch", action="store_true",
                     help="Allow normalization mode to differ from axes training (not recommended)")
     
+    # === Time rebinning ===
+    ap.add_argument("--rebin_factor", type=int, default=1,
+                    help="Number of adjacent time bins to combine (default: 1 = no rebinning). "
+                         "Must match the rebin_factor used in train_axes.py.")
+    
     args = ap.parse_args()
 
     areas = args.areas or _areas(args.out_root, args.align, args.sid)
     if not areas:
         raise SystemExit(f"No caches found under {args.out_root}/{args.align}/{args.sid}/caches")
 
-    any_cache = _load_cache(args.out_root, args.align, args.sid, areas[0])
+    # Get rebin factor
+    rebin_factor = args.rebin_factor
+    if rebin_factor > 1:
+        print(f"[rebin] Combining {rebin_factor} adjacent bins (e.g., 5ms → {5*rebin_factor}ms)")
+
+    any_cache = _load_cache(args.out_root, args.align, args.sid, areas[0], rebin_factor=rebin_factor)
     time_s = any_cache["time"].astype(float)
 
     ori = None if args.orientation == "pooled" else args.orientation
@@ -291,7 +310,7 @@ def main():
         pt_thr = args.pt_min_ms_stim
 
     for area in areas:
-        cache = _load_cache(args.out_root, args.align, args.sid, area)
+        cache = _load_cache(args.out_root, args.align, args.sid, area, rebin_factor=rebin_factor)
         axes  = _load_axes(args.out_root, args.align, args.sid, area, tag=args.tag)
 
         # === Check for time-resolved axes ===
