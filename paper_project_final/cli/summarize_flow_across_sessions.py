@@ -344,6 +344,57 @@ def safe_z(bits: np.ndarray, mu: np.ndarray, sd: np.ndarray) -> np.ndarray:
     return z
 
 
+# -------------------- Panel D helpers: bits/trial/dim, df-corrected --------------------
+
+LN2 = np.log(2.0)
+
+
+def _get_flow_meta(Z: np.lib.npyio.NpzFile) -> dict:
+    """Robustly parse Z['meta'] into a python dict."""
+    m = Z["meta"]
+    if isinstance(m, dict):
+        return m
+    if hasattr(m, "item"):
+        m = m.item()
+    if isinstance(m, dict):
+        return m
+    # fallback: json string (older style)
+    return json.loads(m)
+
+
+def _lag_bins_from_meta(meta: dict, time_s: np.ndarray) -> int:
+    """Match flow.py: L = round(lags_ms / bin_ms), at least 1."""
+    if time_s.size < 2:
+        return 1
+    bin_s = float(time_s[1] - time_s[0])
+    lags_ms = float(meta["lags_ms"])
+    return int(max(1, round(lags_ms / (bin_s * 1000.0))))
+
+
+def bits_per_trial_dim_corr(bits: np.ndarray, meta: dict, time_s: np.ndarray) -> np.ndarray:
+    """
+    Compute bits/(trial*target_dim) minus Wilks complexity baseline.
+
+    bits_ptd(t) = bits(t) / (N * K_target)
+    baseline_ptd = (L * K_source) / (2 * N * ln 2)
+
+    Returns array shaped like bits (T,).
+    """
+    N = float(meta.get("N", np.nan))
+    K_src = float(meta.get("K_A", np.nan))
+    K_tgt = float(meta.get("K_B", np.nan))
+    if not (np.isfinite(N) and N > 0 and np.isfinite(K_tgt) and K_tgt > 0 and np.isfinite(K_src) and K_src > 0):
+        return np.full_like(bits, np.nan, dtype=float)
+
+    L = _lag_bins_from_meta(meta, time_s)
+
+    with np.errstate(invalid="ignore", divide="ignore"):
+        bits_ptd = bits / (N * K_tgt)
+
+    baseline_ptd = (L * K_src) / (2.0 * N * LN2)
+    return bits_ptd - baseline_ptd
+
+
 def uniform_smooth_1d(arr: np.ndarray, win_bins: int) -> np.ndarray:
     """
     Apply uniform (boxcar) moving average along the last axis.
@@ -795,6 +846,91 @@ def plot_panel_c_paper(
     plt.close(fig)
 
 
+def plot_panel_d_paper(
+    out_path: Path,
+    time: np.ndarray,
+    mean_AB: np.ndarray,
+    se_AB: np.ndarray,
+    mean_BA: np.ndarray,
+    se_BA: np.ndarray,
+    label_A: str,
+    label_B: str,
+    sig_group_diff: Optional[np.ndarray] = None,
+    t_min_ms: Optional[float] = None,
+    t_max_ms: Optional[float] = None,
+) -> None:
+    """
+    Paper-quality Panel D: df-corrected bits / trial / dim for A→B and B→A.
+    
+    This shows:
+    - bits(t) / (N * K_target)  minus  (L * K_source) / (2 * N * ln2)
+    
+    Where y=0 means "no more improvement than what's expected from model complexity alone."
+    
+    Optionally shows significance dots (same as Panel C) for net flow.
+    """
+    t_ms = time * 1000.0
+
+    plot_width_in = 10.0
+    plot_height_in = 5.0
+    # Left margin for Panel D
+    margin_left_in = 1.4
+    margin_right_in = 0.5
+    margin_bottom_in = 0.8
+    margin_top_in = 0.5
+
+    fig_width = plot_width_in + margin_left_in + margin_right_in
+    fig_height = plot_height_in + margin_bottom_in + margin_top_in
+
+    fig = plt.figure(figsize=(fig_width, fig_height))
+    ax = fig.add_axes([
+        margin_left_in / fig_width,
+        margin_bottom_in / fig_height,
+        plot_width_in / fig_width,
+        plot_height_in / fig_height
+    ])
+
+    ax.axvline(0, ls="--", c="k", lw=0.8)
+    ax.axhline(0, ls=":", c="k", lw=0.8)
+
+    # No scaling (per trial)
+    scale_factor = 1.0
+    mean_AB_scaled = mean_AB * scale_factor
+    se_AB_scaled = se_AB * scale_factor
+    mean_BA_scaled = mean_BA * scale_factor
+    se_BA_scaled = se_BA * scale_factor
+
+    ax.plot(t_ms, mean_AB_scaled, color="C0", lw=2.5, label=f"{label_A}→{label_B}")
+    ax.fill_between(t_ms, mean_AB_scaled - se_AB_scaled, mean_AB_scaled + se_AB_scaled, color="C0", alpha=0.25, linewidth=0)
+
+    ax.plot(t_ms, mean_BA_scaled, color="C1", lw=2.5, label=f"{label_B}→{label_A}")
+    ax.fill_between(t_ms, mean_BA_scaled - se_BA_scaled, mean_BA_scaled + se_BA_scaled, color="C1", alpha=0.25, linewidth=0)
+
+    # Plot significance dots in black (same as Panel C)
+    if sig_group_diff is not None and np.any(sig_group_diff):
+        sig_mask = sig_group_diff.astype(bool)
+        ylim = ax.get_ylim()
+        y_marker = ylim[0] + 0.05 * (ylim[1] - ylim[0])  # 5% from bottom
+        ax.scatter(
+            t_ms[sig_mask], np.full(np.sum(sig_mask), y_marker),
+            marker="o", s=14, c="black", zorder=5, label="p<α"
+        )
+
+    ax.set_xlabel("Time (ms)", fontsize=18)
+    ax.set_ylabel("Directed predictability gain (bits)", fontsize=18)
+    ax.tick_params(axis='both', which='major', labelsize=16)
+    ax.legend(loc="upper left", frameon=False, fontsize=15)
+
+    if t_min_ms is not None and t_max_ms is not None:
+        ax.set_xlim(t_min_ms, t_max_ms)
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path)
+    fig.savefig(out_path.with_suffix(".png"), dpi=300)
+    fig.savefig(out_path.with_suffix(".svg"))
+    plt.close(fig)
+
+
 def plot_summary_figure(
     out_path_pdf: Path,
     time: np.ndarray,
@@ -1049,6 +1185,13 @@ def summarize_for_tag_align_feature(
             win_diff = []
             win_sig_AB = []
 
+            # Panel D (shape-preserving): collect per-session meta for reference normalization
+            Ns = []
+            KAs = []
+            KBs = []
+            lags_ms_list = []
+            bin_ms_raw = None
+
             # For old-style group DIFF p(t)
             dnull_list = []
 
@@ -1111,9 +1254,19 @@ def summarize_for_tag_align_feature(
                 mu_AB = np.asarray(Zf["null_mean_AtoB"], dtype=float)
                 sd_AB = np.asarray(Zf["null_std_AtoB"], dtype=float)
                 mu_BA = np.asarray(Zr["null_mean_AtoB"], dtype=float)
-                sd_BA = np.asarray(Zr["null_std_BtoA"], dtype=float) if "null_std_BtoA" in Zr else np.asarray(Zr["null_std_AtoB"], dtype=float)
+                # BUGFIX: In the reverse file flow_*_{B}to{A}.npz, the B→A direction is stored as "*_AtoB".
+                sd_BA = np.asarray(Zr["null_std_AtoB"], dtype=float)
                 p_AB = np.asarray(Zf["p_AtoB"], dtype=float)
-                p_BA = np.asarray(Zr["p_BtoA"], dtype=float) if "p_BtoA" in Zr else np.asarray(Zr["p_AtoB"], dtype=float)
+                p_BA = np.asarray(Zr["p_AtoB"], dtype=float)
+
+                # Panel D (shape-preserving): collect per-session meta for later normalization
+                meta_f = _get_flow_meta(Zf)
+                Ns.append(int(meta_f.get("N", 0)))
+                KAs.append(int(meta_f.get("K_A", 1)))
+                KBs.append(int(meta_f.get("K_B", 1)))
+                lags_ms_list.append(float(meta_f.get("lags_ms", 0)))
+                if bin_ms_raw is None and t.size > 1:
+                    bin_ms_raw = float((t[1] - t[0]) * 1000.0)
 
                 # At this point, both areas have passed QC (symmetric rejection above)
                 z_AB = safe_z(bits_AB, mu_AB, sd_AB)
@@ -1194,6 +1347,8 @@ def summarize_for_tag_align_feature(
                 _, sig_BA_arr = downsample_bins(orig_time, sig_BA_arr, bin_combine)
                 # Also downsample dnull_list for group p-value computation
                 dnull_list = [downsample_bins(orig_time, dnull, bin_combine)[1] for dnull in dnull_list]
+                # Update bin_ms_raw for Panel D L computation after downsampling
+                bin_ms_raw = bin_ms_raw * bin_combine
                 new_T = time.shape[0]
                 print(f"  [bin_combine={bin_combine}] {orig_T} bins -> {new_T} bins")
 
@@ -1203,6 +1358,49 @@ def summarize_for_tag_align_feature(
             mean_z_AB,   se_z_AB,   _     = nanmean_se(z_AB_arr,   axis=0)
             mean_z_BA,   se_z_BA,   _     = nanmean_se(z_BA_arr,   axis=0)
             mean_diff,   se_diff,   _     = nanmean_se(diff_arr,   axis=0)
+
+            # ---- Panel D (shape-preserving): apply ONE normalization to Panel A mean curves ----
+            # Use median N as robust reference (avoids "6× spread" issues)
+            N_ref = float(np.nanmedian(np.array(Ns, dtype=float)))
+            K_A_ref = int(np.nanmedian(np.array(KAs, dtype=float)))
+            K_B_ref = int(np.nanmedian(np.array(KBs, dtype=float)))
+            lags_ms_ref = float(np.nanmedian(np.array(lags_ms_list, dtype=float)))
+
+            if bin_ms_raw is None or not np.isfinite(bin_ms_raw) or bin_ms_raw <= 0:
+                # Fallback: estimate from time array
+                if time is not None and len(time) > 1:
+                    bin_ms_raw = float((time[1] - time[0]) * 1000.0)
+                else:
+                    bin_ms_raw = 10.0  # default fallback
+
+            L_ref = max(1, int(round(lags_ms_ref / bin_ms_raw)))
+
+            # Wilks df baseline in *raw bits* (constant across time)
+            df_ref = L_ref * K_A_ref * K_B_ref
+            baseline_bits = df_ref / (2.0 * LN2)
+
+            # Convert the *mean bits curves* into bits/trial/dim with a single N_ref, preserving shape
+            # A→B predicts B (target dim K_B), B→A predicts A (target dim K_A)
+            scale_AB = 1.0 / (N_ref * K_B_ref)
+            scale_BA = 1.0 / (N_ref * K_A_ref)
+
+            mean_bits_ptd_corr_AB = (mean_bits_AB - baseline_bits) * scale_AB
+            se_bits_ptd_corr_AB   = se_bits_AB * scale_AB
+
+            mean_bits_ptd_corr_BA = (mean_bits_BA - baseline_bits) * scale_BA
+            se_bits_ptd_corr_BA   = se_bits_BA * scale_BA
+
+            # Apply 30ms smoothing to Panel D curves
+            panel_d_smooth_ms = 30.0
+            panel_d_smooth_bins = max(1, int(round(panel_d_smooth_ms / bin_ms_raw)))
+            if panel_d_smooth_bins > 1:
+                mean_bits_ptd_corr_AB = uniform_smooth_1d(mean_bits_ptd_corr_AB[None, :], panel_d_smooth_bins)[0]
+                se_bits_ptd_corr_AB   = uniform_smooth_1d(se_bits_ptd_corr_AB[None, :], panel_d_smooth_bins)[0]
+                mean_bits_ptd_corr_BA = uniform_smooth_1d(mean_bits_ptd_corr_BA[None, :], panel_d_smooth_bins)[0]
+                se_bits_ptd_corr_BA   = uniform_smooth_1d(se_bits_ptd_corr_BA[None, :], panel_d_smooth_bins)[0]
+
+            print(f"  [Panel D] N_ref={N_ref:.0f} (median), K_A={K_A_ref}, K_B={K_B_ref}, "
+                  f"L={L_ref}, baseline={baseline_bits:.2f} bits, smooth={panel_d_smooth_bins} bins ({panel_d_smooth_ms}ms)")
 
             # Compute old-style group empirical p(t) for DIFF if requested
             p_group_diff = None
@@ -1305,6 +1503,19 @@ def summarize_for_tag_align_feature(
                 se_diff_bits=se_diff,
                 p_group_diff=p_group_diff if p_group_diff is not None else np.array([]),
                 sig_group_diff=sig_group_diff.astype(int) if sig_group_diff is not None else np.array([], dtype=int),
+                # Panel D (shape-preserving): df-corrected bits / trial / dim
+                mean_bits_ptd_corr_AtoB=mean_bits_ptd_corr_AB,
+                se_bits_ptd_corr_AtoB=se_bits_ptd_corr_AB,
+                mean_bits_ptd_corr_BtoA=mean_bits_ptd_corr_BA,
+                se_bits_ptd_corr_BtoA=se_bits_ptd_corr_BA,
+                # Panel D reference constants (for interpretation)
+                panel_d_mode=np.array("shape_preserving"),
+                panel_d_N_ref=np.array(N_ref),
+                panel_d_L_ref=np.array(L_ref),
+                panel_d_K_A_ref=np.array(K_A_ref),
+                panel_d_K_B_ref=np.array(K_B_ref),
+                panel_d_df_ref=np.array(df_ref),
+                panel_d_baseline_bits=np.array(baseline_bits),
                 win_mean_excess_bits_AtoB=w_mean_excess_AB,
                 win_se_excess_bits_AtoB=w_se_excess_AB,
                 win_mean_excess_bits_BtoA=w_mean_excess_BA,
@@ -1406,6 +1617,22 @@ def summarize_for_tag_align_feature(
                 y_min=paper_y_min,
                 y_max=paper_y_max,
             )
+            
+            # Save paper-quality Panel D figure separately (df-corrected bits / trial / dim)
+            fig_path_panel_d = figs_dir / f"{pair_name}_panel_d.pdf"
+            plot_panel_d_paper(
+                out_path=fig_path_panel_d,
+                time=time,
+                mean_AB=mean_bits_ptd_corr_AB,
+                se_AB=se_bits_ptd_corr_AB,
+                mean_BA=mean_bits_ptd_corr_BA,
+                se_BA=se_bits_ptd_corr_BA,
+                label_A=A,
+                label_B=B,
+                sig_group_diff=sig_group_diff,
+                t_min_ms=paper_t_min_ms,
+                t_max_ms=paper_t_max_ms,
+            )
 
             # Also create reverse figure (B vs A) to show significance from the other perspective
             # For reverse: diff = B->A - A->B (negative of original), swap all data
@@ -1487,6 +1714,22 @@ def summarize_for_tag_align_feature(
                 t_max_ms=paper_t_max_ms,
                 y_min=paper_y_min,
                 y_max=paper_y_max,
+            )
+            
+            # Save paper-quality Panel D figure separately (reverse perspective)
+            fig_path_panel_d_rev = figs_dir / f"{pair_name_rev}_panel_d.pdf"
+            plot_panel_d_paper(
+                out_path=fig_path_panel_d_rev,
+                time=time,
+                mean_AB=mean_bits_ptd_corr_BA,   # swapped: B→A becomes first
+                se_AB=se_bits_ptd_corr_BA,
+                mean_BA=mean_bits_ptd_corr_AB,   # swapped: A→B becomes second
+                se_BA=se_bits_ptd_corr_AB,
+                label_A=B,
+                label_B=A,
+                sig_group_diff=sig_group_diff_rev,
+                t_min_ms=paper_t_min_ms,
+                t_max_ms=paper_t_max_ms,
             )
 
 
