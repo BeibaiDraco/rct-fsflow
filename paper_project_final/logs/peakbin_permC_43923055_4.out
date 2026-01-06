@@ -1,0 +1,27 @@
+[info] task=4 SID=20200402
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] DRY_RUN=0 CONTINUE_ON_ERROR=0
+[info] STIM axes already exist at /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20200402/axes/axes_peakbin_stimCR-stim-vertical, reusing
+
+========== STIM: flow feature=C perm-within=C (save null) ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20200402 --feature C --orientation vertical --lags_ms 80 --ridge 1e-2 --perms 500 --perm-within C --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical --tag evoked_peakbin_stimC_vertical_lag80ms_permC --flow_tag_base evoked_peakbin_stimC_vertical_lag80ms_permC --save_null_samples --norm auto
+[20200402][MFEF->MLIP] [evoked_peakbin_stimC_vertical_lag80ms_permC-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20200402/flow/evoked_peakbin_stimC_vertical_lag80ms_permC-none-trial/C/flow_C_MFEFtoMLIP.npz
+[20200402][MLIP->MFEF] [evoked_peakbin_stimC_vertical_lag80ms_permC-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20200402/flow/evoked_peakbin_stimC_vertical_lag80ms_permC-none-trial/C/flow_C_MLIPtoMFEF.npz
+
+========== STIM: flow feature=R perm-within=C (save null) ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20200402 --feature R --orientation vertical --lags_ms 80 --ridge 1e-2 --perms 500 --perm-within C --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical --tag evoked_peakbin_stimR_vertical_lag80ms_permC --flow_tag_base evoked_peakbin_stimR_vertical_lag80ms_permC --save_null_samples --norm auto
+[20200402][MFEF->MLIP] [evoked_peakbin_stimR_vertical_lag80ms_permC-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20200402/flow/evoked_peakbin_stimR_vertical_lag80ms_permC-none-trial/R/flow_R_MFEFtoMLIP.npz
+[20200402][MLIP->MFEF] [evoked_peakbin_stimR_vertical_lag80ms_permC-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20200402/flow/evoked_peakbin_stimR_vertical_lag80ms_permC-none-trial/R/flow_R_MLIPtoMFEF.npz
+[info] SACC 10ms axes already exist at /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20200402/axes/axes_peakbin_saccS-sacc-horizontal-10msbin, reusing
+
+========== SACC 10ms: flow feature=S lag=50ms perm-within=C (save null) ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20200402 --feature S --orientation horizontal --lags_ms 50 --ridge 1e-2 --perms 500 --perm-within C --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_saccS-sacc-horizontal-10msbin --tag evoked_peakbin_saccS_horizontal_lag50ms_10msbin_permC --flow_tag_base evoked_peakbin_saccS_horizontal_lag50ms_10msbin_permC --save_null_samples --norm auto --rebin_factor 2
+[rebin] Combining 2 adjacent bins (e.g., 5ms → 10ms)
+[20200402][MFEF->MLIP] [evoked_peakbin_saccS_horizontal_lag50ms_10msbin_permC-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20200402/flow/evoked_peakbin_saccS_horizontal_lag50ms_10msbin_permC-none-trial/S/flow_S_MFEFtoMLIP.npz
+[20200402][MLIP->MFEF] [evoked_peakbin_saccS_horizontal_lag50ms_10msbin_permC-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20200402/flow/evoked_peakbin_saccS_horizontal_lag50ms_10msbin_permC-none-trial/S/flow_S_MLIPtoMFEF.npz
+
+[done] STIM + SACC 10ms peakbin flow (perm-within=C) complete for SID=20200402
