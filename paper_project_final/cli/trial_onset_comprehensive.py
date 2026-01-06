@@ -629,8 +629,8 @@ def main():
     
     ap.add_argument("--search_stim", default="0.00:0.5",
                     help="Search window (sec) for stim alignment (default: 0.00:0.60)")
-    ap.add_argument("--search_sacc", default="-0.30:0.20",
-                    help="Search window (sec) for sacc alignment (default: -0.30:0.20)")
+    ap.add_argument("--search_sacc", default="-0.20:0.20",
+                    help="Search window (sec) for sacc alignment (default: -0.20:0.20)")
     ap.add_argument("--search_targ", default="0.00:0.35",
                     help="Search window (sec) for targ alignment (default: 0.00:0.35)")
     
