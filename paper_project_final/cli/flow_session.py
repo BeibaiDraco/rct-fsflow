@@ -121,7 +121,7 @@ def main():
     # Get rebin factor
     rebin_factor = args.rebin_factor
     if rebin_factor > 1:
-        print(f"[rebin] Combining {rebin_factor} adjacent bins (e.g., 5ms → {5*rebin_factor}ms)")
+        print(f"[rebin] Combining {rebin_factor} adjacent bins")
 
     for (A, B) in pairs:
         cA = _load_cache(args.out_root, args.align, args.sid, A, rebin_factor=rebin_factor)

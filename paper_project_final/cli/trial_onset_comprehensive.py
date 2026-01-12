@@ -11,7 +11,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # Import normalization utilities
-from paperflow.norm import get_Z, get_axes_norm, get_axes_norm_mode, get_axes_baseline_win
+from paperflow.norm import get_Z, get_axes_norm, get_axes_norm_mode, get_axes_baseline_win, rebin_cache_data
 
 
 def parse_window(s: str) -> Tuple[float, float]:
@@ -389,6 +389,8 @@ def process_one_session(
     # === NEW: normalization parameters ===
     norm: Optional[str] = None,  # 'auto', 'global', 'baseline', 'none'
     norm_baseline_win: Optional[Tuple[float, float]] = None,
+    # === NEW: rebinning parameter ===
+    rebin_factor: int = 1,  # 1 = no rebinning, 2 = combine pairs of bins, etc.
 ) -> Optional[Dict]:
     """Process one session for one pair and feature. Returns dict with results or None if failed."""
     
@@ -426,6 +428,11 @@ def process_one_session(
     try:
         cache1 = load_npz(cache_path(out_root, align, sid, a1))
         cache2 = load_npz(cache_path(out_root, align, sid, a2))
+        
+        # Apply rebinning if requested (must match axes trained with same rebin_factor)
+        if rebin_factor > 1:
+            cache1, _ = rebin_cache_data(cache1, rebin_factor)
+            cache2, _ = rebin_cache_data(cache2, rebin_factor)
         
         # For sacc and targ alignments, don't require C to be finite
         require_C = (align == "stim" and feature in ["C", "R"])
@@ -667,6 +674,14 @@ def main():
     ap.add_argument("--norm_baseline_win_targ", default=None,
                     help="Baseline window for targ normalization 'a:b' (uses axes meta if not specified)")
     
+    # === NEW: rebinning args (must match rebin_factor used in train_axes.py) ===
+    ap.add_argument("--rebin_factor_stim", type=int, default=1,
+                    help="Rebin factor for stim (1=no rebin, 2=10ms→20ms). Must match axes training.")
+    ap.add_argument("--rebin_factor_sacc", type=int, default=1,
+                    help="Rebin factor for sacc (1=no rebin, 2=5ms→10ms, 4=5ms→20ms). Must match axes training.")
+    ap.add_argument("--rebin_factor_targ", type=int, default=1,
+                    help="Rebin factor for targ (1=no rebin). Must match axes training.")
+    
     args = ap.parse_args()
     
     out_root = Path(args.out_root)
@@ -728,14 +743,19 @@ def main():
         if align == "stim":
             norm = None if args.norm_stim == "auto" else args.norm_stim
             norm_baseline_win = parse_window(args.norm_baseline_win_stim) if args.norm_baseline_win_stim else None
+            rebin_factor = args.rebin_factor_stim
         elif align == "sacc":
             norm = None if args.norm_sacc == "auto" else args.norm_sacc
             norm_baseline_win = parse_window(args.norm_baseline_win_sacc) if args.norm_baseline_win_sacc else None
+            rebin_factor = args.rebin_factor_sacc
         else:  # targ
             norm = None if args.norm_targ == "auto" else args.norm_targ
             norm_baseline_win = parse_window(args.norm_baseline_win_targ) if args.norm_baseline_win_targ else None
+            rebin_factor = args.rebin_factor_targ
         
         print(f"[align={align}] pt_min_ms={pt_min_ms}, axes_tag={axes_tag}")
+        if rebin_factor > 1:
+            print(f"[align={align}] rebin_factor={rebin_factor}")
         print(f"[align={align}] baseline={baseline}, search={search}")
         print(f"[align={align}] orientation={orientation}")
         print(f"[align={align}] features={features}")
@@ -777,6 +797,7 @@ def main():
                         qc_threshold=qc_threshold_feature,
                         norm=norm,
                         norm_baseline_win=norm_baseline_win,
+                        rebin_factor=rebin_factor,
                     )
                     if result is not None:
                         all_results[key].append(result)
@@ -811,6 +832,7 @@ def main():
             "session_ids": sids,
             "norm": norm if norm else "auto",
             "norm_baseline_win": list(norm_baseline_win) if norm_baseline_win else None,
+            "rebin_factor": rebin_factor,
         }
         config_path = out_dir / "config.json"
         with open(config_path, "w") as f:

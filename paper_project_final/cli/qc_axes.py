@@ -294,7 +294,7 @@ def main():
     # Get rebin factor
     rebin_factor = args.rebin_factor
     if rebin_factor > 1:
-        print(f"[rebin] Combining {rebin_factor} adjacent bins (e.g., 5ms → {5*rebin_factor}ms)")
+        print(f"[rebin] Combining {rebin_factor} adjacent bins")
 
     any_cache = _load_cache(args.out_root, args.align, args.sid, areas[0], rebin_factor=rebin_factor)
     time_s = any_cache["time"].astype(float)

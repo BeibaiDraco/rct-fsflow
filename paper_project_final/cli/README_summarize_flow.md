@@ -206,6 +206,126 @@ python cli/summarize_flow_across_sessions.py \
 | Time points | ~100 bins | ~50 bins |
 | Summary `--sacc_bin_combine` | 2 (to get 10ms) | 1 (default) |
 
+---
+
+## 20ms Bin Workflow (Both Stim and Sacc)
+
+The 20ms workflow uses **bin-combination at the very beginning** (before window search, subspace training, QC, onset, flow, and any smoothing). This is analogous to the 10ms sacc workflow but applied to both alignments.
+
+### Native bin sizes → 20ms
+
+| Alignment | Native bin | Rebin factor | Result |
+|-----------|-----------|--------------|--------|
+| stim | 10ms | 2 | 20ms |
+| sacc | 5ms | 4 | 20ms |
+
+### Parameter adjustments for 20ms bins
+
+Since all parameters must be compatible with 20ms bins (multiples of 20ms), some values change:
+
+| Parameter | 10ms Workflow | 20ms Workflow | Notes |
+|-----------|---------------|---------------|-------|
+| LAGS_STIM_MS | 80ms (8 bins) | 80ms (4 bins) | Same absolute time |
+| LAGS_SACC_MS | 50ms (5 bins) | **60ms (3 bins)** | 50ms impossible at 20ms |
+| EVOKED_SIGMA_MS | 10ms (1 bin) | **20ms (1 bin)** | Maintain 1-bin smoothing |
+| SEARCH_LEN_MS | 50,100,150,200,250 | **60,100,140,200,240** | Multiples of 20ms |
+| SEARCH_STEP_MS | 20ms (2 bins) | 20ms (1 bin) | Same absolute time |
+| smooth_ms (downstream) | 30ms (3 bins) | **40ms (2 bins)** | Nearest multiple of 20ms |
+
+### Run the 20ms pipeline (SLURM)
+
+```bash
+sbatch jobs/peakbin_axes_qc_flow_array_20ms_big.sbatch
+```
+
+This runs both stim and sacc with:
+- `--rebin_factor 2` (stim: 10ms→20ms)
+- `--rebin_factor 4` (sacc: 5ms→20ms)
+
+### Tags for 20ms workflow
+
+| Type | Tag |
+|------|-----|
+| Axes (stim) | `axes_peakbin_stimCR-stim-vertical-20msbin` |
+| Axes (sacc) | `axes_peakbin_saccS-sacc-horizontal-20msbin` |
+| Flow (stim C) | `evoked_peakbin_stimC_vertical_lag80ms_20msbin-none-trial` |
+| Flow (stim R) | `evoked_peakbin_stimR_vertical_lag80ms_20msbin-none-trial` |
+| Flow (sacc S) | `evoked_peakbin_saccS_horizontal_lag60ms_20msbin-none-trial` |
+
+### Run trial onset with 20ms bins
+
+```bash
+# Stim (category)
+python cli/trial_onset_comprehensive.py \
+    --out_root out \
+    --sid_list sid_list.txt \
+    --align stim \
+    --axes_tag_stim axes_peakbin_stimCR-stim-vertical-20msbin \
+    --orientation_stim vertical \
+    --tag trialonset_axes_peakbin_stimCR_20msbin \
+    --rebin_factor_stim 2 \
+    --smooth_ms 40
+
+# Sacc (saccade)
+python cli/trial_onset_comprehensive.py \
+    --out_root out \
+    --sid_list sid_list.txt \
+    --align sacc \
+    --axes_tag_sacc axes_peakbin_saccS-sacc-horizontal-20msbin \
+    --orientation_sacc horizontal \
+    --tag trialonset_axes_peakbin_saccS_20msbin \
+    --rebin_factor_sacc 4 \
+    --smooth_ms 40
+```
+
+### Summarize 20ms results
+
+```bash
+# Stim (category)
+python cli/summarize_flow_across_sessions.py \
+    --out_root out \
+    --align stim \
+    --tags evoked_peakbin_stimC_vertical_lag80ms_20msbin-none-trial \
+    --smooth_ms 40
+
+# Sacc (saccade)
+python cli/summarize_flow_across_sessions.py \
+    --out_root out \
+    --align sacc \
+    --tags evoked_peakbin_saccS_horizontal_lag60ms_20msbin-none-trial \
+    --smooth_ms 40
+```
+
+### Generate QC paper figures for 20ms workflow
+
+```bash
+python cli/plot_qc_paper.py \
+    --stim_qc_subdir axes_peakbin_stimCR-stim-vertical-20msbin \
+    --sacc_qc_subdir axes_peakbin_saccS-sacc-horizontal-20msbin \
+    --suffix _20msbin \
+    --smooth_ms 40
+```
+
+This outputs:
+- `out/paper_figures/qc/qc_stim_category_M_20msbin_summary.{pdf,png,svg}`
+- `out/paper_figures/qc/qc_stim_category_S_20msbin_summary.{pdf,png,svg}`
+- `out/paper_figures/qc/qc_sacc_M_20msbin_summary.{pdf,png,svg}`
+- `out/paper_figures/qc/qc_sacc_S_20msbin_summary.{pdf,png,svg}`
+
+### Key differences: 10ms vs 20ms workflow
+
+| Aspect | 10ms Workflow | 20ms Workflow |
+|--------|---------------|---------------|
+| **Stim rebin_factor** | 1 (no rebin) | 2 (10ms→20ms) |
+| **Sacc rebin_factor** | 2 (5ms→10ms) | 4 (5ms→20ms) |
+| **Sacc lag** | 50ms | 60ms (50 impossible) |
+| **Evoked sigma** | 10ms | 20ms |
+| **Window lengths** | 50,100,150,200,250 | 60,100,140,200,240 |
+| **Downstream smooth_ms** | 30ms | 40ms |
+| **Tag suffix** | `-10msbin` (sacc only) | `-20msbin` (both) |
+
+---
+
 ## NPZ File Contents
 
 Each `summary_*.npz` contains:

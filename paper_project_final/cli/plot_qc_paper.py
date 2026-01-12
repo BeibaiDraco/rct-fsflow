@@ -15,10 +15,19 @@ Output (4 summary figures, one per monkey × condition):
 - out/paper_figures/qc/qc_sacc_S_summary.pdf/.png/.svg
 
 Usage:
+    # Default (10ms workflow)
     python cli/plot_qc_paper.py
+    
+    # 20ms workflow (use different QC subdirs and output suffix)
+    python cli/plot_qc_paper.py \
+        --stim_qc_subdir axes_peakbin_stimCR-stim-vertical-20msbin \
+        --sacc_qc_subdir axes_peakbin_saccS-sacc-horizontal-20msbin \
+        --suffix _20msbin \
+        --smooth_ms 40
 """
 
 from __future__ import annotations
+import argparse
 import json
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -359,24 +368,70 @@ def plot_summary_qc_figure(
 
 
 def main():
-    out_root = Path("out")
+    # ==================== Argument parsing ====================
+    ap = argparse.ArgumentParser(
+        description="Plot QC figures for paper: category (stim) and saccade (sacc) AUC curves.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Default (10ms workflow)
+  python cli/plot_qc_paper.py
+
+  # 20ms workflow
+  python cli/plot_qc_paper.py \\
+      --stim_qc_subdir axes_peakbin_stimCR-stim-vertical-20msbin \\
+      --sacc_qc_subdir axes_peakbin_saccS-sacc-horizontal-20msbin \\
+      --suffix _20msbin \\
+      --smooth_ms 40
+        """
+    )
+    ap.add_argument("--out_root", default="out",
+                    help="Output root directory (default: out)")
+    ap.add_argument("--stim_qc_subdir", default="axes_peakbin_stimCR-stim-vertical",
+                    help="QC subdir for stim (default: axes_peakbin_stimCR-stim-vertical)")
+    ap.add_argument("--sacc_qc_subdir", default="axes_peakbin_saccS-sacc-horizontal-10msbin",
+                    help="QC subdir for sacc (default: axes_peakbin_saccS-sacc-horizontal-10msbin)")
+    ap.add_argument("--suffix", default="",
+                    help="Suffix for output filenames, e.g., '_20msbin' (default: none)")
+    ap.add_argument("--smooth_ms", type=float, default=SMOOTH_MS,
+                    help=f"Smoothing window in ms (default: {SMOOTH_MS})")
+    ap.add_argument("--t_min_stim", type=float, default=-100.0,
+                    help="Stim time range min (ms) (default: -100)")
+    ap.add_argument("--t_max_stim", type=float, default=500.0,
+                    help="Stim time range max (ms) (default: 500)")
+    ap.add_argument("--t_min_sacc", type=float, default=-290.0,
+                    help="Sacc time range min (ms) (default: -290)")
+    ap.add_argument("--t_max_sacc", type=float, default=200.0,
+                    help="Sacc time range max (ms) (default: 200)")
+    args = ap.parse_args()
+    
+    out_root = Path(args.out_root)
+    suffix = args.suffix
+    smooth_ms = args.smooth_ms
     
     # Output directory for paper figures
     paper_fig_dir = out_root / "paper_figures" / "qc"
+    
+    # Print configuration
+    print(f"[config] out_root: {out_root}")
+    print(f"[config] stim_qc_subdir: {args.stim_qc_subdir}")
+    print(f"[config] sacc_qc_subdir: {args.sacc_qc_subdir}")
+    print(f"[config] suffix: '{suffix}'")
+    print(f"[config] smooth_ms: {smooth_ms}")
     
     # Monkey-specific configuration
     monkey_config = {
         "M": {
             "year_prefix": "2020",
             "areas": AREAS_M,
-            "stim_qc_subdir": "axes_peakbin_stimCR-stim-vertical",
-            "sacc_qc_subdir": "axes_peakbin_saccS-sacc-horizontal-10msbin",
+            "stim_qc_subdir": args.stim_qc_subdir,
+            "sacc_qc_subdir": args.sacc_qc_subdir,
         },
         "S": {
             "year_prefix": "2023",
             "areas": AREAS_S,
-            "stim_qc_subdir": "axes_peakbin_stimCR-stim-vertical",
-            "sacc_qc_subdir": "axes_peakbin_saccS-sacc-horizontal-10msbin",
+            "stim_qc_subdir": args.stim_qc_subdir,
+            "sacc_qc_subdir": args.sacc_qc_subdir,
         },
     }
     
@@ -404,19 +459,21 @@ def main():
             areas_loaded = list(all_stim_data[sid].keys())
             print(f"    {sid}: {areas_loaded}")
         
+        # Output filename with optional suffix
+        stim_outname = f"qc_stim_category_{monkey}{suffix}_summary.pdf"
         plot_summary_qc_figure(
-            out_path=paper_fig_dir / f"qc_stim_category_{monkey}_summary.pdf",
+            out_path=paper_fig_dir / stim_outname,
             all_sessions_data=all_stim_data,
             areas=areas,
             metric="auc_C",
             ylabel="AUC (Category)",
-            t_min_ms=-100.0,
-            t_max_ms=500.0,
+            t_min_ms=args.t_min_stim,
+            t_max_ms=args.t_max_stim,
             y_min=0.35,
             y_max=1.0,
             chance_level=0.5,
             monkey=monkey,
-            smooth_ms=SMOOTH_MS,
+            smooth_ms=smooth_ms,
         )
         
         # ==================== Saccade AUC ====================
@@ -452,19 +509,21 @@ def main():
         else:
             print(f"  Using auc_S_inv (preferred for flow analysis)")
         
+        # Output filename with optional suffix
+        sacc_outname = f"qc_sacc_{monkey}{suffix}_summary.pdf"
         plot_summary_qc_figure(
-            out_path=paper_fig_dir / f"qc_sacc_{monkey}_summary.pdf",
+            out_path=paper_fig_dir / sacc_outname,
             all_sessions_data=all_sacc_data,
             areas=areas,
             metric=metric_sacc,
             ylabel="AUC (Saccade)",
-            t_min_ms=-290.0,
-            t_max_ms=200.0,
+            t_min_ms=args.t_min_sacc,
+            t_max_ms=args.t_max_sacc,
             y_min=0.35,
             y_max=1.0,
             chance_level=0.5,
             monkey=monkey,
-            smooth_ms=SMOOTH_MS,
+            smooth_ms=smooth_ms,
         )
     
     print(f"\n{'='*60}")
