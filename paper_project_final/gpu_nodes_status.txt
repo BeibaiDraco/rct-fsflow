@@ -1,0 +1,198 @@
+NodeName=midway3-0277 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=41 CPUTot=48 CPULoad=34.01
+   AvailableFeatures=gold-6248r,192g,v100
+   ActiveFeatures=gold-6248r,192g,v100
+   Gres=gpu:4
+   NodeAddr=midway3-0277 NodeHostName=midway3-0277 Version=20.11.8
+   OS=Linux 4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021 
+   RealMemory=184320 AllocMem=147520 FreeMem=167741 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=gpu 
+   BootTime=2025-12-08T09:09:54 SlurmdStartTime=2025-12-08T10:21:21
+   CfgTRES=cpu=48,mem=180G,billing=48,gres/gpu=4
+   AllocTRES=cpu=41,mem=147520M,gres/gpu=4
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Comment=(null)
+
+NodeName=midway3-0278 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=34 CPUTot=48 CPULoad=4.00
+   AvailableFeatures=gold-6248r,192g,v100
+   ActiveFeatures=gold-6248r,192g,v100
+   Gres=gpu:4
+   NodeAddr=midway3-0278 NodeHostName=midway3-0278 Version=20.11.8
+   OS=Linux 4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021 
+   RealMemory=184320 AllocMem=106496 FreeMem=155139 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=gpu 
+   BootTime=2025-11-17T09:39:05 SlurmdStartTime=2025-11-17T09:46:37
+   CfgTRES=cpu=48,mem=180G,billing=48,gres/gpu=4
+   AllocTRES=cpu=34,mem=104G,gres/gpu=4
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Comment=(null)
+
+NodeName=midway3-0279 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=28 CPUTot=48 CPULoad=4.26
+   AvailableFeatures=gold-6248r,192g,v100
+   ActiveFeatures=gold-6248r,192g,v100
+   Gres=gpu:4
+   NodeAddr=midway3-0279 NodeHostName=midway3-0279 Version=20.11.8
+   OS=Linux 4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021 
+   RealMemory=184320 AllocMem=167936 FreeMem=166214 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=gpu 
+   BootTime=2025-11-17T09:39:03 SlurmdStartTime=2025-11-17T09:46:45
+   CfgTRES=cpu=48,mem=180G,billing=48,gres/gpu=4
+   AllocTRES=cpu=28,mem=164G,gres/gpu=3
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Comment=(null)
+
+NodeName=midway3-0280 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=1 CPUTot=48 CPULoad=1.01
+   AvailableFeatures=gold-6248r,192g,v100
+   ActiveFeatures=gold-6248r,192g,v100
+   Gres=gpu:4
+   NodeAddr=midway3-0280 NodeHostName=midway3-0280 Version=20.11.8
+   OS=Linux 4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021 
+   RealMemory=184320 AllocMem=167936 FreeMem=172239 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=gpu 
+   BootTime=2025-11-19T13:46:41 SlurmdStartTime=2025-11-19T13:54:20
+   CfgTRES=cpu=48,mem=180G,billing=48,gres/gpu=4
+   AllocTRES=cpu=1,mem=164G,gres/gpu=1
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Comment=(null)
+
+NodeName=midway3-0281 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=1 CPUTot=48 CPULoad=1.02
+   AvailableFeatures=gold-6248r,192g,v100
+   ActiveFeatures=gold-6248r,192g,v100
+   Gres=gpu:4
+   NodeAddr=midway3-0281 NodeHostName=midway3-0281 Version=20.11.8
+   OS=Linux 4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021 
+   RealMemory=184320 AllocMem=167936 FreeMem=172346 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=gpu 
+   BootTime=2025-11-19T13:46:47 SlurmdStartTime=2025-11-19T13:54:33
+   CfgTRES=cpu=48,mem=180G,billing=48,gres/gpu=4
+   AllocTRES=cpu=1,mem=164G,gres/gpu=1
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Comment=(null)
+
+NodeName=midway3-0282 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=40 CPUTot=48 CPULoad=32.04
+   AvailableFeatures=gold-6248r,192g,rtx6000
+   ActiveFeatures=gold-6248r,192g,rtx6000
+   Gres=gpu:4
+   NodeAddr=midway3-0282 NodeHostName=midway3-0282 Version=20.11.8
+   OS=Linux 4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021 
+   RealMemory=184320 AllocMem=154688 FreeMem=172682 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=gpu 
+   BootTime=2025-12-11T09:42:39 SlurmdStartTime=2025-12-11T09:50:20
+   CfgTRES=cpu=48,mem=180G,billing=48,gres/gpu=4
+   AllocTRES=cpu=40,mem=154688M,gres/gpu=3
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Comment=(null)
+
+NodeName=midway3-0283 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=48 CPUTot=48 CPULoad=48.19
+   AvailableFeatures=gold-6248r,192g,rtx6000
+   ActiveFeatures=gold-6248r,192g,rtx6000
+   Gres=gpu:4
+   NodeAddr=midway3-0283 NodeHostName=midway3-0283 Version=20.11.8
+   OS=Linux 4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021 
+   RealMemory=184320 AllocMem=182880 FreeMem=172335 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=gpu 
+   BootTime=2025-11-24T08:28:10 SlurmdStartTime=2025-11-24T08:35:48
+   CfgTRES=cpu=48,mem=180G,billing=48,gres/gpu=4
+   AllocTRES=cpu=48,mem=182880M,gres/gpu=4
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Comment=(null)
+
+NodeName=midway3-0284 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=1 CPUTot=48 CPULoad=1.04
+   AvailableFeatures=gold-6248r,192g,rtx6000
+   ActiveFeatures=gold-6248r,192g,rtx6000
+   Gres=gpu:4
+   NodeAddr=midway3-0284 NodeHostName=midway3-0284 Version=20.11.8
+   OS=Linux 4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021 
+   RealMemory=184320 AllocMem=167936 FreeMem=173523 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=gpu 
+   BootTime=2025-11-17T09:39:11 SlurmdStartTime=2025-11-17T09:46:40
+   CfgTRES=cpu=48,mem=180G,billing=48,gres/gpu=4
+   AllocTRES=cpu=1,mem=164G,gres/gpu=1
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Comment=(null)
+
+NodeName=midway3-0285 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=27 CPUTot=48 CPULoad=11.05
+   AvailableFeatures=gold-6248r,192g,rtx6000
+   ActiveFeatures=gold-6248r,192g,rtx6000
+   Gres=gpu:4
+   NodeAddr=midway3-0285 NodeHostName=midway3-0285 Version=20.11.8
+   OS=Linux 4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021 
+   RealMemory=184320 AllocMem=120592 FreeMem=159651 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=gpu 
+   BootTime=2025-12-12T10:11:25 SlurmdStartTime=2025-12-12T10:19:07
+   CfgTRES=cpu=48,mem=180G,billing=48,gres/gpu=4
+   AllocTRES=cpu=27,mem=120592M,gres/gpu=4
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Comment=(null)
+
+NodeName=midway3-0286 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=48 CPUTot=48 CPULoad=48.23
+   AvailableFeatures=gold-6248r,192g,rtx6000
+   ActiveFeatures=gold-6248r,192g,rtx6000
+   Gres=gpu:4
+   NodeAddr=midway3-0286 NodeHostName=midway3-0286 Version=20.11.8
+   OS=Linux 4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021 
+   RealMemory=184320 AllocMem=182880 FreeMem=174936 Sockets=2 Boards=1
+   State=ALLOCATED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=gpu 
+   BootTime=2025-12-12T10:50:38 SlurmdStartTime=2025-12-12T10:58:28
+   CfgTRES=cpu=48,mem=180G,billing=48,gres/gpu=4
+   AllocTRES=cpu=48,mem=182880M,gres/gpu=4
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Comment=(null)
+
+NodeName=midway3-0294 Arch=x86_64 CoresPerSocket=24 
+   CPUAlloc=17 CPUTot=48 CPULoad=24.38
+   AvailableFeatures=gold-6248r,384g,a100
+   ActiveFeatures=gold-6248r,384g,a100
+   Gres=gpu:4
+   NodeAddr=midway3-0294 NodeHostName=midway3-0294 Version=20.11.8
+   OS=Linux 4.18.0-305.3.1.el8.x86_64 #1 SMP Tue Jun 1 16:14:33 UTC 2021 
+   RealMemory=384000 AllocMem=382690 FreeMem=347751 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=1 Owner=N/A MCS_label=N/A
+   Partitions=gpu 
+   BootTime=2025-11-24T08:27:37 SlurmdStartTime=2025-11-24T08:35:52
+   CfgTRES=cpu=48,mem=375G,billing=48,gres/gpu=4
+   AllocTRES=cpu=17,mem=382690M,gres/gpu=4
+   CapWatts=n/a
+   CurrentWatts=0 AveWatts=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
+   Comment=(null)
+
