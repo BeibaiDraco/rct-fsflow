@@ -1,0 +1,111 @@
+{
+  "_meta": {
+    "created": "2026-01-13T04:09:03.985818",
+    "script": "cli/train_axes.py",
+    "version": "2.0"
+  },
+  "cli_args": {
+    "out_root": "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out",
+    "align": "stim",
+    "sid": "20200926",
+    "areas": null,
+    "features": [
+      "C",
+      "R"
+    ],
+    "orientation": "vertical",
+    "tag": "axes_peakbin_stimCR-stim-vertical-20mssw",
+    "no_auto_tag": false,
+    "time_resolved": false,
+    "time_resolved_range": null,
+    "norm": "global",
+    "baseline_win": null,
+    "clf_binary": "logreg",
+    "C_grid": [
+      0.1,
+      0.3,
+      1.0,
+      3.0,
+      10.0
+    ],
+    "lda_shrinkage": "auto",
+    "searchC": true,
+    "searchS": false,
+    "searchT": false,
+    "searchR": true,
+    "search_step_ms": 20.0,
+    "search_len_ms": [
+      50.0,
+      100.0,
+      150.0,
+      200.0,
+      250.0
+    ],
+    "search_range_C": "0.00:0.50",
+    "search_range_S": null,
+    "search_range_T": null,
+    "search_range_R": "0.00:0.50",
+    "search_score_mode": "peak_bin_auc",
+    "search_tiebreak": "shortest_then_earliest",
+    "search_tol": 0.01,
+    "winC_stim": [
+      "0.10:0.30"
+    ],
+    "winR_stim": [
+      "0.05:0.20"
+    ],
+    "winC_sacc": [
+      "-0.30:-0.18"
+    ],
+    "winS_sacc": [
+      "-0.10:-0.03"
+    ],
+    "winT_targ": [
+      "0.05:0.20"
+    ],
+    "dimC": 1,
+    "dimR": 4,
+    "dimS": 1,
+    "no_S_invariant": false,
+    "pt_min_ms_sacc": 200.0,
+    "pt_min_ms_stim": 200.0,
+    "no_pt_filter": false,
+    "select_mode": "none",
+    "select_frac": 1.0,
+    "rebin_factor": 1,
+    "sliding_window_ms": 20.0,
+    "sliding_step_ms": 10.0
+  },
+  "resolved": {
+    "auto_tag_generated": false,
+    "final_tag": "axes_peakbin_stimCR-stim-vertical-20mssw",
+    "resolved_baseline_win": null,
+    "resolved_winC": [
+      0.1,
+      0.3
+    ],
+    "resolved_winR": [
+      0.05,
+      0.2
+    ],
+    "resolved_winS": null,
+    "resolved_winT": null,
+    "resolved_pt_min_ms": 200.0,
+    "features_trained": [
+      "C",
+      "R"
+    ],
+    "areas_processed": [
+      "MFEF",
+      "MLIP",
+      "MSC"
+    ],
+    "winC_candidates_count": 91,
+    "winS_candidates_count": 0,
+    "winT_candidates_count": 0,
+    "winR_candidates_count": 91,
+    "sliding_window_bins": 2,
+    "sliding_step_bins": 1,
+    "native_bin_ms": 10.0
+  }
+}

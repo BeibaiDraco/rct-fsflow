@@ -1,0 +1,26 @@
+[info] task=12 SID=20230622
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] DRY_RUN=0 CONTINUE_ON_ERROR=0
+
+========== STIM 20ms sliding: train axes (C,R) peakbin ==========
+
+[RUN] python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230622 --orientation vertical --features C R --tag axes_peakbin_stimCR-stim-vertical-20mssw --norm global --clf_binary logreg --C_grid 0.1 0.3 1 3 10 --lda_shrinkage auto --searchC --searchR --search_range_C=0.00:0.50 --search_range_R=0.00:0.50 --search_step_ms 20 --search_len_ms 50 100 150 200 250 --search_score_mode peak_bin_auc --search_tiebreak shortest_then_earliest --search_tol 0.01 --pt_min_ms_stim 200 --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20230622][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230622/axes/axes_peakbin_stimCR-stim-vertical-20mssw/axes_SFEF.npz
+    → winC_selected: [0.16, 0.26], score: 0.7555, peak@180ms (cv_auc=0.8560)
+[20230622][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230622/axes/axes_peakbin_stimCR-stim-vertical-20mssw/axes_SLIP.npz
+    → winC_selected: [0.4000000000000001, 0.45000000000000007], score: 0.6327, peak@440ms (cv_auc=0.6318)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230622/axes/axes_peakbin_stimCR-stim-vertical-20mssw/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230622/axes/axes_peakbin_stimCR-stim-vertical-20mssw/config.json
+
+========== STIM 20ms sliding: QC ==========
+
+[RUN] python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230622 --orientation vertical --tag axes_peakbin_stimCR-stim-vertical-20mssw --thr 0.60 --k 5 --pt_min_ms_stim 200 --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20230622][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230622/qc/axes_peakbin_stimCR-stim-vertical-20mssw/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=130.00000268220901, Sraw=None, Sinv=None, T=None
+[20230622][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230622/qc/axes_peakbin_stimCR-stim-vertical-20mssw/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=409.9999964237213, Sraw=None, Sinv=None, T=None
+
+========== STIM 20ms sliding: flow feature=C (save null) ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230622 --feature C --orientation vertical --lags_ms 80 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical-20mssw --tag evoked_peakbin_stimC_vertical_lag80ms_20mssw --flow_tag_base evoked_peakbin_stimC_vertical_lag80ms_20mssw --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10

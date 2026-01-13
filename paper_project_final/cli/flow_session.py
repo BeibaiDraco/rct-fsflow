@@ -179,7 +179,6 @@ def main():
         aB = _load_axes(args.out_root, args.align, args.sid, B, axes_tag=args.axes_tag, flow_tag=args.tag)
         
         if args.verbose:
-            import json
             metaA = cA["meta"]
             if not isinstance(metaA, dict):
                 metaA = json.loads(metaA.item() if hasattr(metaA, "item") else str(metaA))
