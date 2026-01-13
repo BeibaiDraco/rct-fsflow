@@ -8,7 +8,7 @@ from paperflow.axes import (
     train_axes_for_area, save_axes, make_window_grid,
     train_time_resolved_axis, save_time_resolved_axes
 )
-from paperflow.norm import parse_win, rebin_cache_data
+from paperflow.norm import parse_win, rebin_cache_data, sliding_window_cache_data
 
 
 def _generate_auto_tag(args) -> str:
@@ -119,7 +119,23 @@ def _parse_range_arg(val):
         return float(a), float(b)
     raise ValueError(f"Bad range arg: {val}")
 
-def _load_cache(out_root: str, align: str, sid: str, area: str, rebin_factor: int = 1):
+def _load_cache(out_root: str, align: str, sid: str, area: str, 
+                rebin_factor: int = 1,
+                sliding_window_bins: int = 0, sliding_step_bins: int = 0):
+    """
+    Load cache with optional rebinning or sliding window.
+    
+    Parameters
+    ----------
+    rebin_factor : int
+        If > 1, apply non-overlapping rebinning (legacy mode).
+    sliding_window_bins : int
+        If > 0, apply sliding window with this many bins per window.
+    sliding_step_bins : int
+        If sliding_window_bins > 0, step by this many bins.
+    
+    Note: sliding window takes precedence over rebin_factor if both specified.
+    """
     path = os.path.join(out_root, align, sid, "caches", f"area_{area}.npz")
     if not os.path.exists(path):
         raise FileNotFoundError(path)
@@ -127,13 +143,21 @@ def _load_cache(out_root: str, align: str, sid: str, area: str, rebin_factor: in
     meta = json.loads(d["meta"].item()) if "meta" in d else {}
     cache = {k: d[k] for k in d.files}
     cache["meta"] = meta
+    orig_bin_s = meta.get("bin_s", 0.01)
     
-    # Apply rebinning if requested
-    if rebin_factor > 1:
+    # Sliding window takes precedence over rebinning
+    if sliding_window_bins > 0 and sliding_step_bins > 0:
+        cache, _ = sliding_window_cache_data(cache, sliding_window_bins, sliding_step_bins)
+        # Update meta to record sliding window params
+        cache["meta"]["sliding_window_bins"] = sliding_window_bins
+        cache["meta"]["sliding_step_bins"] = sliding_step_bins
+        cache["meta"]["window_ms"] = sliding_window_bins * orig_bin_s * 1000
+        cache["meta"]["step_ms"] = sliding_step_bins * orig_bin_s * 1000
+        cache["meta"]["bin_s"] = orig_bin_s * sliding_step_bins  # effective bin spacing
+    elif rebin_factor > 1:
         cache, _ = rebin_cache_data(cache, rebin_factor)
         # Update meta to record rebinning
         cache["meta"]["rebin_factor"] = rebin_factor
-        orig_bin_s = meta.get("bin_s", 0.01)
         cache["meta"]["bin_s"] = orig_bin_s * rebin_factor
     
     return cache
@@ -171,12 +195,38 @@ def main():
     if not areas:
         raise SystemExit(f"No caches under {args.out_root}/{args.align}/{args.sid}/caches")
 
-    # Get rebin factor
+    # Get rebin factor and sliding window params
     rebin_factor = args.rebin_factor
-    if rebin_factor > 1:
+    sliding_window_bins = 0
+    sliding_step_bins = 0
+    
+    # Load one cache to get native bin size for sliding window calculation
+    temp_path = os.path.join(args.out_root, args.align, args.sid, "caches", f"area_{areas[0]}.npz")
+    temp_d = np.load(temp_path, allow_pickle=True)
+    temp_meta = json.loads(temp_d["meta"].item()) if "meta" in temp_d else {}
+    native_bin_s = temp_meta.get("bin_s", 0.01)
+    native_bin_ms = native_bin_s * 1000.0
+    
+    # Sliding window takes precedence over rebinning
+    if args.sliding_window_ms > 0 and args.sliding_step_ms > 0:
+        # Compute bin counts from ms
+        if args.sliding_window_ms % native_bin_ms != 0:
+            raise SystemExit(f"sliding_window_ms ({args.sliding_window_ms}) must be multiple of native bin ({native_bin_ms}ms)")
+        if args.sliding_step_ms % native_bin_ms != 0:
+            raise SystemExit(f"sliding_step_ms ({args.sliding_step_ms}) must be multiple of native bin ({native_bin_ms}ms)")
+        
+        sliding_window_bins = int(round(args.sliding_window_ms / native_bin_ms))
+        sliding_step_bins = int(round(args.sliding_step_ms / native_bin_ms))
+        print(f"[sliding-window] window={args.sliding_window_ms}ms ({sliding_window_bins} bins), "
+              f"step={args.sliding_step_ms}ms ({sliding_step_bins} bins), native={native_bin_ms}ms")
+        rebin_factor = 1  # Disable rebinning when using sliding window
+    elif rebin_factor > 1:
         print(f"[rebin] Combining {rebin_factor} adjacent bins")
 
-    any_cache = _load_cache(args.out_root, args.align, args.sid, areas[0], rebin_factor=rebin_factor)
+    any_cache = _load_cache(args.out_root, args.align, args.sid, areas[0], 
+                            rebin_factor=rebin_factor,
+                            sliding_window_bins=sliding_window_bins,
+                            sliding_step_bins=sliding_step_bins)
     time_s = any_cache["time"].astype(float)
 
     # choose windows by alignment
@@ -236,7 +286,10 @@ def main():
         os.makedirs(axes_dir, exist_ok=True)
         
         for area in areas:
-            cache = _load_cache(args.out_root, args.align, args.sid, area, rebin_factor=rebin_factor)
+            cache = _load_cache(args.out_root, args.align, args.sid, area, 
+                                rebin_factor=rebin_factor,
+                                sliding_window_bins=sliding_window_bins,
+                                sliding_step_bins=sliding_step_bins)
             result = train_time_resolved_axis(
                 cache=cache,
                 time_s=time_s,
@@ -276,6 +329,11 @@ def main():
             clf_binary=args.clf_binary,
             C_grid=C_grid,
             per_area_results=per_area_results,
+            # === Sliding window ===
+            sliding_window_ms=args.sliding_window_ms if sliding_window_bins > 0 else None,
+            sliding_step_ms=args.sliding_step_ms if sliding_step_bins > 0 else None,
+            sliding_window_bins=sliding_window_bins if sliding_window_bins > 0 else None,
+            sliding_step_bins=sliding_step_bins if sliding_step_bins > 0 else None,
         )
         summary_path = os.path.join(axes_dir, "axes_summary.json")
         with open(summary_path, "w") as f:
@@ -353,7 +411,10 @@ def main():
     per_area_results = {}
     
     for area in areas:
-        cache = _load_cache(args.out_root, args.align, args.sid, area, rebin_factor=rebin_factor)
+        cache = _load_cache(args.out_root, args.align, args.sid, area, 
+                            rebin_factor=rebin_factor,
+                            sliding_window_bins=sliding_window_bins,
+                            sliding_step_bins=sliding_step_bins)
         pack = train_axes_for_area(
             cache=cache,
             feature_set=feats,
@@ -485,6 +546,11 @@ def main():
         per_area_results=per_area_results if per_area_results else None,
         # === Time rebinning ===
         rebin_factor=rebin_factor if rebin_factor > 1 else None,
+        # === Sliding window ===
+        sliding_window_ms=args.sliding_window_ms if sliding_window_bins > 0 else None,
+        sliding_step_ms=args.sliding_step_ms if sliding_step_bins > 0 else None,
+        sliding_window_bins=sliding_window_bins if sliding_window_bins > 0 else None,
+        sliding_step_bins=sliding_step_bins if sliding_step_bins > 0 else None,
     )
     
     # Write axes_summary.json (backward-compatible)
@@ -509,6 +575,10 @@ def main():
         winS_candidates_count=len(winS_candidates) if winS_candidates else 0,
         winT_candidates_count=len(winT_candidates) if winT_candidates else 0,
         winR_candidates_count=len(winR_candidates) if winR_candidates else 0,
+        # === Sliding window ===
+        sliding_window_bins=sliding_window_bins if sliding_window_bins > 0 else None,
+        sliding_step_bins=sliding_step_bins if sliding_step_bins > 0 else None,
+        native_bin_ms=native_bin_ms,
     )
     config_path = _save_full_config(axes_dir, args, computed_values)
     print(f"[ok] config.json → {config_path}")
@@ -633,6 +703,15 @@ def new_argparser():
     ap.add_argument("--rebin_factor", type=int, default=1,
                     help="Number of adjacent time bins to combine (default: 1 = no rebinning). "
                          "Set to 2 for sacc alignment to convert 5ms bins to 10ms bins.")
+    
+    # === Sliding window (alternative to rebinning) ===
+    ap.add_argument("--sliding_window_ms", type=float, default=0.0,
+                    help="Sliding window width in ms (e.g., 20). If > 0, uses sliding window "
+                         "instead of rebinning. Window averages over this duration.")
+    ap.add_argument("--sliding_step_ms", type=float, default=0.0,
+                    help="Sliding window step in ms (e.g., 10). Output bins are spaced by this amount. "
+                         "For STIM (10ms native): step_ms=10 → step_bins=1. "
+                         "For SACC (5ms native): step_ms=10 → step_bins=2.")
     return ap
 
 if __name__ == "__main__":

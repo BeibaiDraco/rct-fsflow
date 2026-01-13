@@ -461,3 +461,155 @@ def get_rebin_factor_from_meta(cache: Dict) -> int:
     
     return meta.get("rebin_factor", 1)
 
+
+# ============== SLIDING WINDOW ==============
+
+def sliding_window_cache_data(
+    cache: Dict,
+    window_bins: int,
+    step_bins: int,
+) -> Tuple[Dict, np.ndarray]:
+    """
+    Apply sliding window averaging to cache data.
+    
+    Unlike rebinning (non-overlapping), this creates overlapping windows with
+    configurable step size. Useful for smoothing while maintaining temporal
+    resolution.
+    
+    Parameters
+    ----------
+    cache : dict
+        Cache dictionary with keys "X" (raw counts), "Z" (global z-score),
+        "time" (time array), and optionally others.
+    window_bins : int
+        Number of bins in each window. E.g., 2 for STIM (10ms native → 20ms window)
+        or 4 for SACC (5ms native → 20ms window).
+    step_bins : int
+        Number of bins to step between windows. E.g., 1 for STIM (10ms step)
+        or 2 for SACC (10ms step).
+    
+    Returns
+    -------
+    cache : dict
+        Modified cache with sliding-windowed X, Z, and time arrays.
+    new_time : np.ndarray
+        New time array after sliding window.
+    
+    Notes
+    -----
+    - X and Z are averaged over each window (maintains rate interpretation)
+    - time is the center of each window
+    - Output has (T - window_bins) // step_bins + 1 time bins
+    - Other cache fields (labels, meta) are preserved unchanged
+    
+    Example
+    -------
+    For STIM alignment (10ms native bins):
+        - window_bins=2, step_bins=1 → 20ms window, 10ms step (50% overlap)
+        - 100 input bins → 99 output bins
+    
+    For SACC alignment (5ms native bins):
+        - window_bins=4, step_bins=2 → 20ms window, 10ms step (50% overlap)
+        - 200 input bins → 99 output bins
+    """
+    if window_bins <= 0 or step_bins <= 0:
+        warnings.warn(f"Invalid window_bins={window_bins} or step_bins={step_bins}. No change applied.")
+        return cache, cache["time"].astype(float)
+    
+    if window_bins == 1 and step_bins == 1:
+        # No change needed
+        return cache, cache["time"].astype(float)
+    
+    time = cache["time"].astype(float)
+    T = time.shape[0]
+    
+    # Calculate number of output bins
+    if T < window_bins:
+        warnings.warn(f"window_bins={window_bins} is larger than T={T}. No sliding window applied.")
+        return cache, time
+    
+    n_out = (T - window_bins) // step_bins + 1
+    
+    if n_out <= 0:
+        warnings.warn(f"Not enough bins for sliding window. T={T}, window_bins={window_bins}, step_bins={step_bins}")
+        return cache, time
+    
+    # Build sliding window indices
+    # For each output bin i, we average input bins [i*step : i*step + window_bins]
+    
+    # New time array: center of each window
+    new_time = np.array([
+        np.mean(time[i * step_bins : i * step_bins + window_bins])
+        for i in range(n_out)
+    ], dtype=float)
+    
+    cache["time"] = new_time
+    
+    # Apply sliding window to X if present: (trials, time, units) -> (trials, n_out, units)
+    if "X" in cache:
+        X = cache["X"]
+        if X.ndim == 3:
+            N, T_x, U = X.shape
+            if T_x >= window_bins:
+                X_new = np.empty((N, n_out, U), dtype=X.dtype)
+                for i in range(n_out):
+                    start = i * step_bins
+                    end = start + window_bins
+                    X_new[:, i, :] = np.mean(X[:, start:end, :], axis=1)
+                cache["X"] = X_new
+    
+    # Apply sliding window to Z if present: (trials, time, units) -> (trials, n_out, units)
+    if "Z" in cache:
+        Z = cache["Z"]
+        if Z.ndim == 3:
+            N, T_z, U = Z.shape
+            if T_z >= window_bins:
+                Z_new = np.empty((N, n_out, U), dtype=Z.dtype)
+                for i in range(n_out):
+                    start = i * step_bins
+                    end = start + window_bins
+                    Z_new[:, i, :] = np.mean(Z[:, start:end, :], axis=1)
+                cache["Z"] = Z_new
+    
+    return cache, new_time
+
+
+def compute_sliding_window_params(
+    native_bin_ms: float,
+    window_ms: float,
+    step_ms: float,
+) -> Tuple[int, int]:
+    """
+    Compute sliding window parameters from millisecond specifications.
+    
+    Parameters
+    ----------
+    native_bin_ms : float
+        Native bin size in milliseconds (10 for STIM, 5 for SACC).
+    window_ms : float
+        Desired window width in milliseconds (e.g., 20).
+    step_ms : float
+        Desired step size in milliseconds (e.g., 10).
+    
+    Returns
+    -------
+    window_bins : int
+        Number of native bins per window.
+    step_bins : int
+        Number of native bins to step.
+    
+    Raises
+    ------
+    ValueError
+        If window_ms or step_ms are not multiples of native_bin_ms.
+    """
+    if window_ms % native_bin_ms != 0:
+        raise ValueError(f"window_ms ({window_ms}) must be a multiple of native_bin_ms ({native_bin_ms})")
+    if step_ms % native_bin_ms != 0:
+        raise ValueError(f"step_ms ({step_ms}) must be a multiple of native_bin_ms ({native_bin_ms})")
+    
+    window_bins = int(round(window_ms / native_bin_ms))
+    step_bins = int(round(step_ms / native_bin_ms))
+    
+    return window_bins, step_bins
+

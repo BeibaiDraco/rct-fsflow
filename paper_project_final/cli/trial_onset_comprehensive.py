@@ -11,7 +11,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 # Import normalization utilities
-from paperflow.norm import get_Z, get_axes_norm, get_axes_norm_mode, get_axes_baseline_win, rebin_cache_data
+from paperflow.norm import get_Z, get_axes_norm, get_axes_norm_mode, get_axes_baseline_win, rebin_cache_data, sliding_window_cache_data
 
 
 def parse_window(s: str) -> Tuple[float, float]:
@@ -391,6 +391,9 @@ def process_one_session(
     norm_baseline_win: Optional[Tuple[float, float]] = None,
     # === NEW: rebinning parameter ===
     rebin_factor: int = 1,  # 1 = no rebinning, 2 = combine pairs of bins, etc.
+    # === NEW: sliding window parameters ===
+    sliding_window_bins: int = 0,  # window size in bins
+    sliding_step_bins: int = 0,    # step size in bins
 ) -> Optional[Dict]:
     """Process one session for one pair and feature. Returns dict with results or None if failed."""
     
@@ -429,8 +432,12 @@ def process_one_session(
         cache1 = load_npz(cache_path(out_root, align, sid, a1))
         cache2 = load_npz(cache_path(out_root, align, sid, a2))
         
-        # Apply rebinning if requested (must match axes trained with same rebin_factor)
-        if rebin_factor > 1:
+        # Apply sliding window or rebinning if requested (must match axes training)
+        # Sliding window takes precedence over rebinning
+        if sliding_window_bins > 0 and sliding_step_bins > 0:
+            cache1, _ = sliding_window_cache_data(cache1, sliding_window_bins, sliding_step_bins)
+            cache2, _ = sliding_window_cache_data(cache2, sliding_window_bins, sliding_step_bins)
+        elif rebin_factor > 1:
             cache1, _ = rebin_cache_data(cache1, rebin_factor)
             cache2, _ = rebin_cache_data(cache2, rebin_factor)
         
@@ -682,6 +689,20 @@ def main():
     ap.add_argument("--rebin_factor_targ", type=int, default=1,
                     help="Rebin factor for targ (1=no rebin). Must match axes training.")
     
+    # === NEW: sliding window args (alternative to rebinning, must match train_axes.py) ===
+    ap.add_argument("--sliding_window_ms_stim", type=float, default=0.0,
+                    help="Sliding window width in ms for stim (e.g., 20). If > 0, uses sliding window.")
+    ap.add_argument("--sliding_step_ms_stim", type=float, default=0.0,
+                    help="Sliding window step in ms for stim (e.g., 10).")
+    ap.add_argument("--sliding_window_ms_sacc", type=float, default=0.0,
+                    help="Sliding window width in ms for sacc (e.g., 20). If > 0, uses sliding window.")
+    ap.add_argument("--sliding_step_ms_sacc", type=float, default=0.0,
+                    help="Sliding window step in ms for sacc (e.g., 10).")
+    ap.add_argument("--sliding_window_ms_targ", type=float, default=0.0,
+                    help="Sliding window width in ms for targ. If > 0, uses sliding window.")
+    ap.add_argument("--sliding_step_ms_targ", type=float, default=0.0,
+                    help="Sliding window step in ms for targ.")
+    
     args = ap.parse_args()
     
     out_root = Path(args.out_root)
@@ -744,14 +765,37 @@ def main():
             norm = None if args.norm_stim == "auto" else args.norm_stim
             norm_baseline_win = parse_window(args.norm_baseline_win_stim) if args.norm_baseline_win_stim else None
             rebin_factor = args.rebin_factor_stim
+            sliding_window_ms = args.sliding_window_ms_stim
+            sliding_step_ms = args.sliding_step_ms_stim
+            native_bin_ms = 10.0  # STIM native bin size
         elif align == "sacc":
             norm = None if args.norm_sacc == "auto" else args.norm_sacc
             norm_baseline_win = parse_window(args.norm_baseline_win_sacc) if args.norm_baseline_win_sacc else None
             rebin_factor = args.rebin_factor_sacc
+            sliding_window_ms = args.sliding_window_ms_sacc
+            sliding_step_ms = args.sliding_step_ms_sacc
+            native_bin_ms = 5.0  # SACC native bin size
         else:  # targ
             norm = None if args.norm_targ == "auto" else args.norm_targ
             norm_baseline_win = parse_window(args.norm_baseline_win_targ) if args.norm_baseline_win_targ else None
             rebin_factor = args.rebin_factor_targ
+            sliding_window_ms = args.sliding_window_ms_targ
+            sliding_step_ms = args.sliding_step_ms_targ
+            native_bin_ms = 10.0  # TARG native bin size (same as stim)
+        
+        # Compute sliding window bins from ms parameters
+        sliding_window_bins = 0
+        sliding_step_bins = 0
+        if sliding_window_ms > 0 and sliding_step_ms > 0:
+            if sliding_window_ms % native_bin_ms != 0:
+                raise SystemExit(f"sliding_window_ms ({sliding_window_ms}) must be multiple of native bin ({native_bin_ms}ms)")
+            if sliding_step_ms % native_bin_ms != 0:
+                raise SystemExit(f"sliding_step_ms ({sliding_step_ms}) must be multiple of native bin ({native_bin_ms}ms)")
+            sliding_window_bins = int(round(sliding_window_ms / native_bin_ms))
+            sliding_step_bins = int(round(sliding_step_ms / native_bin_ms))
+            print(f"[align={align}] sliding window={sliding_window_ms}ms ({sliding_window_bins} bins), "
+                  f"step={sliding_step_ms}ms ({sliding_step_bins} bins)")
+            rebin_factor = 1  # Disable rebinning when using sliding window
         
         print(f"[align={align}] pt_min_ms={pt_min_ms}, axes_tag={axes_tag}")
         if rebin_factor > 1:
@@ -798,6 +842,8 @@ def main():
                         norm=norm,
                         norm_baseline_win=norm_baseline_win,
                         rebin_factor=rebin_factor,
+                        sliding_window_bins=sliding_window_bins,
+                        sliding_step_bins=sliding_step_bins,
                     )
                     if result is not None:
                         all_results[key].append(result)
@@ -833,6 +879,10 @@ def main():
             "norm": norm if norm else "auto",
             "norm_baseline_win": list(norm_baseline_win) if norm_baseline_win else None,
             "rebin_factor": rebin_factor,
+            "sliding_window_ms": sliding_window_ms if sliding_window_bins > 0 else None,
+            "sliding_step_ms": sliding_step_ms if sliding_step_bins > 0 else None,
+            "sliding_window_bins": sliding_window_bins if sliding_window_bins > 0 else None,
+            "sliding_step_bins": sliding_step_bins if sliding_step_bins > 0 else None,
         }
         config_path = out_dir / "config.json"
         with open(config_path, "w") as f:
