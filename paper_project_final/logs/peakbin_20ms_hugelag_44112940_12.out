@@ -1,0 +1,58 @@
+[info] task=12 SID=20230622
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] DRY_RUN=0 CONTINUE_ON_ERROR=0
+[info] Axes already exist at /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230622/axes/axes_peakbin_stimCR-stim-vertical-20mssw, skipping training
+
+========== STIM hugelag: flow feature=C (lag=100ms) ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230622 --feature C --orientation vertical --lags_ms 100 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical-20mssw --tag evoked_peakbin_stimC_vertical_lag100ms_20mssw --flow_tag_base evoked_peakbin_stimC_vertical_lag100ms_20mssw --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20230622][SFEF->SLIP] [evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230622/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20230622][SLIP->SFEF] [evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230622/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial/C/flow_C_SLIPtoSFEF.npz
+
+========== STIM hugelag: flow feature=R (lag=100ms) ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230622 --feature R --orientation vertical --lags_ms 100 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical-20mssw --tag evoked_peakbin_stimR_vertical_lag100ms_20mssw --flow_tag_base evoked_peakbin_stimR_vertical_lag100ms_20mssw --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20230622][SFEF->SLIP] [evoked_peakbin_stimR_vertical_lag100ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230622/flow/evoked_peakbin_stimR_vertical_lag100ms_20mssw-none-trial/R/flow_R_SFEFtoSLIP.npz
+[20230622][SLIP->SFEF] [evoked_peakbin_stimR_vertical_lag100ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230622/flow/evoked_peakbin_stimR_vertical_lag100ms_20mssw-none-trial/R/flow_R_SLIPtoSFEF.npz
+[info] Axes already exist at /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230622/axes/axes_peakbin_saccS-sacc-horizontal-20mssw, skipping training
+
+========== SACC hugelag: flow feature=S (lag=60ms) ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230622 --feature S --orientation horizontal --lags_ms 60 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_saccS-sacc-horizontal-20mssw --tag evoked_peakbin_saccS_horizontal_lag60ms_20mssw --flow_tag_base evoked_peakbin_saccS_horizontal_lag60ms_20mssw --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20230622][SFEF->SLIP] [evoked_peakbin_saccS_horizontal_lag60ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230622/flow/evoked_peakbin_saccS_horizontal_lag60ms_20mssw-none-trial/S/flow_S_SFEFtoSLIP.npz
+[20230622][SLIP->SFEF] [evoked_peakbin_saccS_horizontal_lag60ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230622/flow/evoked_peakbin_saccS_horizontal_lag60ms_20mssw-none-trial/S/flow_S_SLIPtoSFEF.npz
+
+[done] 20ms sliding hugelag flow complete for SID=20230622
+
+============================================================
+HUGELAG workflow completed. Summary of tags:
+
+  AXES (reused from original 20mssw):
+    - axes_peakbin_stimCR-stim-vertical-20mssw
+    - axes_peakbin_saccS-sacc-horizontal-20mssw
+
+  FLOW (NEW, with larger lags):
+    - evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial
+    - evoked_peakbin_stimR_vertical_lag100ms_20mssw-none-trial
+    - evoked_peakbin_saccS_horizontal_lag60ms_20mssw-none-trial
+
+Next steps:
+  python cli/summarize_flow_across_sessions.py \
+      --out_root out --align stim \
+      --tags evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial \
+             evoked_peakbin_stimR_vertical_lag100ms_20mssw-none-trial \
+      --qc_threshold 0.60 \
+      --qc_tag axes_peakbin_stimCR-stim-vertical-20mssw \
+      --smooth_ms 30 --group_diff_p
+
+  python cli/summarize_flow_across_sessions.py \
+      --out_root out --align sacc \
+      --tags evoked_peakbin_saccS_horizontal_lag60ms_20mssw-none-trial \
+      --qc_threshold 0.60 \
+      --qc_tag axes_peakbin_saccS-sacc-horizontal-20mssw \
+      --smooth_ms 30 --group_diff_p
+============================================================
