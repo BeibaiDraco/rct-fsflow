@@ -1178,6 +1178,9 @@ def summarize_for_tag_align_feature(
             all_diff = []
             all_sig_AB = []
             all_sig_BA = []
+            # Panel D: per-session normalized bits (normalized FIRST, then averaged)
+            all_bits_ptd_AB = []
+            all_bits_ptd_BA = []
             win_excess_AB = []
             win_excess_BA = []
             win_z_AB = []
@@ -1185,7 +1188,7 @@ def summarize_for_tag_align_feature(
             win_diff = []
             win_sig_AB = []
 
-            # Panel D (shape-preserving): collect per-session meta for reference normalization
+            # Panel D: collect per-session meta for logging
             Ns = []
             KAs = []
             KBs = []
@@ -1259,12 +1262,18 @@ def summarize_for_tag_align_feature(
                 p_AB = np.asarray(Zf["p_AtoB"], dtype=float)
                 p_BA = np.asarray(Zr["p_AtoB"], dtype=float)
 
-                # Panel D (shape-preserving): collect per-session meta for later normalization
+                # Panel D: collect per-session meta for per-session normalization
                 meta_f = _get_flow_meta(Zf)
-                Ns.append(int(meta_f.get("N", 0)))
-                KAs.append(int(meta_f.get("K_A", 1)))
-                KBs.append(int(meta_f.get("K_B", 1)))
-                lags_ms_list.append(float(meta_f.get("lags_ms", 0)))
+                meta_r = _get_flow_meta(Zr)
+                N_sess = int(meta_f.get("N", 0))
+                K_A_sess = int(meta_f.get("K_A", 1))
+                K_B_sess = int(meta_f.get("K_B", 1))
+                lags_ms_sess = float(meta_f.get("lags_ms", 0))
+                
+                Ns.append(N_sess)
+                KAs.append(K_A_sess)
+                KBs.append(K_B_sess)
+                lags_ms_list.append(lags_ms_sess)
                 if bin_ms_raw is None and t.size > 1:
                     bin_ms_raw = float((t[1] - t[0]) * 1000.0)
 
@@ -1272,6 +1281,25 @@ def summarize_for_tag_align_feature(
                 z_AB = safe_z(bits_AB, mu_AB, sd_AB)
                 z_BA = safe_z(bits_BA, mu_BA, sd_BA)
                 diff_bits = bits_AB - bits_BA
+                
+                # === Panel D: Compute NORMALIZED bits per-session FIRST ===
+                # This is the correct order: normalize each session, then average
+                # bits_ptd = bits / (N * K_target) - baseline_ptd
+                # where baseline_ptd = (L * K_source) / (2 * N * ln2)
+                if N_sess > 0 and K_A_sess > 0 and K_B_sess > 0:
+                    bin_ms_sess = float((t[1] - t[0]) * 1000.0) if t.size > 1 else 10.0
+                    L_sess = max(1, int(round(lags_ms_sess / bin_ms_sess)))
+                    
+                    # A→B: predicts B, so target_dim = K_B, source_dim = K_A
+                    baseline_AB = (L_sess * K_A_sess) / (2.0 * N_sess * LN2)
+                    bits_ptd_AB = bits_AB / (N_sess * K_B_sess) - baseline_AB
+                    
+                    # B→A: predicts A, so target_dim = K_A, source_dim = K_B
+                    baseline_BA = (L_sess * K_B_sess) / (2.0 * N_sess * LN2)
+                    bits_ptd_BA = bits_BA / (N_sess * K_A_sess) - baseline_BA
+                else:
+                    bits_ptd_AB = np.full_like(bits_AB, np.nan)
+                    bits_ptd_BA = np.full_like(bits_BA, np.nan)
 
                 sig_AB = (p_AB < alpha) & np.isfinite(p_AB)
                 sig_BA = (p_BA < alpha) & np.isfinite(p_BA)
@@ -1303,6 +1331,9 @@ def summarize_for_tag_align_feature(
                 all_diff.append(diff_bits)
                 all_sig_AB.append(sig_AB.astype(float))
                 all_sig_BA.append(sig_BA.astype(float))
+                # Panel D: collect per-session normalized bits
+                all_bits_ptd_AB.append(bits_ptd_AB)
+                all_bits_ptd_BA.append(bits_ptd_BA)
                 win_excess_AB.append(w_excess_AB)
                 win_excess_BA.append(w_excess_BA)
                 win_z_AB.append(w_z_AB)
@@ -1334,6 +1365,10 @@ def summarize_for_tag_align_feature(
             sig_AB_arr = np.vstack(all_sig_AB)
             sig_BA_arr = np.vstack(all_sig_BA)
 
+            # Stack Panel D per-session normalized arrays
+            bits_ptd_AB_arr = np.vstack(all_bits_ptd_AB)
+            bits_ptd_BA_arr = np.vstack(all_bits_ptd_BA)
+
             # Downsample by combining adjacent bins (e.g., for sacc: 5ms -> 10ms)
             if bin_combine > 1:
                 orig_time = time.copy()
@@ -1345,9 +1380,12 @@ def summarize_for_tag_align_feature(
                 _, diff_arr = downsample_bins(orig_time, diff_arr, bin_combine)
                 _, sig_AB_arr = downsample_bins(orig_time, sig_AB_arr, bin_combine)
                 _, sig_BA_arr = downsample_bins(orig_time, sig_BA_arr, bin_combine)
+                # Also downsample Panel D normalized arrays
+                _, bits_ptd_AB_arr = downsample_bins(orig_time, bits_ptd_AB_arr, bin_combine)
+                _, bits_ptd_BA_arr = downsample_bins(orig_time, bits_ptd_BA_arr, bin_combine)
                 # Also downsample dnull_list for group p-value computation
                 dnull_list = [downsample_bins(orig_time, dnull, bin_combine)[1] for dnull in dnull_list]
-                # Update bin_ms_raw for Panel D L computation after downsampling
+                # Update bin_ms_raw for smoothing computation after downsampling
                 bin_ms_raw = bin_ms_raw * bin_combine
                 new_T = time.shape[0]
                 print(f"  [bin_combine={bin_combine}] {orig_T} bins -> {new_T} bins")
@@ -1359,8 +1397,13 @@ def summarize_for_tag_align_feature(
             mean_z_BA,   se_z_BA,   _     = nanmean_se(z_BA_arr,   axis=0)
             mean_diff,   se_diff,   _     = nanmean_se(diff_arr,   axis=0)
 
-            # ---- Panel D (shape-preserving): apply ONE normalization to Panel A mean curves ----
-            # Use median N as robust reference (avoids "6× spread" issues)
+            # ---- Panel D: CORRECT approach - average per-session normalized values ----
+            # Each session was already normalized by its own N, K_A, K_B, L before averaging.
+            # This is the statistically correct order: normalize first, then average.
+            mean_bits_ptd_corr_AB, se_bits_ptd_corr_AB, _ = nanmean_se(bits_ptd_AB_arr, axis=0)
+            mean_bits_ptd_corr_BA, se_bits_ptd_corr_BA, _ = nanmean_se(bits_ptd_BA_arr, axis=0)
+
+            # Reference values for logging (median across sessions)
             N_ref = float(np.nanmedian(np.array(Ns, dtype=float)))
             K_A_ref = int(np.nanmedian(np.array(KAs, dtype=float)))
             K_B_ref = int(np.nanmedian(np.array(KBs, dtype=float)))
@@ -1374,21 +1417,8 @@ def summarize_for_tag_align_feature(
                     bin_ms_raw = 10.0  # default fallback
 
             L_ref = max(1, int(round(lags_ms_ref / bin_ms_raw)))
-
-            # Wilks df baseline in *raw bits* (constant across time)
             df_ref = L_ref * K_A_ref * K_B_ref
-            baseline_bits = df_ref / (2.0 * LN2)
-
-            # Convert the *mean bits curves* into bits/trial/dim with a single N_ref, preserving shape
-            # A→B predicts B (target dim K_B), B→A predicts A (target dim K_A)
-            scale_AB = 1.0 / (N_ref * K_B_ref)
-            scale_BA = 1.0 / (N_ref * K_A_ref)
-
-            mean_bits_ptd_corr_AB = (mean_bits_AB - baseline_bits) * scale_AB
-            se_bits_ptd_corr_AB   = se_bits_AB * scale_AB
-
-            mean_bits_ptd_corr_BA = (mean_bits_BA - baseline_bits) * scale_BA
-            se_bits_ptd_corr_BA   = se_bits_BA * scale_BA
+            baseline_bits_ref = df_ref / (2.0 * LN2)
 
             # Apply 30ms smoothing to Panel D curves
             panel_d_smooth_ms = 30.0
@@ -1399,8 +1429,9 @@ def summarize_for_tag_align_feature(
                 mean_bits_ptd_corr_BA = uniform_smooth_1d(mean_bits_ptd_corr_BA[None, :], panel_d_smooth_bins)[0]
                 se_bits_ptd_corr_BA   = uniform_smooth_1d(se_bits_ptd_corr_BA[None, :], panel_d_smooth_bins)[0]
 
-            print(f"  [Panel D] N_ref={N_ref:.0f} (median), K_A={K_A_ref}, K_B={K_B_ref}, "
-                  f"L={L_ref}, baseline={baseline_bits:.2f} bits, smooth={panel_d_smooth_bins} bins ({panel_d_smooth_ms}ms)")
+            print(f"  [Panel D] Per-session normalized, then averaged. Median stats: "
+                  f"N={N_ref:.0f}, K_A={K_A_ref}, K_B={K_B_ref}, L={L_ref}, "
+                  f"smooth={panel_d_smooth_bins} bins ({panel_d_smooth_ms}ms)")
 
             # Compute old-style group empirical p(t) for DIFF if requested
             p_group_diff = None
@@ -1515,7 +1546,7 @@ def summarize_for_tag_align_feature(
                 panel_d_K_A_ref=np.array(K_A_ref),
                 panel_d_K_B_ref=np.array(K_B_ref),
                 panel_d_df_ref=np.array(df_ref),
-                panel_d_baseline_bits=np.array(baseline_bits),
+                panel_d_baseline_bits=np.array(baseline_bits_ref),
                 win_mean_excess_bits_AtoB=w_mean_excess_AB,
                 win_se_excess_bits_AtoB=w_se_excess_AB,
                 win_mean_excess_bits_BtoA=w_mean_excess_BA,
