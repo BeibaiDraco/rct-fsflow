@@ -198,6 +198,7 @@ def plot_summary_qc_figure(
     areas: List[str],
     metric: str,
     ylabel: str,
+    xlabel: str,
     t_min_ms: float,
     t_max_ms: float,
     y_min: float = 0.35,
@@ -337,7 +338,7 @@ def plot_summary_qc_figure(
     ax.set_ylim(y_min, y_max)
     
     # Labels with matched font sizes (from panel C)
-    ax.set_xlabel("Time (ms)", fontsize=18)
+    ax.set_xlabel(xlabel, fontsize=18)
     ax.set_ylabel(ylabel, fontsize=20)
     ax.tick_params(axis='both', which='major', labelsize=18)
     ax.legend(handles=legend_handles, loc="upper left", frameon=False, fontsize=20)
@@ -397,12 +398,12 @@ Examples:
                     help=f"Smoothing window in ms (default: {SMOOTH_MS})")
     ap.add_argument("--t_min_stim", type=float, default=-100.0,
                     help="Stim time range min (ms) (default: -100)")
-    ap.add_argument("--t_max_stim", type=float, default=500.0,
-                    help="Stim time range max (ms) (default: 500)")
-    ap.add_argument("--t_min_sacc", type=float, default=-290.0,
-                    help="Sacc time range min (ms) (default: -290)")
-    ap.add_argument("--t_max_sacc", type=float, default=200.0,
-                    help="Sacc time range max (ms) (default: 200)")
+    ap.add_argument("--t_max_stim", type=float, default=400.0,
+                    help="Stim time range max (ms) (default: 400)")
+    ap.add_argument("--t_min_sacc", type=float, default=-300.0,
+                    help="Sacc time range min (ms) (default: -300)")
+    ap.add_argument("--t_max_sacc", type=float, default=100.0,
+                    help="Sacc time range max (ms) (default: 100)")
     args = ap.parse_args()
     
     out_root = Path(args.out_root)
@@ -467,6 +468,7 @@ Examples:
             areas=areas,
             metric="auc_C",
             ylabel="AUC (Category)",
+            xlabel="Time from Stimulus Onset (ms)",
             t_min_ms=args.t_min_stim,
             t_max_ms=args.t_max_stim,
             y_min=0.35,
@@ -517,6 +519,7 @@ Examples:
             areas=areas,
             metric=metric_sacc,
             ylabel="AUC (Saccade)",
+            xlabel="Time from Saccade Onset (ms)",
             t_min_ms=args.t_min_sacc,
             t_max_ms=args.t_max_sacc,
             y_min=0.35,

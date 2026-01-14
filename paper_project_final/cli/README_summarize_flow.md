@@ -326,6 +326,138 @@ This outputs:
 
 ---
 
+## 20ms Sliding Window Workflow
+
+The 20ms sliding window workflow uses a **moving average window** approach instead of bin-combination. This preserves the native 10ms output resolution while integrating information over 20ms windows.
+
+### Key concept: Sliding vs Rebinning
+
+| Approach | Method | Output resolution | Tags |
+|----------|--------|-------------------|------|
+| **Rebinning** (`-20msbin`) | Average adjacent bins | 20ms | `*-20msbin` |
+| **Sliding window** (`-20mssw`) | Moving 20ms window, 10ms step | 10ms | `*-20mssw` |
+
+### Parameters for 20ms sliding window
+
+| Parameter | Value | Description |
+|-----------|-------|-------------|
+| `--sliding_window_ms` | 20 | Window width in ms |
+| `--sliding_step_ms` | 10 | Step size in ms (output resolution) |
+| LAGS_STIM_MS | 80ms | 8 bins at 10ms resolution |
+| LAGS_SACC_MS | 50ms | 5 bins at 10ms resolution |
+| EVOKED_SIGMA_MS | 10ms | 1 bin smoothing |
+
+### Run the 20ms sliding window pipeline (SLURM)
+
+```bash
+sbatch jobs/peakbin_axes_qc_flow_array_20ms_sliding.sbatch
+```
+
+### Tags for 20ms sliding window workflow
+
+| Type | Tag |
+|------|-----|
+| Axes (stim) | `axes_peakbin_stimCR-stim-vertical-20mssw` |
+| Axes (sacc) | `axes_peakbin_saccS-sacc-horizontal-20mssw` |
+| Flow (stim C) | `evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial` |
+| Flow (stim R) | `evoked_peakbin_stimR_vertical_lag80ms_20mssw-none-trial` |
+| Flow (sacc S) | `evoked_peakbin_saccS_horizontal_lag50ms_20mssw-none-trial` |
+
+### Summarize 20ms sliding window results
+
+```bash
+# Stim (category)
+python cli/summarize_flow_across_sessions.py \
+    --out_root out --align stim \
+    --tags evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial \
+    --qc_threshold 0.65 \
+    --qc_tag axes_peakbin_stimCR-stim-vertical-20mssw \
+    --smooth_ms 20 --group_diff_p
+
+# Sacc (saccade)
+python cli/summarize_flow_across_sessions.py \
+    --out_root out --align sacc \
+    --tags evoked_peakbin_saccS_horizontal_lag50ms_20mssw-none-trial \
+    --qc_threshold 0.65 \
+    --qc_tag axes_peakbin_saccS-sacc-horizontal-20mssw \
+    --smooth_ms 20 --group_diff_p
+```
+
+### Run trial onset with 20ms sliding window
+
+```bash
+python cli/trial_onset_comprehensive.py \
+    --out_root out \
+    --align stim sacc \
+    --axes_tag_stim axes_peakbin_stimCR-stim-vertical-20mssw \
+    --axes_tag_sacc axes_peakbin_saccS-sacc-horizontal-20mssw \
+    --sliding_window_ms_stim 20 --sliding_step_ms_stim 10 \
+    --sliding_window_ms_sacc 20 --sliding_step_ms_sacc 10 \
+    --qc_threshold 0.65 \
+    --tag trialonset_comprehensive_20mssw
+```
+
+### Generate QC paper figures for 20ms sliding window
+
+```bash
+python cli/plot_qc_paper.py \
+    --out_root out \
+    --stim_qc_subdir axes_peakbin_stimCR-stim-vertical-20mssw \
+    --sacc_qc_subdir axes_peakbin_saccS-sacc-horizontal-20mssw \
+    --suffix _20mssw \
+    --smooth_ms 20
+```
+
+### Hugelag variant (larger temporal lags)
+
+For testing whether including more temporal history improves flow estimation:
+
+```bash
+sbatch jobs/peakbin_axes_qc_flow_array_20ms_hugelag.sbatch
+```
+
+| Parameter | Original 20mssw | Hugelag |
+|-----------|-----------------|---------|
+| LAGS_STIM_MS | 80ms (8 bins) | 100ms (10 bins) |
+| LAGS_SACC_MS | 50ms (5 bins) | 60ms (6 bins) |
+
+Hugelag flow tags:
+- `evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial`
+- `evoked_peakbin_stimR_vertical_lag100ms_20mssw-none-trial`
+- `evoked_peakbin_saccS_horizontal_lag60ms_20mssw-none-trial`
+
+Summarize hugelag results:
+
+```bash
+# Stim
+python cli/summarize_flow_across_sessions.py \
+    --out_root out --align stim \
+    --tags evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial \
+    --qc_threshold 0.65 \
+    --qc_tag axes_peakbin_stimCR-stim-vertical-20mssw \
+    --smooth_ms 20 --group_diff_p
+
+# Sacc
+python cli/summarize_flow_across_sessions.py \
+    --out_root out --align sacc \
+    --tags evoked_peakbin_saccS_horizontal_lag60ms_20mssw-none-trial \
+    --qc_threshold 0.65 \
+    --qc_tag axes_peakbin_saccS-sacc-horizontal-20mssw \
+    --smooth_ms 20 --group_diff_p
+```
+
+### Key differences: Rebinning vs Sliding Window
+
+| Aspect | 20ms Rebinning (`-20msbin`) | 20ms Sliding Window (`-20mssw`) |
+|--------|-----------------------------|---------------------------------|
+| **Method** | Average pairs of bins | Moving window average |
+| **Output resolution** | 20ms | 10ms |
+| **Time points** | ~50 bins | ~100 bins |
+| **Sacc lag** | 60ms (50 impossible) | 50ms (native resolution) |
+| **smooth_ms** | 40ms | 20ms |
+
+---
+
 ## NPZ File Contents
 
 Each `summary_*.npz` contains:

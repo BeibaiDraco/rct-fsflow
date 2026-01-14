@@ -661,6 +661,7 @@ def plot_panel_a_paper(
     label_B: str,
     t_min_ms: Optional[float] = None,
     t_max_ms: Optional[float] = None,
+    xlabel: str = "Time (ms)",
 ) -> None:
     """
     Paper-quality Panel A figure: bits ± SE (A->B, B->A).
@@ -726,7 +727,7 @@ def plot_panel_a_paper(
     )
     
     # Labels with matched font sizes (from trial_onset_comprehensive.py)
-    ax.set_xlabel("Time (ms)", fontsize=18)
+    ax.set_xlabel(xlabel, fontsize=18)
     ax.set_ylabel("ΔLL (bits)", fontsize=18)
     ax.tick_params(axis='both', which='major', labelsize=16)
     ax.legend(loc="upper left", frameon=False, fontsize=15)
@@ -754,6 +755,7 @@ def plot_panel_c_paper(
     t_max_ms: Optional[float] = None,
     y_min: Optional[float] = None,
     y_max: Optional[float] = None,
+    xlabel: str = "Time (ms)",
 ) -> None:
     """
     Paper-quality Panel C figure: Net Flow (diff bits ± SE).
@@ -828,7 +830,7 @@ def plot_panel_c_paper(
         )
     
     # Labels with matched font sizes (from trial_onset_comprehensive.py)
-    ax.set_xlabel("Time (ms)", fontsize=18)
+    ax.set_xlabel(xlabel, fontsize=18)
     ax.set_ylabel("Net Flow (bits)", fontsize=20)
     ax.tick_params(axis='both', which='major', labelsize=18)
     ax.legend(loc="upper right", frameon=False, fontsize=20)
@@ -858,6 +860,7 @@ def plot_panel_d_paper(
     sig_group_diff: Optional[np.ndarray] = None,
     t_min_ms: Optional[float] = None,
     t_max_ms: Optional[float] = None,
+    xlabel: str = "Time (ms)",
 ) -> None:
     """
     Paper-quality Panel D: df-corrected bits / trial / dim for A→B and B→A.
@@ -916,7 +919,7 @@ def plot_panel_d_paper(
             marker="o", s=14, c="black", zorder=5, label="p<α"
         )
 
-    ax.set_xlabel("Time (ms)", fontsize=18)
+    ax.set_xlabel(xlabel, fontsize=18)
     ax.set_ylabel("Directed predictability gain (bits)", fontsize=18)
     ax.tick_params(axis='both', which='major', labelsize=16)
     ax.legend(loc="upper left", frameon=False, fontsize=15)
@@ -929,6 +932,150 @@ def plot_panel_d_paper(
     fig.savefig(out_path.with_suffix(".png"), dpi=300)
     fig.savefig(out_path.with_suffix(".svg"))
     plt.close(fig)
+
+
+def plot_panel_d_iv_paper(
+    out_path: Path,
+    time: np.ndarray,
+    mean_AB: np.ndarray,
+    se_AB: np.ndarray,
+    mean_BA: np.ndarray,
+    se_BA: np.ndarray,
+    label_A: str,
+    label_B: str,
+    sig_group_diff: Optional[np.ndarray] = None,
+    t_min_ms: Optional[float] = None,
+    t_max_ms: Optional[float] = None,
+    xlabel: str = "Time (ms)",
+) -> None:
+    """
+    Paper-quality Panel D IV: Inverse-Variance Weighted df-corrected bits / trial / dim.
+    
+    Same as Panel D but uses inverse-variance weighting across sessions, giving
+    more weight to sessions with more trials (higher precision).
+    
+    Weight_i = N_i (proportional to precision)
+    mean_iv = Σ(w_i × x_i) / Σ(w_i)
+    SE_iv = sqrt(Σ(w_i × (x_i - mean_iv)²) / ((n-1)/n × Σ(w_i)))
+    """
+    t_ms = time * 1000.0
+
+    plot_width_in = 10.0
+    plot_height_in = 5.0
+    margin_left_in = 1.4
+    margin_right_in = 0.5
+    margin_bottom_in = 0.8
+    margin_top_in = 0.5
+
+    fig_width = plot_width_in + margin_left_in + margin_right_in
+    fig_height = plot_height_in + margin_bottom_in + margin_top_in
+
+    fig = plt.figure(figsize=(fig_width, fig_height))
+    ax = fig.add_axes([
+        margin_left_in / fig_width,
+        margin_bottom_in / fig_height,
+        plot_width_in / fig_width,
+        plot_height_in / fig_height
+    ])
+
+    ax.axvline(0, ls="--", c="k", lw=0.8)
+    ax.axhline(0, ls=":", c="k", lw=0.8)
+
+    ax.plot(t_ms, mean_AB, color="C0", lw=2.5, label=f"{label_A}→{label_B}")
+    ax.fill_between(t_ms, mean_AB - se_AB, mean_AB + se_AB, color="C0", alpha=0.25, linewidth=0)
+
+    ax.plot(t_ms, mean_BA, color="C1", lw=2.5, label=f"{label_B}→{label_A}")
+    ax.fill_between(t_ms, mean_BA - se_BA, mean_BA + se_BA, color="C1", alpha=0.25, linewidth=0)
+
+    # Plot significance dots in black
+    if sig_group_diff is not None and np.any(sig_group_diff):
+        sig_mask = sig_group_diff.astype(bool)
+        ylim = ax.get_ylim()
+        y_marker = ylim[0] + 0.05 * (ylim[1] - ylim[0])
+        ax.scatter(
+            t_ms[sig_mask], np.full(np.sum(sig_mask), y_marker),
+            marker="o", s=14, c="black", zorder=5, label="p<α"
+        )
+
+    ax.set_xlabel(xlabel, fontsize=18)
+    ax.set_ylabel("Directed predictability gain (bits)", fontsize=18)
+    ax.tick_params(axis='both', which='major', labelsize=16)
+    ax.legend(loc="upper left", frameon=False, fontsize=15)
+
+    if t_min_ms is not None and t_max_ms is not None:
+        ax.set_xlim(t_min_ms, t_max_ms)
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path)
+    fig.savefig(out_path.with_suffix(".png"), dpi=300)
+    fig.savefig(out_path.with_suffix(".svg"))
+    plt.close(fig)
+
+
+def inverse_variance_weighted_mean_se(
+    data_arr: np.ndarray,
+    weights: np.ndarray,
+) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Compute inverse-variance weighted mean and SE across sessions (axis=0).
+    
+    Parameters
+    ----------
+    data_arr : (N_sessions, T) array
+        Per-session values at each time point.
+    weights : (N_sessions,) array
+        Weight for each session (e.g., trial count N_i).
+    
+    Returns
+    -------
+    mean_iv : (T,) array
+        Weighted mean at each time point.
+    se_iv : (T,) array
+        Standard error of weighted mean.
+    """
+    N_sess, T = data_arr.shape
+    weights = np.asarray(weights, dtype=float)
+    
+    mean_iv = np.full(T, np.nan)
+    se_iv = np.full(T, np.nan)
+    
+    for t in range(T):
+        col = data_arr[:, t]
+        valid = np.isfinite(col)
+        n_valid = int(np.sum(valid))
+        
+        if n_valid < 2:
+            continue
+        
+        w = weights[valid]
+        x = col[valid]
+        
+        # Weighted mean
+        w_sum = np.sum(w)
+        if w_sum <= 0:
+            continue
+        
+        mean_t = np.sum(w * x) / w_sum
+        mean_iv[t] = mean_t
+        
+        # Weighted SE (using reliability weights formula)
+        # SE = sqrt(Σw_i(x_i - mean)² / ((n-1)/n × (Σw_i)²) × Σw_i)
+        # Simplified: SE = sqrt(Σw_i(x_i - mean)² / (Σw_i)² × n/(n-1))
+        residuals_sq = w * (x - mean_t) ** 2
+        var_weighted = np.sum(residuals_sq) / w_sum
+        
+        # Bessel's correction for weighted variance
+        # Using the "reliability weights" formula
+        w_sum_sq = np.sum(w ** 2)
+        if w_sum ** 2 > w_sum_sq:
+            var_corrected = var_weighted * w_sum ** 2 / (w_sum ** 2 - w_sum_sq)
+        else:
+            var_corrected = var_weighted * n_valid / (n_valid - 1)
+        
+        # SE of weighted mean
+        se_iv[t] = np.sqrt(var_corrected / n_valid)
+    
+    return mean_iv, se_iv
 
 
 def plot_summary_figure(
@@ -1420,9 +1567,9 @@ def summarize_for_tag_align_feature(
             df_ref = L_ref * K_A_ref * K_B_ref
             baseline_bits_ref = df_ref / (2.0 * LN2)
 
-            # Apply 30ms smoothing to Panel D curves
-            panel_d_smooth_ms = 30.0
-            panel_d_smooth_bins = max(1, int(round(panel_d_smooth_ms / bin_ms_raw)))
+            # Apply smoothing to Panel D curves (uses same --smooth_ms as group DIFF p-value)
+            panel_d_smooth_ms = smooth_ms
+            panel_d_smooth_bins = max(1, int(round(panel_d_smooth_ms / bin_ms_raw))) if panel_d_smooth_ms > 0 else 0
             if panel_d_smooth_bins > 1:
                 mean_bits_ptd_corr_AB = uniform_smooth_1d(mean_bits_ptd_corr_AB[None, :], panel_d_smooth_bins)[0]
                 se_bits_ptd_corr_AB   = uniform_smooth_1d(se_bits_ptd_corr_AB[None, :], panel_d_smooth_bins)[0]
@@ -1432,6 +1579,27 @@ def summarize_for_tag_align_feature(
             print(f"  [Panel D] Per-session normalized, then averaged. Median stats: "
                   f"N={N_ref:.0f}, K_A={K_A_ref}, K_B={K_B_ref}, L={L_ref}, "
                   f"smooth={panel_d_smooth_bins} bins ({panel_d_smooth_ms}ms)")
+
+            # ---- Panel D IV: Inverse-Variance Weighted ----
+            # Weight each session by its trial count (proportional to precision)
+            N_weights = np.array(Ns, dtype=float)
+            mean_bits_ptd_iv_AB, se_bits_ptd_iv_AB = inverse_variance_weighted_mean_se(
+                bits_ptd_AB_arr, N_weights
+            )
+            mean_bits_ptd_iv_BA, se_bits_ptd_iv_BA = inverse_variance_weighted_mean_se(
+                bits_ptd_BA_arr, N_weights
+            )
+            
+            # Apply same smoothing to IV-weighted curves (uses --smooth_ms)
+            if panel_d_smooth_bins > 1:
+                mean_bits_ptd_iv_AB = uniform_smooth_1d(mean_bits_ptd_iv_AB[None, :], panel_d_smooth_bins)[0]
+                se_bits_ptd_iv_AB   = uniform_smooth_1d(se_bits_ptd_iv_AB[None, :], panel_d_smooth_bins)[0]
+                mean_bits_ptd_iv_BA = uniform_smooth_1d(mean_bits_ptd_iv_BA[None, :], panel_d_smooth_bins)[0]
+                se_bits_ptd_iv_BA   = uniform_smooth_1d(se_bits_ptd_iv_BA[None, :], panel_d_smooth_bins)[0]
+            
+            print(f"  [Panel D IV] Inverse-variance weighted (by N). "
+                  f"N range: {int(np.min(N_weights))}-{int(np.max(N_weights))}, "
+                  f"sum(N)={int(np.sum(N_weights))}, smooth={panel_d_smooth_bins} bins ({panel_d_smooth_ms}ms)")
 
             # Compute old-style group empirical p(t) for DIFF if requested
             p_group_diff = None
@@ -1539,6 +1707,11 @@ def summarize_for_tag_align_feature(
                 se_bits_ptd_corr_AtoB=se_bits_ptd_corr_AB,
                 mean_bits_ptd_corr_BtoA=mean_bits_ptd_corr_BA,
                 se_bits_ptd_corr_BtoA=se_bits_ptd_corr_BA,
+                # Panel D IV: Inverse-Variance Weighted
+                mean_bits_ptd_iv_AtoB=mean_bits_ptd_iv_AB,
+                se_bits_ptd_iv_AtoB=se_bits_ptd_iv_AB,
+                mean_bits_ptd_iv_BtoA=mean_bits_ptd_iv_BA,
+                se_bits_ptd_iv_BtoA=se_bits_ptd_iv_BA,
                 # Panel D reference constants (for interpretation)
                 panel_d_mode=np.array("shape_preserving"),
                 panel_d_N_ref=np.array(N_ref),
@@ -1547,6 +1720,7 @@ def summarize_for_tag_align_feature(
                 panel_d_K_B_ref=np.array(K_B_ref),
                 panel_d_df_ref=np.array(df_ref),
                 panel_d_baseline_bits=np.array(baseline_bits_ref),
+                panel_d_iv_N_weights=N_weights,
                 win_mean_excess_bits_AtoB=w_mean_excess_AB,
                 win_se_excess_bits_AtoB=w_se_excess_AB,
                 win_mean_excess_bits_BtoA=w_mean_excess_BA,
@@ -1604,6 +1778,16 @@ def summarize_for_tag_align_feature(
             else:
                 paper_t_min_ms, paper_t_max_ms = None, None
             
+            # Determine x-axis label based on alignment
+            if align == "stim":
+                paper_xlabel = "Time from Stimulus Onset (ms)"
+            elif align == "sacc":
+                paper_xlabel = "Time from Saccade Onset (ms)"
+            elif align == "targ":
+                paper_xlabel = "Time from Target Onset (ms)"
+            else:
+                paper_xlabel = "Time (ms)"
+            
             # Y-axis limits for panel C: different for monkey M vs S, and stim vs sacc
             # Stim (C, R): Monkey M: -10 to 20, Monkey S: -8 to 13
             # Sacc (S): Monkey M: -10 to 25, Monkey S: -8 to 13
@@ -1633,6 +1817,7 @@ def summarize_for_tag_align_feature(
                 label_B=B,
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
+                xlabel=paper_xlabel,
             )
             
             # Save paper-quality Panel C figure separately
@@ -1647,6 +1832,7 @@ def summarize_for_tag_align_feature(
                 t_max_ms=paper_t_max_ms,
                 y_min=paper_y_min,
                 y_max=paper_y_max,
+                xlabel=paper_xlabel,
             )
             
             # Save paper-quality Panel D figure separately (df-corrected bits / trial / dim)
@@ -1663,6 +1849,24 @@ def summarize_for_tag_align_feature(
                 sig_group_diff=sig_group_diff,
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
+                xlabel=paper_xlabel,
+            )
+            
+            # Save paper-quality Panel D IV figure (Inverse-Variance Weighted)
+            fig_path_panel_d_iv = figs_dir / f"{pair_name}_panel_d_iv.pdf"
+            plot_panel_d_iv_paper(
+                out_path=fig_path_panel_d_iv,
+                time=time,
+                mean_AB=mean_bits_ptd_iv_AB,
+                se_AB=se_bits_ptd_iv_AB,
+                mean_BA=mean_bits_ptd_iv_BA,
+                se_BA=se_bits_ptd_iv_BA,
+                label_A=A,
+                label_B=B,
+                sig_group_diff=sig_group_diff,
+                t_min_ms=paper_t_min_ms,
+                t_max_ms=paper_t_max_ms,
+                xlabel=paper_xlabel,
             )
 
             # Also create reverse figure (B vs A) to show significance from the other perspective
@@ -1731,6 +1935,7 @@ def summarize_for_tag_align_feature(
                 label_B=A,  # swapped: A becomes second area
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
+                xlabel=paper_xlabel,
             )
             
             # Save paper-quality Panel C figure separately (reverse perspective)
@@ -1745,6 +1950,7 @@ def summarize_for_tag_align_feature(
                 t_max_ms=paper_t_max_ms,
                 y_min=paper_y_min,
                 y_max=paper_y_max,
+                xlabel=paper_xlabel,
             )
             
             # Save paper-quality Panel D figure separately (reverse perspective)
@@ -1761,6 +1967,24 @@ def summarize_for_tag_align_feature(
                 sig_group_diff=sig_group_diff_rev,
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
+                xlabel=paper_xlabel,
+            )
+            
+            # Save paper-quality Panel D IV figure (reverse perspective, IV-weighted)
+            fig_path_panel_d_iv_rev = figs_dir / f"{pair_name_rev}_panel_d_iv.pdf"
+            plot_panel_d_iv_paper(
+                out_path=fig_path_panel_d_iv_rev,
+                time=time,
+                mean_AB=mean_bits_ptd_iv_BA,   # swapped: B→A becomes first
+                se_AB=se_bits_ptd_iv_BA,
+                mean_BA=mean_bits_ptd_iv_AB,   # swapped: A→B becomes second
+                se_BA=se_bits_ptd_iv_AB,
+                label_A=B,
+                label_B=A,
+                sig_group_diff=sig_group_diff_rev,
+                t_min_ms=paper_t_min_ms,
+                t_max_ms=paper_t_max_ms,
+                xlabel=paper_xlabel,
             )
 
 
