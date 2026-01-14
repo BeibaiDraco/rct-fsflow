@@ -903,11 +903,11 @@ def plot_panel_d_paper(
     mean_BA_scaled = mean_BA * scale_factor
     se_BA_scaled = se_BA * scale_factor
 
-    ax.plot(t_ms, mean_AB_scaled, color="C0", lw=2.5, label=f"{label_A}→{label_B}")
-    ax.fill_between(t_ms, mean_AB_scaled - se_AB_scaled, mean_AB_scaled + se_AB_scaled, color="C0", alpha=0.25, linewidth=0)
+    ax.plot(t_ms, mean_AB_scaled, color="#0072B2", lw=2.5, label=f"{label_A}→{label_B}")
+    ax.fill_between(t_ms, mean_AB_scaled - se_AB_scaled, mean_AB_scaled + se_AB_scaled, color="#0072B2", alpha=0.25, linewidth=0)
 
-    ax.plot(t_ms, mean_BA_scaled, color="C1", lw=2.5, label=f"{label_B}→{label_A}")
-    ax.fill_between(t_ms, mean_BA_scaled - se_BA_scaled, mean_BA_scaled + se_BA_scaled, color="C1", alpha=0.25, linewidth=0)
+    ax.plot(t_ms, mean_BA_scaled, color="#D55E00", lw=2.5, label=f"{label_B}→{label_A}")
+    ax.fill_between(t_ms, mean_BA_scaled - se_BA_scaled, mean_BA_scaled + se_BA_scaled, color="#D55E00", alpha=0.25, linewidth=0)
 
     # Plot significance dots in black (same as Panel C)
     if sig_group_diff is not None and np.any(sig_group_diff):
@@ -981,11 +981,11 @@ def plot_panel_d_iv_paper(
     ax.axvline(0, ls="--", c="k", lw=0.8)
     ax.axhline(0, ls=":", c="k", lw=0.8)
 
-    ax.plot(t_ms, mean_AB, color="C0", lw=2.5, label=f"{label_A}→{label_B}")
-    ax.fill_between(t_ms, mean_AB - se_AB, mean_AB + se_AB, color="C0", alpha=0.25, linewidth=0)
+    ax.plot(t_ms, mean_AB, color="#0072B2", lw=2.5, label=f"{label_A}→{label_B}")
+    ax.fill_between(t_ms, mean_AB - se_AB, mean_AB + se_AB, color="#0072B2", alpha=0.25, linewidth=0)
 
-    ax.plot(t_ms, mean_BA, color="C1", lw=2.5, label=f"{label_B}→{label_A}")
-    ax.fill_between(t_ms, mean_BA - se_BA, mean_BA + se_BA, color="C1", alpha=0.25, linewidth=0)
+    ax.plot(t_ms, mean_BA, color="#D55E00", lw=2.5, label=f"{label_B}→{label_A}")
+    ax.fill_between(t_ms, mean_BA - se_BA, mean_BA + se_BA, color="#D55E00", alpha=0.25, linewidth=0)
 
     # Plot significance dots in black
     if sig_group_diff is not None and np.any(sig_group_diff):
