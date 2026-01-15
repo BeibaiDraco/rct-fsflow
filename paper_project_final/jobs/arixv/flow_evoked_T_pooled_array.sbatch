@@ -31,7 +31,7 @@ export NUMEXPR_NUM_THREADS=1
 
 # paper_project_final canonical paths
 export PAPER_HOME="$PROJECT"
-export PAPER_DATA="/project/bdoiron/dracoxu/rct-fsflow/saccade/RCT_02"
+export PAPER_DATA="/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/RCT_02"
 export PYTHONPATH="$PAPER_HOME${PYTHONPATH:+:$PYTHONPATH}"
 
 cd "$PROJECT"
