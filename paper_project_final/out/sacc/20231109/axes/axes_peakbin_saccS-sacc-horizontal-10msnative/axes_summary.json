@@ -1,0 +1,86 @@
+{
+  "sid": "20231109",
+  "align": "sacc",
+  "features": [
+    "S"
+  ],
+  "winC": null,
+  "winR": null,
+  "winS": [
+    -0.1,
+    -0.03
+  ],
+  "winT": null,
+  "pt_min_ms": 200.0,
+  "orientation": "horizontal",
+  "areas": [
+    "SFEF",
+    "SLIP",
+    "SSC"
+  ],
+  "tag": "axes_peakbin_saccS-sacc-horizontal-10msnative",
+  "norm": "global",
+  "baseline_win": null,
+  "clf_binary": "logreg",
+  "C_grid": [
+    0.1,
+    0.3,
+    1.0,
+    3.0,
+    10.0
+  ],
+  "lda_shrinkage": null,
+  "searchC": false,
+  "searchS": true,
+  "searchT": false,
+  "searchR": false,
+  "search_step_ms": 20.0,
+  "search_len_ms": [
+    50.0,
+    100.0,
+    150.0,
+    200.0,
+    250.0
+  ],
+  "search_range_C": null,
+  "search_range_S": "-0.20:0.05",
+  "search_range_T": null,
+  "search_range_R": null,
+  "search_score_mode": "peak_bin_auc",
+  "search_tiebreak": "shortest_then_closest0",
+  "search_tol": 0.01,
+  "per_area_results": {
+    "SFEF": {
+      "winS_selected": [
+        -0.2,
+        0.04999999999999999
+      ],
+      "winS_cv_best": 0.6975230231819626,
+      "winS_peak_time_ms": 4.999999888241291,
+      "winS_peak_auc": 0.6975230231819626
+    },
+    "SLIP": {
+      "winS_selected": [
+        -2.0816681711721685e-17,
+        0.04999999999999998
+      ],
+      "winS_cv_best": 0.7026304646977877,
+      "winS_peak_time_ms": 44.999999925494194,
+      "winS_peak_auc": 0.7026304646977877
+    },
+    "SSC": {
+      "winS_selected": [
+        -0.02000000000000002,
+        0.02999999999999998
+      ],
+      "winS_cv_best": 0.9889912141420556,
+      "winS_peak_time_ms": -4.999999888241291,
+      "winS_peak_auc": 0.9889912141420556
+    }
+  },
+  "rebin_factor": 2,
+  "sliding_window_ms": null,
+  "sliding_step_ms": null,
+  "sliding_window_bins": null,
+  "sliding_step_bins": null
+}
