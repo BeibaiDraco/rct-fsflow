@@ -11,6 +11,7 @@
 - **Written in Python** using NumPy, scikit-learn, pandas, h5py, matplotlib
 - **Supports SLURM cluster** via array jobs, or local execution
 - **Publication-ready outputs**: Summary NPZ files + figure panels (PDF/PNG/SVG) for manuscript
+- **Reproducible paper figures**: `README_PAPER_FIGURES.md` provides step-by-step instructions for reproducing all main figures
 
 ## Background / Problem Statement
 
@@ -36,7 +37,7 @@ Unknown — no explicit non-goals found in documentation.
 
 ## What this repo contains (1 paragraph)
 
-This repository contains a complete Python analysis pipeline for neural information flow, including: (1) raw spike data from two monkeys organized by session and brain area in `RCT_02/`, (2) a core library `paperflow/` implementing binning, axis training, QC, and flow computation, (3) CLI scripts in `cli/` for running each pipeline stage, (4) SLURM batch job templates in `jobs/` for cluster execution, (5) pre-computed results in `out/` organized by alignment/session/analysis-type, and (6) configuration files and helper scripts for reproducibility.
+This repository contains a complete Python analysis pipeline for neural information flow, including: (1) raw spike data from two monkeys organized by session and brain area in `RCT_02/`, (2) a core library `paperflow/` implementing binning, axis training, QC, and flow computation, (3) CLI scripts in `cli/` for running each pipeline stage, (4) SLURM batch job templates in `jobs/` for cluster execution, (5) pre-computed results in `out/` organized by alignment/session/analysis-type, (6) configuration files and helper scripts for reproducibility, and (7) detailed figure reproduction guide in `README_PAPER_FIGURES.md`.
 
 ---
 
@@ -558,14 +559,14 @@ Suggested approach for adding tests:
 2. **Test coverage**: Are there any automated tests? How is correctness validated?
 3. **Data access**: Is the RCT_02 data publicly available or restricted?
 4. **Performance benchmarks**: What is the expected runtime per session? Per pipeline stage?
-5. **Manuscript reference**: Is there a published paper or preprint describing this analysis?
-6. **Pseudopopulation analysis**: How does `paperflow/pseudo.py` integrate with the main pipeline?
+5. **Pseudopopulation analysis**: How does `paperflow/pseudo.py` integrate with the main pipeline?
 
 ---
 
 # Evidence Index
 
 ## Docs
+- `README_PAPER_FIGURES.md` — Step-by-step guide for reproducing all 6 main paper figures (20ms sliding window workflow, 80ms/50ms lags, 0.65 QC threshold)
 - `cli/README_summarize_flow.md` — Primary documentation for summarization workflow
 - `out/stim/trialtiming/trialonset_axes_peakbin_stimCR/README.md` — Trial onset analysis docs
 - `out/sacc/trialtiming/trialonset_axes_peakbin_saccS/README.md` — Saccade onset analysis docs
