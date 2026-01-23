@@ -26,7 +26,7 @@ python cli/summarize_flow_across_sessions.py \
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `--qc_threshold` | `0.6` | QC AUC threshold for area filtering (symmetric rejection) |
+| `--qc_threshold` | `0.65` | QC AUC threshold for area filtering (symmetric rejection) |
 | `--group_diff_p` | `True` | Compute group-level p-values for net flow |
 | `--smooth_ms` | `30.0` | Smoothing window (ms) for group p-value computation |
 | `--sacc_bin_combine` | `1` | Combine adjacent bins for sacc (1=no combining, 2=5ms→10ms) |

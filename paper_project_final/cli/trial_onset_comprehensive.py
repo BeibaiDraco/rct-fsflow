@@ -627,10 +627,10 @@ def main():
     ap.add_argument("--pt_min_ms_targ", type=float, default=200.0,
                     help="PT threshold (ms) for targ alignment (default: 200.0)")
     
-    ap.add_argument("--axes_tag_stim", default="axes_sweep-stim-vertical",
-                    help="Axes tag for stim alignment (default: axes_sweep-stim-vertical)")
-    ap.add_argument("--axes_tag_sacc", default="axes_sweep-sacc-horizontal",
-                    help="Axes tag for sacc alignment (default: axes_sweep-sacc-horizontal)")
+    ap.add_argument("--axes_tag_stim", default="axes_peakbin_stimCR-stim-vertical-20mssw",
+                    help="Axes tag for stim alignment (default: axes_peakbin_stimCR-stim-vertical-20mssw)")
+    ap.add_argument("--axes_tag_sacc", default="axes_peakbin_saccS-sacc-horizontal-20mssw",
+                    help="Axes tag for sacc alignment (default: axes_peakbin_saccS-sacc-horizontal-20mssw)")
     ap.add_argument("--axes_tag_targ", default="axes_sweep-targ-vertical",
                     help="Axes tag for targ alignment (default: axes_sweep-targ-vertical)")
     
@@ -654,8 +654,8 @@ def main():
                     help="Consecutive bins above threshold")
     ap.add_argument("--smooth_ms", type=float, default=20.0,
                     help="Gaussian smoothing sigma in ms")
-    ap.add_argument("--qc_threshold", type=float, default=0.6,
-                    help="Default QC threshold for filtering (default: 0.6). Can be overridden by feature-specific thresholds.")
+    ap.add_argument("--qc_threshold", type=float, default=0.65,
+                    help="Default QC threshold for filtering (default: 0.65). Can be overridden by feature-specific thresholds.")
     ap.add_argument("--qc_threshold_C", type=float, default=None,
                     help="QC threshold for category (C) feature (default: uses --qc_threshold)")
     ap.add_argument("--qc_threshold_R", type=float, default=0.6,
@@ -664,8 +664,8 @@ def main():
                     help="QC threshold for saccade (S) feature (default: uses --qc_threshold)")
     ap.add_argument("--qc_threshold_T", type=float, default=None,
                     help="QC threshold for target (T) feature (default: uses --qc_threshold)")
-    ap.add_argument("--tag", default="trialonset_comprehensive",
-                    help="Output subfolder name")
+    ap.add_argument("--tag", default="trialonset_comprehensive_20mssw",
+                    help="Output subfolder name (default: trialonset_comprehensive_20mssw)")
     
     # === NEW: normalization args ===
     ap.add_argument("--norm_stim", choices=["auto", "global", "baseline", "none"], default="auto",
@@ -690,14 +690,14 @@ def main():
                     help="Rebin factor for targ (1=no rebin). Must match axes training.")
     
     # === NEW: sliding window args (alternative to rebinning, must match train_axes.py) ===
-    ap.add_argument("--sliding_window_ms_stim", type=float, default=0.0,
-                    help="Sliding window width in ms for stim (e.g., 20). If > 0, uses sliding window.")
-    ap.add_argument("--sliding_step_ms_stim", type=float, default=0.0,
-                    help="Sliding window step in ms for stim (e.g., 10).")
-    ap.add_argument("--sliding_window_ms_sacc", type=float, default=0.0,
-                    help="Sliding window width in ms for sacc (e.g., 20). If > 0, uses sliding window.")
-    ap.add_argument("--sliding_step_ms_sacc", type=float, default=0.0,
-                    help="Sliding window step in ms for sacc (e.g., 10).")
+    ap.add_argument("--sliding_window_ms_stim", type=float, default=20.0,
+                    help="Sliding window width in ms for stim (default: 20).")
+    ap.add_argument("--sliding_step_ms_stim", type=float, default=10.0,
+                    help="Sliding window step in ms for stim (default: 10).")
+    ap.add_argument("--sliding_window_ms_sacc", type=float, default=20.0,
+                    help="Sliding window width in ms for sacc (default: 20).")
+    ap.add_argument("--sliding_step_ms_sacc", type=float, default=10.0,
+                    help="Sliding window step in ms for sacc (default: 10).")
     ap.add_argument("--sliding_window_ms_targ", type=float, default=0.0,
                     help="Sliding window width in ms for targ. If > 0, uses sliding window.")
     ap.add_argument("--sliding_step_ms_targ", type=float, default=0.0,
@@ -1090,6 +1090,216 @@ def main():
                         meta=meta_dict
                     )
                     print(f"[ok] wrote {out_npz}")
+            
+            # === CREATE COMBINED FEF vs (LIP + SC) PLOT ===
+            # Combines FEF-LIP and SC-FEF pairs into one figure
+            # X-axis: FEF latency, Y-axis: LIP (black) and SC (green)
+            for monkey in ["M", "S"]:
+                # Get data for FEF-LIP pair (area1=FEF, area2=LIP, so t1=FEF, t2=LIP)
+                key_fef_lip = (feature, "FEF", "LIP")
+                results_fef_lip = all_results.get(key_fef_lip, [])
+                
+                # Get data for SC-FEF pair (area1=SC, area2=FEF, so t1=SC, t2=FEF)
+                key_sc_fef = (feature, "SC", "FEF")
+                results_sc_fef = all_results.get(key_sc_fef, [])
+                
+                # Aggregate FEF-LIP data for this monkey
+                t_lip_list, t_fef_lip_list, sids_fef_lip = [], [], []
+                for result in results_fef_lip:
+                    sid = result["sid"]
+                    if get_monkey(sid) != monkey:
+                        continue
+                    t_fef = result["t1"][result["good"]] * 1000.0  # FEF latency
+                    t_lip = result["t2"][result["good"]] * 1000.0  # LIP latency
+                    valid = np.isfinite(t_fef) & np.isfinite(t_lip)
+                    if valid.sum() > 0:
+                        t_lip_list.append(t_lip[valid])
+                        t_fef_lip_list.append(t_fef[valid])
+                        sids_fef_lip.append(sid)
+                
+                # Aggregate SC-FEF data for this monkey
+                t_sc_list, t_fef_sc_list, sids_sc_fef = [], [], []
+                for result in results_sc_fef:
+                    sid = result["sid"]
+                    if get_monkey(sid) != monkey:
+                        continue
+                    t_sc = result["t1"][result["good"]] * 1000.0   # SC latency
+                    t_fef = result["t2"][result["good"]] * 1000.0  # FEF latency
+                    valid = np.isfinite(t_sc) & np.isfinite(t_fef)
+                    if valid.sum() > 0:
+                        t_sc_list.append(t_sc[valid])
+                        t_fef_sc_list.append(t_fef[valid])
+                        sids_sc_fef.append(sid)
+                
+                # Skip if no data for either pair
+                if len(t_lip_list) == 0 and len(t_sc_list) == 0:
+                    continue
+                
+                # Concatenate data
+                t_lip_all = np.concatenate(t_lip_list) if t_lip_list else np.array([])
+                t_fef_lip_all = np.concatenate(t_fef_lip_list) if t_fef_lip_list else np.array([])
+                t_sc_all = np.concatenate(t_sc_list) if t_sc_list else np.array([])
+                t_fef_sc_all = np.concatenate(t_fef_sc_list) if t_fef_sc_list else np.array([])
+                
+                n_trials_lip = len(t_lip_all)
+                n_trials_sc = len(t_sc_all)
+                n_sessions_lip = len(set(sids_fef_lip))
+                n_sessions_sc = len(set(sids_sc_fef))
+                
+                # Skip if not enough data
+                if n_trials_lip < 10 and n_trials_sc < 10:
+                    continue
+                
+                # Statistics: LIP - FEF and SC - FEF (positive = LIP/SC later than FEF)
+                dt_lip_ms = t_lip_all - t_fef_lip_all if n_trials_lip > 0 else np.array([])  # LIP - FEF
+                dt_sc_ms = t_sc_all - t_fef_sc_all if n_trials_sc > 0 else np.array([])      # SC - FEF
+                
+                median_dt_lip = np.nanmedian(dt_lip_ms) if n_trials_lip > 0 else np.nan
+                median_dt_sc = np.nanmedian(dt_sc_ms) if n_trials_sc > 0 else np.nan
+                mean_dt_lip = np.nanmean(dt_lip_ms) if n_trials_lip > 0 else np.nan
+                mean_dt_sc = np.nanmean(dt_sc_ms) if n_trials_sc > 0 else np.nan
+                
+                # Naming
+                monkey_name = "Monkey M" if monkey == "M" else "Monkey S"
+                area_prefix = "M" if monkey == "M" else "S"
+                
+                # Create combined plot
+                plot_size_in = 5.0
+                margin_left_in = 1.0
+                margin_right_in = 0.5
+                margin_bottom_in = 0.8
+                margin_top_in = 0.9  # Extra space for title
+                
+                fig_width = plot_size_in + margin_left_in + margin_right_in
+                fig_height = plot_size_in + margin_bottom_in + margin_top_in
+                
+                fig = plt.figure(figsize=(fig_width, fig_height))
+                ax = fig.add_axes([
+                    margin_left_in / fig_width,
+                    margin_bottom_in / fig_height,
+                    plot_size_in / fig_width,
+                    plot_size_in / fig_height
+                ])
+                ax.set_aspect('equal', adjustable='box')
+                
+                # Plot LIP vs FEF (darker red dots) - X=FEF, Y=LIP
+                if n_trials_lip > 0:
+                    ax.plot(t_fef_lip_all, t_lip_all, ".", color="#c00a37", ms=7, alpha=0.5, 
+                            label=f"LIP vs FEF (N={n_trials_lip})")
+                
+                # Plot SC vs FEF (darker purple dots) - X=FEF, Y=SC
+                if n_trials_sc > 0:
+                    ax.plot(t_fef_sc_all, t_sc_all, ".", color="#7b4fa3", ms=7, alpha=0.5,
+                            label=f"SC vs FEF (N={n_trials_sc})")
+                
+                # Mark means with different shapes (square for LIP, diamond for SC)
+                # Filled with bright colors and black border to stand out from scatter
+                from matplotlib.lines import Line2D
+                if n_trials_sc > 0:
+                    mean_fef_sc = np.nanmean(t_fef_sc_all)
+                    mean_sc = np.nanmean(t_sc_all)
+                    ax.plot(mean_fef_sc, mean_sc, "D", ms=14, markerfacecolor="#b388dd",
+                            markeredgecolor="black", markeredgewidth=2, zorder=6)
+                
+                if n_trials_lip > 0:
+                    mean_fef_lip = np.nanmean(t_fef_lip_all)
+                    mean_lip = np.nanmean(t_lip_all)
+                    ax.plot(mean_fef_lip, mean_lip, "s", ms=15, markerfacecolor="#ff6b6b",
+                            markeredgecolor="black", markeredgewidth=2, zorder=7)
+                
+                # Axis limits from search window
+                axis_lo = search[0] * 1000.0
+                axis_hi = search[1] * 1000.0
+                
+                # Diagonal line
+                ax.plot([axis_lo, axis_hi], [axis_lo, axis_hi], "r--", lw=1.5, alpha=0.7)
+                
+                ax.set_xlim(axis_lo, axis_hi)
+                ax.set_ylim(axis_lo, axis_hi)
+                
+                # Ticks
+                tick_lo = int(np.ceil(axis_lo / 100) * 100)
+                tick_hi = int(np.floor(axis_hi / 100) * 100)
+                tick_values = list(range(tick_lo, tick_hi + 1, 100))
+                ax.set_xticks(tick_values)
+                ax.set_yticks(tick_values)
+                ax.tick_params(axis='both', which='major', labelsize=16)
+                
+                # Labels
+                ax.set_xlabel("FEF Latency (ms)", fontsize=18)
+                ax.set_ylabel("LIP / SC Latency (ms)", fontsize=18)
+                
+                # Title
+                title = f"{monkey_name} - (LIP & SC) vs FEF - {feature_name} [{align}]\n"
+                if n_trials_lip > 0:
+                    title += f"LIP-FEF: {n_sessions_lip} sess, mean(LIP-FEF)={mean_dt_lip:.1f}ms\n"
+                if n_trials_sc > 0:
+                    title += f"SC-FEF: {n_sessions_sc} sess, mean(SC-FEF)={mean_dt_sc:.1f}ms"
+                ax.set_title(title, fontsize=11)
+                
+                # Legend
+                legend_lip = Line2D([0], [0], marker='.', color='#c00a37', linestyle='', 
+                                    markersize=10, alpha=0.7, label=f'LIP (N={n_trials_lip})')
+                legend_sc = Line2D([0], [0], marker='.', color='#7b4fa3', linestyle='',
+                                   markersize=10, alpha=0.7, label=f'SC (N={n_trials_sc})')
+                legend_mean_lip = Line2D([0], [0], marker='s', color='w', markerfacecolor='#ff6b6b',
+                                         markeredgecolor='black', markersize=12, markeredgewidth=1.5, label='mean (LIP)')
+                legend_mean_sc = Line2D([0], [0], marker='D', color='w', markerfacecolor='#b388dd',
+                                        markeredgecolor='black', markersize=11, markeredgewidth=1.5, label='mean (SC)')
+                legend_diag = Line2D([0], [0], linestyle='--', color='gray', alpha=0.7, lw=1.5, label='y=x')
+                
+                handles = []
+                if n_trials_lip > 0:
+                    handles.extend([legend_lip, legend_mean_lip])
+                if n_trials_sc > 0:
+                    handles.extend([legend_sc, legend_mean_sc])
+                handles.append(legend_diag)
+                
+                ax.legend(handles=handles, frameon=False, fontsize=12, loc='lower right',
+                          handletextpad=0.5, labelspacing=0.4)
+                ax.grid(False)
+                
+                # Save combined figure
+                out_png = out_dir / f"monkey_{monkey}_FEF_vs_LIP_SC_combined_{feature_name}_summary.png"
+                out_pdf = out_dir / f"monkey_{monkey}_FEF_vs_LIP_SC_combined_{feature_name}_summary.pdf"
+                out_svg = out_dir / f"monkey_{monkey}_FEF_vs_LIP_SC_combined_{feature_name}_summary.svg"
+                fig.savefig(out_png, dpi=500)
+                fig.savefig(out_pdf)
+                fig.savefig(out_svg)
+                plt.close(fig)
+                print(f"[ok] wrote combined {out_png}")
+                
+                # Save combined data
+                out_npz = out_dir / f"monkey_{monkey}_FEF_vs_LIP_SC_combined_{feature_name}_summary.npz"
+                meta_dict = dict(
+                    monkey=monkey,
+                    feature=feature,
+                    feature_name=feature_name,
+                    align=align,
+                    x_axis="FEF",
+                    y_axis="LIP_and_SC",
+                    n_trials_lip=n_trials_lip,
+                    n_trials_sc=n_trials_sc,
+                    n_sessions_lip=n_sessions_lip,
+                    n_sessions_sc=n_sessions_sc,
+                    mean_dt_lip_minus_fef_ms=float(mean_dt_lip) if not np.isnan(mean_dt_lip) else None,
+                    mean_dt_sc_minus_fef_ms=float(mean_dt_sc) if not np.isnan(mean_dt_sc) else None,
+                    median_dt_lip_minus_fef_ms=float(median_dt_lip) if not np.isnan(median_dt_lip) else None,
+                    median_dt_sc_minus_fef_ms=float(median_dt_sc) if not np.isnan(median_dt_sc) else None,
+                )
+                np.savez_compressed(
+                    out_npz,
+                    t_lip_ms=t_lip_all,
+                    t_fef_lip_ms=t_fef_lip_all,
+                    t_sc_ms=t_sc_all,
+                    t_fef_sc_ms=t_fef_sc_all,
+                    dt_lip_minus_fef_ms=dt_lip_ms,  # LIP - FEF (positive = LIP later)
+                    dt_sc_minus_fef_ms=dt_sc_ms,    # SC - FEF (positive = SC later)
+                    sids_fef_lip=np.array(sids_fef_lip),
+                    sids_sc_fef=np.array(sids_sc_fef),
+                    meta=meta_dict
+                )
+                print(f"[ok] wrote combined {out_npz}")
 
 
 if __name__ == "__main__":

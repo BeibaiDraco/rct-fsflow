@@ -132,6 +132,13 @@ These scatter plots show per-trial latency of encoding onset:
 ### Output Location
 - Category: `out/stim/trialtiming/trialonset_comprehensive_20mssw/monkey_M_FEF_vs_LIP_category_summary.{png,pdf,svg,npz}`
 - Saccade: `out/sacc/trialtiming/trialonset_comprehensive_20mssw/monkey_M_FEF_vs_LIP_saccade_summary.{png,pdf,svg,npz}`
+- **Combined FEF vs (LIP+SC)**: `out/<align>/trialtiming/trialonset_comprehensive_20mssw/monkey_{M,S}_FEF_vs_LIP_SC_combined_{category,saccade}_summary.{png,pdf,svg,npz}`
+
+### Combined Figure Colors
+| Area | Scatter Color | Mean Marker |
+|------|---------------|-------------|
+| LIP | Darker Red (#c00a37) | Coral Square (#ff6b6b) |
+| SC | Darker Purple (#7b4fa3) | Lavender Diamond (#b388dd) |
 
 ### How to Reproduce
 
@@ -164,7 +171,7 @@ python cli/trial_onset_comprehensive.py \
 | axes_tag | axes_peakbin_stimCR-stim-vertical-20mssw | axes_peakbin_saccS-sacc-horizontal-20mssw |
 | feature | C | S |
 | baseline window | -0.20 to 0.00 s | -0.35 to -0.20 s |
-| search window | 0.00 to 0.50 s | -0.30 to 0.20 s |
+| search window | 0.00 to 0.50 s | -0.20 to 0.20 s |
 | threshold | baseline_mean + 4σ | baseline_mean + 4σ |
 | runlen | 5 consecutive bins | 5 consecutive bins |
 | smoothing | 20 ms Gaussian | 20 ms Gaussian |
@@ -213,6 +220,9 @@ These figures show the Area Under the Curve (AUC) for decoding accuracy over tim
 - Category AUC (Monkey S): `out/paper_figures/qc/qc_stim_category_S_20mssw_summary.{pdf,png,svg}`
 - Saccade AUC (Monkey M): `out/paper_figures/qc/qc_sacc_M_20mssw_summary.{pdf,png,svg}`
 - Saccade AUC (Monkey S): `out/paper_figures/qc/qc_sacc_S_20mssw_summary.{pdf,png,svg}`
+- **Combined FEF-LIP-SC** (with mean±SEM inset):
+  - Category: `out/paper_figures/qc/qc_stim_category_{M,S}_20mssw_FEF_LIP_SC_summary.{pdf,png,svg}`
+  - Saccade: `out/paper_figures/qc/qc_sacc_{M,S}_20mssw_FEF_LIP_SC_summary.{pdf,png,svg}`
 
 ### How to Reproduce
 
@@ -222,7 +232,8 @@ python cli/plot_qc_paper.py \
     --stim_qc_subdir axes_peakbin_stimCR-stim-vertical-20mssw \
     --sacc_qc_subdir axes_peakbin_saccS-sacc-horizontal-20mssw \
     --suffix _20mssw \
-    --smooth_ms 20
+    --smooth_ms 20 \
+    --qc_threshold 0.65
 ```
 
 ### Key Parameters
@@ -231,17 +242,26 @@ python cli/plot_qc_paper.py \
 |-----------|-----------------|----------------|
 | qc_tag | axes_peakbin_stimCR-stim-vertical-20mssw | axes_peakbin_saccS-sacc-horizontal-20mssw |
 | metric | auc_C | auc_S_inv |
-| time range | -100 to 500 ms | -300 to 200 ms |
+| time range | -100 to 400 ms | -300 to 100 ms |
 | y-axis limits | 0.35 to 1.0 | 0.35 to 1.0 |
 | chance level | 0.5 | 0.5 |
-| smooth_ms | 20 | 20 |
+| smooth_ms | 20 (2 bins) | 20 (2 bins) |
+| **qc_threshold** | **0.65** | **0.65** |
 
 ### Area Colors
 | Area | Color | Hex Code |
 |------|-------|----------|
 | FEF | Blue | #0e87cc |
-| LIP | Red | #f10c45 |
-| SC | Purple | #9b5fc0 |
+| LIP | Darker Red | #c00a37 |
+| SC | Darker Purple | #7b4fa3 |
+
+### Flow Direction Colors (Panel D)
+Colors are based on the **source area** of the information flow:
+| Flow Direction | Color | Hex Code |
+|----------------|-------|----------|
+| FEF → anywhere | Blue | #0e87cc |
+| LIP → anywhere | Darker Red | #c00a37 |
+| SC → anywhere | Darker Purple | #7b4fa3 |
 
 ### Figure Specifications
 - **Plot area**: 10 × 5 inches
@@ -359,7 +379,7 @@ python cli/trial_onset_comprehensive.py \
 python cli/plot_qc_paper.py \
     --stim_qc_subdir axes_peakbin_stimCR-stim-vertical-20mssw \
     --sacc_qc_subdir axes_peakbin_saccS-sacc-horizontal-20mssw \
-    --suffix _20mssw --smooth_ms 20
+    --suffix _20mssw --smooth_ms 20 --qc_threshold 0.65
 ```
 
 ---
@@ -443,3 +463,4 @@ Contents:
 
 - Created: Dec 18, 2025
 - Updated: Jan 16, 2026 — Updated to 20ms sliding window workflow with lag 80ms (stim), 50ms (sacc), and QC threshold 0.65
+- Updated: Jan 23, 2026 — Updated color scheme: LIP (#c00a37), SC (#7b4fa3); added flow direction colors based on source area; added combined FEF-LIP-SC figures; added QC threshold filtering to plot_qc_paper.py

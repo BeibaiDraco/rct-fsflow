@@ -125,6 +125,37 @@ def canonical_pairs(monkey_label: str) -> List[Tuple[str, str]]:
         return [("SFEF", "SLIP"), ("SFEF", "SSC"), ("SLIP", "SSC")]
 
 
+# Flow direction colors based on SOURCE area
+# FEF -> anywhere: Blue
+# LIP -> anywhere: Red  
+# SC  -> anywhere: Purple
+FLOW_COLORS = {
+    "FEF": "#0e87cc",   # Blue (same as QC plots)
+    "LIP": "#c00a37",   # Darker red (same as QC plots)
+    "SC":  "#7b4fa3",   # Darker purple (same as QC plots)
+}
+
+
+def get_flow_color(source_area: str) -> str:
+    """
+    Get the color for a flow direction based on the SOURCE area.
+    
+    Parameters
+    ----------
+    source_area : str
+        Area name (e.g., "MFEF", "MLIP", "MSC", "SFEF", "SLIP", "SSC").
+        The monkey prefix (M/S) is stripped to get the base area.
+    
+    Returns
+    -------
+    str
+        Hex color code for the flow direction.
+    """
+    # Strip monkey prefix (M or S) to get base area
+    base_area = source_area[1:] if source_area[0] in "MS" else source_area
+    return FLOW_COLORS.get(base_area, "#0e87cc")  # Default to blue
+
+
 def parse_window(s: str) -> Tuple[float, float]:
     a, b = s.split(":")
     return float(a), float(b)
@@ -662,6 +693,8 @@ def plot_panel_a_paper(
     t_min_ms: Optional[float] = None,
     t_max_ms: Optional[float] = None,
     xlabel: str = "Time (ms)",
+    area_A: Optional[str] = None,
+    area_B: Optional[str] = None,
 ) -> None:
     """
     Paper-quality Panel A figure: bits ± SE (A->B, B->A).
@@ -675,8 +708,15 @@ def plot_panel_a_paper(
     ----------
     t_min_ms, t_max_ms : float, optional
         Time range limits in milliseconds. If provided, restricts x-axis.
+    area_A, area_B : str, optional
+        Full area codes (e.g., "MFEF", "MLIP") for color determination.
+        If not provided, uses default colors.
     """
     t_ms = time * 1000.0
+    
+    # Get colors based on source area
+    color_AB = get_flow_color(area_A) if area_A else "#0e87cc"
+    color_BA = get_flow_color(area_B) if area_B else "#c00a37"
     
     # Define plot area dimensions (in inches) to match scatter plot height
     # Scatter plot: 7x7 figure with ~5x5 inch plot area after tight_layout
@@ -704,24 +744,24 @@ def plot_panel_a_paper(
     # Vertical line at t=0
     ax.axvline(0, ls="--", c="k", lw=0.8)
     
-    # Plot A->B
-    ax.plot(t_ms, mean_bits_AB, color="C0", lw=2.0, label=f"{label_A}→{label_B}")
+    # Plot A->B (color based on source A)
+    ax.plot(t_ms, mean_bits_AB, color=color_AB, lw=2.0, label=f"{label_A}→{label_B}")
     ax.fill_between(
         t_ms,
         mean_bits_AB - se_bits_AB,
         mean_bits_AB + se_bits_AB,
-        color="C0",
+        color=color_AB,
         alpha=0.25,
         linewidth=0,
     )
     
-    # Plot B->A
-    ax.plot(t_ms, mean_bits_BA, color="C1", lw=2.0, label=f"{label_B}→{label_A}")
+    # Plot B->A (color based on source B)
+    ax.plot(t_ms, mean_bits_BA, color=color_BA, lw=2.0, label=f"{label_B}→{label_A}")
     ax.fill_between(
         t_ms,
         mean_bits_BA - se_bits_BA,
         mean_bits_BA + se_bits_BA,
-        color="C1",
+        color=color_BA,
         alpha=0.25,
         linewidth=0,
     )
@@ -861,6 +901,8 @@ def plot_panel_d_paper(
     t_min_ms: Optional[float] = None,
     t_max_ms: Optional[float] = None,
     xlabel: str = "Time (ms)",
+    area_A: Optional[str] = None,
+    area_B: Optional[str] = None,
 ) -> None:
     """
     Paper-quality Panel D: df-corrected bits / trial / dim for A→B and B→A.
@@ -871,8 +913,18 @@ def plot_panel_d_paper(
     Where y=0 means "no more improvement than what's expected from model complexity alone."
     
     Optionally shows significance dots (same as Panel C) for net flow.
+    
+    Parameters
+    ----------
+    area_A, area_B : str, optional
+        Full area codes (e.g., "MFEF", "MLIP") for color determination.
+        If not provided, uses default colors.
     """
     t_ms = time * 1000.0
+
+    # Get colors based on source area
+    color_AB = get_flow_color(area_A) if area_A else "#0e87cc"
+    color_BA = get_flow_color(area_B) if area_B else "#c00a37"
 
     plot_width_in = 10.0
     plot_height_in = 5.0
@@ -903,11 +955,11 @@ def plot_panel_d_paper(
     mean_BA_scaled = mean_BA * scale_factor
     se_BA_scaled = se_BA * scale_factor
 
-    ax.plot(t_ms, mean_AB_scaled, color="#0072B2", lw=2.5, label=f"{label_A}→{label_B}")
-    ax.fill_between(t_ms, mean_AB_scaled - se_AB_scaled, mean_AB_scaled + se_AB_scaled, color="#0072B2", alpha=0.25, linewidth=0)
+    ax.plot(t_ms, mean_AB_scaled, color=color_AB, lw=2.5, label=f"{label_A}→{label_B}")
+    ax.fill_between(t_ms, mean_AB_scaled - se_AB_scaled, mean_AB_scaled + se_AB_scaled, color=color_AB, alpha=0.25, linewidth=0)
 
-    ax.plot(t_ms, mean_BA_scaled, color="#D55E00", lw=2.5, label=f"{label_B}→{label_A}")
-    ax.fill_between(t_ms, mean_BA_scaled - se_BA_scaled, mean_BA_scaled + se_BA_scaled, color="#D55E00", alpha=0.25, linewidth=0)
+    ax.plot(t_ms, mean_BA_scaled, color=color_BA, lw=2.5, label=f"{label_B}→{label_A}")
+    ax.fill_between(t_ms, mean_BA_scaled - se_BA_scaled, mean_BA_scaled + se_BA_scaled, color=color_BA, alpha=0.25, linewidth=0)
 
     # Plot significance dots in black (same as Panel C)
     if sig_group_diff is not None and np.any(sig_group_diff):
@@ -947,6 +999,8 @@ def plot_panel_d_iv_paper(
     t_min_ms: Optional[float] = None,
     t_max_ms: Optional[float] = None,
     xlabel: str = "Time (ms)",
+    area_A: Optional[str] = None,
+    area_B: Optional[str] = None,
 ) -> None:
     """
     Paper-quality Panel D IV: Inverse-Variance Weighted df-corrected bits / trial / dim.
@@ -957,8 +1011,18 @@ def plot_panel_d_iv_paper(
     Weight_i = N_i (proportional to precision)
     mean_iv = Σ(w_i × x_i) / Σ(w_i)
     SE_iv = sqrt(Σ(w_i × (x_i - mean_iv)²) / ((n-1)/n × Σ(w_i)))
+    
+    Parameters
+    ----------
+    area_A, area_B : str, optional
+        Full area codes (e.g., "MFEF", "MLIP") for color determination.
+        If not provided, uses default colors.
     """
     t_ms = time * 1000.0
+
+    # Get colors based on source area
+    color_AB = get_flow_color(area_A) if area_A else "#0e87cc"
+    color_BA = get_flow_color(area_B) if area_B else "#c00a37"
 
     plot_width_in = 10.0
     plot_height_in = 5.0
@@ -981,11 +1045,11 @@ def plot_panel_d_iv_paper(
     ax.axvline(0, ls="--", c="k", lw=0.8)
     ax.axhline(0, ls=":", c="k", lw=0.8)
 
-    ax.plot(t_ms, mean_AB, color="#0072B2", lw=2.5, label=f"{label_A}→{label_B}")
-    ax.fill_between(t_ms, mean_AB - se_AB, mean_AB + se_AB, color="#0072B2", alpha=0.25, linewidth=0)
+    ax.plot(t_ms, mean_AB, color=color_AB, lw=2.5, label=f"{label_A}→{label_B}")
+    ax.fill_between(t_ms, mean_AB - se_AB, mean_AB + se_AB, color=color_AB, alpha=0.25, linewidth=0)
 
-    ax.plot(t_ms, mean_BA, color="#D55E00", lw=2.5, label=f"{label_B}→{label_A}")
-    ax.fill_between(t_ms, mean_BA - se_BA, mean_BA + se_BA, color="#D55E00", alpha=0.25, linewidth=0)
+    ax.plot(t_ms, mean_BA, color=color_BA, lw=2.5, label=f"{label_B}→{label_A}")
+    ax.fill_between(t_ms, mean_BA - se_BA, mean_BA + se_BA, color=color_BA, alpha=0.25, linewidth=0)
 
     # Plot significance dots in black
     if sig_group_diff is not None and np.any(sig_group_diff):
@@ -1818,6 +1882,8 @@ def summarize_for_tag_align_feature(
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
                 xlabel=paper_xlabel,
+                area_A=A,
+                area_B=B,
             )
             
             # Save paper-quality Panel C figure separately
@@ -1850,6 +1916,8 @@ def summarize_for_tag_align_feature(
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
                 xlabel=paper_xlabel,
+                area_A=A,
+                area_B=B,
             )
             
             # Save paper-quality Panel D IV figure (Inverse-Variance Weighted)
@@ -1867,6 +1935,8 @@ def summarize_for_tag_align_feature(
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
                 xlabel=paper_xlabel,
+                area_A=A,
+                area_B=B,
             )
 
             # Also create reverse figure (B vs A) to show significance from the other perspective
@@ -1936,6 +2006,8 @@ def summarize_for_tag_align_feature(
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
                 xlabel=paper_xlabel,
+                area_A=B,  # swapped
+                area_B=A,  # swapped
             )
             
             # Save paper-quality Panel C figure separately (reverse perspective)
@@ -1968,6 +2040,8 @@ def summarize_for_tag_align_feature(
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
                 xlabel=paper_xlabel,
+                area_A=B,  # swapped
+                area_B=A,  # swapped
             )
             
             # Save paper-quality Panel D IV figure (reverse perspective, IV-weighted)
@@ -1985,6 +2059,8 @@ def summarize_for_tag_align_feature(
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
                 xlabel=paper_xlabel,
+                area_A=B,  # swapped
+                area_B=A,  # swapped
             )
 
 
@@ -2017,8 +2093,8 @@ def main():
     ap.add_argument("--rebin_step", type=float, default=None,
                     help="Optional step size in seconds between rebinned windows "
                          "(e.g. 0.02 for 20 ms). Default: equal to rebin_win.")
-    ap.add_argument("--qc_threshold", type=float, default=0.6,
-                    help="QC threshold for filtering (default: 0.6). SYMMETRIC "
+    ap.add_argument("--qc_threshold", type=float, default=0.65,
+                    help="QC threshold for filtering (default: 0.65). SYMMETRIC "
                          "rejection is applied: for pair (A,B), if EITHER area fails QC, "
                          "the session is excluded for that pair. This ensures both directions "
                          "have the same N. Set to 0 or negative to disable QC filtering.")
