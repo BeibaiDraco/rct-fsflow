@@ -1,33 +1,24 @@
 #!/bin/bash
-#SBATCH --job-name=peakbin_20ms_lag30_50
+#SBATCH --job-name=peakbin_20ms_lag40
 #SBATCH --partition=voltron
 #SBATCH --qos=voltron
 #SBATCH --account=pi-bdoiron
-#SBATCH --time=12:00:00
+#SBATCH --time=10:00:00
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=32G
 # Adjust 1-23 to number of sessions; %32 limits concurrency
 #SBATCH --array=1-23%32
-#SBATCH -o /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/logs/peakbin_20ms_lag30_50_%A_%a.out
-#SBATCH -e /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/logs/peakbin_20ms_lag30_50_%A_%a.err
+#SBATCH -o /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/logs/peakbin_20ms_lag40_%A_%a.out
+#SBATCH -e /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/logs/peakbin_20ms_lag40_%A_%a.err
 
 # =============================================================================
-# 20ms SLIDING WINDOW WORKFLOW - LAG30ms AND LAG50ms VERIFICATION
+# 20ms SLIDING WINDOW WORKFLOW - LAG40ms
 #
-# Purpose: Rerun STIM C analysis with both lag30ms and lag50ms to verify
-#          suspicious significance points at 310-320ms in SFEF_vs_SSC figure.
-#
-# This script runs TWO lag configurations:
-#   1. LAGS_STIM_MS=30 → evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial
-#   2. LAGS_STIM_MS=50 → evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial
-#
-# Both use the same axes (axes_peakbin_stimCR-stim-vertical-20mssw) but produce
-# separate flow outputs for comparison.
+# Purpose: Run STIM C analysis with lag40ms.
 #
 # Tags:
 #   - Axes: axes_peakbin_stimCR-stim-vertical-20mssw (shared)
-#   - Flow lag30: evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial
-#   - Flow lag50: evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial
+#   - Flow: evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial
 #
 # Usage:
 #   sbatch jobs/peakbin_axes_qc_flow_array_20ms_sliding_lag30_50.sbatch
@@ -197,22 +188,22 @@ if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
       --sliding_step_ms "$STEP_MS"
 
   # ====================================================================================
-  # LAG 30ms: flow(C) + flow(R)
+  # LAG 40ms: flow(C) + flow(R)
   # ====================================================================================
-  LAGS_STIM_MS_30=30
-  FLOW_TAG_STIM_C_30="evoked_peakbin_stimC_${ORI_STIM}_lag${LAGS_STIM_MS_30}ms_20mssw"
-  FLOW_TAG_STIM_R_30="evoked_peakbin_stimR_${ORI_STIM}_lag${LAGS_STIM_MS_30}ms_20mssw"
+  LAGS_STIM_MS=40
+  FLOW_TAG_STIM_C="evoked_peakbin_stimC_${ORI_STIM}_lag${LAGS_STIM_MS}ms_20mssw"
+  FLOW_TAG_STIM_R="evoked_peakbin_stimR_${ORI_STIM}_lag${LAGS_STIM_MS}ms_20mssw"
 
   echo ""
-  echo "==================== LAG 30ms ===================="
+  echo "==================== LAG 40ms ===================="
 
-  run_step "STIM lag30ms: flow feature=C (save null)" \
+  run_step "STIM lag40ms: flow feature=C (save null)" \
     python cli/flow_session.py \
       --out_root "$OUT_ROOT" \
       --align stim --sid "$SID" \
       --feature C \
       --orientation "$ORI_STIM" \
-      --lags_ms "$LAGS_STIM_MS_30" \
+      --lags_ms "$LAGS_STIM_MS" \
       --ridge "$RIDGE" \
       --perms "$PERMS" \
       --perm-within "$PERM_WITHIN" \
@@ -222,20 +213,20 @@ if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
       --no_induced \
       --evoked_subtract --evoked_sigma_ms "$EVOKED_SIGMA_MS" \
       --axes_tag "$AXES_TAG_STIM" \
-      --tag "$FLOW_TAG_STIM_C_30" \
-      --flow_tag_base "$FLOW_TAG_STIM_C_30" \
+      --tag "$FLOW_TAG_STIM_C" \
+      --flow_tag_base "$FLOW_TAG_STIM_C" \
       --save_null_samples \
       --norm auto \
       --sliding_window_ms "$WINDOW_MS" \
       --sliding_step_ms "$STEP_MS"
 
-  run_step "STIM lag30ms: flow feature=R (save null)" \
+  run_step "STIM lag40ms: flow feature=R (save null)" \
     python cli/flow_session.py \
       --out_root "$OUT_ROOT" \
       --align stim --sid "$SID" \
       --feature R \
       --orientation "$ORI_STIM" \
-      --lags_ms "$LAGS_STIM_MS_30" \
+      --lags_ms "$LAGS_STIM_MS" \
       --ridge "$RIDGE" \
       --perms "$PERMS" \
       --perm-within "$PERM_WITHIN" \
@@ -245,64 +236,8 @@ if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
       --no_induced \
       --evoked_subtract --evoked_sigma_ms "$EVOKED_SIGMA_MS" \
       --axes_tag "$AXES_TAG_STIM" \
-      --tag "$FLOW_TAG_STIM_R_30" \
-      --flow_tag_base "$FLOW_TAG_STIM_R_30" \
-      --save_null_samples \
-      --norm auto \
-      --sliding_window_ms "$WINDOW_MS" \
-      --sliding_step_ms "$STEP_MS"
-
-  # ====================================================================================
-  # LAG 50ms: flow(C) + flow(R)
-  # ====================================================================================
-  LAGS_STIM_MS_50=50
-  FLOW_TAG_STIM_C_50="evoked_peakbin_stimC_${ORI_STIM}_lag${LAGS_STIM_MS_50}ms_20mssw"
-  FLOW_TAG_STIM_R_50="evoked_peakbin_stimR_${ORI_STIM}_lag${LAGS_STIM_MS_50}ms_20mssw"
-
-  echo ""
-  echo "==================== LAG 50ms ===================="
-
-  run_step "STIM lag50ms: flow feature=C (save null)" \
-    python cli/flow_session.py \
-      --out_root "$OUT_ROOT" \
-      --align stim --sid "$SID" \
-      --feature C \
-      --orientation "$ORI_STIM" \
-      --lags_ms "$LAGS_STIM_MS_50" \
-      --ridge "$RIDGE" \
-      --perms "$PERMS" \
-      --perm-within "$PERM_WITHIN" \
-      --null_method trial_shuffle \
-      --standardize_mode none \
-      --pt_min_ms "$PT_MIN" \
-      --no_induced \
-      --evoked_subtract --evoked_sigma_ms "$EVOKED_SIGMA_MS" \
-      --axes_tag "$AXES_TAG_STIM" \
-      --tag "$FLOW_TAG_STIM_C_50" \
-      --flow_tag_base "$FLOW_TAG_STIM_C_50" \
-      --save_null_samples \
-      --norm auto \
-      --sliding_window_ms "$WINDOW_MS" \
-      --sliding_step_ms "$STEP_MS"
-
-  run_step "STIM lag50ms: flow feature=R (save null)" \
-    python cli/flow_session.py \
-      --out_root "$OUT_ROOT" \
-      --align stim --sid "$SID" \
-      --feature R \
-      --orientation "$ORI_STIM" \
-      --lags_ms "$LAGS_STIM_MS_50" \
-      --ridge "$RIDGE" \
-      --perms "$PERMS" \
-      --perm-within "$PERM_WITHIN" \
-      --null_method trial_shuffle \
-      --standardize_mode none \
-      --pt_min_ms "$PT_MIN" \
-      --no_induced \
-      --evoked_subtract --evoked_sigma_ms "$EVOKED_SIGMA_MS" \
-      --axes_tag "$AXES_TAG_STIM" \
-      --tag "$FLOW_TAG_STIM_R_50" \
-      --flow_tag_base "$FLOW_TAG_STIM_R_50" \
+      --tag "$FLOW_TAG_STIM_R" \
+      --flow_tag_base "$FLOW_TAG_STIM_R" \
       --save_null_samples \
       --norm auto \
       --sliding_window_ms "$WINDOW_MS" \
@@ -313,13 +248,11 @@ else
 fi
 
 echo ""
-echo "[done] 20ms sliding window peakbin LAG30ms + LAG50ms complete for SID=$SID"
+echo "[done] 20ms sliding window peakbin LAG40ms complete for SID=$SID"
 echo ""
 echo "============================================================"
-echo "LAG VERIFICATION workflow completed. Next steps:"
+echo "LAG40ms workflow completed. Next steps:"
 echo "  1. Run summarize_flow_across_sessions.py with:"
-echo "     --tags evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial"
-echo "     --tags evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial"
+echo "     --tags evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial"
 echo "     --smooth_ms 30"
-echo "  2. Compare the significance patterns at 310-320ms between lag30 and lag50"
 echo "============================================================"
