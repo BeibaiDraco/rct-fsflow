@@ -1942,7 +1942,9 @@ def summarize_for_tag_align_feature(
                     smooth_bins=panel_d_smooth_bins,  # Apply same smoothing to null
                     observed_already_smoothed=True,    # Don't double-smooth the observed
                 )
-                sig_group_diff_ptd_iv = (p_group_diff_ptd_iv < alpha) & np.isfinite(p_group_diff_ptd_iv)
+                # Gating: only mark significant if plotted curve A→B > B→A AND p < alpha
+                curve_gate_AB_gt_BA = mean_bits_ptd_iv_AB > mean_bits_ptd_iv_BA
+                sig_group_diff_ptd_iv = curve_gate_AB_gt_BA & (p_group_diff_ptd_iv < alpha) & np.isfinite(p_group_diff_ptd_iv)
                 
                 # Reverse direction: B→A > A→B
                 p_group_diff_ptd_iv_rev = group_null_p_for_weighted_mean_diff(
@@ -1954,7 +1956,9 @@ def summarize_for_tag_align_feature(
                     smooth_bins=panel_d_smooth_bins,
                     observed_already_smoothed=True,
                 )
-                sig_group_diff_ptd_iv_rev = (p_group_diff_ptd_iv_rev < alpha) & np.isfinite(p_group_diff_ptd_iv_rev)
+                # Gating: only mark significant if plotted curve B→A > A→B AND p < alpha
+                curve_gate_BA_gt_AB = mean_bits_ptd_iv_BA > mean_bits_ptd_iv_AB
+                sig_group_diff_ptd_iv_rev = curve_gate_BA_gt_AB & (p_group_diff_ptd_iv_rev < alpha) & np.isfinite(p_group_diff_ptd_iv_rev)
                 
                 print(f"  [Panel D IV p-value] Computed for {n_with_null}/{n_total} sessions "
                       f"with null samples, smooth={panel_d_smooth_bins} bins")
