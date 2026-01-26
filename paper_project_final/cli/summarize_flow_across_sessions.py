@@ -492,10 +492,16 @@ def group_null_p_for_mean_diff(
     smooth_bins: int = 0,
 ) -> np.ndarray:
     """
-    Old-style empirical group null for DIFF:
+    Empirical group null for DIFF (Panel C):
       - For each replicate b=1..B, sample one permutation row from each
         session's dnull and average across sessions.
       - p(t) = Pr{ group-null-mean(t) >= observed-mean-diff(t) } (one-sided).
+
+    This tests: "Is the observed gap larger than expected under shuffled data?"
+    
+    Note: The permutation nulls for A→B and B→A are INDEPENDENT, so the null
+    difference may have a non-zero mean. This is intentional - the test asks
+    whether the observed gap EXCEEDS the expected gap under the null hypothesis.
 
     Parameters
     ----------
@@ -550,6 +556,161 @@ def group_null_p_for_mean_diff(
             continue
         ge = int(np.sum(col[m] >= obs))
         p[t] = (1 + ge) / (1 + nv)
+    return p
+
+
+def weighted_nanmean_2d(data_2d: np.ndarray, weights: np.ndarray) -> np.ndarray:
+    """
+    Compute weighted mean across axis=0 (sessions), ignoring NaNs.
+    
+    Parameters
+    ----------
+    data_2d : (S, T) array
+        Data for S sessions at T time points.
+    weights : (S,) array
+        Weight for each session (e.g., trial count N_i).
+    
+    Returns
+    -------
+    wmean : (T,) array
+        Weighted mean at each time point.
+    """
+    weights = np.asarray(weights, dtype=float)
+    S, T = data_2d.shape
+    out = np.full(T, np.nan, dtype=float)
+    
+    for t in range(T):
+        x = data_2d[:, t]
+        valid = np.isfinite(x) & np.isfinite(weights) & (weights > 0)
+        if not np.any(valid):
+            continue
+        w = weights[valid]
+        out[t] = np.sum(w * x[valid]) / np.sum(w)
+    
+    return out
+
+
+def group_null_p_for_weighted_mean_diff(
+    mean_diff: np.ndarray,
+    dnull_list: List[np.ndarray],
+    weights: np.ndarray,
+    B: int = 4096,
+    seed: int = 12345,
+    smooth_bins: int = 0,
+    observed_already_smoothed: bool = False,
+) -> np.ndarray:
+    """
+    Compute group-level empirical p-value for a WEIGHTED mean difference.
+    
+    This matches the Panel D IV statistic:
+        observed = sum_i(w_i * diff_i) / sum_i(w_i)
+    
+    For each replicate b = 1..B:
+        1. Sample one permutation row p_i from each session's null
+        2. Compute weighted mean: sum_i(w_i * dnull_i[p_i]) / sum_i(w_i)
+           IGNORING sessions where the sampled value is NaN (same as observed)
+    
+    This tests: "Is the observed gap larger than expected under shuffled data?"
+    
+    Note: The permutation nulls for A→B and B→A are INDEPENDENT, so the null
+    difference may have a non-zero mean. This is intentional - the test asks
+    whether the observed gap EXCEEDS the expected gap under the null hypothesis.
+    
+    p(t) = Pr{ weighted_null_mean(t) >= observed_weighted_mean(t) }
+    
+    Parameters
+    ----------
+    mean_diff : (T,) array
+        Observed IV-weighted mean difference at each time point.
+    dnull_list : list of (P, T) arrays
+        Per-session null difference matrices (normalized, in same units as mean_diff).
+    weights : (S,) array
+        Weight for each session (must match length of dnull_list).
+    B : int
+        Number of bootstrap replicates.
+    seed : int
+        Random seed for reproducibility.
+    smooth_bins : int
+        If > 0, apply uniform smoothing before computing p-values.
+    observed_already_smoothed : bool
+        If True, skip smoothing the observed (mean_diff is already smoothed).
+        Still applies smoothing to the null distribution.
+    
+    Returns
+    -------
+    p : (T,) array
+        Empirical p-value at each time point.
+    """
+    rng = np.random.default_rng(seed)
+    T = mean_diff.size
+    S = len(dnull_list)
+    
+    if S == 0:
+        return np.full(T, np.nan)
+    
+    weights = np.asarray(weights, dtype=float)
+    if weights.shape[0] != S:
+        raise ValueError(f"weights length {weights.shape[0]} != number of sessions {S}")
+    
+    w_sum = np.sum(weights)
+    if not np.isfinite(w_sum) or w_sum <= 0:
+        return np.full(T, np.nan)
+    
+    # Build IV-weighted group null distribution: (B, T)
+    # For each replicate b, sample one row from each session and compute weighted mean
+    # IMPORTANT: Handle NaNs properly - at each time t, only use sessions with finite values
+    # This matches how the observed statistic is computed (inverse_variance_weighted_mean_se)
+    
+    # Pre-sample indices for all sessions and replicates
+    sampled_indices = [rng.integers(0, dnull.shape[0], size=B) for dnull in dnull_list]
+    
+    # Build the null distribution with proper NaN handling
+    group_null_weighted = np.full((B, T), np.nan, dtype=float)
+    
+    for t in range(T):
+        # For this time point, collect sampled values from each session
+        # shape: (S, B) - for each session, B sampled values at time t
+        sampled_vals = np.zeros((S, B), dtype=float)
+        for i, (dnull, idx) in enumerate(zip(dnull_list, sampled_indices)):
+            sampled_vals[i, :] = dnull[idx, t]
+        
+        # For each replicate b, compute weighted mean using only finite values
+        for b in range(B):
+            vals = sampled_vals[:, b]  # shape (S,)
+            valid = np.isfinite(vals) & np.isfinite(weights) & (weights > 0)
+            if not np.any(valid):
+                continue
+            w_valid = weights[valid]
+            v_valid = vals[valid]
+            group_null_weighted[b, t] = np.sum(w_valid * v_valid) / np.sum(w_valid)
+    
+    # Apply smoothing if requested
+    if smooth_bins > 1:
+        # Only smooth observed if not already smoothed
+        if observed_already_smoothed:
+            mean_diff_smooth = mean_diff
+        else:
+            mean_diff_smooth = uniform_smooth_1d(mean_diff[None, :], smooth_bins)[0]
+        # Always smooth the null distribution
+        group_null_smooth = uniform_smooth_1d(group_null_weighted, smooth_bins)
+    else:
+        mean_diff_smooth = mean_diff
+        group_null_smooth = group_null_weighted
+    
+    # Compute p-values at each time point
+    p = np.full(T, np.nan, dtype=float)
+    for t in range(T):
+        obs = mean_diff_smooth[t]
+        if not np.isfinite(obs):
+            continue
+        col = group_null_smooth[:, t]
+        valid = np.isfinite(col)
+        n_valid = int(np.sum(valid))
+        if n_valid == 0:
+            continue
+        n_geq = int(np.sum(col[valid] >= obs))
+        p[t] = (1 + n_geq) / (1 + n_valid)
+    
     return p
 
 
@@ -996,6 +1157,7 @@ def plot_panel_d_iv_paper(
     label_A: str,
     label_B: str,
     sig_group_diff: Optional[np.ndarray] = None,
+    sig_group_diff_rev: Optional[np.ndarray] = None,
     t_min_ms: Optional[float] = None,
     t_max_ms: Optional[float] = None,
     xlabel: str = "Time (ms)",
@@ -1014,6 +1176,10 @@ def plot_panel_d_iv_paper(
     
     Parameters
     ----------
+    sig_group_diff : np.ndarray, optional
+        Boolean mask where A→B - B→A is significantly > 0. Dots plotted in color_AB.
+    sig_group_diff_rev : np.ndarray, optional
+        Boolean mask where B→A - A→B is significantly > 0. Dots plotted in color_BA.
     area_A, area_B : str, optional
         Full area codes (e.g., "MFEF", "MLIP") for color determination.
         If not provided, uses default colors.
@@ -1051,14 +1217,24 @@ def plot_panel_d_iv_paper(
     ax.plot(t_ms, mean_BA, color=color_BA, lw=2.5, label=f"{label_B}→{label_A}")
     ax.fill_between(t_ms, mean_BA - se_BA, mean_BA + se_BA, color=color_BA, alpha=0.25, linewidth=0)
 
-    # Plot significance dots in black
+    # Plot significance dots with direction-specific colors (no legend - colors match lines)
+    # sig_group_diff: A→B > B→A significant → color_AB (A's color)
+    # sig_group_diff_rev: B→A > A→B significant → color_BA (B's color)
+    ylim = ax.get_ylim()
+    y_marker = ylim[0] + 0.05 * (ylim[1] - ylim[0])
+    
     if sig_group_diff is not None and np.any(sig_group_diff):
-        sig_mask = sig_group_diff.astype(bool)
-        ylim = ax.get_ylim()
-        y_marker = ylim[0] + 0.05 * (ylim[1] - ylim[0])
+        sig_mask_AB = sig_group_diff.astype(bool)
         ax.scatter(
-            t_ms[sig_mask], np.full(np.sum(sig_mask), y_marker),
-            marker="o", s=14, c="black", zorder=5, label="p<α"
+            t_ms[sig_mask_AB], np.full(np.sum(sig_mask_AB), y_marker),
+            marker="o", s=14, c=color_AB, zorder=5
+        )
+    
+    if sig_group_diff_rev is not None and np.any(sig_group_diff_rev):
+        sig_mask_BA = sig_group_diff_rev.astype(bool)
+        ax.scatter(
+            t_ms[sig_mask_BA], np.full(np.sum(sig_mask_BA), y_marker),
+            marker="o", s=14, c=color_BA, zorder=5
         )
 
     ax.set_xlabel(xlabel, fontsize=18)
@@ -1406,8 +1582,12 @@ def summarize_for_tag_align_feature(
             lags_ms_list = []
             bin_ms_raw = None
 
-            # For old-style group DIFF p(t)
-            dnull_list = []
+            # For group DIFF p(t) - RAW bits (used for Panel C)
+            dnull_bits_list = []
+            # For Panel D IV group DIFF p(t) - NORMALIZED (ptd) (used for Panel D IV dots)
+            dnull_ptd_list = []
+            # Track which sessions have null samples (for consistent subsetting)
+            has_null_samples = []
 
             session_ids = []
             time = None
@@ -1450,18 +1630,6 @@ def summarize_for_tag_align_feature(
                             f"Inconsistent time grid for {align}, tag={tag}, feature={feature}, "
                             f"pair {A}->{B}, sid={sid}"
                         )
-
-                # Collect null samples for old-style group DIFF p(t)
-                if group_diff_p:
-                    if "null_samps_AtoB" not in Zf.files or "null_samps_AtoB" not in Zr.files:
-                        # Skip this session for group_diff_p; it was run without --save_null_samples
-                        pass  # dnull_list will be shorter; handled gracefully below
-                    else:
-                        fnull = np.asarray(Zf["null_samps_AtoB"], dtype=float)  # (P, T) from A->B file
-                        rnull = np.asarray(Zr["null_samps_AtoB"], dtype=float)  # (P, T) from B->A file
-                        if fnull.shape != rnull.shape:
-                            raise ValueError(f"Null sample shape mismatch in {sid} for pair {A}-{B}")
-                        dnull_list.append(fnull - rnull)  # (P, T)
 
                 bits_AB = np.asarray(Zf["bits_AtoB"], dtype=float)
                 bits_BA = np.asarray(Zr["bits_AtoB"], dtype=float)
@@ -1509,8 +1677,45 @@ def summarize_for_tag_align_feature(
                     baseline_BA = (L_sess * K_B_sess) / (2.0 * N_sess * LN2)
                     bits_ptd_BA = bits_BA / (N_sess * K_A_sess) - baseline_BA
                 else:
+                    baseline_AB = np.nan
+                    baseline_BA = np.nan
                     bits_ptd_AB = np.full_like(bits_AB, np.nan)
                     bits_ptd_BA = np.full_like(bits_BA, np.nan)
+
+                # Collect null samples for group DIFF p(t) - must be AFTER baseline computation
+                had_null = False
+                if group_diff_p:
+                    if "null_samps_AtoB" not in Zf.files or "null_samps_AtoB" not in Zr.files:
+                        # This session doesn't have null samples
+                        pass
+                    else:
+                        fnull = np.asarray(Zf["null_samps_AtoB"], dtype=float)  # (P, T) from A→B file
+                        rnull = np.asarray(Zr["null_samps_AtoB"], dtype=float)  # (P, T) from B→A file
+                        
+                        if fnull.shape != rnull.shape:
+                            raise ValueError(f"Null sample shape mismatch in {sid} for pair {A}-{B}")
+                        
+                        # === RAW bits null diff (for Panel C / existing p_group_diff) ===
+                        dnull_bits_list.append(fnull - rnull)
+                        
+                        # === NORMALIZED (ptd) null diff (for Panel D IV dots) ===
+                        # Must use SAME normalization as observed bits_ptd_AB and bits_ptd_BA
+                        if N_sess > 0 and K_A_sess > 0 and K_B_sess > 0 and np.isfinite(baseline_AB):
+                            # A→B null: target = K_B, source = K_A
+                            fnull_ptd = fnull / (N_sess * K_B_sess) - baseline_AB
+                            
+                            # B→A null: target = K_A, source = K_B  
+                            rnull_ptd = rnull / (N_sess * K_A_sess) - baseline_BA
+                            
+                            # Normalized null difference
+                            dnull_ptd = fnull_ptd - rnull_ptd
+                        else:
+                            dnull_ptd = np.full_like(fnull, np.nan, dtype=float)
+                        
+                        dnull_ptd_list.append(dnull_ptd)
+                        had_null = True
+                
+                has_null_samples.append(had_null)
 
                 sig_AB = (p_AB < alpha) & np.isfinite(p_AB)
                 sig_BA = (p_BA < alpha) & np.isfinite(p_BA)
@@ -1594,8 +1799,9 @@ def summarize_for_tag_align_feature(
                 # Also downsample Panel D normalized arrays
                 _, bits_ptd_AB_arr = downsample_bins(orig_time, bits_ptd_AB_arr, bin_combine)
                 _, bits_ptd_BA_arr = downsample_bins(orig_time, bits_ptd_BA_arr, bin_combine)
-                # Also downsample dnull_list for group p-value computation
-                dnull_list = [downsample_bins(orig_time, dnull, bin_combine)[1] for dnull in dnull_list]
+                # Also downsample null lists for group p-value computation
+                dnull_bits_list = [downsample_bins(orig_time, dnull, bin_combine)[1] for dnull in dnull_bits_list]
+                dnull_ptd_list = [downsample_bins(orig_time, dnull, bin_combine)[1] for dnull in dnull_ptd_list]
                 # Update bin_ms_raw for smoothing computation after downsampling
                 bin_ms_raw = bin_ms_raw * bin_combine
                 new_T = time.shape[0]
@@ -1665,25 +1871,93 @@ def summarize_for_tag_align_feature(
                   f"N range: {int(np.min(N_weights))}-{int(np.max(N_weights))}, "
                   f"sum(N)={int(np.sum(N_weights))}, smooth={panel_d_smooth_bins} bins ({panel_d_smooth_ms}ms)")
 
-            # Compute old-style group empirical p(t) for DIFF if requested
+            # ============================================================
+            # Panel C: Group p-value for RAW bits (existing behavior)
+            # ============================================================
             p_group_diff = None
             sig_group_diff = None
-            if group_diff_p:
-                if len(dnull_list) == 0:
-                    print(f"  [warn] --group_diff_p requested but no sessions have null_samps_AtoB "
-                          f"for {tag}/{feature}/{A}-{B}. Skipping group p(t).")
-                elif len(dnull_list) < len(session_ids):
-                    print(f"  [warn] Only {len(dnull_list)}/{len(session_ids)} sessions have null samples "
-                          f"for {tag}/{feature}/{A}-{B}. Group p(t) uses subset.")
-            if group_diff_p and len(dnull_list) > 0:
+            p_group_diff_rev = None
+            sig_group_diff_rev = None
+            null_mask = np.array(has_null_samples, dtype=bool)
+
+            if group_diff_p and len(dnull_bits_list) > 0:
+                if len(dnull_bits_list) < len(session_ids):
+                    print(f"  [warn] Only {len(dnull_bits_list)}/{len(session_ids)} sessions have null samples "
+                          f"for {tag}/{feature}/{A}-{B}. Panel C p(t) uses subset.")
+                
+                # Forward: A→B > B→A
                 p_group_diff = group_null_p_for_mean_diff(
                     mean_diff=mean_diff,
-                    dnull_list=dnull_list,
+                    dnull_list=dnull_bits_list,
                     B=group_null_B,
                     seed=group_null_seed,
                     smooth_bins=smooth_bins,
                 )
                 sig_group_diff = (p_group_diff < alpha) & np.isfinite(p_group_diff)
+                
+                # Reverse: B→A > A→B
+                p_group_diff_rev = group_null_p_for_mean_diff(
+                    mean_diff=-mean_diff,
+                    dnull_list=[-dnull for dnull in dnull_bits_list],
+                    B=group_null_B,
+                    seed=group_null_seed,
+                    smooth_bins=smooth_bins,
+                )
+                sig_group_diff_rev = (p_group_diff_rev < alpha) & np.isfinite(p_group_diff_rev)
+
+            # ============================================================
+            # Panel D IV: Group p-value for NORMALIZED (ptd) IV-weighted mean
+            # ============================================================
+            p_group_diff_ptd_iv = None
+            sig_group_diff_ptd_iv = None
+            p_group_diff_ptd_iv_rev = None
+            sig_group_diff_ptd_iv_rev = None
+
+            if group_diff_p and len(dnull_ptd_list) > 0 and np.any(null_mask):
+                # Get weights for sessions with null samples
+                N_weights_null = N_weights[null_mask]
+                
+                # IMPORTANT: Use the PLOTTED curve gap as the observed statistic, not subset mean.
+                # The plotted curves (mean_bits_ptd_iv_AB, mean_bits_ptd_iv_BA) use ALL sessions.
+                # We want the significance dots to match what's visually displayed.
+                # The gap between the two curves (already smoothed) is what we test.
+                mean_diff_ptd_iv_plotted = mean_bits_ptd_iv_AB - mean_bits_ptd_iv_BA
+                
+                # Warn if not all sessions have null samples
+                n_with_null = int(np.sum(null_mask))
+                n_total = len(session_ids)
+                if n_with_null < n_total:
+                    print(f"  [Panel D IV p-value] WARNING: Only {n_with_null}/{n_total} sessions have null samples. "
+                          f"P-values test the plotted curve gap but null dist uses subset.")
+                
+                # Forward direction: A→B > B→A (uses Panel D smoothing)
+                # The plotted curves are already smoothed, so skip smoothing the observed
+                # but still apply smoothing to the null distribution
+                p_group_diff_ptd_iv = group_null_p_for_weighted_mean_diff(
+                    mean_diff=mean_diff_ptd_iv_plotted,  # Use the plotted gap (already smoothed)
+                    dnull_list=dnull_ptd_list,
+                    weights=N_weights_null,
+                    B=group_null_B,
+                    seed=group_null_seed,
+                    smooth_bins=panel_d_smooth_bins,  # Apply same smoothing to null
+                    observed_already_smoothed=True,    # Don't double-smooth the observed
+                )
+                sig_group_diff_ptd_iv = (p_group_diff_ptd_iv < alpha) & np.isfinite(p_group_diff_ptd_iv)
+                
+                # Reverse direction: B→A > A→B
+                p_group_diff_ptd_iv_rev = group_null_p_for_weighted_mean_diff(
+                    mean_diff=-mean_diff_ptd_iv_plotted,
+                    dnull_list=[-dnull for dnull in dnull_ptd_list],
+                    weights=N_weights_null,
+                    B=group_null_B,
+                    seed=group_null_seed,
+                    smooth_bins=panel_d_smooth_bins,
+                    observed_already_smoothed=True,
+                )
+                sig_group_diff_ptd_iv_rev = (p_group_diff_ptd_iv_rev < alpha) & np.isfinite(p_group_diff_ptd_iv_rev)
+                
+                print(f"  [Panel D IV p-value] Computed for {n_with_null}/{n_total} sessions "
+                      f"with null samples, smooth={panel_d_smooth_bins} bins")
 
             # Optional time rebinning for a 4th panel
             rebin_time_arr = None
@@ -1764,8 +2038,16 @@ def summarize_for_tag_align_feature(
                 frac_sig_BtoA=frac_sig_BA,
                 mean_diff_bits=mean_diff,
                 se_diff_bits=se_diff,
+                # Panel C: raw bits group p-values
                 p_group_diff=p_group_diff if p_group_diff is not None else np.array([]),
                 sig_group_diff=sig_group_diff.astype(int) if sig_group_diff is not None else np.array([], dtype=int),
+                p_group_diff_rev=p_group_diff_rev if p_group_diff_rev is not None else np.array([]),
+                sig_group_diff_rev=sig_group_diff_rev.astype(int) if sig_group_diff_rev is not None else np.array([], dtype=int),
+                # Panel D IV: normalized (ptd) IV-weighted group p-values
+                p_group_diff_ptd_iv=p_group_diff_ptd_iv if p_group_diff_ptd_iv is not None else np.array([]),
+                sig_group_diff_ptd_iv=sig_group_diff_ptd_iv.astype(int) if sig_group_diff_ptd_iv is not None else np.array([], dtype=int),
+                p_group_diff_ptd_iv_rev=p_group_diff_ptd_iv_rev if p_group_diff_ptd_iv_rev is not None else np.array([]),
+                sig_group_diff_ptd_iv_rev=sig_group_diff_ptd_iv_rev.astype(int) if sig_group_diff_ptd_iv_rev is not None else np.array([], dtype=int),
                 # Panel D (shape-preserving): df-corrected bits / trial / dim
                 mean_bits_ptd_corr_AtoB=mean_bits_ptd_corr_AB,
                 se_bits_ptd_corr_AtoB=se_bits_ptd_corr_AB,
@@ -1921,6 +2203,7 @@ def summarize_for_tag_align_feature(
             )
             
             # Save paper-quality Panel D IV figure (Inverse-Variance Weighted)
+            # Uses normalized (ptd) IV-weighted p-values for significance dots
             fig_path_panel_d_iv = figs_dir / f"{pair_name}_panel_d_iv.pdf"
             plot_panel_d_iv_paper(
                 out_path=fig_path_panel_d_iv,
@@ -1931,7 +2214,8 @@ def summarize_for_tag_align_feature(
                 se_BA=se_bits_ptd_iv_BA,
                 label_A=A,
                 label_B=B,
-                sig_group_diff=sig_group_diff,
+                sig_group_diff=sig_group_diff_ptd_iv,
+                sig_group_diff_rev=sig_group_diff_ptd_iv_rev,
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
                 xlabel=paper_xlabel,
@@ -1947,22 +2231,7 @@ def summarize_for_tag_align_feature(
                          f"{B} vs {A} | monkey={monkey_label} | N={n_sessions}")
             fig_path_pdf_rev = figs_dir / f"{pair_name_rev}.pdf"
             
-            # Compute group diff p-value for reverse direction (using negative dnull_list)
-            p_group_diff_rev = None
-            sig_group_diff_rev = None
-            if group_diff_p and len(dnull_list) > 0:
-                # For reverse: mean_diff_rev = -mean_diff, dnull_rev = -dnull
-                mean_diff_rev = -mean_diff
-                dnull_list_rev = [-dnull for dnull in dnull_list]  # negate each dnull
-                p_group_diff_rev = group_null_p_for_mean_diff(
-                    mean_diff=mean_diff_rev,
-                    dnull_list=dnull_list_rev,
-                    B=group_null_B,
-                    seed=group_null_seed,
-                    smooth_bins=smooth_bins,
-                )
-                sig_group_diff_rev = (p_group_diff_rev < alpha) & np.isfinite(p_group_diff_rev)
-            
+            # sig_group_diff_rev was already computed earlier for use in panel_d_iv
             plot_summary_figure(
                 out_path_pdf=fig_path_pdf_rev,
                 time=time,
@@ -2045,6 +2314,8 @@ def summarize_for_tag_align_feature(
             )
             
             # Save paper-quality Panel D IV figure (reverse perspective, IV-weighted)
+            # For reverse: B→A > A→B uses B's color, A→B > B→A uses A's color
+            # Uses normalized (ptd) IV-weighted p-values for significance dots
             fig_path_panel_d_iv_rev = figs_dir / f"{pair_name_rev}_panel_d_iv.pdf"
             plot_panel_d_iv_paper(
                 out_path=fig_path_panel_d_iv_rev,
@@ -2055,7 +2326,8 @@ def summarize_for_tag_align_feature(
                 se_BA=se_bits_ptd_iv_AB,
                 label_A=B,
                 label_B=A,
-                sig_group_diff=sig_group_diff_rev,
+                sig_group_diff=sig_group_diff_ptd_iv_rev,  # B→A > A→B (now "forward" in reversed)
+                sig_group_diff_rev=sig_group_diff_ptd_iv,   # A→B > B→A (now "reverse" in reversed)
                 t_min_ms=paper_t_min_ms,
                 t_max_ms=paper_t_max_ms,
                 xlabel=paper_xlabel,
@@ -2110,11 +2382,11 @@ def main():
                     help="Number of group-null replicates for DIFF p(t) (default: 4096)")
     ap.add_argument("--group_null_seed", type=int, default=12345,
                     help="RNG seed for group-null sampling (default: 12345)")
-    ap.add_argument("--smooth_ms", type=float, default=30.0,
+    ap.add_argument("--smooth_ms", type=float, default=20.0,
                     help="Smoothing window (ms) for group DIFF p(t). If > 0, applies "
                          "uniform moving average to both observed DIFF and group null "
                          "before computing p-values. Keeps original time resolution. "
-                         "E.g., --smooth_ms 50 for 50ms window. Default: 30.")
+                         "E.g., --smooth_ms 50 for 50ms window. Default: 20.")
     ap.add_argument("--sacc_bin_combine", type=int, default=1,
                     help="Number of adjacent time bins to combine for sacc alignment "
                          "(default: 1, no combining). Set to 2 if using 5ms bins and want 10ms output.")
