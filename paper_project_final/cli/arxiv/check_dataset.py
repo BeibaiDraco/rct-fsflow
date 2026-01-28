@@ -25,7 +25,8 @@ def scan_session(root: str, sid: str) -> Dict:
         "Align_to_sacc_on": has_col(df,"Align_to_sacc_on"),
         "Align_to_targets_on": has_col(df,"Align_to_targets_on"),
         "PT_ms": has_col(df,"PT_ms"),
-        "trial_error": has_col(df,"trial_error"),
+        "is_correct": has_col(df,"is_correct"),  # bool, True=correct
+        "trial_error": has_col(df,"trial_error"),  # int, 0=correct (legacy)
     }
     n = len(df)
     pct = {
@@ -36,7 +37,10 @@ def scan_session(root: str, sid: str) -> Dict:
         "pct_targets_vert": safe_pct(df["targets_vert"])          if cols["targets_vert"] else 0.0,
     }
     # simple correct-trials %
-    if cols["trial_error"]:
+    # Check is_correct (bool) first, then trial_error (int, 0=correct) as fallback
+    if cols["is_correct"]:
+        pct["pct_correct"] = float(df["is_correct"].fillna(False).astype(bool).mean()*100.0)
+    elif cols["trial_error"]:
         pct["pct_correct"] = float((df["trial_error"].fillna(0)==0).mean()*100.0)
     else:
         pct["pct_correct"] = np.nan

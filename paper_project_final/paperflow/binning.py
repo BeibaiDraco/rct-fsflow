@@ -90,10 +90,18 @@ def build_cache_for_session(
     else:
         raise ValueError("align must be 'stim', 'sacc', or 'targ'")
 
-    if correct_only and "trial_error" in df.columns:
-        ok = (df["trial_error"].fillna(0) == 0)
-        df = df[ok]
-        event = event[ok.values]
+    # Filter for correct trials only
+    # Check for is_correct (bool, True=correct) first, then trial_error (int, 0=correct) as fallback
+    if correct_only:
+        if "is_correct" in df.columns:
+            ok = df["is_correct"].fillna(False).astype(bool)
+            df = df[ok]
+            event = event[ok.values]
+        elif "trial_error" in df.columns:
+            ok = (df["trial_error"].fillna(0) == 0)
+            df = df[ok]
+            event = event[ok.values]
+        # else: no correctness column found, keep all trials (no filtering)
 
     nT = len(df)
     if nT == 0: return []
@@ -113,7 +121,15 @@ def build_cache_for_session(
     Tcfg[~(np.isfinite(C) & np.isfinite(S))] = np.nan
     OR = np.where(df.get("targets_vert", pd.Series([np.nan]*nT)).to_numpy(float) == 1, "vertical", "horizontal").astype(object)
     PT = col("PT_ms")
-    IC = (df.get("trial_error", pd.Series([0]*nT)).fillna(0).to_numpy(int) == 0)
+    # Compute is_correct label for each trial
+    # Check for is_correct (bool) first, then trial_error (int, 0=correct) as fallback
+    if "is_correct" in df.columns:
+        IC = df["is_correct"].fillna(False).astype(bool).to_numpy()
+    elif "trial_error" in df.columns:
+        IC = (df["trial_error"].fillna(0).to_numpy(int) == 0)
+    else:
+        # No correctness column - mark all as unknown (True to not filter downstream)
+        IC = np.ones(nT, dtype=bool)
 
     edges = _time_edges(t0, t1, bin_s)
     out_paths = []

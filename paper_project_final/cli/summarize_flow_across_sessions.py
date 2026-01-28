@@ -324,6 +324,11 @@ def check_qc_passes(qc_data: Dict, metric: str, threshold: float) -> bool:
     return bool(np.any(metric_arr[valid_mask] >= threshold))
 
 
+class QCTagNotFoundError(Exception):
+    """Raised when QC tag cannot be found and QC filtering is enabled."""
+    pass
+
+
 def check_area_qc(
     out_root: Path,
     align: str,
@@ -342,7 +347,12 @@ def check_area_qc(
     explicit_qc_tag : str, optional
         If provided, use this QC tag directly instead of auto-detecting.
     
-    Returns True if QC passes (or if QC data is unavailable), False if QC fails.
+    Returns True if QC passes, False if QC fails.
+    
+    Raises
+    ------
+    QCTagNotFoundError
+        If no QC tag can be found (either explicit or auto-detected).
     """
     # Use explicit QC tag if provided, otherwise auto-detect
     if explicit_qc_tag is not None:
@@ -351,14 +361,17 @@ def check_area_qc(
         qc_tag = find_qc_tag_for_flow_tag(out_root, align, sid, flow_tag)
     
     if qc_tag is None:
-        # If no QC tag found, we can't check - default to passing
-        # (could also return False to be strict, but user might want to be lenient)
-        return True
+        raise QCTagNotFoundError(
+            f"QC filtering is enabled (threshold={qc_threshold}) but no QC tag found for "
+            f"flow_tag='{flow_tag}', align='{align}', session='{sid}'. "
+            f"Please provide an explicit --qc_tag argument (e.g., --qc_tag axes_peakbin_stimCR-stim-vertical-20mssw)."
+        )
     
     # Load QC data
     qc_data = load_qc_json(out_root, align, sid, qc_tag, area)
     if qc_data is None:
-        # No QC data available - default to passing
+        # No QC data available for this area - default to passing
+        # (area may not have been recorded in this session)
         return True
     
     # Get the appropriate metric for this feature
@@ -1554,7 +1567,36 @@ def summarize_for_tag_align_feature(
     bin_combine : int
         Number of adjacent time bins to combine (default: 1 = no combining).
         Set to 2 for sacc alignment to match stim's 10ms bins from sacc's 5ms bins.
+    
+    Raises
+    ------
+    QCTagNotFoundError
+        If QC filtering is enabled but no QC tag can be found.
     """
+    # Validate QC tag upfront if QC filtering is enabled
+    if qc_threshold is not None and qc_threshold > 0:
+        if qc_tag is None:
+            # Try to auto-detect QC tag from the first available session
+            detected_qc_tag = None
+            for sid in sids:
+                detected_qc_tag = find_qc_tag_for_flow_tag(out_root, align, sid, tag)
+                if detected_qc_tag is not None:
+                    break
+            
+            if detected_qc_tag is None:
+                raise QCTagNotFoundError(
+                    f"QC filtering is enabled (threshold={qc_threshold}) but no QC tag could be "
+                    f"auto-detected for flow_tag='{tag}', align='{align}'. "
+                    f"Please provide an explicit --qc_tag argument.\n"
+                    f"Available QC directories can be found at: out/{align}/<session>/qc/\n"
+                    f"Example: --qc_tag axes_peakbin_stimCR-stim-vertical-20mssw"
+                )
+            else:
+                print(f"[qc] Auto-detected QC tag: {detected_qc_tag}")
+                qc_tag = detected_qc_tag
+        else:
+            print(f"[qc] Using explicit QC tag: {qc_tag}")
+    
     for monkey_label in ("M", "S"):
         pairs = canonical_pairs(monkey_label)
         for (A, B) in pairs:
@@ -2462,24 +2504,30 @@ def main():
                 print(f"\n[tag={tag}] align={align}, feature={feat}")
                 # Apply bin combining only for sacc alignment
                 bin_combine = args.sacc_bin_combine if align == "sacc" else 1
-                summarize_for_tag_align_feature(
-                    out_root=out_root,
-                    align=align,
-                    tag=tag,
-                    feature=feat,
-                    sids=sids,
-                    alpha=args.alpha,
-                    win=win,
-                    rebin_win_s=rebin_win,
-                    rebin_step_s=rebin_step,
-                    qc_threshold=args.qc_threshold,
-                    qc_tag=args.qc_tag,
-                    group_diff_p=args.group_diff_p,
-                    group_null_B=args.group_null_B,
-                    group_null_seed=args.group_null_seed,
-                    smooth_ms=args.smooth_ms,
-                    bin_combine=bin_combine,
-                )
+                try:
+                    summarize_for_tag_align_feature(
+                        out_root=out_root,
+                        align=align,
+                        tag=tag,
+                        feature=feat,
+                        sids=sids,
+                        alpha=args.alpha,
+                        win=win,
+                        rebin_win_s=rebin_win,
+                        rebin_step_s=rebin_step,
+                        qc_threshold=args.qc_threshold,
+                        qc_tag=args.qc_tag,
+                        group_diff_p=args.group_diff_p,
+                        group_null_B=args.group_null_B,
+                        group_null_seed=args.group_null_seed,
+                        smooth_ms=args.smooth_ms,
+                        bin_combine=bin_combine,
+                    )
+                except QCTagNotFoundError as e:
+                    print(f"\n[ERROR] {e}")
+                    print("\n[ABORTED] Cannot proceed without valid QC tag.")
+                    import sys
+                    sys.exit(1)
 
     print("\n[done] summary + figures completed.")
 
