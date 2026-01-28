@@ -914,6 +914,9 @@ def train_axes_for_area(
                     W = np.vstack(blocks)
                     U_, S_, Vt = np.linalg.svd(W, full_matrices=False)
                     rd = max(1, int(R_dim))
+                    # Clamp rd to available SVD components (Vt may have fewer rows
+                    # than requested if there are fewer unique response directions)
+                    rd = min(rd, Vt.shape[0])
                     sR_small = Vt[:rd].T
                     sR_full = np.zeros((Xr.shape[1], rd), dtype=float)
                     sR_full[maskR, :] = sR_small

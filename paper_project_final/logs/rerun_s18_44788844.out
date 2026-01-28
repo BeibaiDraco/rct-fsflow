@@ -1,0 +1,68 @@
+[info] Rerunning SID=20231103 with C, R (stim) and S (sacc) - bug fixed
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+========== STIM: train axes (C,R) peakbin ==========
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20231103][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/axes/axes_peakbin_stimCR-stim-vertical-20mssw/axes_SFEF.npz
+    → winC_selected: [0.25999999999999995, 0.4099999999999999], score: 0.9578, peak@350ms (cv_auc=0.9886)
+[20231103][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/axes/axes_peakbin_stimCR-stim-vertical-20mssw/axes_SLIP.npz
+    → winC_selected: [0.4000000000000001, 0.45000000000000007], score: 0.8081, peak@420ms (cv_auc=0.8407)
+[20231103][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/axes/axes_peakbin_stimCR-stim-vertical-20mssw/axes_SSC.npz
+    → winC_selected: [0.3, 0.4], score: 0.9438, peak@390ms (cv_auc=0.9700)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/axes/axes_peakbin_stimCR-stim-vertical-20mssw/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/axes/axes_peakbin_stimCR-stim-vertical-20mssw/config.json
+========== STIM: QC ==========
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20231103][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/qc/axes_peakbin_stimCR-stim-vertical-20mssw/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=160.0000038743019, Sraw=None, Sinv=None, T=None
+[20231103][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/qc/axes_peakbin_stimCR-stim-vertical-20mssw/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=370.0000047683716, Sraw=None, Sinv=None, T=None
+[20231103][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/qc/axes_peakbin_stimCR-stim-vertical-20mssw/qc_axes_SSC.pdf (+ .png, .json)   lat(ms): C=280.0000011920929, Sraw=None, Sinv=None, T=None
+========== STIM C: LAG 30ms ==========
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20231103][SFEF->SLIP] [evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20231103][SFEF->SSC] [evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial/C/flow_C_SFEFtoSSC.npz
+[20231103][SLIP->SFEF] [evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20231103][SLIP->SSC] [evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial/C/flow_C_SLIPtoSSC.npz
+[20231103][SSC->SFEF] [evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial/C/flow_C_SSCtoSFEF.npz
+[20231103][SSC->SLIP] [evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial/C/flow_C_SSCtoSLIP.npz
+========== STIM C: LAG 40ms ==========
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20231103][SFEF->SLIP] [evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20231103][SFEF->SSC] [evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial/C/flow_C_SFEFtoSSC.npz
+[20231103][SLIP->SFEF] [evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20231103][SLIP->SSC] [evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial/C/flow_C_SLIPtoSSC.npz
+[20231103][SSC->SFEF] [evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial/C/flow_C_SSCtoSFEF.npz
+[20231103][SSC->SLIP] [evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial/C/flow_C_SSCtoSLIP.npz
+========== STIM C: LAG 50ms ==========
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20231103][SFEF->SLIP] [evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20231103][SFEF->SSC] [evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial/C/flow_C_SFEFtoSSC.npz
+[20231103][SLIP->SFEF] [evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20231103][SLIP->SSC] [evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial/C/flow_C_SLIPtoSSC.npz
+[20231103][SSC->SFEF] [evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial/C/flow_C_SSCtoSFEF.npz
+[20231103][SSC->SLIP] [evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial/C/flow_C_SSCtoSLIP.npz
+========== STIM C: LAG 60ms ==========
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20231103][SFEF->SLIP] [evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20231103][SFEF->SSC] [evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial/C/flow_C_SFEFtoSSC.npz
+[20231103][SLIP->SFEF] [evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20231103][SLIP->SSC] [evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial/C/flow_C_SLIPtoSSC.npz
+[20231103][SSC->SFEF] [evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial/C/flow_C_SSCtoSFEF.npz
+[20231103][SSC->SLIP] [evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial/C/flow_C_SSCtoSLIP.npz
+========== STIM C: LAG 80ms ==========
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20231103][SFEF->SLIP] [evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20231103][SFEF->SSC] [evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial/C/flow_C_SFEFtoSSC.npz
+[20231103][SLIP->SFEF] [evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20231103][SLIP->SSC] [evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial/C/flow_C_SLIPtoSSC.npz
+[20231103][SSC->SFEF] [evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial/C/flow_C_SSCtoSFEF.npz
+[20231103][SSC->SLIP] [evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial/C/flow_C_SSCtoSLIP.npz
+========== STIM C: LAG 100ms ==========
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20231103][SFEF->SLIP] [evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial/C/flow_C_SFEFtoSLIP.npz
+[20231103][SFEF->SSC] [evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial/C/flow_C_SFEFtoSSC.npz
+[20231103][SLIP->SFEF] [evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial/C/flow_C_SLIPtoSFEF.npz
+[20231103][SLIP->SSC] [evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial/C/flow_C_SLIPtoSSC.npz
+[20231103][SSC->SFEF] [evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial/C/flow_C_SSCtoSFEF.npz
+[20231103][SSC->SLIP] [evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20231103/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial/C/flow_C_SSCtoSLIP.npz
+[WARN] No sacc caches for SID=20231103
+
+[done] Rerun complete for SID=20231103

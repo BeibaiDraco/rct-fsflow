@@ -1,0 +1,100 @@
+{
+  "sid": "20230710",
+  "align": "stim",
+  "features": [
+    "C",
+    "R"
+  ],
+  "winC": [
+    0.1,
+    0.3
+  ],
+  "winR": [
+    0.05,
+    0.2
+  ],
+  "winS": null,
+  "winT": null,
+  "pt_min_ms": 200.0,
+  "orientation": "vertical",
+  "areas": [
+    "SFEF",
+    "SLIP"
+  ],
+  "tag": "axes_peakbin_stimCR-stim-vertical-20mssw",
+  "norm": "global",
+  "baseline_win": null,
+  "clf_binary": "logreg",
+  "C_grid": [
+    0.1,
+    0.3,
+    1.0,
+    3.0,
+    10.0
+  ],
+  "lda_shrinkage": null,
+  "searchC": true,
+  "searchS": false,
+  "searchT": false,
+  "searchR": true,
+  "search_step_ms": 20.0,
+  "search_len_ms": [
+    50.0,
+    100.0,
+    150.0,
+    200.0,
+    250.0
+  ],
+  "search_range_C": "0.00:0.50",
+  "search_range_S": null,
+  "search_range_T": null,
+  "search_range_R": "0.00:0.50",
+  "search_score_mode": "peak_bin_auc",
+  "search_tiebreak": "shortest_then_earliest",
+  "search_tol": 0.01,
+  "per_area_results": {
+    "SFEF": {
+      "winC_selected": [
+        0.36000000000000004,
+        0.41000000000000003
+      ],
+      "winC_cv_best": 0.7234573716439002,
+      "winC_best_param": 0.1,
+      "winC_peak_time_ms": 409.9999964237213,
+      "winC_peak_auc": 0.7234573716439002,
+      "winC_mean_bin_auc": 0.6833608101742816,
+      "winC_cv_auc_original": 0.7834713532081954,
+      "winR_selected": [
+        0.27999999999999997,
+        0.48
+      ],
+      "winR_cv_best": 0.47150656361182675,
+      "sC_auc": 0.7234573716439002,
+      "n_trials_C": 413
+    },
+    "SLIP": {
+      "winC_selected": [
+        0.32,
+        0.42000000000000004
+      ],
+      "winC_cv_best": 0.7743758831841733,
+      "winC_best_param": 0.3,
+      "winC_peak_time_ms": 379.9999952316284,
+      "winC_peak_auc": 0.7743758831841733,
+      "winC_mean_bin_auc": 0.7450306170513424,
+      "winC_cv_auc_original": 0.9245859403754141,
+      "winR_selected": [
+        0.14,
+        0.39
+      ],
+      "winR_cv_best": 0.46607778186725557,
+      "sC_auc": 0.7743758831841733,
+      "n_trials_C": 413
+    }
+  },
+  "rebin_factor": null,
+  "sliding_window_ms": 20.0,
+  "sliding_step_ms": 10.0,
+  "sliding_window_bins": 2,
+  "sliding_step_bins": 1
+}
