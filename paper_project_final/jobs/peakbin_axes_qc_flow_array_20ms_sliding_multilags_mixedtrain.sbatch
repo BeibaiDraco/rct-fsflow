@@ -12,32 +12,27 @@
 #SBATCH -e /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/logs/peakbin_20ms_mixedtrain_%A_%a.err
 
 # =============================================================================
-# 20ms SLIDING WINDOW WORKFLOW - MIXED TRAINING (UNFILTERED AXES)
+# 20ms SLIDING WINDOW WORKFLOW - MIXED TRAINING
 #
-# Purpose: Train axes on UNFILTERED data (all trials including incorrect),
+# Purpose: Train axes on UNFILTERED data (all trials, lab_is_correct=True for all),
 #          but run QC and flow on CORRECT-ONLY caches.
 #
-# This tests: "Does contaminated training (with ~3% incorrect trials) affect
+# This tests: "Does contaminated training (with incorrect trials) affect
 #             the results when evaluated on clean correct-only data?"
 #
+# Cache parameters MATCH OLD exactly:
+#   STIM: t0=-0.25, t1=0.80, bin_ms=10
+#   SACC: t0=-0.40, t1=0.30, bin_ms=5
+#
 # WORKFLOW:
-#   1. Use existing unfiltered caches from out_nofilter/ (or build if missing)
-#   2. Train axes on out_nofilter/ caches (ALL trials) 
+#   1. Build unfiltered caches in out_nofilter/ (with --force_all_correct)
+#   2. Train axes on out_nofilter/ caches (ALL trials)
 #   3. Copy trained axes to out/ with _mixedtrain tag
 #   4. Run QC on out/ caches (CORRECT-ONLY) using mixed-trained axes
 #   5. Run flow on out/ caches (CORRECT-ONLY) using mixed-trained axes
 #
-# STIM C lags: 30ms, 40ms, 50ms, 60ms, 80ms, 100ms
-# SACC S lags: 30ms, 50ms, 60ms, 80ms
-#
-# Flow tags (in out/):
-#   - evoked_peakbin_stimC_vertical_lag30ms_20mssw_mixedtrain-none-trial
-#   - evoked_peakbin_saccS_horizontal_lag30ms_20mssw_mixedtrain-none-trial
-#   - ... etc
-#
 # Usage:
 #   sbatch jobs/peakbin_axes_qc_flow_array_20ms_sliding_multilags_mixedtrain.sbatch
-#   sbatch --export=DRY_RUN=1 --array=1 jobs/peakbin_axes_qc_flow_array_20ms_sliding_multilags_mixedtrain.sbatch
 # =============================================================================
 
 set -euo pipefail
@@ -104,7 +99,8 @@ TASK_ID="${SLURM_ARRAY_TASK_ID:-1}"
 
 # Build sid_list.txt if missing
 if [[ ! -f "$SID_LIST" ]]; then
-  ls -1 "$OUT_ROOT/stim" | grep -E '^[0-9]{8}$' > "$SID_LIST"
+  ls -1 "$OUT_ROOT/stim" | grep -E '^[0-9]{8}$' > "$SID_LIST" 2>/dev/null || \
+  ls -1 "$PAPER_DATA" | grep -E '^[0-9]{8}$' > "$SID_LIST"
 fi
 
 SID="$(sed -n "${TASK_ID}p" "$SID_LIST" || true)"
@@ -119,7 +115,7 @@ echo "[info] OUT_ROOT=$OUT_ROOT (CORRECT-ONLY for QC/flow)"
 echo "[info] OUT_NOFILTER=$OUT_NOFILTER (UNFILTERED for axes training)"
 echo "[info] DRY_RUN=$DRY_RUN CONTINUE_ON_ERROR=$CONTINUE_ON_ERROR"
 
-# ------------ Shared analysis knobs ------------
+# ------------ Shared analysis knobs (MATCHING OLD) ------------
 ORI_STIM="vertical"
 ORI_SACC="horizontal"
 PT_MIN=200
@@ -178,34 +174,57 @@ CGRID_ARGS=()
 for C in "${C_GRID[@]}"; do CGRID_ARGS+=("$C"); done
 
 # ======================================================================================
-# STEP 0: Ensure unfiltered caches exist (build if missing)
+# STEP 0: Build caches
+# UNFILTERED caches (for axes training): --no_correct_filter --force_all_correct
+# CORRECT-ONLY caches (for QC/flow): default behavior
+# Cache parameters MATCH OLD exactly.
 # ======================================================================================
 echo ""
-echo "==================== CHECK/BUILD UNFILTERED CACHES ===================="
+echo "==================== BUILD CACHES ===================="
+echo "STIM: t0=-0.25, t1=0.80, bin_ms=10 (matching OLD)"
+echo "SACC: t0=-0.40, t1=0.30, bin_ms=5 (matching OLD)"
 
-if [[ ! -d "$OUT_NOFILTER/stim/$SID/caches" ]]; then
-  run_step "Build STIM caches (no correct filter)" \
-    python cli/build_cache.py \
-      --root "$PAPER_DATA" \
-      --out_root "$OUT_NOFILTER" \
-      --align stim \
-      --sid "$SID" \
-      --no_correct_filter
-else
-  echo "[info] STIM unfiltered caches already exist for SID=$SID"
-fi
+# Build UNFILTERED STIM caches (for axes training)
+run_step "Build STIM caches (unfiltered, for axes training)" \
+  python cli/build_cache.py \
+    --root "$PAPER_DATA" \
+    --out_root "$OUT_NOFILTER" \
+    --align stim \
+    --sid "$SID" \
+    --stim_t0 -0.25 \
+    --stim_bin_ms 10 \
+    --no_correct_filter \
+    --force_all_correct
 
-if [[ ! -d "$OUT_NOFILTER/sacc/$SID/caches" ]]; then
-  run_step "Build SACC caches (no correct filter)" \
-    python cli/build_cache.py \
-      --root "$PAPER_DATA" \
-      --out_root "$OUT_NOFILTER" \
-      --align sacc \
-      --sid "$SID" \
-      --no_correct_filter
-else
-  echo "[info] SACC unfiltered caches already exist for SID=$SID"
-fi
+# Build UNFILTERED SACC caches (for axes training)
+run_step "Build SACC caches (unfiltered, for axes training)" \
+  python cli/build_cache.py \
+    --root "$PAPER_DATA" \
+    --out_root "$OUT_NOFILTER" \
+    --align sacc \
+    --sid "$SID" \
+    --sacc_t1 0.30 \
+    --no_correct_filter \
+    --force_all_correct
+
+# Build CORRECT-ONLY STIM caches (for QC/flow)
+run_step "Build STIM caches (correct only, for QC/flow)" \
+  python cli/build_cache.py \
+    --root "$PAPER_DATA" \
+    --out_root "$OUT_ROOT" \
+    --align stim \
+    --sid "$SID" \
+    --stim_t0 -0.25 \
+    --stim_bin_ms 10
+
+# Build CORRECT-ONLY SACC caches (for QC/flow)
+run_step "Build SACC caches (correct only, for QC/flow)" \
+  python cli/build_cache.py \
+    --root "$PAPER_DATA" \
+    --out_root "$OUT_ROOT" \
+    --align sacc \
+    --sid "$SID" \
+    --sacc_t1 0.30
 
 # ======================================================================================
 # STIM: train axes on UNFILTERED → copy to OUT → QC/flow on CORRECT-ONLY
@@ -262,9 +281,7 @@ if [[ -d "$OUT_NOFILTER/stim/$SID/caches" ]] && [[ -d "$OUT_ROOT/stim/$SID/cache
       --sliding_window_ms "$WINDOW_MS" \
       --sliding_step_ms "$STEP_MS"
 
-  # ====================================================================================
-  # STIM: flow(C) for EACH lag value on CORRECT-ONLY caches
-  # ====================================================================================
+  # --- Flow for each lag ---
   for LAG in "${STIM_LAGS[@]}"; do
     FLOW_TAG_STIM_C="evoked_peakbin_stimC_${ORI_STIM}_lag${LAG}ms_20mssw_mixedtrain"
     
@@ -297,8 +314,6 @@ if [[ -d "$OUT_NOFILTER/stim/$SID/caches" ]] && [[ -d "$OUT_ROOT/stim/$SID/cache
 
 else
   echo "[WARN] Missing caches for STIM SID=$SID → skipping stim"
-  [[ ! -d "$OUT_NOFILTER/stim/$SID/caches" ]] && echo "  - Missing: $OUT_NOFILTER/stim/$SID/caches"
-  [[ ! -d "$OUT_ROOT/stim/$SID/caches" ]] && echo "  - Missing: $OUT_ROOT/stim/$SID/caches"
 fi
 
 # ======================================================================================
@@ -355,9 +370,7 @@ if [[ -d "$OUT_NOFILTER/sacc/$SID/caches" ]] && [[ -d "$OUT_ROOT/sacc/$SID/cache
       --sliding_window_ms "$WINDOW_MS" \
       --sliding_step_ms "$STEP_MS"
 
-  # ====================================================================================
-  # SACC: flow(S) for EACH lag value on CORRECT-ONLY caches
-  # ====================================================================================
+  # --- Flow for each lag ---
   for LAG in "${SACC_LAGS[@]}"; do
     FLOW_TAG_SACC_S="evoked_peakbin_saccS_${ORI_SACC}_lag${LAG}ms_20mssw_mixedtrain"
     
@@ -390,31 +403,8 @@ if [[ -d "$OUT_NOFILTER/sacc/$SID/caches" ]] && [[ -d "$OUT_ROOT/sacc/$SID/cache
 
 else
   echo "[WARN] Missing caches for SACC SID=$SID → skipping sacc"
-  [[ ! -d "$OUT_NOFILTER/sacc/$SID/caches" ]] && echo "  - Missing: $OUT_NOFILTER/sacc/$SID/caches"
-  [[ ! -d "$OUT_ROOT/sacc/$SID/caches" ]] && echo "  - Missing: $OUT_ROOT/sacc/$SID/caches"
 fi
 
 echo ""
 echo "[done] 20ms sliding window peakbin MULTI-LAG (MIXED TRAINING) complete for SID=$SID"
-echo ""
-echo "============================================================"
-echo "MIXED TRAINING workflow completed."
-echo ""
-echo "AXES TRAINED ON: $OUT_NOFILTER (unfiltered, all trials)"
-echo "QC/FLOW RUN ON:  $OUT_ROOT (correct-only caches)"
-echo ""
-echo "Flow tags generated (with _mixedtrain suffix):"
-echo ""
-echo "STIM C lags:"
-for LAG in "${STIM_LAGS[@]}"; do
-  echo "  - evoked_peakbin_stimC_${ORI_STIM}_lag${LAG}ms_20mssw_mixedtrain-none-trial"
-done
-echo ""
-echo "SACC S lags:"
-for LAG in "${SACC_LAGS[@]}"; do
-  echo "  - evoked_peakbin_saccS_${ORI_SACC}_lag${LAG}ms_20mssw_mixedtrain-none-trial"
-done
-echo ""
-echo "Compare with original correct-only results to assess impact of"
-echo "training on contaminated data (~3% incorrect trials for Monkey M)."
 echo "============================================================"

@@ -12,33 +12,18 @@
 #SBATCH -e /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/logs/peakbin_20ms_multilags_%A_%a.err
 
 # =============================================================================
-# 20ms SLIDING WINDOW WORKFLOW - MULTIPLE LAGS
+# 20ms SLIDING WINDOW WORKFLOW - MULTIPLE LAGS (CORRECT TRIALS ONLY)
 #
-# Purpose: Run flow analysis with MULTIPLE lag values for comprehensive
-#          temporal lag sensitivity analysis.
+# This is the FIXED version that properly filters for correct trials.
+# Cache parameters match OLD exactly:
+#   STIM: t0=-0.25, t1=0.80, bin_ms=10
+#   SACC: t0=-0.40, t1=0.30, bin_ms=5
 #
 # STIM C lags: 30ms, 40ms, 50ms, 60ms, 80ms, 100ms
 # SACC S lags: 30ms, 50ms, 60ms, 80ms
 #
-# Flow tags generated:
-#   - evoked_peakbin_stimC_vertical_lag30ms_20mssw-none-trial
-#   - evoked_peakbin_stimC_vertical_lag40ms_20mssw-none-trial
-#   - evoked_peakbin_stimC_vertical_lag50ms_20mssw-none-trial
-#   - evoked_peakbin_stimC_vertical_lag60ms_20mssw-none-trial
-#   - evoked_peakbin_stimC_vertical_lag80ms_20mssw-none-trial
-#   - evoked_peakbin_stimC_vertical_lag100ms_20mssw-none-trial
-#   - evoked_peakbin_saccS_horizontal_lag30ms_20mssw-none-trial
-#   - evoked_peakbin_saccS_horizontal_lag50ms_20mssw-none-trial
-#   - evoked_peakbin_saccS_horizontal_lag60ms_20mssw-none-trial
-#   - evoked_peakbin_saccS_horizontal_lag80ms_20mssw-none-trial
-#
-# Axes tags (shared across all lags):
-#   - axes_peakbin_stimCR-stim-vertical-20mssw
-#   - axes_peakbin_saccS-sacc-horizontal-20mssw
-#
 # Usage:
 #   sbatch jobs/peakbin_axes_qc_flow_array_20ms_sliding_multilags.sbatch
-#   sbatch --export=DRY_RUN=1 --array=1 jobs/peakbin_axes_qc_flow_array_20ms_sliding_multilags.sbatch
 # =============================================================================
 
 set -euo pipefail
@@ -78,7 +63,7 @@ run_step () {
 BASE="/project/bdoiron/dracoxu/rct-fsflow"
 PROJECT="$BASE/paper_project_final"
 OUT_ROOT="$PROJECT/out"
-SID_LIST="$PROJECT/sid_list.txt"   # newline-delimited list of 8-digit SIDs
+SID_LIST="$PROJECT/sid_list.txt"
 
 module purge
 module load python/3.11.9
@@ -101,9 +86,10 @@ mkdir -p logs
 # Allow local dry-run (no SLURM env)
 TASK_ID="${SLURM_ARRAY_TASK_ID:-1}"
 
-# Build sid_list.txt if missing (from stim directory)
+# Build sid_list.txt if missing
 if [[ ! -f "$SID_LIST" ]]; then
-  ls -1 "$OUT_ROOT/stim" | grep -E '^[0-9]{8}$' > "$SID_LIST"
+  ls -1 "$OUT_ROOT/stim" | grep -E '^[0-9]{8}$' > "$SID_LIST" 2>/dev/null || \
+  ls -1 "$PAPER_DATA" | grep -E '^[0-9]{8}$' > "$SID_LIST"
 fi
 
 SID="$(sed -n "${TASK_ID}p" "$SID_LIST" || true)"
@@ -115,12 +101,13 @@ fi
 echo "[info] task=${TASK_ID} SID=${SID}"
 echo "[info] PAPER_HOME=$PAPER_HOME"
 echo "[info] OUT_ROOT=$OUT_ROOT"
+echo "[info] MODE: CORRECT TRIALS ONLY (fixed filtering)"
 echo "[info] DRY_RUN=$DRY_RUN CONTINUE_ON_ERROR=$CONTINUE_ON_ERROR"
 
-# ------------ Shared analysis knobs ------------
-ORI_STIM="vertical"      # vertical|horizontal|pooled for stim alignment
-ORI_SACC="horizontal"    # vertical|horizontal|pooled for sacc alignment
-PT_MIN=200               # ms
+# ------------ Shared analysis knobs (MATCHING OLD) ------------
+ORI_STIM="vertical"
+ORI_SACC="horizontal"
+PT_MIN=200
 QC_THR=0.60
 QC_K=5
 
@@ -128,7 +115,6 @@ PERMS=500
 RIDGE="1e-2"
 PERM_WITHIN="CR"
 
-# Evoked sigma: with 10ms output resolution, 10ms = 1 bin
 EVOKED_SIGMA_MS=10
 
 # === SLIDING WINDOW PARAMETERS ===
@@ -151,12 +137,12 @@ SEARCH_RANGE_STIM_R="0.00:0.50"
 SEARCH_RANGE_SACC_S="-0.20:0.05"
 
 # Norm / classifier
-NORM="global"            # global|baseline|none
-CLF="logreg"             # logreg|svm|lda
+NORM="global"
+CLF="logreg"
 C_GRID=(0.1 0.3 1 3 10)
 LDA_SHRINKAGE="auto"
 
-# ------------ Tags (shared axes) ------------
+# ------------ Tags ------------
 AXES_TAG_STIM="axes_peakbin_stimCR-stim-${ORI_STIM}-20mssw"
 AXES_TAG_SACC="axes_peakbin_saccS-sacc-${ORI_SACC}-20mssw"
 
@@ -170,6 +156,36 @@ for L in "${SEARCH_LEN_MS[@]}"; do SEARCH_LEN_ARGS+=("$L"); done
 
 CGRID_ARGS=()
 for C in "${C_GRID[@]}"; do CGRID_ARGS+=("$C"); done
+
+# ======================================================================================
+# STEP 0: Build caches (CORRECT TRIALS ONLY)
+# Cache parameters MATCH OLD exactly:
+#   STIM: t0=-0.25, t1=0.80, bin_ms=10
+#   SACC: t0=-0.40, t1=0.30, bin_ms=5
+# ======================================================================================
+echo ""
+echo "==================== BUILD CACHES (CORRECT TRIALS ONLY) ===================="
+echo "STIM: t0=-0.25, t1=0.80, bin_ms=10 (matching OLD)"
+echo "SACC: t0=-0.40, t1=0.30, bin_ms=5 (matching OLD)"
+
+# Build STIM caches - CORRECT ONLY, matching OLD parameters
+run_step "Build STIM caches (correct only, OLD params)" \
+  python cli/build_cache.py \
+    --root "$PAPER_DATA" \
+    --out_root "$OUT_ROOT" \
+    --align stim \
+    --sid "$SID" \
+    --stim_t0 -0.25 \
+    --stim_bin_ms 10
+
+# Build SACC caches - CORRECT ONLY, matching OLD parameters
+run_step "Build SACC caches (correct only, OLD params)" \
+  python cli/build_cache.py \
+    --root "$PAPER_DATA" \
+    --out_root "$OUT_ROOT" \
+    --align sacc \
+    --sid "$SID" \
+    --sacc_t1 0.30
 
 # ======================================================================================
 # STIM: train axes → QC (once), then flow(C) for ALL lags
@@ -211,9 +227,6 @@ if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
       --sliding_window_ms "$WINDOW_MS" \
       --sliding_step_ms "$STEP_MS"
 
-  # ====================================================================================
-  # STIM: flow(C) for EACH lag value
-  # ====================================================================================
   for LAG in "${STIM_LAGS[@]}"; do
     FLOW_TAG_STIM_C="evoked_peakbin_stimC_${ORI_STIM}_lag${LAG}ms_20mssw"
     
@@ -287,9 +300,6 @@ if [[ -d "$OUT_ROOT/sacc/$SID/caches" ]]; then
       --sliding_window_ms "$WINDOW_MS" \
       --sliding_step_ms "$STEP_MS"
 
-  # ====================================================================================
-  # SACC: flow(S) for EACH lag value
-  # ====================================================================================
   for LAG in "${SACC_LAGS[@]}"; do
     FLOW_TAG_SACC_S="evoked_peakbin_saccS_${ORI_SACC}_lag${LAG}ms_20mssw"
     
@@ -326,20 +336,4 @@ fi
 
 echo ""
 echo "[done] 20ms sliding window peakbin MULTI-LAG complete for SID=$SID"
-echo ""
-echo "============================================================"
-echo "Multi-lag workflow completed. Flow tags generated:"
-echo ""
-echo "STIM C lags:"
-for LAG in "${STIM_LAGS[@]}"; do
-  echo "  - evoked_peakbin_stimC_${ORI_STIM}_lag${LAG}ms_20mssw-none-trial"
-done
-echo ""
-echo "SACC S lags:"
-for LAG in "${SACC_LAGS[@]}"; do
-  echo "  - evoked_peakbin_saccS_${ORI_SACC}_lag${LAG}ms_20mssw-none-trial"
-done
-echo ""
-echo "Next steps:"
-echo "  Run summarize_flow_across_sessions.py for each tag"
 echo "============================================================"

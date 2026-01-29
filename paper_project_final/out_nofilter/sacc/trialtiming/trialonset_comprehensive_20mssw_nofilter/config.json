@@ -1,5 +1,5 @@
 {
-  "created": "2026-01-28T18:19:19.839923",
+  "created": "2026-01-28T19:18:05.716239",
   "script": "cli/trial_onset_comprehensive.py",
   "align": "sacc",
   "orientation": "horizontal",
@@ -15,7 +15,7 @@
   ],
   "k_sigma": 4.0,
   "runlen": 5,
-  "smooth_ms": 30.0,
+  "smooth_ms": 20.0,
   "qc_threshold": 0.65,
   "qc_threshold_C": null,
   "qc_threshold_R": 0.6,

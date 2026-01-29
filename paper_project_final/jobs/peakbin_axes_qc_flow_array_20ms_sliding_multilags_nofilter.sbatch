@@ -14,36 +14,22 @@
 # =============================================================================
 # 20ms SLIDING WINDOW WORKFLOW - NO CORRECT FILTER (REPLICATES OLD BUG)
 #
-# Purpose: EXACTLY replicate the OLD buggy behavior where:
+# This REPLICATES the OLD buggy behavior where:
 #   1. All trials are kept in cache (correct + incorrect)
 #   2. lab_is_correct = True for ALL trials (the bug)
-#   3. Downstream (axes, qc, flow) uses ALL trials including incorrect
+#   3. Downstream (axes, qc, flow) uses ALL trials
 #
-# This uses:
-#   --no_correct_filter   -> keep all trials in cache
-#   --force_all_correct   -> set lab_is_correct = True for ALL trials
+# Cache parameters MATCH OLD exactly:
+#   STIM: t0=-0.25, t1=0.80, bin_ms=10
+#   SACC: t0=-0.40, t1=0.30, bin_ms=5
 #
-# KEY BEHAVIOR:
-#   - Caches contain ALL trials (same as before)
-#   - lab_is_correct = True for ALL (replicates the bug)
-#   - train_axes uses ALL trials (correct + incorrect)
-#   - qc_axes uses ALL trials
-#   - flow_session uses ALL trials
-#   - trial_onset will use ALL trials
+# ONLY DIFFERENCE FROM OLD: Uses --force_all_correct explicitly
 #
 # STIM C lags: 30ms, 40ms, 50ms, 60ms, 80ms, 100ms
 # SACC S lags: 30ms, 50ms, 60ms, 80ms
 #
-# Flow tags generated (with _nofilter suffix):
-#   - evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial
-#   - evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial
-#   - ... etc
-#   - evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial
-#   - ... etc
-#
 # Usage:
 #   sbatch jobs/peakbin_axes_qc_flow_array_20ms_sliding_multilags_nofilter.sbatch
-#   sbatch --export=DRY_RUN=1 --array=1 jobs/peakbin_axes_qc_flow_array_20ms_sliding_multilags_nofilter.sbatch
 # =============================================================================
 
 set -euo pipefail
@@ -107,9 +93,10 @@ mkdir -p "$OUT_ROOT"
 # Allow local dry-run (no SLURM env)
 TASK_ID="${SLURM_ARRAY_TASK_ID:-1}"
 
-# Build sid_list.txt if missing (from main out/stim directory)
+# Build sid_list.txt if missing
 if [[ ! -f "$SID_LIST" ]]; then
-  ls -1 "$PROJECT/out/stim" | grep -E '^[0-9]{8}$' > "$SID_LIST"
+  ls -1 "$PROJECT/out/stim" | grep -E '^[0-9]{8}$' > "$SID_LIST" 2>/dev/null || \
+  ls -1 "$PAPER_DATA" | grep -E '^[0-9]{8}$' > "$SID_LIST"
 fi
 
 SID="$(sed -n "${TASK_ID}p" "$SID_LIST" || true)"
@@ -124,7 +111,7 @@ echo "[info] OUT_ROOT=$OUT_ROOT"
 echo "[info] MODE: NO CORRECT FILTER + FORCE ALL CORRECT (replicates OLD bug)"
 echo "[info] DRY_RUN=$DRY_RUN CONTINUE_ON_ERROR=$CONTINUE_ON_ERROR"
 
-# ------------ Shared analysis knobs ------------
+# ------------ Shared analysis knobs (MATCHING OLD) ------------
 ORI_STIM="vertical"
 ORI_SACC="horizontal"
 PT_MIN=200
@@ -178,38 +165,43 @@ CGRID_ARGS=()
 for C in "${C_GRID[@]}"; do CGRID_ARGS+=("$C"); done
 
 # ======================================================================================
-# STEP 0: Build caches with ALL trials and lab_is_correct = True for all
-# This replicates the OLD bug where incorrect trials were included
+# STEP 0: Build caches (REPLICATES OLD BUG)
+# Cache parameters MATCH OLD exactly:
+#   STIM: t0=-0.25, t1=0.80, bin_ms=10
+#   SACC: t0=-0.40, t1=0.30, bin_ms=5
+# Plus: --no_correct_filter --force_all_correct to replicate bug
 # ======================================================================================
 echo ""
 echo "==================== BUILD CACHES (REPLICATE OLD BUG) ===================="
 echo "Using --no_correct_filter --force_all_correct"
-echo "  - All trials kept in cache"
-echo "  - lab_is_correct = True for ALL trials (the bug)"
+echo "STIM: t0=-0.25, t1=0.80, bin_ms=10 (matching OLD)"
+echo "SACC: t0=-0.40, t1=0.30, bin_ms=5 (matching OLD)"
 
-# Build STIM caches - keep all trials, force lab_is_correct=True
-run_step "Build STIM caches (all trials, lab_is_correct=True)" \
+# Build STIM caches - ALL TRIALS, lab_is_correct=True for all
+run_step "Build STIM caches (all trials, lab_is_correct=True, OLD params)" \
   python cli/build_cache.py \
     --root "$PAPER_DATA" \
     --out_root "$OUT_ROOT" \
     --align stim \
     --sid "$SID" \
+    --stim_t0 -0.25 \
+    --stim_bin_ms 10 \
     --no_correct_filter \
     --force_all_correct
 
-# Build SACC caches - keep all trials, force lab_is_correct=True
-run_step "Build SACC caches (all trials, lab_is_correct=True)" \
+# Build SACC caches - ALL TRIALS, lab_is_correct=True for all
+run_step "Build SACC caches (all trials, lab_is_correct=True, OLD params)" \
   python cli/build_cache.py \
     --root "$PAPER_DATA" \
     --out_root "$OUT_ROOT" \
     --align sacc \
     --sid "$SID" \
+    --sacc_t1 0.30 \
     --no_correct_filter \
     --force_all_correct
 
 # ======================================================================================
 # STIM: train axes → QC (once), then flow(C) for ALL lags
-# All steps now use ALL trials (correct + incorrect) because lab_is_correct=True
 # ======================================================================================
 if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
 
@@ -248,9 +240,6 @@ if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
       --sliding_window_ms "$WINDOW_MS" \
       --sliding_step_ms "$STEP_MS"
 
-  # ====================================================================================
-  # STIM: flow(C) for EACH lag value - uses ALL trials
-  # ====================================================================================
   for LAG in "${STIM_LAGS[@]}"; do
     FLOW_TAG_STIM_C="evoked_peakbin_stimC_${ORI_STIM}_lag${LAG}ms_20mssw_nofilter"
     
@@ -287,7 +276,6 @@ fi
 
 # ======================================================================================
 # SACC: train axes → QC (once), then flow(S) for ALL lags
-# All steps now use ALL trials (correct + incorrect)
 # ======================================================================================
 if [[ -d "$OUT_ROOT/sacc/$SID/caches" ]]; then
 
@@ -325,9 +313,6 @@ if [[ -d "$OUT_ROOT/sacc/$SID/caches" ]]; then
       --sliding_window_ms "$WINDOW_MS" \
       --sliding_step_ms "$STEP_MS"
 
-  # ====================================================================================
-  # SACC: flow(S) for EACH lag value - uses ALL trials
-  # ====================================================================================
   for LAG in "${SACC_LAGS[@]}"; do
     FLOW_TAG_SACC_S="evoked_peakbin_saccS_${ORI_SACC}_lag${LAG}ms_20mssw_nofilter"
     
@@ -364,28 +349,6 @@ fi
 
 echo ""
 echo "[done] 20ms sliding window peakbin MULTI-LAG (NO CORRECT FILTER) complete for SID=$SID"
-echo ""
 echo "============================================================"
-echo "NO CORRECT FILTER workflow completed (REPLICATES OLD BUG)."
-echo ""
-echo "KEY: This replicates the old bug where:"
-echo "  - All trials are kept (correct + incorrect)"
-echo "  - lab_is_correct = True for ALL trials"
-echo "  - ALL downstream steps use ALL trials"
-echo ""
-echo "Results stored in: $OUT_ROOT"
-echo ""
-echo "Flow tags generated (with _nofilter suffix):"
-echo ""
-echo "STIM C lags:"
-for LAG in "${STIM_LAGS[@]}"; do
-  echo "  - evoked_peakbin_stimC_${ORI_STIM}_lag${LAG}ms_20mssw_nofilter-none-trial"
-done
-echo ""
-echo "SACC S lags:"
-for LAG in "${SACC_LAGS[@]}"; do
-  echo "  - evoked_peakbin_saccS_${ORI_SACC}_lag${LAG}ms_20mssw_nofilter-none-trial"
-done
-echo ""
-echo "Compare with out/ (correct-only) to see impact of the bug."
+echo "Results should MATCH paper_project_final_old/"
 echo "============================================================"
