@@ -55,46 +55,46 @@
   "per_area_results": {
     "MFEF": {
       "winC_selected": [
-        0.25999999999999995,
-        0.30999999999999994
+        0.27999999999999997,
+        0.32999999999999996
       ],
-      "winC_cv_best": 0.9630681818181819,
-      "winC_best_param": 10.0,
-      "winC_peak_time_ms": 280.0000011920929,
-      "winC_peak_auc": 0.9630681818181819,
-      "winC_mean_bin_auc": 0.9543517561983471,
-      "winC_cv_auc_original": 0.9960526315789473,
+      "winC_cv_best": 0.9645013281815986,
+      "winC_best_param": 0.3,
+      "winC_peak_time_ms": 299.99999701976776,
+      "winC_peak_auc": 0.9645013281815986,
+      "winC_mean_bin_auc": 0.9444176124929565,
+      "winC_cv_auc_original": 0.9931500000000002,
       "winR_selected": [
-        0.1,
-        0.35
+        0.3,
+        0.5
       ],
-      "winR_cv_best": 0.6589912280701754,
-      "sC_auc": 0.9630681818181819,
-      "n_trials_C": 217
+      "winR_cv_best": 0.6260476190476192,
+      "sC_auc": 0.9645013281815986,
+      "n_trials_C": 224
     },
     "MLIP": {
       "winC_selected": [
         0.4400000000000001,
         0.4900000000000001
       ],
-      "winC_cv_best": 0.831525482093664,
-      "winC_best_param": 1.0,
-      "winC_peak_time_ms": 449.99999552965164,
-      "winC_peak_auc": 0.831525482093664,
-      "winC_mean_bin_auc": 0.8102617079889807,
-      "winC_cv_auc_original": 0.9041491228070176,
+      "winC_cv_best": 0.841825645979232,
+      "winC_best_param": 0.3,
+      "winC_peak_time_ms": 450.00000298023224,
+      "winC_peak_auc": 0.841825645979232,
+      "winC_mean_bin_auc": 0.8098889157208404,
+      "winC_cv_auc_original": 0.9004968253968253,
       "winR_selected": [
-        0.12000000000000001,
-        0.27
+        0.14,
+        0.29000000000000004
       ],
-      "winR_cv_best": 0.5256929824561404,
-      "sC_auc": 0.831525482093664,
-      "n_trials_C": 217
+      "winR_cv_best": 0.5312380952380953,
+      "sC_auc": 0.841825645979232,
+      "n_trials_C": 224
     }
   },
   "rebin_factor": null,
   "sliding_window_ms": 20.0,
   "sliding_step_ms": 10.0,
-  "sliding_window_bins": 4,
-  "sliding_step_bins": 2
+  "sliding_window_bins": 2,
+  "sliding_step_bins": 1
 }

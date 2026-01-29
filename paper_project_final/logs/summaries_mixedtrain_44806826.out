@@ -1,0 +1,994 @@
+============================================================
+MIXED TRAINING SUMMARIES
+Axes trained on: unfiltered (all trials)
+QC/Flow run on:  correct-only
+Results in:      out/
+============================================================
+
+============================================================
+Step 1: Trial onset comprehensive analysis (STIM, mixedtrain)
+============================================================
+[info] Processing 23 sessions
+[info] Alignments: ['stim']
+
+============================================================
+[align=stim] Processing alignment
+============================================================
+[align=stim] sliding window=20.0ms (2 bins), step=10.0ms (1 bins)
+[align=stim] pt_min_ms=200.0, axes_tag=axes_peakbin_stimCR-stim-vertical-20mssw_mixedtrain
+[align=stim] qc_root=out_nofilter (separate from out_root)
+[align=stim] qc_tag=axes_peakbin_stimCR-stim-vertical-20mssw_nofilter (separate from axes_tag)
+[align=stim] baseline=(-0.2, 0.0), search=(0.0, 0.5)
+[align=stim] orientation=vertical
+[align=stim] features=['C', 'R']
+[align=stim] category (C) qc_threshold=0.65
+[align=stim] direction (R) qc_threshold=0.6
+[20200926] SC-LIP C: 16 trials
+[qc-filter] 20200929: MSC fails QC for category (metric=auc_C, threshold=0.65), skipping MSC-MLIP pair
+[20201001] SC-LIP C: 42 trials
+[20201004] SC-LIP C: 27 trials
+[20201204] SC-LIP C: 32 trials
+[20201211] SC-LIP C: 102 trials
+[20201216] SC-LIP C: 24 trials
+[20231025] SC-LIP C: 20 trials
+[20231109] SC-LIP C: 19 trials
+[20231121] SC-LIP C: 17 trials
+[20231123] SC-LIP C: 27 trials
+[20200926] SC-FEF C: 21 trials
+[qc-filter] 20200929: MSC fails QC for category (metric=auc_C, threshold=0.65), skipping MSC-MFEF pair
+[20201001] SC-FEF C: 110 trials
+[20201004] SC-FEF C: 42 trials
+[20201204] SC-FEF C: 52 trials
+[20201211] SC-FEF C: 108 trials
+[20201216] SC-FEF C: 23 trials
+[20231025] SC-FEF C: 23 trials
+[20231109] SC-FEF C: 32 trials
+[20231121] SC-FEF C: 30 trials
+[20231123] SC-FEF C: 31 trials
+[20231205] SC-FEF C: 24 trials
+[20200328] FEF-LIP C: 67 trials
+[20200401] FEF-LIP C: 48 trials
+[20200402] FEF-LIP C: 72 trials
+[20200926] FEF-LIP C: 95 trials
+[20200929] FEF-LIP C: 94 trials
+[20201001] FEF-LIP C: 99 trials
+[20201004] FEF-LIP C: 103 trials
+[20201204] FEF-LIP C: 102 trials
+[20201211] FEF-LIP C: 93 trials
+[20201216] FEF-LIP C: 106 trials
+[20230622] FEF-LIP C: 24 trials
+[20230627] FEF-LIP C: 35 trials
+[20230705] FEF-LIP C: 38 trials
+[20230707] FEF-LIP C: 12 trials
+[20230710] FEF-LIP C: 62 trials
+[20231025] FEF-LIP C: 13 trials
+[20231109] FEF-LIP C: 53 trials
+[20231121] FEF-LIP C: 27 trials
+[20231123] FEF-LIP C: 58 trials
+[qc-filter] 20200926: MSC, MLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MLIP pair
+[qc-filter] 20200929: MSC, MLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MLIP pair
+[qc-filter] 20201001: MSC fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MLIP pair
+[qc-filter] 20201004: MSC fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MLIP pair
+[qc-filter] 20201204: MSC fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MLIP pair
+[qc-filter] 20201211: MSC fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MLIP pair
+[qc-filter] 20201216: MSC fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MLIP pair
+[qc-filter] 20231025: SSC, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SSC-SLIP pair
+[qc-filter] 20231109: SSC, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SSC-SLIP pair
+[qc-filter] 20231121: SSC, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SSC-SLIP pair
+[qc-filter] 20231123: SSC, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SSC-SLIP pair
+[qc-filter] 20200926: MSC fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MFEF pair
+[qc-filter] 20200929: MSC, MFEF fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MFEF pair
+[qc-filter] 20201001: MSC fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MFEF pair
+[qc-filter] 20201004: MSC fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MFEF pair
+[qc-filter] 20201204: MSC fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MFEF pair
+[qc-filter] 20201211: MSC fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MFEF pair
+[qc-filter] 20201216: MSC, MFEF fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MSC-MFEF pair
+[qc-filter] 20231025: SSC, SFEF fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SSC-SFEF pair
+[qc-filter] 20231109: SSC, SFEF fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SSC-SFEF pair
+[qc-filter] 20231121: SSC, SFEF fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SSC-SFEF pair
+[qc-filter] 20231123: SSC, SFEF fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SSC-SFEF pair
+[qc-filter] 20200327: MFEF fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MFEF-MLIP pair
+[qc-filter] 20200328: MFEF fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MFEF-MLIP pair
+[qc-filter] 20200401: MLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MFEF-MLIP pair
+[qc-filter] 20200402: MLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MFEF-MLIP pair
+[qc-filter] 20200926: MLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MFEF-MLIP pair
+[qc-filter] 20200929: MFEF, MLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MFEF-MLIP pair
+[20201001] FEF-LIP R: 32 trials
+[20201204] FEF-LIP R: 21 trials
+[20201211] FEF-LIP R: 27 trials
+[qc-filter] 20201216: MFEF fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping MFEF-MLIP pair
+[qc-filter] 20230622: SFEF, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SFEF-SLIP pair
+[qc-filter] 20230627: SFEF, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SFEF-SLIP pair
+[qc-filter] 20230705: SFEF, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SFEF-SLIP pair
+[qc-filter] 20230707: SFEF, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SFEF-SLIP pair
+[qc-filter] 20230710: SFEF, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SFEF-SLIP pair
+[qc-filter] 20231025: SFEF, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SFEF-SLIP pair
+[qc-filter] 20231109: SFEF, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SFEF-SLIP pair
+[qc-filter] 20231121: SFEF, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SFEF-SLIP pair
+[qc-filter] 20231123: SFEF, SLIP fails QC for direction (metric=acc_R_macro, threshold=0.6), skipping SFEF-SLIP pair
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/config.json
+[M] SC-LIP category: pooled mean(dt)=-9.38 ms (N_trials=243), p(two)=0.3132, p(later)=0.8422
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_LIP_category_summary.png, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_LIP_category_summary.pdf, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_LIP_category_summary.svg
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_LIP_category_summary.npz
+[S] SC-LIP category: pooled mean(dt)=10.72 ms (N_trials=83), p(two)=0.5588, p(later)=0.2773
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_LIP_category_summary.png, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_LIP_category_summary.pdf, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_LIP_category_summary.svg
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_LIP_category_summary.npz
+[M] SC-FEF category: pooled mean(dt)=-83.74 ms (N_trials=356), p(two)=5e-05, p(later)=1
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_FEF_category_summary.png, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_FEF_category_summary.pdf, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_FEF_category_summary.svg
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_FEF_category_summary.npz
+[S] SC-FEF category: pooled mean(dt)=-42.57 ms (N_trials=140), p(two)=0.0004, p(later)=0.9999
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_FEF_category_summary.png, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_FEF_category_summary.pdf, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_FEF_category_summary.svg
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_FEF_category_summary.npz
+[M] FEF-LIP category: pooled mean(dt)=76.19 ms (N_trials=879), p(two)=5e-05, p(later)=5e-05
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_category_summary.png, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_category_summary.pdf, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_category_summary.svg
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_category_summary.npz
+[S] FEF-LIP category: pooled mean(dt)=35.09 ms (N_trials=322), p(two)=5e-05, p(later)=5e-05
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_category_summary.png, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_category_summary.pdf, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_category_summary.svg
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_category_summary.npz
+[ok] wrote combined out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_SC_combined_category_summary.png
+[ok] wrote combined out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_SC_combined_category_summary.npz
+[ok] wrote combined out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_SC_combined_category_summary.png
+[ok] wrote combined out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_SC_combined_category_summary.npz
+[M] FEF-LIP direction: pooled mean(dt)=32.75 ms (N_trials=80), p(two)=0.0901, p(later)=0.04745
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_direction_summary.png, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_direction_summary.pdf, out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_direction_summary.svg
+[ok] wrote out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_direction_summary.npz
+[ok] wrote combined out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_SC_combined_direction_summary.png
+[ok] wrote combined out/stim/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_SC_combined_direction_summary.npz
+
+============================================================
+Step 2: Trial onset comprehensive analysis (SACC, mixedtrain)
+============================================================
+[info] Processing 23 sessions
+[info] Alignments: ['sacc']
+
+============================================================
+[align=sacc] Processing alignment
+============================================================
+[align=sacc] sliding window=20.0ms (4 bins), step=10.0ms (2 bins)
+[align=sacc] pt_min_ms=200.0, axes_tag=axes_peakbin_saccS-sacc-horizontal-20mssw_mixedtrain
+[align=sacc] qc_root=out_nofilter (separate from out_root)
+[align=sacc] qc_tag=axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter (separate from axes_tag)
+[align=sacc] baseline=(-0.35, -0.2), search=(-0.2, 0.2)
+[align=sacc] orientation=horizontal
+[align=sacc] features=['S']
+[align=sacc] saccade (S) qc_threshold=0.65
+[20200926] SC-LIP S: 28 trials
+[20200929] SC-LIP S: 26 trials
+[20201001] SC-LIP S: 21 trials
+[20201004] SC-LIP S: 30 trials
+[20201204] SC-LIP S: 66 trials
+[20201211] SC-LIP S: 136 trials
+[20201216] SC-LIP S: 21 trials
+[20231025] SC-LIP S: 109 trials
+[20231109] SC-LIP S: 75 trials
+[20231123] SC-LIP S: 73 trials
+[qc-filter] 20231130: SSC, SLIP fails QC for saccade (metric=auc_S_inv, threshold=0.65), skipping SSC-SLIP pair
+[20200926] SC-FEF S: 45 trials
+[20200929] SC-FEF S: 49 trials
+[20201001] SC-FEF S: 35 trials
+[20201004] SC-FEF S: 45 trials
+[20201204] SC-FEF S: 67 trials
+[20201211] SC-FEF S: 156 trials
+[20201216] SC-FEF S: 36 trials
+[20231025] SC-FEF S: 22 trials
+[20231109] SC-FEF S: 41 trials
+[20231121] SC-FEF S: 29 trials
+[20231123] SC-FEF S: 39 trials
+[qc-filter] 20231130: SSC, SFEF fails QC for saccade (metric=auc_S_inv, threshold=0.65), skipping SSC-SFEF pair
+[20200327] FEF-LIP S: 12 trials
+[20200328] FEF-LIP S: 65 trials
+[20200401] FEF-LIP S: 62 trials
+[20200402] FEF-LIP S: 79 trials
+[20200926] FEF-LIP S: 128 trials
+[20200929] FEF-LIP S: 141 trials
+[20201001] FEF-LIP S: 109 trials
+[20201004] FEF-LIP S: 169 trials
+[20201204] FEF-LIP S: 190 trials
+[20201211] FEF-LIP S: 150 trials
+[20201216] FEF-LIP S: 122 trials
+[20230622] FEF-LIP S: 75 trials
+[20230627] FEF-LIP S: 33 trials
+[20230705] FEF-LIP S: 69 trials
+[20230707] FEF-LIP S: 81 trials
+[20230710] FEF-LIP S: 101 trials
+[20231025] FEF-LIP S: 21 trials
+[20231109] FEF-LIP S: 17 trials
+[20231121] FEF-LIP S: 18 trials
+[20231123] FEF-LIP S: 41 trials
+[qc-filter] 20231130: SFEF, SLIP fails QC for saccade (metric=auc_S_inv, threshold=0.65), skipping SFEF-SLIP pair
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/config.json
+[M] SC-LIP saccade: pooled mean(dt)=-3.66 ms (N_trials=328), p(two)=0.562, p(later)=0.7199
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_LIP_saccade_summary.png, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_LIP_saccade_summary.pdf, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_LIP_saccade_summary.svg
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_LIP_saccade_summary.npz
+[S] SC-LIP saccade: pooled mean(dt)=56.65 ms (N_trials=257), p(two)=5e-05, p(later)=5e-05
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_LIP_saccade_summary.png, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_LIP_saccade_summary.pdf, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_LIP_saccade_summary.svg
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_LIP_saccade_summary.npz
+[M] SC-FEF saccade: pooled mean(dt)=-50.76 ms (N_trials=433), p(two)=5e-05, p(later)=1
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_FEF_saccade_summary.png, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_FEF_saccade_summary.pdf, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_FEF_saccade_summary.svg
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_SC_vs_FEF_saccade_summary.npz
+[S] SC-FEF saccade: pooled mean(dt)=30.61 ms (N_trials=131), p(two)=0.0013, p(later)=0.00065
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_FEF_saccade_summary.png, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_FEF_saccade_summary.pdf, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_FEF_saccade_summary.svg
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_SC_vs_FEF_saccade_summary.npz
+[M] FEF-LIP saccade: pooled mean(dt)=62.26 ms (N_trials=1227), p(two)=5e-05, p(later)=5e-05
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_saccade_summary.png, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_saccade_summary.pdf, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_saccade_summary.svg
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_saccade_summary.npz
+[S] FEF-LIP saccade: pooled mean(dt)=35.11 ms (N_trials=456), p(two)=5e-05, p(later)=5e-05
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_saccade_summary.png, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_saccade_summary.pdf, out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_saccade_summary.svg
+[ok] wrote out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_saccade_summary.npz
+[ok] wrote combined out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_SC_combined_saccade_summary.png
+[ok] wrote combined out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_M_FEF_vs_LIP_SC_combined_saccade_summary.npz
+[ok] wrote combined out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_SC_combined_saccade_summary.png
+[ok] wrote combined out/sacc/trialtiming/trialonset_comprehensive_20mssw_mixedtrain/monkey_S_FEF_vs_LIP_SC_combined_saccade_summary.npz
+
+============================================================
+Step 3: Summarize flow across sessions for ALL STIM lags (mixedtrain)
+============================================================
+
+[STIM] Summarizing tag: evoked_peakbin_stimC_vertical_lag30ms_20mssw_mixedtrain-none-trial
+[info] align=stim, sessions=23, tags=['evoked_peakbin_stimC_vertical_lag30ms_20mssw_mixedtrain-none-trial']
+[tag=evoked_peakbin_stimC_vertical_lag30ms_20mssw_mixedtrain-none-trial] features: ['C']
+
+[tag=evoked_peakbin_stimC_vertical_lag30ms_20mssw_mixedtrain-none-trial] align=stim, feature=C
+[qc] Using explicit QC tag: axes_peakbin_stimCR-stim-vertical-20mssw_nofilter
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=257, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 217-292, sum(N)=2835, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag30ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MLIP, monkey=M, N=11
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MFEF-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag30ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MSC, monkey=M, N=6
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MLIP-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag30ms_20mssw_mixedtrain-none-trial, feature=C, pair=MLIP-MSC, monkey=M, N=6
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=400, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=4000, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 12/12 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag30ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SLIP, monkey=S, N=12
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag30ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SSC, monkey=S, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag30ms_20mssw_mixedtrain-none-trial, feature=C, pair=SLIP-SSC, monkey=S, N=7
+
+[done] summary + figures completed.
+
+[STIM] Summarizing tag: evoked_peakbin_stimC_vertical_lag40ms_20mssw_mixedtrain-none-trial
+[info] align=stim, sessions=23, tags=['evoked_peakbin_stimC_vertical_lag40ms_20mssw_mixedtrain-none-trial']
+[tag=evoked_peakbin_stimC_vertical_lag40ms_20mssw_mixedtrain-none-trial] features: ['C']
+
+[tag=evoked_peakbin_stimC_vertical_lag40ms_20mssw_mixedtrain-none-trial] align=stim, feature=C
+[qc] Using explicit QC tag: axes_peakbin_stimCR-stim-vertical-20mssw_nofilter
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=257, K_A=1, K_B=1, L=4, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 217-292, sum(N)=2835, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag40ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MLIP, monkey=M, N=11
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MFEF-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=4, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag40ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MSC, monkey=M, N=6
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MLIP-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=4, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag40ms_20mssw_mixedtrain-none-trial, feature=C, pair=MLIP-MSC, monkey=M, N=6
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=400, K_A=1, K_B=1, L=4, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=4000, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 12/12 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag40ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SLIP, monkey=S, N=12
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=4, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag40ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SSC, monkey=S, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=4, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag40ms_20mssw_mixedtrain-none-trial, feature=C, pair=SLIP-SSC, monkey=S, N=7
+
+[done] summary + figures completed.
+
+[STIM] Summarizing tag: evoked_peakbin_stimC_vertical_lag50ms_20mssw_mixedtrain-none-trial
+[info] align=stim, sessions=23, tags=['evoked_peakbin_stimC_vertical_lag50ms_20mssw_mixedtrain-none-trial']
+[tag=evoked_peakbin_stimC_vertical_lag50ms_20mssw_mixedtrain-none-trial] features: ['C']
+
+[tag=evoked_peakbin_stimC_vertical_lag50ms_20mssw_mixedtrain-none-trial] align=stim, feature=C
+[qc] Using explicit QC tag: axes_peakbin_stimCR-stim-vertical-20mssw_nofilter
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=257, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 217-292, sum(N)=2835, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag50ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MLIP, monkey=M, N=11
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MFEF-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag50ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MSC, monkey=M, N=6
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MLIP-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag50ms_20mssw_mixedtrain-none-trial, feature=C, pair=MLIP-MSC, monkey=M, N=6
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=400, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=4000, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 12/12 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag50ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SLIP, monkey=S, N=12
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag50ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SSC, monkey=S, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag50ms_20mssw_mixedtrain-none-trial, feature=C, pair=SLIP-SSC, monkey=S, N=7
+
+[done] summary + figures completed.
+
+[STIM] Summarizing tag: evoked_peakbin_stimC_vertical_lag60ms_20mssw_mixedtrain-none-trial
+[info] align=stim, sessions=23, tags=['evoked_peakbin_stimC_vertical_lag60ms_20mssw_mixedtrain-none-trial']
+[tag=evoked_peakbin_stimC_vertical_lag60ms_20mssw_mixedtrain-none-trial] features: ['C']
+
+[tag=evoked_peakbin_stimC_vertical_lag60ms_20mssw_mixedtrain-none-trial] align=stim, feature=C
+[qc] Using explicit QC tag: axes_peakbin_stimCR-stim-vertical-20mssw_nofilter
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=257, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 217-292, sum(N)=2835, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag60ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MLIP, monkey=M, N=11
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MFEF-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag60ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MSC, monkey=M, N=6
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MLIP-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag60ms_20mssw_mixedtrain-none-trial, feature=C, pair=MLIP-MSC, monkey=M, N=6
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=400, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=4000, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 12/12 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag60ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SLIP, monkey=S, N=12
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag60ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SSC, monkey=S, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag60ms_20mssw_mixedtrain-none-trial, feature=C, pair=SLIP-SSC, monkey=S, N=7
+
+[done] summary + figures completed.
+
+[STIM] Summarizing tag: evoked_peakbin_stimC_vertical_lag80ms_20mssw_mixedtrain-none-trial
+[info] align=stim, sessions=23, tags=['evoked_peakbin_stimC_vertical_lag80ms_20mssw_mixedtrain-none-trial']
+[tag=evoked_peakbin_stimC_vertical_lag80ms_20mssw_mixedtrain-none-trial] features: ['C']
+
+[tag=evoked_peakbin_stimC_vertical_lag80ms_20mssw_mixedtrain-none-trial] align=stim, feature=C
+[qc] Using explicit QC tag: axes_peakbin_stimCR-stim-vertical-20mssw_nofilter
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=257, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 217-292, sum(N)=2835, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag80ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MLIP, monkey=M, N=11
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MFEF-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag80ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MSC, monkey=M, N=6
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MLIP-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag80ms_20mssw_mixedtrain-none-trial, feature=C, pair=MLIP-MSC, monkey=M, N=6
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=400, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=4000, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 12/12 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag80ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SLIP, monkey=S, N=12
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag80ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SSC, monkey=S, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag80ms_20mssw_mixedtrain-none-trial, feature=C, pair=SLIP-SSC, monkey=S, N=7
+
+[done] summary + figures completed.
+
+[STIM] Summarizing tag: evoked_peakbin_stimC_vertical_lag100ms_20mssw_mixedtrain-none-trial
+[info] align=stim, sessions=23, tags=['evoked_peakbin_stimC_vertical_lag100ms_20mssw_mixedtrain-none-trial']
+[tag=evoked_peakbin_stimC_vertical_lag100ms_20mssw_mixedtrain-none-trial] features: ['C']
+
+[tag=evoked_peakbin_stimC_vertical_lag100ms_20mssw_mixedtrain-none-trial] align=stim, feature=C
+[qc] Using explicit QC tag: axes_peakbin_stimCR-stim-vertical-20mssw_nofilter
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=257, K_A=1, K_B=1, L=10, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 217-292, sum(N)=2835, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag100ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MLIP, monkey=M, N=11
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MFEF-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=10, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag100ms_20mssw_mixedtrain-none-trial, feature=C, pair=MFEF-MSC, monkey=M, N=6
+[qc-filter] 20200929: MSC fails QC (threshold=0.65), skipping MLIP-MSC pair
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=253, K_A=1, K_B=1, L=10, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 229-292, sum(N)=1543, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag100ms_20mssw_mixedtrain-none-trial, feature=C, pair=MLIP-MSC, monkey=M, N=6
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=400, K_A=1, K_B=1, L=10, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=4000, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 12/12 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag100ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SLIP, monkey=S, N=12
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=10, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag100ms_20mssw_mixedtrain-none-trial, feature=C, pair=SFEF-SSC, monkey=S, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=365, K_A=1, K_B=1, L=10, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 62-488, sum(N)=1937, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=stim, tag=evoked_peakbin_stimC_vertical_lag100ms_20mssw_mixedtrain-none-trial, feature=C, pair=SLIP-SSC, monkey=S, N=7
+
+[done] summary + figures completed.
+
+============================================================
+Step 4: Summarize flow across sessions for ALL SACC lags (mixedtrain)
+============================================================
+
+[SACC] Summarizing tag: evoked_peakbin_saccS_horizontal_lag30ms_20mssw_mixedtrain-none-trial
+[info] align=sacc, sessions=23, tags=['evoked_peakbin_saccS_horizontal_lag30ms_20mssw_mixedtrain-none-trial']
+[tag=evoked_peakbin_saccS_horizontal_lag30ms_20mssw_mixedtrain-none-trial] features: ['S']
+
+[tag=evoked_peakbin_saccS_horizontal_lag30ms_20mssw_mixedtrain-none-trial] align=sacc, feature=S
+[qc] Using explicit QC tag: axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=264, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 237-302, sum(N)=2957, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag30ms_20mssw_mixedtrain-none-trial, feature=S, pair=MFEF-MLIP, monkey=M, N=11
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=285, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 251-302, sum(N)=1939, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag30ms_20mssw_mixedtrain-none-trial, feature=S, pair=MFEF-MSC, monkey=M, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=285, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 251-302, sum(N)=1939, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag30ms_20mssw_mixedtrain-none-trial, feature=S, pair=MLIP-MSC, monkey=M, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=308, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-493, sum(N)=3263, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag30ms_20mssw_mixedtrain-none-trial, feature=S, pair=SFEF-SLIP, monkey=S, N=11
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=239, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-308, sum(N)=1107, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag30ms_20mssw_mixedtrain-none-trial, feature=S, pair=SFEF-SSC, monkey=S, N=6
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=239, K_A=1, K_B=1, L=3, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-308, sum(N)=1107, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag30ms_20mssw_mixedtrain-none-trial, feature=S, pair=SLIP-SSC, monkey=S, N=6
+
+[done] summary + figures completed.
+
+[SACC] Summarizing tag: evoked_peakbin_saccS_horizontal_lag50ms_20mssw_mixedtrain-none-trial
+[info] align=sacc, sessions=23, tags=['evoked_peakbin_saccS_horizontal_lag50ms_20mssw_mixedtrain-none-trial']
+[tag=evoked_peakbin_saccS_horizontal_lag50ms_20mssw_mixedtrain-none-trial] features: ['S']
+
+[tag=evoked_peakbin_saccS_horizontal_lag50ms_20mssw_mixedtrain-none-trial] align=sacc, feature=S
+[qc] Using explicit QC tag: axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=264, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 237-302, sum(N)=2957, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag50ms_20mssw_mixedtrain-none-trial, feature=S, pair=MFEF-MLIP, monkey=M, N=11
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=285, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 251-302, sum(N)=1939, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag50ms_20mssw_mixedtrain-none-trial, feature=S, pair=MFEF-MSC, monkey=M, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=285, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 251-302, sum(N)=1939, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag50ms_20mssw_mixedtrain-none-trial, feature=S, pair=MLIP-MSC, monkey=M, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=308, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-493, sum(N)=3263, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag50ms_20mssw_mixedtrain-none-trial, feature=S, pair=SFEF-SLIP, monkey=S, N=11
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=239, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-308, sum(N)=1107, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag50ms_20mssw_mixedtrain-none-trial, feature=S, pair=SFEF-SSC, monkey=S, N=6
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=239, K_A=1, K_B=1, L=5, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-308, sum(N)=1107, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag50ms_20mssw_mixedtrain-none-trial, feature=S, pair=SLIP-SSC, monkey=S, N=6
+
+[done] summary + figures completed.
+
+[SACC] Summarizing tag: evoked_peakbin_saccS_horizontal_lag60ms_20mssw_mixedtrain-none-trial
+[info] align=sacc, sessions=23, tags=['evoked_peakbin_saccS_horizontal_lag60ms_20mssw_mixedtrain-none-trial']
+[tag=evoked_peakbin_saccS_horizontal_lag60ms_20mssw_mixedtrain-none-trial] features: ['S']
+
+[tag=evoked_peakbin_saccS_horizontal_lag60ms_20mssw_mixedtrain-none-trial] align=sacc, feature=S
+[qc] Using explicit QC tag: axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=264, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 237-302, sum(N)=2957, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag60ms_20mssw_mixedtrain-none-trial, feature=S, pair=MFEF-MLIP, monkey=M, N=11
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=285, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 251-302, sum(N)=1939, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag60ms_20mssw_mixedtrain-none-trial, feature=S, pair=MFEF-MSC, monkey=M, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=285, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 251-302, sum(N)=1939, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag60ms_20mssw_mixedtrain-none-trial, feature=S, pair=MLIP-MSC, monkey=M, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=308, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-493, sum(N)=3263, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag60ms_20mssw_mixedtrain-none-trial, feature=S, pair=SFEF-SLIP, monkey=S, N=11
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=239, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-308, sum(N)=1107, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag60ms_20mssw_mixedtrain-none-trial, feature=S, pair=SFEF-SSC, monkey=S, N=6
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=239, K_A=1, K_B=1, L=6, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-308, sum(N)=1107, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag60ms_20mssw_mixedtrain-none-trial, feature=S, pair=SLIP-SSC, monkey=S, N=6
+
+[done] summary + figures completed.
+
+[SACC] Summarizing tag: evoked_peakbin_saccS_horizontal_lag80ms_20mssw_mixedtrain-none-trial
+[info] align=sacc, sessions=23, tags=['evoked_peakbin_saccS_horizontal_lag80ms_20mssw_mixedtrain-none-trial']
+[tag=evoked_peakbin_saccS_horizontal_lag80ms_20mssw_mixedtrain-none-trial] features: ['S']
+
+[tag=evoked_peakbin_saccS_horizontal_lag80ms_20mssw_mixedtrain-none-trial] align=sacc, feature=S
+[qc] Using explicit QC tag: axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=264, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 237-302, sum(N)=2957, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag80ms_20mssw_mixedtrain-none-trial, feature=S, pair=MFEF-MLIP, monkey=M, N=11
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=285, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 251-302, sum(N)=1939, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag80ms_20mssw_mixedtrain-none-trial, feature=S, pair=MFEF-MSC, monkey=M, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=285, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 251-302, sum(N)=1939, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 7/7 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag80ms_20mssw_mixedtrain-none-trial, feature=S, pair=MLIP-MSC, monkey=M, N=7
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=308, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-493, sum(N)=3263, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 11/11 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag80ms_20mssw_mixedtrain-none-trial, feature=S, pair=SFEF-SLIP, monkey=S, N=11
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=239, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-308, sum(N)=1107, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag80ms_20mssw_mixedtrain-none-trial, feature=S, pair=SFEF-SSC, monkey=S, N=6
+  [smooth] 20.0ms -> 2 bins (bin_size=10.0ms)
+  [Panel D] Per-session normalized, then averaged. Median stats: N=239, K_A=1, K_B=1, L=8, smooth=2 bins (20.0ms)
+  [Panel D IV] Inverse-variance weighted (by N). N range: 16-308, sum(N)=1107, smooth=2 bins (20.0ms)
+  [Panel D IV p-value] Computed for 6/6 sessions with null samples, smooth=2 bins
+[summary] align=sacc, tag=evoked_peakbin_saccS_horizontal_lag80ms_20mssw_mixedtrain-none-trial, feature=S, pair=SLIP-SSC, monkey=S, N=6
+
+[done] summary + figures completed.
+
+============================================================
+Step 5: Plot QC paper figures (mixedtrain)
+============================================================
+[config] out_root: out
+[config] stim_qc_subdir: axes_peakbin_stimCR-stim-vertical-20mssw_mixedtrain
+[config] sacc_qc_subdir: axes_peakbin_saccS-sacc-horizontal-20mssw_mixedtrain
+[config] suffix: '_20mssw_mixedtrain'
+[config] smooth_ms: 20.0
+[config] qc_threshold: 0.65
+
+============================================================
+Monkey M: Stim Category AUC (Summary)
+============================================================
+  Found 11 sessions for monkey M
+  Loaded QC data from 11 sessions (after QC filter)
+    20200327: ['MFEF', 'MLIP']
+    20200328: ['MFEF', 'MLIP']
+    20200401: ['MFEF', 'MLIP']
+    20200402: ['MFEF', 'MLIP']
+    20200926: ['MFEF', 'MLIP']
+    20200929: ['MFEF', 'MLIP']
+    20201001: ['MFEF', 'MLIP']
+    20201004: ['MFEF', 'MLIP']
+    20201204: ['MFEF', 'MLIP']
+    20201211: ['MFEF', 'MLIP']
+    20201216: ['MFEF', 'MLIP']
+  Session ranking by peak auc_C:
+    20201001: peak=0.997, alpha=1.00
+    20201004: peak=0.997, alpha=0.93
+    20201204: peak=0.991, alpha=0.86
+    20200929: peak=0.989, alpha=0.79
+    20201216: peak=0.988, alpha=0.72
+    20201211: peak=0.984, alpha=0.65
+    20200402: peak=0.982, alpha=0.58
+    20200328: peak=0.975, alpha=0.51
+    20200926: peak=0.971, alpha=0.44
+    20200401: peak=0.960, alpha=0.37
+    20200327: peak=0.745, alpha=0.30
+Saved: out/paper_figures/qc/qc_stim_category_M_20mssw_mixedtrain_summary.pdf
+       out/paper_figures/qc/qc_stim_category_M_20mssw_mixedtrain_summary.png
+       out/paper_figures/qc/qc_stim_category_M_20mssw_mixedtrain_summary.svg
+       (11 sessions plotted)
+
+============================================================
+Monkey M: Stim Category AUC - FEF vs SC (Summary)
+============================================================
+    [qc-filter] 20200929/MSC: peak auc_C < 0.65, excluded
+  [qc-filter] Excluded 1 session-area pairs (threshold=0.65)
+  Loaded QC data from 11 sessions (FEF-SC, after QC filter)
+    20200327: ['MFEF']
+    20200328: ['MFEF']
+    20200401: ['MFEF']
+    20200402: ['MFEF']
+    20200926: ['MFEF', 'MSC']
+    20200929: ['MFEF']
+    20201001: ['MFEF', 'MSC']
+    20201004: ['MFEF', 'MSC']
+    20201204: ['MFEF', 'MSC']
+    20201211: ['MFEF', 'MSC']
+    20201216: ['MFEF', 'MSC']
+  Session ranking by peak auc_C:
+    20201001: peak=0.997, alpha=1.00
+    20201004: peak=0.997, alpha=0.93
+    20201204: peak=0.991, alpha=0.86
+    20200929: peak=0.989, alpha=0.79
+    20200402: peak=0.982, alpha=0.72
+    20201211: peak=0.978, alpha=0.65
+    20200926: peak=0.971, alpha=0.58
+    20201216: peak=0.971, alpha=0.51
+    20200328: peak=0.965, alpha=0.44
+    20200401: peak=0.960, alpha=0.37
+    20200327: peak=0.654, alpha=0.30
+Saved: out/paper_figures/qc/qc_stim_category_M_20mssw_mixedtrain_FEF_SC_summary.pdf
+       out/paper_figures/qc/qc_stim_category_M_20mssw_mixedtrain_FEF_SC_summary.png
+       out/paper_figures/qc/qc_stim_category_M_20mssw_mixedtrain_FEF_SC_summary.svg
+       (11 sessions plotted)
+
+============================================================
+Monkey M: Stim Category AUC - FEF-LIP-SC (Summary)
+============================================================
+    [qc-filter] 20200929/MSC: peak auc_C < 0.65, excluded
+  [qc-filter] Excluded 1 session-area pairs (threshold=0.65)
+  Loaded QC data from 11 sessions (FEF-LIP-SC, after QC filter)
+    20200327: ['MFEF', 'MLIP']
+    20200328: ['MFEF', 'MLIP']
+    20200401: ['MFEF', 'MLIP']
+    20200402: ['MFEF', 'MLIP']
+    20200926: ['MFEF', 'MLIP', 'MSC']
+    20200929: ['MFEF', 'MLIP']
+    20201001: ['MFEF', 'MLIP', 'MSC']
+    20201004: ['MFEF', 'MLIP', 'MSC']
+    20201204: ['MFEF', 'MLIP', 'MSC']
+    20201211: ['MFEF', 'MLIP', 'MSC']
+    20201216: ['MFEF', 'MLIP', 'MSC']
+  Session ranking by peak auc_C:
+    20201001: peak=0.997, alpha=1.00
+    20201004: peak=0.997, alpha=0.93
+    20201204: peak=0.991, alpha=0.86
+    20200929: peak=0.989, alpha=0.79
+    20201216: peak=0.988, alpha=0.72
+    20201211: peak=0.984, alpha=0.65
+    20200402: peak=0.982, alpha=0.58
+    20200328: peak=0.975, alpha=0.51
+    20200926: peak=0.971, alpha=0.44
+    20200401: peak=0.960, alpha=0.37
+    20200327: peak=0.745, alpha=0.30
+Saved: out/paper_figures/qc/qc_stim_category_M_20mssw_mixedtrain_FEF_LIP_SC_summary.pdf
+       out/paper_figures/qc/qc_stim_category_M_20mssw_mixedtrain_FEF_LIP_SC_summary.png
+       out/paper_figures/qc/qc_stim_category_M_20mssw_mixedtrain_FEF_LIP_SC_summary.svg
+       (11 sessions plotted)
+
+============================================================
+Monkey M: Saccade AUC (Summary)
+============================================================
+  Found 11 sessions for monkey M
+  Loaded QC data from 11 sessions (after QC filter)
+    20200327: ['MFEF', 'MLIP']
+    20200328: ['MFEF', 'MLIP']
+    20200401: ['MFEF', 'MLIP']
+    20200402: ['MFEF', 'MLIP']
+    20200926: ['MFEF', 'MLIP']
+    20200929: ['MFEF', 'MLIP']
+    20201001: ['MFEF', 'MLIP']
+    20201004: ['MFEF', 'MLIP']
+    20201204: ['MFEF', 'MLIP']
+    20201211: ['MFEF', 'MLIP']
+    20201216: ['MFEF', 'MLIP']
+  Using auc_S_inv (preferred for flow analysis)
+  Session ranking by peak auc_S_inv:
+    20200328: peak=1.000, alpha=0.72
+    20200929: peak=1.000, alpha=0.79
+    20201001: peak=1.000, alpha=0.86
+    20201004: peak=1.000, alpha=0.93
+    20201204: peak=1.000, alpha=1.00
+    20201211: peak=1.000, alpha=0.65
+    20201216: peak=0.994, alpha=0.58
+    20200401: peak=0.993, alpha=0.51
+    20200402: peak=0.990, alpha=0.44
+    20200926: peak=0.989, alpha=0.37
+    20200327: peak=0.696, alpha=0.30
+Saved: out/paper_figures/qc/qc_sacc_M_20mssw_mixedtrain_summary.pdf
+       out/paper_figures/qc/qc_sacc_M_20mssw_mixedtrain_summary.png
+       out/paper_figures/qc/qc_sacc_M_20mssw_mixedtrain_summary.svg
+       (11 sessions plotted)
+
+============================================================
+Monkey M: Saccade AUC - FEF-LIP-SC (Summary)
+============================================================
+  Loaded QC data from 11 sessions (FEF-LIP-SC, after QC filter)
+    20200327: ['MFEF', 'MLIP']
+    20200328: ['MFEF', 'MLIP']
+    20200401: ['MFEF', 'MLIP']
+    20200402: ['MFEF', 'MLIP']
+    20200926: ['MFEF', 'MLIP', 'MSC']
+    20200929: ['MFEF', 'MLIP', 'MSC']
+    20201001: ['MFEF', 'MLIP', 'MSC']
+    20201004: ['MFEF', 'MLIP', 'MSC']
+    20201204: ['MFEF', 'MLIP', 'MSC']
+    20201211: ['MFEF', 'MLIP', 'MSC']
+    20201216: ['MFEF', 'MLIP', 'MSC']
+  Using auc_S_inv (preferred for flow analysis)
+  Session ranking by peak auc_S_inv:
+    20200328: peak=1.000, alpha=0.72
+    20200929: peak=1.000, alpha=0.79
+    20201001: peak=1.000, alpha=0.86
+    20201004: peak=1.000, alpha=0.93
+    20201204: peak=1.000, alpha=1.00
+    20201211: peak=1.000, alpha=0.65
+    20201216: peak=0.994, alpha=0.58
+    20200401: peak=0.993, alpha=0.51
+    20200402: peak=0.990, alpha=0.44
+    20200926: peak=0.989, alpha=0.37
+    20200327: peak=0.696, alpha=0.30
+Saved: out/paper_figures/qc/qc_sacc_M_20mssw_mixedtrain_FEF_LIP_SC_summary.pdf
+       out/paper_figures/qc/qc_sacc_M_20mssw_mixedtrain_FEF_LIP_SC_summary.png
+       out/paper_figures/qc/qc_sacc_M_20mssw_mixedtrain_FEF_LIP_SC_summary.svg
+       (11 sessions plotted)
+
+============================================================
+Monkey S: Stim Category AUC (Summary)
+============================================================
+  Found 12 sessions for monkey S
+  Loaded QC data from 12 sessions (after QC filter)
+    20230622: ['SFEF', 'SLIP']
+    20230627: ['SFEF', 'SLIP']
+    20230705: ['SFEF', 'SLIP']
+    20230707: ['SFEF', 'SLIP']
+    20230710: ['SFEF', 'SLIP']
+    20231025: ['SFEF', 'SLIP']
+    20231103: ['SFEF', 'SLIP']
+    20231109: ['SFEF', 'SLIP']
+    20231121: ['SFEF', 'SLIP']
+    20231123: ['SFEF', 'SLIP']
+    20231130: ['SFEF', 'SLIP']
+    20231205: ['SFEF', 'SLIP']
+  Session ranking by peak auc_C:
+    20230627: peak=0.972, alpha=1.00
+    20231103: peak=0.969, alpha=0.94
+    20231205: peak=0.968, alpha=0.87
+    20231123: peak=0.929, alpha=0.81
+    20231109: peak=0.920, alpha=0.75
+    20230705: peak=0.912, alpha=0.68
+    20230707: peak=0.900, alpha=0.62
+    20231121: peak=0.893, alpha=0.55
+    20231130: peak=0.882, alpha=0.49
+    20230622: peak=0.821, alpha=0.43
+    20230710: peak=0.821, alpha=0.36
+    20231025: peak=0.780, alpha=0.30
+Saved: out/paper_figures/qc/qc_stim_category_S_20mssw_mixedtrain_summary.pdf
+       out/paper_figures/qc/qc_stim_category_S_20mssw_mixedtrain_summary.png
+       out/paper_figures/qc/qc_stim_category_S_20mssw_mixedtrain_summary.svg
+       (12 sessions plotted)
+
+============================================================
+Monkey S: Stim Category AUC - FEF vs SC (Summary)
+============================================================
+  Loaded QC data from 12 sessions (FEF-SC, after QC filter)
+    20230622: ['SFEF']
+    20230627: ['SFEF']
+    20230705: ['SFEF']
+    20230707: ['SFEF']
+    20230710: ['SFEF']
+    20231025: ['SFEF', 'SSC']
+    20231103: ['SFEF', 'SSC']
+    20231109: ['SFEF', 'SSC']
+    20231121: ['SFEF', 'SSC']
+    20231123: ['SFEF', 'SSC']
+    20231130: ['SFEF', 'SSC']
+    20231205: ['SFEF', 'SSC']
+  Session ranking by peak auc_C:
+    20230627: peak=0.972, alpha=1.00
+    20231103: peak=0.969, alpha=0.94
+    20231205: peak=0.968, alpha=0.87
+    20231123: peak=0.929, alpha=0.81
+    20231109: peak=0.920, alpha=0.75
+    20230707: peak=0.900, alpha=0.68
+    20231121: peak=0.893, alpha=0.62
+    20231130: peak=0.882, alpha=0.55
+    20230705: peak=0.862, alpha=0.49
+    20230622: peak=0.821, alpha=0.43
+    20231025: peak=0.787, alpha=0.36
+    20230710: peak=0.772, alpha=0.30
+Saved: out/paper_figures/qc/qc_stim_category_S_20mssw_mixedtrain_FEF_SC_summary.pdf
+       out/paper_figures/qc/qc_stim_category_S_20mssw_mixedtrain_FEF_SC_summary.png
+       out/paper_figures/qc/qc_stim_category_S_20mssw_mixedtrain_FEF_SC_summary.svg
+       (12 sessions plotted)
+
+============================================================
+Monkey S: Stim Category AUC - FEF-LIP-SC (Summary)
+============================================================
+  Loaded QC data from 12 sessions (FEF-LIP-SC, after QC filter)
+    20230622: ['SFEF', 'SLIP']
+    20230627: ['SFEF', 'SLIP']
+    20230705: ['SFEF', 'SLIP']
+    20230707: ['SFEF', 'SLIP']
+    20230710: ['SFEF', 'SLIP']
+    20231025: ['SFEF', 'SLIP', 'SSC']
+    20231103: ['SFEF', 'SLIP', 'SSC']
+    20231109: ['SFEF', 'SLIP', 'SSC']
+    20231121: ['SFEF', 'SLIP', 'SSC']
+    20231123: ['SFEF', 'SLIP', 'SSC']
+    20231130: ['SFEF', 'SLIP', 'SSC']
+    20231205: ['SFEF', 'SLIP', 'SSC']
+  Session ranking by peak auc_C:
+    20230627: peak=0.972, alpha=1.00
+    20231103: peak=0.969, alpha=0.94
+    20231205: peak=0.968, alpha=0.87
+    20231123: peak=0.929, alpha=0.81
+    20231109: peak=0.920, alpha=0.75
+    20230705: peak=0.912, alpha=0.68
+    20230707: peak=0.900, alpha=0.62
+    20231121: peak=0.893, alpha=0.55
+    20231130: peak=0.882, alpha=0.49
+    20230622: peak=0.821, alpha=0.43
+    20230710: peak=0.821, alpha=0.36
+    20231025: peak=0.787, alpha=0.30
+Saved: out/paper_figures/qc/qc_stim_category_S_20mssw_mixedtrain_FEF_LIP_SC_summary.pdf
+       out/paper_figures/qc/qc_stim_category_S_20mssw_mixedtrain_FEF_LIP_SC_summary.png
+       out/paper_figures/qc/qc_stim_category_S_20mssw_mixedtrain_FEF_LIP_SC_summary.svg
+       (12 sessions plotted)
+
+============================================================
+Monkey S: Saccade AUC (Summary)
+============================================================
+  Found 12 sessions for monkey S
+    [qc-filter] 20231130/SFEF: peak auc_S_inv < 0.65, excluded
+    [qc-filter] 20231130/SLIP: peak auc_S_inv < 0.65, excluded
+  [qc-filter] Excluded 2 session-area pairs (threshold=0.65)
+  Loaded QC data from 11 sessions (after QC filter)
+    20230622: ['SFEF', 'SLIP']
+    20230627: ['SFEF', 'SLIP']
+    20230705: ['SFEF', 'SLIP']
+    20230707: ['SFEF', 'SLIP']
+    20230710: ['SFEF', 'SLIP']
+    20231025: ['SFEF', 'SLIP']
+    20231103: ['SFEF', 'SLIP']
+    20231109: ['SFEF', 'SLIP']
+    20231121: ['SFEF', 'SLIP']
+    20231123: ['SFEF', 'SLIP']
+    20231205: ['SFEF', 'SLIP']
+  Using auc_S_inv (preferred for flow analysis)
+  Session ranking by peak auc_S_inv:
+    20231205: peak=1.000, alpha=1.00
+    20231025: peak=0.998, alpha=0.93
+    20231103: peak=0.982, alpha=0.86
+    20231123: peak=0.978, alpha=0.79
+    20230707: peak=0.972, alpha=0.72
+    20230705: peak=0.966, alpha=0.65
+    20230710: peak=0.903, alpha=0.58
+    20230627: peak=0.887, alpha=0.51
+    20230622: peak=0.886, alpha=0.44
+    20231109: peak=0.869, alpha=0.37
+    20231121: peak=0.827, alpha=0.30
+Saved: out/paper_figures/qc/qc_sacc_S_20mssw_mixedtrain_summary.pdf
+       out/paper_figures/qc/qc_sacc_S_20mssw_mixedtrain_summary.png
+       out/paper_figures/qc/qc_sacc_S_20mssw_mixedtrain_summary.svg
+       (11 sessions plotted)
+
+============================================================
+Monkey S: Saccade AUC - FEF-LIP-SC (Summary)
+============================================================
+    [qc-filter] 20231130/SFEF: peak auc_S_inv < 0.65, excluded
+    [qc-filter] 20231130/SLIP: peak auc_S_inv < 0.65, excluded
+    [qc-filter] 20231130/SSC: peak auc_S_inv < 0.65, excluded
+  [qc-filter] Excluded 3 session-area pairs (threshold=0.65)
+  Loaded QC data from 11 sessions (FEF-LIP-SC, after QC filter)
+    20230622: ['SFEF', 'SLIP']
+    20230627: ['SFEF', 'SLIP']
+    20230705: ['SFEF', 'SLIP']
+    20230707: ['SFEF', 'SLIP']
+    20230710: ['SFEF', 'SLIP']
+    20231025: ['SFEF', 'SLIP', 'SSC']
+    20231103: ['SFEF', 'SLIP', 'SSC']
+    20231109: ['SFEF', 'SLIP', 'SSC']
+    20231121: ['SFEF', 'SLIP', 'SSC']
+    20231123: ['SFEF', 'SLIP', 'SSC']
+    20231205: ['SFEF', 'SLIP', 'SSC']
+  Using auc_S_inv (preferred for flow analysis)
+  Session ranking by peak auc_S_inv:
+    20231025: peak=1.000, alpha=0.93
+    20231205: peak=1.000, alpha=1.00
+    20231123: peak=1.000, alpha=0.86
+    20231109: peak=0.998, alpha=0.79
+    20231103: peak=0.982, alpha=0.72
+    20230707: peak=0.972, alpha=0.65
+    20230705: peak=0.966, alpha=0.58
+    20230710: peak=0.903, alpha=0.51
+    20230627: peak=0.887, alpha=0.44
+    20230622: peak=0.886, alpha=0.37
+    20231121: peak=0.827, alpha=0.30
+Saved: out/paper_figures/qc/qc_sacc_S_20mssw_mixedtrain_FEF_LIP_SC_summary.pdf
+       out/paper_figures/qc/qc_sacc_S_20mssw_mixedtrain_FEF_LIP_SC_summary.png
+       out/paper_figures/qc/qc_sacc_S_20mssw_mixedtrain_FEF_LIP_SC_summary.svg
+       (11 sessions plotted)
+
+============================================================
+[done] QC paper figures (summary) completed.
+============================================================
+
+============================================================
+[DONE] MIXED TRAINING summaries complete!
+============================================================

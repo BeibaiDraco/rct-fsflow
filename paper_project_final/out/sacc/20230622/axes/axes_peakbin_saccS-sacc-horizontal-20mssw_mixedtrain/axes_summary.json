@@ -51,21 +51,21 @@
   "per_area_results": {
     "SFEF": {
       "winS_selected": [
-        -2.0816681711721685e-17,
-        0.04999999999999998
+        -0.02000000000000002,
+        0.02999999999999998
       ],
-      "winS_cv_best": 0.8063698275223925,
-      "winS_peak_time_ms": 30.00000026077032,
-      "winS_peak_auc": 0.8063698275223925
+      "winS_cv_best": 0.8083366051563932,
+      "winS_peak_time_ms": 0.0,
+      "winS_peak_auc": 0.8083366051563932
     },
     "SLIP": {
       "winS_selected": [
         -2.0816681711721685e-17,
         0.04999999999999998
       ],
-      "winS_cv_best": 0.7153101635946407,
+      "winS_cv_best": 0.7145072634471927,
       "winS_peak_time_ms": 49.999999813735485,
-      "winS_peak_auc": 0.7153101635946407
+      "winS_peak_auc": 0.7145072634471927
     }
   },
   "rebin_factor": null,

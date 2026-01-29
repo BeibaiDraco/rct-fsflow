@@ -49,7 +49,35 @@
   "search_score_mode": "peak_bin_auc",
   "search_tiebreak": "shortest_then_closest0",
   "search_tol": 0.01,
-  "per_area_results": null,
+  "per_area_results": {
+    "SFEF": {
+      "winS_selected": [
+        -0.060000000000000026,
+        -0.010000000000000023
+      ],
+      "winS_cv_best": 0.9821428571428572,
+      "winS_peak_time_ms": -30.00000026077032,
+      "winS_peak_auc": 0.9821428571428572
+    },
+    "SLIP": {
+      "winS_selected": [
+        -0.10000000000000003,
+        -2.7755575615628914e-17
+      ],
+      "winS_cv_best": 0.9464285714285714,
+      "winS_peak_time_ms": -70.00000029802322,
+      "winS_peak_auc": 0.9464285714285714
+    },
+    "SSC": {
+      "winS_selected": [
+        -2.0816681711721685e-17,
+        0.04999999999999998
+      ],
+      "winS_cv_best": 0.9761904761904763,
+      "winS_peak_time_ms": 49.999999813735485,
+      "winS_peak_auc": 0.9761904761904763
+    }
+  },
   "rebin_factor": null,
   "sliding_window_ms": 20.0,
   "sliding_step_ms": 10.0,

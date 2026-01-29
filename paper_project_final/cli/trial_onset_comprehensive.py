@@ -342,22 +342,36 @@ def check_area_qc(
     area: str,
     feature: str,
     qc_threshold: float,
+    qc_root: Optional[Path] = None,
+    qc_tag: Optional[str] = None,
 ) -> bool:
     """
     Check if an area passes QC for a given feature.
     
+    Parameters
+    ----------
+    qc_root : Path, optional
+        Root directory for QC data. If None, uses out_root.
+        This allows using QC computed on different data (e.g., all trials vs correct-only).
+    qc_tag : str, optional
+        QC tag to use. If None, uses axes_tag.
+    
     Returns True if QC passes (or if QC data is unavailable), False if QC fails.
     """
-    # For axes_tag, the QC tag should match directly (e.g., axes_sweep-stim-vertical)
+    # Use qc_root if provided, otherwise use out_root
+    effective_qc_root = qc_root if qc_root is not None else out_root
+    # Use qc_tag if provided, otherwise use axes_tag
+    effective_qc_tag = qc_tag if qc_tag is not None else axes_tag
+    
     # Check if QC directory exists with this tag
-    qc_path = out_root / align / sid / "qc" / axes_tag
+    qc_path = effective_qc_root / align / sid / "qc" / effective_qc_tag
     if not qc_path.exists():
         # If no QC tag found, we can't check - default to passing
         # (could also return False to be strict, but user might want to be lenient)
         return True
     
     # Load QC data
-    qc_data = load_qc_json(out_root, align, sid, axes_tag, area)
+    qc_data = load_qc_json(effective_qc_root, align, sid, effective_qc_tag, area)
     if qc_data is None:
         # No QC data available - default to passing
         return True
@@ -394,6 +408,9 @@ def process_one_session(
     # === NEW: sliding window parameters ===
     sliding_window_bins: int = 0,  # window size in bins
     sliding_step_bins: int = 0,    # step size in bins
+    # === NEW: separate QC root/tag for mixed training ===
+    qc_root: Optional[Path] = None,  # QC root (defaults to out_root)
+    qc_tag: Optional[str] = None,    # QC tag (defaults to axes_tag)
 ) -> Optional[Dict]:
     """Process one session for one pair and feature. Returns dict with results or None if failed."""
     
@@ -412,8 +429,8 @@ def process_one_session(
     # SYMMETRIC rejection: if EITHER area fails QC, skip the entire session
     # for this pair. This ensures both areas have the same QC status.
     # Note: Category (C) and Direction (R) are checked separately with their own metrics
-    qc_pass_a1 = check_area_qc(out_root, align, sid, axes_tag, a1, feature, qc_threshold)
-    qc_pass_a2 = check_area_qc(out_root, align, sid, axes_tag, a2, feature, qc_threshold)
+    qc_pass_a1 = check_area_qc(out_root, align, sid, axes_tag, a1, feature, qc_threshold, qc_root=qc_root, qc_tag=qc_tag)
+    qc_pass_a2 = check_area_qc(out_root, align, sid, axes_tag, a2, feature, qc_threshold, qc_root=qc_root, qc_tag=qc_tag)
     
     # Skip session if EITHER area fails QC (symmetric rejection)
     if not qc_pass_a1 or not qc_pass_a2:
@@ -664,6 +681,15 @@ def main():
                     help="QC threshold for saccade (S) feature (default: uses --qc_threshold)")
     ap.add_argument("--qc_threshold_T", type=float, default=None,
                     help="QC threshold for target (T) feature (default: uses --qc_threshold)")
+    ap.add_argument("--qc_root", default=None,
+                    help="Root directory for QC data (default: uses --out_root). "
+                         "Use this for mixed training: --qc_root out_nofilter to evaluate QC on all trials "
+                         "while using correct-only trials for onset analysis.")
+    ap.add_argument("--qc_tag_stim", default=None,
+                    help="QC tag for stim alignment (default: uses --axes_tag_stim). "
+                         "Useful for mixed training to point to QC computed on all trials.")
+    ap.add_argument("--qc_tag_sacc", default=None,
+                    help="QC tag for sacc alignment (default: uses --axes_tag_sacc).")
     ap.add_argument("--tag", default="trialonset_comprehensive_20mssw",
                     help="Output subfolder name (default: trialonset_comprehensive_20mssw)")
     
@@ -797,7 +823,20 @@ def main():
                   f"step={sliding_step_ms}ms ({sliding_step_bins} bins)")
             rebin_factor = 1  # Disable rebinning when using sliding window
         
+        # === Get QC root and tag for this alignment ===
+        qc_root = Path(args.qc_root) if args.qc_root else None
+        if align == "stim":
+            qc_tag = args.qc_tag_stim
+        elif align == "sacc":
+            qc_tag = args.qc_tag_sacc
+        else:  # targ - no separate qc_tag_targ, use axes_tag
+            qc_tag = None
+        
         print(f"[align={align}] pt_min_ms={pt_min_ms}, axes_tag={axes_tag}")
+        if qc_root is not None:
+            print(f"[align={align}] qc_root={qc_root} (separate from out_root)")
+        if qc_tag is not None:
+            print(f"[align={align}] qc_tag={qc_tag} (separate from axes_tag)")
         if rebin_factor > 1:
             print(f"[align={align}] rebin_factor={rebin_factor}")
         print(f"[align={align}] baseline={baseline}, search={search}")
@@ -844,6 +883,8 @@ def main():
                         rebin_factor=rebin_factor,
                         sliding_window_bins=sliding_window_bins,
                         sliding_step_bins=sliding_step_bins,
+                        qc_root=qc_root,
+                        qc_tag=qc_tag,
                     )
                     if result is not None:
                         all_results[key].append(result)

@@ -59,18 +59,18 @@
         0.32,
         0.47
       ],
-      "winC_cv_best": 0.8851282051282051,
-      "winC_best_param": 3.0,
+      "winC_cv_best": 0.8841025641025642,
+      "winC_best_param": 1.0,
       "winC_peak_time_ms": 400.0000059604645,
-      "winC_peak_auc": 0.8851282051282051,
-      "winC_mean_bin_auc": 0.7513504273504272,
-      "winC_cv_auc_original": 0.9507142857142858,
+      "winC_peak_auc": 0.8841025641025642,
+      "winC_mean_bin_auc": 0.7551452991452993,
+      "winC_cv_auc_original": 0.9453571428571429,
       "winR_selected": [
         0.32,
         0.42000000000000004
       ],
-      "winR_cv_best": 0.5932142857142857,
-      "sC_auc": 0.8851282051282051,
+      "winR_cv_best": 0.6032142857142857,
+      "sC_auc": 0.8841025641025642,
       "n_trials_C": 89
     },
     "SLIP": {
@@ -78,18 +78,18 @@
         0.4000000000000001,
         0.45000000000000007
       ],
-      "winC_cv_best": 0.6894871794871795,
+      "winC_cv_best": 0.7028205128205127,
       "winC_best_param": 0.1,
       "winC_peak_time_ms": 420.00000178813934,
-      "winC_peak_auc": 0.6894871794871795,
-      "winC_mean_bin_auc": 0.609059829059829,
-      "winC_cv_auc_original": 0.7135714285714286,
+      "winC_peak_auc": 0.7028205128205127,
+      "winC_mean_bin_auc": 0.6285128205128204,
+      "winC_cv_auc_original": 0.7421428571428571,
       "winR_selected": [
         0.27999999999999997,
         0.42999999999999994
       ],
-      "winR_cv_best": 0.5764285714285714,
-      "sC_auc": 0.6894871794871795,
+      "winR_cv_best": 0.5664285714285715,
+      "sC_auc": 0.7028205128205127,
       "n_trials_C": 89
     },
     "SSC": {
@@ -97,24 +97,24 @@
         0.38000000000000006,
         0.43000000000000005
       ],
-      "winC_cv_best": 0.7369230769230769,
+      "winC_cv_best": 0.7241025641025641,
       "winC_best_param": 0.1,
       "winC_peak_time_ms": 390.00000059604645,
-      "winC_peak_auc": 0.7369230769230769,
-      "winC_mean_bin_auc": 0.6465384615384615,
-      "winC_cv_auc_original": 0.6803571428571429,
+      "winC_peak_auc": 0.7241025641025641,
+      "winC_mean_bin_auc": 0.6315384615384616,
+      "winC_cv_auc_original": 0.6521428571428572,
       "winR_selected": [
-        0.04,
-        0.09
+        0.02,
+        0.07
       ],
-      "winR_cv_best": 0.5839285714285715,
-      "sC_auc": 0.7369230769230769,
+      "winR_cv_best": 0.5803571428571428,
+      "sC_auc": 0.7241025641025641,
       "n_trials_C": 89
     }
   },
   "rebin_factor": null,
   "sliding_window_ms": 20.0,
   "sliding_step_ms": 10.0,
-  "sliding_window_bins": 4,
-  "sliding_step_bins": 2
+  "sliding_window_bins": 2,
+  "sliding_step_bins": 1
 }

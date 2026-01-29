@@ -58,43 +58,43 @@
         0.25999999999999995,
         0.30999999999999994
       ],
-      "winC_cv_best": 0.8907987866531851,
-      "winC_best_param": 0.3,
-      "winC_peak_time_ms": 270.00000327825546,
-      "winC_peak_auc": 0.8907987866531851,
-      "winC_mean_bin_auc": 0.8793857431749242,
-      "winC_cv_auc_original": 0.9692087436273482,
+      "winC_cv_best": 0.7896767466110531,
+      "winC_best_param": 0.1,
+      "winC_peak_time_ms": 289.99999165534973,
+      "winC_peak_auc": 0.7896767466110531,
+      "winC_mean_bin_auc": 0.7788451511991656,
+      "winC_cv_auc_original": 0.8672450697450698,
       "winR_selected": [
-        0.27999999999999997,
-        0.48
+        0.18,
+        0.43
       ],
-      "winR_cv_best": 0.5262797681402333,
-      "sC_auc": 0.8907987866531851,
-      "n_trials_C": 399
+      "winR_cv_best": 0.5292809042809044,
+      "sC_auc": 0.7896767466110531,
+      "n_trials_C": 554
     },
     "SLIP": {
       "winC_selected": [
-        0.34,
-        0.44000000000000006
+        0.32,
+        0.37
       ],
-      "winC_cv_best": 0.7798281092012133,
-      "winC_best_param": 0.3,
-      "winC_peak_time_ms": 379.9999952316284,
-      "winC_peak_auc": 0.7798281092012133,
-      "winC_mean_bin_auc": 0.7071169225112602,
-      "winC_cv_auc_original": 0.8613206229485298,
+      "winC_cv_best": 0.6634124087591241,
+      "winC_best_param": 0.1,
+      "winC_peak_time_ms": 359.99999940395355,
+      "winC_peak_auc": 0.6634124087591241,
+      "winC_mean_bin_auc": 0.6203564911366006,
+      "winC_cv_auc_original": 0.6739105339105339,
       "winR_selected": [
-        0.27999999999999997,
-        0.42999999999999994
+        0.12000000000000001,
+        0.32
       ],
-      "winR_cv_best": 0.4459267406941826,
-      "sC_auc": 0.7798281092012133,
-      "n_trials_C": 399
+      "winR_cv_best": 0.45321308321308323,
+      "sC_auc": 0.6634124087591241,
+      "n_trials_C": 554
     }
   },
   "rebin_factor": null,
   "sliding_window_ms": 20.0,
   "sliding_step_ms": 10.0,
-  "sliding_window_bins": 4,
-  "sliding_step_bins": 2
+  "sliding_window_bins": 2,
+  "sliding_step_bins": 1
 }

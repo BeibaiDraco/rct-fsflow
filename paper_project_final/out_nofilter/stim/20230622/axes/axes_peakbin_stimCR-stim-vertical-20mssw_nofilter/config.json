@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "created": "2026-01-28T18:59:34.143464",
+    "created": "2026-01-28T19:43:18.093117",
     "script": "cli/train_axes.py",
     "version": "2.0"
   },
@@ -103,8 +103,8 @@
     "winS_candidates_count": 0,
     "winT_candidates_count": 0,
     "winR_candidates_count": 91,
-    "sliding_window_bins": 4,
-    "sliding_step_bins": 2,
-    "native_bin_ms": 5.0
+    "sliding_window_bins": 2,
+    "sliding_step_bins": 1,
+    "native_bin_ms": 10.0
   }
 }

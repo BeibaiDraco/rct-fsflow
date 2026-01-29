@@ -338,6 +338,7 @@ def check_area_qc(
     feature: str,
     qc_threshold: float,
     explicit_qc_tag: Optional[str] = None,
+    qc_root: Optional[Path] = None,
 ) -> bool:
     """
     Check if an area passes QC for a given feature.
@@ -346,6 +347,9 @@ def check_area_qc(
     ----------
     explicit_qc_tag : str, optional
         If provided, use this QC tag directly instead of auto-detecting.
+    qc_root : Path, optional
+        Root directory for QC data. If None, uses out_root.
+        This allows using QC computed on different data (e.g., all trials vs correct-only).
     
     Returns True if QC passes, False if QC fails.
     
@@ -354,11 +358,14 @@ def check_area_qc(
     QCTagNotFoundError
         If no QC tag can be found (either explicit or auto-detected).
     """
+    # Use qc_root if provided, otherwise use out_root
+    effective_qc_root = qc_root if qc_root is not None else out_root
+    
     # Use explicit QC tag if provided, otherwise auto-detect
     if explicit_qc_tag is not None:
         qc_tag = explicit_qc_tag
     else:
-        qc_tag = find_qc_tag_for_flow_tag(out_root, align, sid, flow_tag)
+        qc_tag = find_qc_tag_for_flow_tag(effective_qc_root, align, sid, flow_tag)
     
     if qc_tag is None:
         raise QCTagNotFoundError(
@@ -368,7 +375,7 @@ def check_area_qc(
         )
     
     # Load QC data
-    qc_data = load_qc_json(out_root, align, sid, qc_tag, area)
+    qc_data = load_qc_json(effective_qc_root, align, sid, qc_tag, area)
     if qc_data is None:
         # No QC data available for this area - default to passing
         # (area may not have been recorded in this session)
@@ -1532,6 +1539,7 @@ def summarize_for_tag_align_feature(
     rebin_step_s: Optional[float] = None,
     qc_threshold: Optional[float] = None,
     qc_tag: Optional[str] = None,
+    qc_root: Optional[Path] = None,
     group_diff_p: bool = False,
     group_null_B: int = 4096,
     group_null_seed: int = 12345,
@@ -1646,8 +1654,8 @@ def summarize_for_tag_align_feature(
                 # for this pair. This ensures both directions have the same session count.
                 # Skip QC filtering if threshold is None, 0, or negative
                 if qc_threshold is not None and qc_threshold > 0:
-                    qc_pass_A = check_area_qc(out_root, align, sid, tag, A, feature, qc_threshold, qc_tag)
-                    qc_pass_B = check_area_qc(out_root, align, sid, tag, B, feature, qc_threshold, qc_tag)
+                    qc_pass_A = check_area_qc(out_root, align, sid, tag, A, feature, qc_threshold, qc_tag, qc_root=qc_root)
+                    qc_pass_B = check_area_qc(out_root, align, sid, tag, B, feature, qc_threshold, qc_tag, qc_root=qc_root)
                     
                     # Skip session if EITHER area fails QC (symmetric rejection)
                     if not qc_pass_A or not qc_pass_B:
@@ -2419,6 +2427,10 @@ def main():
     ap.add_argument("--qc_tag", type=str, default=None,
                     help="Explicit QC tag to use for filtering (e.g., 'winsearch-stim-vertical'). "
                          "If not provided, script attempts to auto-detect QC tag from flow tag.")
+    ap.add_argument("--qc_root", type=str, default=None,
+                    help="Root directory for QC data (default: uses --out_root). "
+                         "Use this for mixed training: --qc_root out_nofilter to evaluate QC on all trials "
+                         "while using correct-only trials for flow analysis.")
     ap.add_argument("--group_diff_p", action="store_true", default=True,
                     help="Compute group empirical p(t) for DIFF using saved "
                          "null samples (default: True). Requires flow_*.npz files to have null_samps_AtoB.")
@@ -2517,6 +2529,7 @@ def main():
                         rebin_step_s=rebin_step,
                         qc_threshold=args.qc_threshold,
                         qc_tag=args.qc_tag,
+                        qc_root=Path(args.qc_root) if args.qc_root else None,
                         group_diff_p=args.group_diff_p,
                         group_null_B=args.group_null_B,
                         group_null_seed=args.group_null_seed,
