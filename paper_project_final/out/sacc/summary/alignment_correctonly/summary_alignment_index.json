@@ -1,0 +1,857 @@
+{
+  "analysis": "alignment_index",
+  "description": "SC-style Alignment Index with covariance-matched null",
+  "hypothesis": "Tests whether category and saccade subspaces are less aligned than chance",
+  "created": "2026-01-29T16:47:54.325420",
+  "n_sessions": 21,
+  "mean_AI_obs": 0.31520499472537306,
+  "mean_AI_null": 0.6483792427240292,
+  "mean_delta_AI": -0.3331742479986562,
+  "sem_delta_AI": 0.021272538862896824,
+  "mean_angle_obs_deg": 68.50165305899242,
+  "mean_angle_null_deg": 52.85855301604803,
+  "group_p_less": 9.99990000099999e-06,
+  "group_p_greater": 1.0,
+  "per_session": [
+    {
+      "sid": "20200327",
+      "area": "MFEF",
+      "monkey": "M",
+      "analysis": "alignment_index",
+      "AI_obs": 0.3572781978295896,
+      "overlap_obs": 0.2430274750489708,
+      "mean_angle_obs_deg": 63.58484321591925,
+      "principal_angles_deg": [
+        43.38813711321039,
+        48.580790811167034,
+        59.340678375653454,
+        65.79273345814201,
+        75.35222651348316,
+        89.05449302385941
+      ],
+      "var_explained_C": 0.5583031940884379,
+      "var_explained_S": 0.7807708842696283,
+      "null_AI_mean": 0.5526370805914769,
+      "null_AI_std": 0.04345573941261981,
+      "null_overlap_mean": 0.38025107291114885,
+      "null_angle_mean_deg": 54.37755185766431,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.1953588827618873,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 32,
+      "n_trials": 284,
+      "n_valid_C": 284,
+      "n_valid_S": 284
+    },
+    {
+      "sid": "20200328",
+      "area": "MFEF",
+      "monkey": "M",
+      "analysis": "alignment_index",
+      "AI_obs": 0.4750653542478904,
+      "overlap_obs": 0.21420717428600786,
+      "mean_angle_obs_deg": 66.2443582494482,
+      "principal_angles_deg": [
+        32.25663379787299,
+        59.43453842339565,
+        63.107100533632945,
+        74.93836019038358,
+        78.58809219802639,
+        89.14142435337767
+      ],
+      "var_explained_C": 0.8335408042278172,
+      "var_explained_S": 0.9810781793734145,
+      "null_AI_mean": 0.7565381132572493,
+      "null_AI_std": 0.05832840301115548,
+      "null_overlap_mean": 0.45111727819544056,
+      "null_angle_mean_deg": 49.213434763010284,
+      "p_less": 0.004995004995004995,
+      "p_greater": 0.996003996003996,
+      "n_perms": 1000,
+      "delta_AI": -0.28147275900935886,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 27,
+      "n_trials": 247,
+      "n_valid_C": 247,
+      "n_valid_S": 247
+    },
+    {
+      "sid": "20200401",
+      "area": "MFEF",
+      "monkey": "M",
+      "analysis": "alignment_index",
+      "AI_obs": 0.222048036084342,
+      "overlap_obs": 0.15908416513836476,
+      "mean_angle_obs_deg": 69.24822147855168,
+      "principal_angles_deg": [
+        42.16853556233637,
+        64.96124091732476,
+        70.94200195901082,
+        74.45391350704647,
+        78.95677736331807,
+        84.00685956227366
+      ],
+      "var_explained_C": 0.7173578008825092,
+      "var_explained_S": 0.9230947140448023,
+      "null_AI_mean": 0.6054463582654896,
+      "null_AI_std": 0.07445063464561709,
+      "null_overlap_mean": 0.40856650182842896,
+      "null_angle_mean_deg": 52.32299077415816,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.38339832218114767,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 34,
+      "n_trials": 250,
+      "n_valid_C": 250,
+      "n_valid_S": 250
+    },
+    {
+      "sid": "20200402",
+      "area": "MFEF",
+      "monkey": "M",
+      "analysis": "alignment_index",
+      "AI_obs": 0.25459821086797724,
+      "overlap_obs": 0.2018497510223174,
+      "mean_angle_obs_deg": 66.2913723438684,
+      "principal_angles_deg": [
+        36.747974308748546,
+        57.795616470273515,
+        67.85729207775911,
+        73.96816730458065,
+        75.69814338973275,
+        85.68104051211593
+      ],
+      "var_explained_C": 0.6876841093028453,
+      "var_explained_S": 0.9392594465333859,
+      "null_AI_mean": 0.5949988522483455,
+      "null_AI_std": 0.06420965139064956,
+      "null_overlap_mean": 0.4288774180062338,
+      "null_angle_mean_deg": 51.09108796546638,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.34040064138036824,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 34,
+      "n_trials": 237,
+      "n_valid_C": 237,
+      "n_valid_S": 237
+    },
+    {
+      "sid": "20200926",
+      "area": "MFEF",
+      "monkey": "M",
+      "analysis": "alignment_index",
+      "AI_obs": 0.3121971321789578,
+      "overlap_obs": 0.19086342775723733,
+      "mean_angle_obs_deg": 67.41191347730113,
+      "principal_angles_deg": [
+        41.57458327737191,
+        60.74070135012349,
+        64.1588924509622,
+        70.01776122221874,
+        78.49206481658797,
+        89.4874777465425
+      ],
+      "var_explained_C": 0.6704385240913464,
+      "var_explained_S": 0.9391161372776441,
+      "null_AI_mean": 0.5884959195900449,
+      "null_AI_std": 0.061313488449667664,
+      "null_overlap_mean": 0.37034391445599896,
+      "null_angle_mean_deg": 55.04052352657792,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.2762987874110871,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 34,
+      "n_trials": 290,
+      "n_valid_C": 290,
+      "n_valid_S": 290
+    },
+    {
+      "sid": "20200929",
+      "area": "MFEF",
+      "monkey": "M",
+      "analysis": "alignment_index",
+      "AI_obs": 0.3323882269283841,
+      "overlap_obs": 0.16008479311220417,
+      "mean_angle_obs_deg": 71.5124240546632,
+      "principal_angles_deg": [
+        39.591183427201905,
+        58.76335590605786,
+        75.10014945408506,
+        81.22764006708795,
+        84.76304246276675,
+        89.6291730107796
+      ],
+      "var_explained_C": 0.7697741741709758,
+      "var_explained_S": 0.9814954183188717,
+      "null_AI_mean": 0.6718830964405572,
+      "null_AI_std": 0.054345108531131274,
+      "null_overlap_mean": 0.408333284476589,
+      "null_angle_mean_deg": 52.38650630268818,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.3394948695121731,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 26,
+      "n_trials": 264,
+      "n_valid_C": 264,
+      "n_valid_S": 264
+    },
+    {
+      "sid": "20201001",
+      "area": "MFEF",
+      "monkey": "M",
+      "analysis": "alignment_index",
+      "AI_obs": 0.3264708855898329,
+      "overlap_obs": 0.13537738138764668,
+      "mean_angle_obs_deg": 72.0742536794431,
+      "principal_angles_deg": [
+        43.840076637369975,
+        69.69080295449132,
+        71.49445035461521,
+        76.17043999769209,
+        83.78422982556617,
+        87.46552230692384
+      ],
+      "var_explained_C": 0.6883295504729497,
+      "var_explained_S": 0.9488589470341484,
+      "null_AI_mean": 0.661512579301014,
+      "null_AI_std": 0.0644437699282148,
+      "null_overlap_mean": 0.3454013124362041,
+      "null_angle_mean_deg": 56.81395918726581,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.33504169371118114,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 35,
+      "n_trials": 256,
+      "n_valid_C": 256,
+      "n_valid_S": 256
+    },
+    {
+      "sid": "20201004",
+      "area": "MFEF",
+      "monkey": "M",
+      "analysis": "alignment_index",
+      "AI_obs": 0.5836818388556557,
+      "overlap_obs": 0.22767809026204333,
+      "mean_angle_obs_deg": 64.9761022935836,
+      "principal_angles_deg": [
+        17.471118126879418,
+        61.94416415816773,
+        69.7431215187045,
+        72.72590156872353,
+        81.09154382388478,
+        86.88076456514158
+      ],
+      "var_explained_C": 0.852615360266805,
+      "var_explained_S": 0.976280145360485,
+      "null_AI_mean": 0.7881651051465717,
+      "null_AI_std": 0.058227639421535186,
+      "null_overlap_mean": 0.44372028840459393,
+      "null_angle_mean_deg": 49.71286970429302,
+      "p_less": 0.007992007992007992,
+      "p_greater": 0.993006993006993,
+      "n_perms": 1000,
+      "delta_AI": -0.20448326629091595,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 31,
+      "n_trials": 291,
+      "n_valid_C": 291,
+      "n_valid_S": 291
+    },
+    {
+      "sid": "20201204",
+      "area": "MFEF",
+      "monkey": "M",
+      "analysis": "alignment_index",
+      "AI_obs": 0.43587189680073635,
+      "overlap_obs": 0.2748062265704178,
+      "mean_angle_obs_deg": 62.584131568963755,
+      "principal_angles_deg": [
+        29.597695802311126,
+        46.92685012041817,
+        58.201605068739816,
+        68.87367444337232,
+        82.11741067658583,
+        89.7875533023552
+      ],
+      "var_explained_C": 0.8257881173956828,
+      "var_explained_S": 0.9850856210253768,
+      "null_AI_mean": 0.7198243493284509,
+      "null_AI_std": 0.06410170831853426,
+      "null_overlap_mean": 0.48534672467256484,
+      "null_angle_mean_deg": 46.83050172138131,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.2839524525277145,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 24,
+      "n_trials": 285,
+      "n_valid_C": 285,
+      "n_valid_S": 285
+    },
+    {
+      "sid": "20201211",
+      "area": "MFEF",
+      "monkey": "M",
+      "analysis": "alignment_index",
+      "AI_obs": 0.4811767782188517,
+      "overlap_obs": 0.2585547449926648,
+      "mean_angle_obs_deg": 62.9150094517872,
+      "principal_angles_deg": [
+        22.648051727513266,
+        54.91993591267908,
+        59.279880272385626,
+        73.29012644150222,
+        82.1391504696242,
+        85.21291188701883
+      ],
+      "var_explained_C": 0.7912925821658477,
+      "var_explained_S": 0.9724756153607097,
+      "null_AI_mean": 0.710284077667231,
+      "null_AI_std": 0.06522776517471954,
+      "null_overlap_mean": 0.4443305752879495,
+      "null_angle_mean_deg": 49.80316165786751,
+      "p_less": 0.006993006993006993,
+      "p_greater": 0.994005994005994,
+      "n_perms": 1000,
+      "delta_AI": -0.22910729944837932,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 27,
+      "n_trials": 302,
+      "n_valid_C": 302,
+      "n_valid_S": 302
+    },
+    {
+      "sid": "20201216",
+      "area": "MFEF",
+      "monkey": "M",
+      "analysis": "alignment_index",
+      "AI_obs": 0.6023965429884057,
+      "overlap_obs": 0.25039227274751663,
+      "mean_angle_obs_deg": 63.06284692544572,
+      "principal_angles_deg": [
+        18.74765704461403,
+        56.85068984235846,
+        64.97187162948082,
+        72.30448584987202,
+        80.3418822447051,
+        85.16049494164388
+      ],
+      "var_explained_C": 0.786378114778705,
+      "var_explained_S": 0.9710037557338721,
+      "null_AI_mean": 0.7452305645866768,
+      "null_AI_std": 0.055135143533631095,
+      "null_overlap_mean": 0.42176682898870366,
+      "null_angle_mean_deg": 51.286015342086436,
+      "p_less": 0.022977022977022976,
+      "p_greater": 0.978021978021978,
+      "n_perms": 1000,
+      "delta_AI": -0.14283402159827108,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 29,
+      "n_trials": 251,
+      "n_valid_C": 251,
+      "n_valid_S": 251
+    },
+    {
+      "sid": "20230622",
+      "area": "SFEF",
+      "monkey": "S",
+      "analysis": "alignment_index",
+      "AI_obs": 0.11629773442571326,
+      "overlap_obs": 0.08520594631645423,
+      "mean_angle_obs_deg": 75.55912565087048,
+      "principal_angles_deg": [
+        61.958437775068305,
+        67.9833580118705,
+        71.5339805627865,
+        78.0518215846254,
+        85.8271690439785,
+        87.99998692689377
+      ],
+      "var_explained_C": 0.6172057282546509,
+      "var_explained_S": 0.8414947350345068,
+      "null_AI_mean": 0.6010868828060736,
+      "null_AI_std": 0.07342185454439104,
+      "null_overlap_mean": 0.34929493214840246,
+      "null_angle_mean_deg": 56.49202713959804,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.48478914838036036,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 39,
+      "n_trials": 465,
+      "n_valid_C": 465,
+      "n_valid_S": 465
+    },
+    {
+      "sid": "20230627",
+      "area": "SFEF",
+      "monkey": "S",
+      "analysis": "alignment_index",
+      "AI_obs": 0.27997222774424385,
+      "overlap_obs": 0.1629212074616097,
+      "mean_angle_obs_deg": 69.89176847416377,
+      "principal_angles_deg": [
+        45.545904965704835,
+        60.06210836254107,
+        66.36680391240779,
+        76.88357503836436,
+        80.7626302402415,
+        89.72958832572306
+      ],
+      "var_explained_C": 0.8534021177241405,
+      "var_explained_S": 0.9356842807223713,
+      "null_AI_mean": 0.8192533889954402,
+      "null_AI_std": 0.04302766244073425,
+      "null_overlap_mean": 0.4438419836367245,
+      "null_angle_mean_deg": 49.643291701952585,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.5392811612511963,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 27,
+      "n_trials": 432,
+      "n_valid_C": 432,
+      "n_valid_S": 432
+    },
+    {
+      "sid": "20230705",
+      "area": "SFEF",
+      "monkey": "S",
+      "analysis": "alignment_index",
+      "AI_obs": 0.1442668383271632,
+      "overlap_obs": 0.10182233339710035,
+      "mean_angle_obs_deg": 73.96173838582465,
+      "principal_angles_deg": [
+        58.44848758759123,
+        64.93985778813537,
+        71.93024940510816,
+        77.1514160110019,
+        84.6921013407135,
+        86.60831818239771
+      ],
+      "var_explained_C": 0.7177635430393878,
+      "var_explained_S": 0.934850662427123,
+      "null_AI_mean": 0.6252095447131852,
+      "null_AI_std": 0.0759379465802839,
+      "null_overlap_mean": 0.39515382396130533,
+      "null_angle_mean_deg": 53.386915206275155,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.48094270638602205,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 35,
+      "n_trials": 380,
+      "n_valid_C": 380,
+      "n_valid_S": 380
+    },
+    {
+      "sid": "20230707",
+      "area": "SFEF",
+      "monkey": "S",
+      "analysis": "alignment_index",
+      "AI_obs": 0.39728748802432906,
+      "overlap_obs": 0.36041821951951886,
+      "mean_angle_obs_deg": 54.354584932176834,
+      "principal_angles_deg": [
+        26.657708013598764,
+        42.69180229350176,
+        48.98500976492531,
+        62.32641817117983,
+        71.33088768827152,
+        74.13568366158378
+      ],
+      "var_explained_C": 0.8395953527725526,
+      "var_explained_S": 0.9256005637467448,
+      "null_AI_mean": 0.8001020487923576,
+      "null_AI_std": 0.04677696886382758,
+      "null_overlap_mean": 0.5064968155041356,
+      "null_angle_mean_deg": 45.108636751935464,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.4028145607680285,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 21,
+      "n_trials": 386,
+      "n_valid_C": 386,
+      "n_valid_S": 386
+    },
+    {
+      "sid": "20230710",
+      "area": "SFEF",
+      "monkey": "S",
+      "analysis": "alignment_index",
+      "AI_obs": 0.23566219591488202,
+      "overlap_obs": 0.13663795005763815,
+      "mean_angle_obs_deg": 71.49677519872695,
+      "principal_angles_deg": [
+        50.5843657278323,
+        61.89285842864398,
+        69.0924503259862,
+        76.72215015694398,
+        83.79345278139992,
+        86.89537377155528
+      ],
+      "var_explained_C": 0.6434806538920582,
+      "var_explained_S": 0.8654503574093697,
+      "null_AI_mean": 0.6005983282315486,
+      "null_AI_std": 0.06068903100922943,
+      "null_overlap_mean": 0.37988893902353876,
+      "null_angle_mean_deg": 54.41532652911158,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.36493613231666655,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 36,
+      "n_trials": 493,
+      "n_valid_C": 493,
+      "n_valid_S": 493
+    },
+    {
+      "sid": "20231025",
+      "area": "SFEF",
+      "monkey": "S",
+      "analysis": "alignment_index",
+      "AI_obs": 0.26820624585305125,
+      "overlap_obs": 0.13838006915758028,
+      "mean_angle_obs_deg": 71.07465128734502,
+      "principal_angles_deg": [
+        53.12886131697477,
+        59.92777523653146,
+        68.21775705929367,
+        76.35490120238259,
+        81.02616361053505,
+        87.79244929835264
+      ],
+      "var_explained_C": 0.5445951470102492,
+      "var_explained_S": 0.7748182052663865,
+      "null_AI_mean": 0.5771410425965077,
+      "null_AI_std": 0.04844059623721886,
+      "null_overlap_mean": 0.365072521953092,
+      "null_angle_mean_deg": 55.400156134317996,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.3089347967434564,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 33,
+      "n_trials": 230,
+      "n_valid_C": 230,
+      "n_valid_S": 230
+    },
+    {
+      "sid": "20231103",
+      "area": "SFEF",
+      "monkey": "S",
+      "analysis": "alignment_index",
+      "AI_obs": 0.22555458183800012,
+      "overlap_obs": 0.14922151998816333,
+      "mean_angle_obs_deg": 68.93767047317763,
+      "principal_angles_deg": [
+        55.54415798204399,
+        60.41686914969377,
+        66.26296921297546,
+        71.07414917295475,
+        76.9542496705939,
+        83.37362765080397
+      ],
+      "var_explained_C": 0.4903777678033813,
+      "var_explained_S": 0.8353015505970725,
+      "null_AI_mean": 0.5090633749955372,
+      "null_AI_std": 0.04341508921758722,
+      "null_overlap_mean": 0.3227620949443848,
+      "null_angle_mean_deg": 58.1882855412989,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.2835087931575371,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 38,
+      "n_trials": 50,
+      "n_valid_C": 50,
+      "n_valid_S": 50
+    },
+    {
+      "sid": "20231109",
+      "area": "SFEF",
+      "monkey": "S",
+      "analysis": "alignment_index",
+      "AI_obs": 0.23433699585596324,
+      "overlap_obs": 0.11657520724095845,
+      "mean_angle_obs_deg": 73.70225054317508,
+      "principal_angles_deg": [
+        52.72710184972799,
+        64.06269266690589,
+        74.19162724949628,
+        75.33528658709763,
+        87.03217332823816,
+        88.86462157758457
+      ],
+      "var_explained_C": 0.6078615960926791,
+      "var_explained_S": 0.8204721182790237,
+      "null_AI_mean": 0.5545638122944788,
+      "null_AI_std": 0.06491713649712168,
+      "null_overlap_mean": 0.35931356746274923,
+      "null_angle_mean_deg": 55.78034266266404,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.3202268164385156,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 37,
+      "n_trials": 255,
+      "n_valid_C": 255,
+      "n_valid_S": 255
+    },
+    {
+      "sid": "20231121",
+      "area": "SFEF",
+      "monkey": "S",
+      "analysis": "alignment_index",
+      "AI_obs": 0.20305137905676207,
+      "overlap_obs": 0.12725634070347433,
+      "mean_angle_obs_deg": 71.98521956327164,
+      "principal_angles_deg": [
+        49.996357961202136,
+        62.3666054692338,
+        75.42188148417011,
+        78.50273762274712,
+        81.66071774875815,
+        83.96301709351847
+      ],
+      "var_explained_C": 0.6657765308528736,
+      "var_explained_S": 0.8411586757471842,
+      "null_AI_mean": 0.6223271599599322,
+      "null_AI_std": 0.06315683335082618,
+      "null_overlap_mean": 0.37977406540245834,
+      "null_angle_mean_deg": 54.353927433989064,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.4192757809031701,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 34,
+      "n_trials": 308,
+      "n_valid_C": 308,
+      "n_valid_S": 308
+    },
+    {
+      "sid": "20231123",
+      "area": "SFEF",
+      "monkey": "S",
+      "analysis": "alignment_index",
+      "AI_obs": 0.13149610160210412,
+      "overlap_obs": 0.05749863133264559,
+      "mean_angle_obs_deg": 77.66545299113365,
+      "principal_angles_deg": [
+        65.4686770313915,
+        74.74237245678893,
+        76.89843820084974,
+        79.39697179529342,
+        83.25477418873996,
+        86.23148427373832
+      ],
+      "var_explained_C": 0.5180678723486242,
+      "var_explained_S": 0.8198856389559007,
+      "null_AI_mean": 0.5116024173964461,
+      "null_AI_std": 0.04923206345328444,
+      "null_overlap_mean": 0.32119146906547047,
+      "null_angle_mean_deg": 58.38210143340652,
+      "p_less": 0.000999000999000999,
+      "p_greater": 1.0,
+      "n_perms": 1000,
+      "delta_AI": -0.38010631579434195,
+      "win_C": [
+        -0.3,
+        -0.1
+      ],
+      "win_S": [
+        -0.1,
+        -0.03
+      ],
+      "k": 6,
+      "manifold_dim": 40,
+      "n_trials": 248,
+      "n_valid_C": 248,
+      "n_valid_S": 248
+    }
+  ]
+}

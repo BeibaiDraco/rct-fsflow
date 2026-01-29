@@ -1,0 +1,50 @@
+==============================================================
+AXIS ALIGNMENT ANALYSIS - Session 20231121 (task 20)
+==============================================================
+
+[info] Running alignment analysis for 20231121
+       Mode: both (AI + axis_shuffle)
+       n_perms: 1000
+
+======================================================================
+CATEGORY-SACCADE SUBSPACE ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] Mode: both
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] n_perms: 1000
+
+[Analysis A] Alignment Index + Covariance-Matched Null
+             Category window: [-0.3, -0.1]
+             Saccade window: [-0.1, -0.03]
+             Subspace dim k: 6
+             Tests: 'less aligned than chance' (orthogonality)
+
+[Analysis B] Axis Angle + Label-Shuffle Null
+             Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw
+             Tests: 'more aligned than chance' (label-specific)
+
+============================================================
+[20231121] Processing...
+
+  [Analysis A] Alignment Index...
+  [AI] Building condition-averaged matrices...
+       Category window: (-0.3, -0.1)
+       Saccade window: (-0.1, -0.03)
+       D_C shape: (61, 38), D_S shape: (61, 16)
+       Category subspace: (61, 6), var_explained=0.666
+       Saccade subspace: (61, 6), var_explained=0.841
+  [AI] Observed AI = 0.2031
+       Principal angles (deg): [49.99635796 62.36660547 75.42188148 78.50273762 81.66071775 83.96301709]
+       Mean angle: 72.0°, Overlap: 0.1273
+  [null] Manifold dim: 34 (from 54 total)
+         Expected random overlap (isotropic): ~0.176
+  [null] Running 1000 covariance-matched null samples...
+    [200/1000] null_AI_mean=0.4573
+    [400/1000] null_AI_mean=0.4535
+    [600/1000] null_AI_mean=0.4550
+    [800/1000] null_AI_mean=0.4527
+    [1000/1000] null_AI_mean=0.4522
+  [result] AI_obs=0.2031, null_mean=0.4522±0.0751
+           Δ_AI=-0.2491
+           p(less aligned)=0.0010, p(more aligned)=1.0000

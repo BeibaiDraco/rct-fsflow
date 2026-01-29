@@ -1,0 +1,41 @@
+==============================================================
+AXIS ALIGNMENT ANALYSIS (NOFILTER) - Session 20231130 (task 22)
+==============================================================
+
+[info] Running alignment analysis for 20231130 (NOFILTER)
+       Mode: both (AI + axis_shuffle)
+       n_perms: 1000
+
+======================================================================
+CATEGORY-SACCADE SUBSPACE ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] Mode: both
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+[info] n_perms: 1000
+
+[Analysis A] Alignment Index + Covariance-Matched Null
+             Category window: [-0.3, -0.1]
+             Saccade window: [-0.1, -0.03]
+             Subspace dim k: 6
+             Tests: 'less aligned than chance' (orthogonality)
+
+[Analysis B] Axis Angle + Label-Shuffle Null
+             Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+             Tests: 'more aligned than chance' (label-specific)
+
+============================================================
+[20231130] Processing...
+
+  [Analysis A] Alignment Index...
+  [skip] Not enough valid trials: C=18, S=18
+
+  [Analysis B] Axis angle + shuffle...
+  [skip] Missing sC or sS_raw
+
+======================================================================
+[done] Per-session results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/nofilter
+======================================================================
+
+[done] Alignment analysis complete for SID=20231130 (NOFILTER)
+       Results: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/nofilter/

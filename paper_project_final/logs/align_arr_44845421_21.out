@@ -1,0 +1,197 @@
+==============================================================
+AXIS ALIGNMENT ANALYSIS - Session 20231123 (task 21)
+Filter mode: both
+==============================================================
+
+------------------------------------------------------------
+[info] Running alignment analysis for 20231123 (CORRECT-ONLY trials)
+       Mode: all (AI + axis_shuffle + axis_cov)
+       OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+       AXES_TAG: axes_peakbin_saccCS-sacc-horizontal-20mssw
+       n_perms: 1000
+------------------------------------------------------------
+======================================================================
+CATEGORY-SACCADE SUBSPACE ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] Mode: all
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] n_perms: 1000
+
+[Analysis A] Alignment Index + Covariance-Matched Null (PCA subspaces)
+             Category window: [-0.3, -0.1]
+             Saccade window: [-0.1, -0.03]
+             Subspace dim k: 6
+             Tests: 'less aligned than chance' (orthogonality)
+
+[Analysis B] Axis Angle + Label-Shuffle Null
+             Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw
+             Tests: 'more aligned than shuffle chance' (label-specific)
+
+[Analysis C] Axis Angle + Covariance-Constrained Null (DAVE'S QUESTION)
+             Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw
+             Uses trained sC and sS_raw axes
+             Tests: 'less aligned than geometry-constrained chance'
+
+============================================================
+[20231123] Processing...
+
+  [Analysis A] Alignment Index (PCA subspaces)...
+  [AI] Building condition-averaged matrices...
+       Category window: (-0.3, -0.1)
+       Saccade window: (-0.1, -0.03)
+       D_C shape: (102, 38), D_S shape: (102, 16)
+       Category subspace: (102, 6), var_explained=0.518
+       Saccade subspace: (102, 6), var_explained=0.820
+  [AI] Observed AI = 0.1315
+       Principal angles (deg): [65.46867703 74.74237246 76.8984382  79.3969718  83.25477419 86.23148427]
+       Mean angle: 77.7°, Overlap: 0.0575
+  [null] Manifold dim: 40 (from 54 total)
+         Expected random overlap (isotropic): ~0.150
+  [null] Running 1000 covariance-matched null samples...
+    [200/1000] null_AI_mean=0.5075
+    [400/1000] null_AI_mean=0.5100
+    [600/1000] null_AI_mean=0.5103
+    [800/1000] null_AI_mean=0.5114
+    [1000/1000] null_AI_mean=0.5116
+  [result] AI_obs=0.1315, null_mean=0.5116±0.0492
+           Δ_AI=-0.3801
+           p(less aligned)=0.0010, p(more aligned)=1.0000
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/correctonly/AI_20231123.json
+
+  [Analysis B] Axis angle + shuffle...
+  [axis] Observed: |cos(θ)|=0.1221, θ=83.0°
+  [null] Running 1000 label-shuffle permutations...
+    [100/1000] null_mean=0.0639
+    [200/1000] null_mean=0.0693
+    [300/1000] null_mean=0.0773
+    [400/1000] null_mean=0.0753
+    [500/1000] null_mean=0.0751
+    [600/1000] null_mean=0.0754
+    [700/1000] null_mean=0.0773
+    [800/1000] null_mean=0.0775
+    [900/1000] null_mean=0.0774
+    [1000/1000] null_mean=0.0776
+  [result] Δ=0.0446, p(more aligned)=0.2168
+           Note: shuffle null tests 'more aligned than chance'
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/correctonly/axis_shuffle_20231123.json
+
+  [Analysis C] Axis angle + covariance-constrained null...
+  [axis-cov] Observed: |cos(θ)|=0.1221, θ=83.0°
+  [null] Manifold dim: 40, D_eff=11.8
+         Expected |cos(θ)| ≈ 0.291 (angle ≈ 73.1°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1068
+    [400/1000] null_mean=0.1118
+    [600/1000] null_mean=0.1125
+    [800/1000] null_mean=0.1130
+    [1000/1000] null_mean=0.1123
+  [result] a_obs=0.1221, null_mean=0.1123±0.0821
+           Δ=0.0098, z=0.12
+           θ_obs=83.0°, θ_null=83.5°
+           p(more orthogonal)=0.6034, p(more aligned)=0.3976
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/correctonly/axis_cov_20231123.json
+
+======================================================================
+[done] Per-session results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/correctonly
+======================================================================
+[done] CORRECT-ONLY trials complete → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/correctonly/
+
+------------------------------------------------------------
+[info] Running alignment analysis for 20231123 (ALL trials (nofilter))
+       Mode: all (AI + axis_shuffle + axis_cov)
+       OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+       AXES_TAG: axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+       n_perms: 1000
+------------------------------------------------------------
+======================================================================
+CATEGORY-SACCADE SUBSPACE ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] Mode: all
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+[info] n_perms: 1000
+
+[Analysis A] Alignment Index + Covariance-Matched Null (PCA subspaces)
+             Category window: [-0.3, -0.1]
+             Saccade window: [-0.1, -0.03]
+             Subspace dim k: 6
+             Tests: 'less aligned than chance' (orthogonality)
+
+[Analysis B] Axis Angle + Label-Shuffle Null
+             Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+             Tests: 'more aligned than shuffle chance' (label-specific)
+
+[Analysis C] Axis Angle + Covariance-Constrained Null (DAVE'S QUESTION)
+             Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+             Uses trained sC and sS_raw axes
+             Tests: 'less aligned than geometry-constrained chance'
+
+============================================================
+[20231123] Processing...
+
+  [Analysis A] Alignment Index (PCA subspaces)...
+  [AI] Building condition-averaged matrices...
+       Category window: (-0.3, -0.1)
+       Saccade window: (-0.1, -0.03)
+       D_C shape: (102, 38), D_S shape: (102, 16)
+       Category subspace: (102, 6), var_explained=0.532
+       Saccade subspace: (102, 6), var_explained=0.802
+  [AI] Observed AI = 0.1149
+       Principal angles (deg): [60.43608308 73.53450071 77.23927491 79.72044104 85.93003345 86.66580215]
+       Mean angle: 77.3°, Overlap: 0.0688
+  [null] Manifold dim: 40 (from 54 total)
+         Expected random overlap (isotropic): ~0.150
+  [null] Running 1000 covariance-matched null samples...
+    [200/1000] null_AI_mean=0.5208
+    [400/1000] null_AI_mean=0.5191
+    [600/1000] null_AI_mean=0.5176
+    [800/1000] null_AI_mean=0.5177
+    [1000/1000] null_AI_mean=0.5181
+  [result] AI_obs=0.1149, null_mean=0.5181±0.0497
+           Δ_AI=-0.4032
+           p(less aligned)=0.0010, p(more aligned)=1.0000
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/nofilter/AI_20231123.json
+
+  [Analysis B] Axis angle + shuffle...
+  [axis] Observed: |cos(θ)|=0.0013, θ=89.9°
+  [null] Running 1000 label-shuffle permutations...
+    [100/1000] null_mean=0.0710
+    [200/1000] null_mean=0.0701
+    [300/1000] null_mean=0.0658
+    [400/1000] null_mean=0.0671
+    [500/1000] null_mean=0.0680
+    [600/1000] null_mean=0.0677
+    [700/1000] null_mean=0.0691
+    [800/1000] null_mean=0.0698
+    [900/1000] null_mean=0.0689
+    [1000/1000] null_mean=0.0683
+  [result] Δ=-0.0670, p(more aligned)=0.9840
+           Note: shuffle null tests 'more aligned than chance'
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/nofilter/axis_shuffle_20231123.json
+
+  [Analysis C] Axis angle + covariance-constrained null...
+  [axis-cov] Observed: |cos(θ)|=0.0013, θ=89.9°
+  [null] Manifold dim: 40, D_eff=11.0
+         Expected |cos(θ)| ≈ 0.301 (angle ≈ 72.5°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.0994
+    [400/1000] null_mean=0.1105
+    [600/1000] null_mean=0.1103
+    [800/1000] null_mean=0.1118
+    [1000/1000] null_mean=0.1116
+  [result] a_obs=0.0013, null_mean=0.1116±0.0836
+           Δ=-0.1104, z=-1.32
+           θ_obs=89.9°, θ_null=83.6°
+           p(more orthogonal)=0.0100, p(more aligned)=0.9910
+  [**] SIGNIFICANT: C-S alignment is LOWER than geometry-constrained chance!
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/nofilter/axis_cov_20231123.json
+
+======================================================================
+[done] Per-session results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/nofilter
+======================================================================
+[done] ALL trials (nofilter) complete → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/nofilter/
+
+==============================================================
+[done] Alignment analysis complete for SID=20231123
+==============================================================

@@ -1,0 +1,30 @@
+{
+  "created": "2026-01-29T01:05:00.176508",
+  "script": "cli/axis_alignment_analysis.py",
+  "mode": "both",
+  "out_root": "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter",
+  "same_axes_tag": "axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter",
+  "stim_axes_tag": "axes_peakbin_stimCR-stim-vertical-20mssw_nofilter",
+  "sacc_axes_tag": "axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter",
+  "orientation": "horizontal",
+  "orientation_stim": "vertical",
+  "pt_min_ms": 200.0,
+  "n_perms": 500,
+  "seed": 42,
+  "qc_threshold_C": 0.6,
+  "qc_threshold_S": 0.6,
+  "sliding_window_ms": 20.0,
+  "sliding_step_ms": 10.0,
+  "clf_binary": "logreg",
+  "C_grid": [
+    0.1,
+    0.3,
+    1.0,
+    3.0,
+    10.0
+  ],
+  "convert_to_raw": true,
+  "n_sessions": 23,
+  "n_results_same": 21,
+  "n_results_cross": 21
+}

@@ -1,0 +1,167 @@
+==============================================================
+AXIS ALIGNMENT ANALYSIS - SUMMARY
+==============================================================
+
+[1] Summarizing CORRECT-ONLY results (correctonly)
+
+======================================================================
+SUMMARIZING ALIGNMENT ANALYSIS RESULTS
+======================================================================
+[info] Results dir: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/correctonly
+[info] Summary dir: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_correctonly
+
+======================================================================
+[Analysis A] ALIGNMENT INDEX RESULTS (PCA subspaces)
+======================================================================
+[info] Loaded 21 sessions
+
+  Mean AI_obs: 0.3152
+  Mean AI_null: 0.6484
+  Mean Δ_AI: -0.3332 ± 0.0213
+
+  Group-level tests (sign-flip on Δ_AI):
+    p(less aligned than chance, Δ<0): 0.0000
+    p(more aligned than chance, Δ>0): 1.0000
+
+  >>> SIGNIFICANT: Category and saccade subspaces are LESS aligned
+      than expected given the neural manifold constraints.
+[ok] Saved AI plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_correctonly/figs
+
+======================================================================
+[Analysis B] AXIS-SHUFFLE RESULTS (label-specificity test)
+======================================================================
+[info] Loaded 21 sessions
+
+  Mean |cos(θ)|_obs: 0.1019
+  Mean |cos(θ)|_null: 0.0874
+  Mean Δ: 0.0145 ± 0.0162
+
+  Group-level tests (sign-flip on Δ):
+    p(more aligned than shuffle, Δ>0): 0.2119
+    p(less aligned than shuffle, Δ<0): 0.7881
+
+  NOTE: The shuffle null tests whether alignment is LABEL-SPECIFIC.
+        It is NOT appropriate for testing 'orthogonal by design'.
+        Use Analysis C (axis_cov) for that question.
+[ok] Saved axis-shuffle plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_correctonly/figs
+
+======================================================================
+[Analysis C] AXIS-COVARIANCE RESULTS (DAVE'S QUESTION)
+======================================================================
+This is the proper test: 'Are trained axes more orthogonal than
+expected given the neural manifold geometry?'
+[info] Loaded 21 sessions
+
+  Mean |cos(θ)|_obs: 0.1019
+  Mean |cos(θ)|_null: 0.1766
+  Mean Δ: -0.0747 ± 0.0201
+  Mean z-score: -0.59
+
+  Group-level tests (sign-flip on Δ):
+    p(more orthogonal than geometry-constrained chance, Δ<0): 0.0012
+    p(more aligned than geometry-constrained chance, Δ>0): 0.9988
+
+  >>> SIGNIFICANT: Category and saccade AXES are MORE ORTHOGONAL
+      than expected given the neural manifold constraints!
+      This supports Dave's claim that C and S live in separate subspaces.
+
+  Mean angle observed: 84.1°
+  Mean angle null: 79.7°
+  Δθ: 4.4° (positive = more orthogonal)
+[ok] Saved axis-covariance plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_correctonly/figs
+
+======================================================================
+[done] Summary saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_correctonly
+======================================================================
+
+[2] Summarizing NOFILTER results (nofilter)
+
+======================================================================
+SUMMARIZING ALIGNMENT ANALYSIS RESULTS
+======================================================================
+[info] Results dir: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/nofilter
+[info] Summary dir: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/alignment_nofilter
+
+======================================================================
+[Analysis A] ALIGNMENT INDEX RESULTS (PCA subspaces)
+======================================================================
+[info] Loaded 21 sessions
+
+  Mean AI_obs: 0.3118
+  Mean AI_null: 0.6543
+  Mean Δ_AI: -0.3425 ± 0.0228
+
+  Group-level tests (sign-flip on Δ_AI):
+    p(less aligned than chance, Δ<0): 0.0000
+    p(more aligned than chance, Δ>0): 1.0000
+
+  >>> SIGNIFICANT: Category and saccade subspaces are LESS aligned
+      than expected given the neural manifold constraints.
+[ok] Saved AI plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/alignment_nofilter/figs
+
+======================================================================
+[Analysis B] AXIS-SHUFFLE RESULTS (label-specificity test)
+======================================================================
+[info] Loaded 21 sessions
+
+  Mean |cos(θ)|_obs: 0.0951
+  Mean |cos(θ)|_null: 0.0899
+  Mean Δ: 0.0052 ± 0.0174
+
+  Group-level tests (sign-flip on Δ):
+    p(more aligned than shuffle, Δ>0): 0.3902
+    p(less aligned than shuffle, Δ<0): 0.6098
+
+  NOTE: The shuffle null tests whether alignment is LABEL-SPECIFIC.
+        It is NOT appropriate for testing 'orthogonal by design'.
+        Use Analysis C (axis_cov) for that question.
+[ok] Saved axis-shuffle plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/alignment_nofilter/figs
+
+======================================================================
+[Analysis C] AXIS-COVARIANCE RESULTS (DAVE'S QUESTION)
+======================================================================
+This is the proper test: 'Are trained axes more orthogonal than
+expected given the neural manifold geometry?'
+[info] Loaded 21 sessions
+
+  Mean |cos(θ)|_obs: 0.0951
+  Mean |cos(θ)|_null: 0.1817
+  Mean Δ: -0.0866 ± 0.0208
+  Mean z-score: -0.69
+
+  Group-level tests (sign-flip on Δ):
+    p(more orthogonal than geometry-constrained chance, Δ<0): 0.0006
+    p(more aligned than geometry-constrained chance, Δ>0): 0.9994
+
+  >>> SIGNIFICANT: Category and saccade AXES are MORE ORTHOGONAL
+      than expected given the neural manifold constraints!
+      This supports Dave's claim that C and S live in separate subspaces.
+
+  Mean angle observed: 84.5°
+  Mean angle null: 79.4°
+  Δθ: 5.1° (positive = more orthogonal)
+[ok] Saved axis-covariance plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/alignment_nofilter/figs
+
+======================================================================
+[done] Summary saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/alignment_nofilter
+======================================================================
+
+==============================================================
+[done] Summary complete
+==============================================================
+
+Results saved to:
+  /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_correctonly/
+  /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/alignment_nofilter/
+
+Key outputs:
+  - summary_alignment_index.json: AI analysis (PCA subspaces)
+  - summary_axis_shuffle.json: Axis-shuffle analysis (label-specificity)
+  - summary_axis_covariance.json: Axis-covariance analysis (DAVE'S QUESTION)
+  - figs/: Publication-ready figures
+
+Interpretation guide:
+  Analysis A (AI): group_p_less < 0.05 means PCA subspaces are MORE ORTHOGONAL than chance
+  Analysis B (shuffle): group_p_greater < 0.05 means alignment is LABEL-SPECIFIC
+  Analysis C (cov): group_p_orth < 0.05 means trained AXES are MORE ORTHOGONAL than chance
+  *** Analysis C is the primary test for Dave's question about trained axes ***

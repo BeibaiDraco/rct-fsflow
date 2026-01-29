@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/axis_alignment_analysis.py", line 1070, in <module>
+    main()
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/axis_alignment_analysis.py", line 1040, in main
+    save_session_result(result, results_dir, "AI")
+  File "/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/cli/axis_alignment_analysis.py", line 884, in save_session_result
+    json.dump(json_result, f, indent=2)
+  File "/software/python-3.11.9-el8-x86_64/lib/python3.11/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/software/python-3.11.9-el8-x86_64/lib/python3.11/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/software/python-3.11.9-el8-x86_64/lib/python3.11/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/software/python-3.11.9-el8-x86_64/lib/python3.11/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/software/python-3.11.9-el8-x86_64/lib/python3.11/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type int64 is not JSON serializable

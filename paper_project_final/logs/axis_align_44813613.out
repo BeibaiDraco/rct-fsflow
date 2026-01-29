@@ -1,0 +1,973 @@
+[info] Starting axis alignment analysis
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] OUT_NOFILTER=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+
+==============================================================
+CORRECT-ONLY REGIME (out/)
+==============================================================
+
+[1] Running BOTH same-alignment and cross-alignment analysis
+[info] Processing 23 sessions
+[info] Mode: both
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] n_perms: 500
+
+[20200327] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.1729, angle=80.0°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1191
+    [200/500] null_mean=0.1211
+    [300/500] null_mean=0.1244
+    [400/500] null_mean=0.1197
+    [500/500] null_mean=0.1184
+  [result] delta=0.0545, p_less=0.7445, p_greater=0.2575
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.2917, angle=73.0°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1357
+    [200/500] null_mean=0.1389
+    [300/500] null_mean=0.1413
+    [400/500] null_mean=0.1381
+    [500/500] null_mean=0.1370
+  [result] delta=0.1548, p_less=0.9142, p_greater=0.0878
+
+[20200328] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.0918, angle=84.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0843
+    [200/500] null_mean=0.0887
+    [300/500] null_mean=0.0866
+    [400/500] null_mean=0.0853
+    [500/500] null_mean=0.0858
+  [result] delta=0.0060, p_less=0.5968, p_greater=0.4052
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.3931, angle=66.9°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0745
+    [200/500] null_mean=0.0749
+    [300/500] null_mean=0.0785
+    [400/500] null_mean=0.0773
+    [500/500] null_mean=0.0749
+  [result] delta=0.3181, p_less=1.0000, p_greater=0.0020
+
+[20200401] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.1823, angle=79.5°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0944
+    [200/500] null_mean=0.0892
+    [300/500] null_mean=0.0868
+    [400/500] null_mean=0.0853
+    [500/500] null_mean=0.0849
+  [result] delta=0.0973, p_less=0.9102, p_greater=0.0918
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.5881, angle=54.0°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0835
+    [200/500] null_mean=0.0762
+    [300/500] null_mean=0.0747
+    [400/500] null_mean=0.0759
+    [500/500] null_mean=0.0752
+  [result] delta=0.5129, p_less=1.0000, p_greater=0.0020
+
+[20200402] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.1534, angle=81.2°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0793
+    [200/500] null_mean=0.0844
+    [300/500] null_mean=0.0840
+    [400/500] null_mean=0.0819
+    [500/500] null_mean=0.0815
+  [result] delta=0.0719, p_less=0.8623, p_greater=0.1397
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.1845, angle=79.4°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1115
+    [200/500] null_mean=0.1076
+    [300/500] null_mean=0.1087
+    [400/500] null_mean=0.1085
+    [500/500] null_mean=0.1105
+  [result] delta=0.0740, p_less=0.8164, p_greater=0.1856
+
+[20200926] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.1097, angle=83.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0730
+    [200/500] null_mean=0.0710
+    [300/500] null_mean=0.0717
+    [400/500] null_mean=0.0723
+    [500/500] null_mean=0.0725
+  [result] delta=0.0372, p_less=0.7625, p_greater=0.2395
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.0005, angle=90.0°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0717
+    [200/500] null_mean=0.0774
+    [300/500] null_mean=0.0771
+    [400/500] null_mean=0.0781
+    [500/500] null_mean=0.0780
+  [result] delta=-0.0775, p_less=0.0060, p_greater=0.9960
+
+[20200929] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.0846, angle=85.1°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0782
+    [200/500] null_mean=0.0774
+    [300/500] null_mean=0.0779
+    [400/500] null_mean=0.0773
+    [500/500] null_mean=0.0795
+  [result] delta=0.0052, p_less=0.6228, p_greater=0.3792
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.2541, angle=75.3°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0986
+    [200/500] null_mean=0.0988
+    [300/500] null_mean=0.0969
+    [400/500] null_mean=0.0942
+    [500/500] null_mean=0.0938
+  [result] delta=0.1603, p_less=0.9701, p_greater=0.0319
+
+[20201001] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.0350, angle=88.0°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0639
+    [200/500] null_mean=0.0642
+    [300/500] null_mean=0.0590
+    [400/500] null_mean=0.0595
+    [500/500] null_mean=0.0602
+  [result] delta=-0.0252, p_less=0.3653, p_greater=0.6367
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.1730, angle=80.0°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1043
+    [200/500] null_mean=0.1013
+    [300/500] null_mean=0.1038
+    [400/500] null_mean=0.1079
+    [500/500] null_mean=0.1077
+  [result] delta=0.0654, p_less=0.7824, p_greater=0.2196
+
+[20201004] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.0786, angle=85.5°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0858
+    [200/500] null_mean=0.0809
+    [300/500] null_mean=0.0774
+    [400/500] null_mean=0.0741
+    [500/500] null_mean=0.0741
+  [result] delta=0.0044, p_less=0.5908, p_greater=0.4112
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.3721, angle=68.2°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0764
+    [200/500] null_mean=0.0709
+    [300/500] null_mean=0.0730
+    [400/500] null_mean=0.0724
+    [500/500] null_mean=0.0736
+  [result] delta=0.2985, p_less=1.0000, p_greater=0.0020
+
+[20201204] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.0311, angle=88.2°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0897
+    [200/500] null_mean=0.0897
+    [300/500] null_mean=0.0883
+    [400/500] null_mean=0.0875
+    [500/500] null_mean=0.0880
+  [result] delta=-0.0570, p_less=0.1996, p_greater=0.8024
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.6176, angle=51.9°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1396
+    [200/500] null_mean=0.1341
+    [300/500] null_mean=0.1375
+    [400/500] null_mean=0.1362
+    [500/500] null_mean=0.1337
+  [result] delta=0.4839, p_less=1.0000, p_greater=0.0020
+
+[20201211] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.1049, angle=84.0°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0992
+    [200/500] null_mean=0.0902
+    [300/500] null_mean=0.0907
+    [400/500] null_mean=0.0903
+    [500/500] null_mean=0.0926
+  [result] delta=0.0122, p_less=0.6287, p_greater=0.3733
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.5486, angle=56.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1095
+    [200/500] null_mean=0.1003
+    [300/500] null_mean=0.0992
+    [400/500] null_mean=0.1025
+    [500/500] null_mean=0.1001
+  [result] delta=0.4485, p_less=1.0000, p_greater=0.0020
+
+[20201216] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.0971, angle=84.4°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0889
+    [200/500] null_mean=0.0861
+    [300/500] null_mean=0.0862
+    [400/500] null_mean=0.0848
+    [500/500] null_mean=0.0849
+  [result] delta=0.0123, p_less=0.6567, p_greater=0.3453
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.5491, angle=56.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1421
+    [200/500] null_mean=0.1448
+    [300/500] null_mean=0.1505
+    [400/500] null_mean=0.1548
+    [500/500] null_mean=0.1566
+  [result] delta=0.3924, p_less=1.0000, p_greater=0.0020
+
+[20230622] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.0758, angle=85.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0605
+    [200/500] null_mean=0.0628
+    [300/500] null_mean=0.0633
+    [400/500] null_mean=0.0652
+    [500/500] null_mean=0.0666
+  [result] delta=0.0092, p_less=0.6287, p_greater=0.3733
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.3708, angle=68.2°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1359
+    [200/500] null_mean=0.1369
+    [300/500] null_mean=0.1321
+    [400/500] null_mean=0.1324
+    [500/500] null_mean=0.1325
+  [result] delta=0.2383, p_less=0.9920, p_greater=0.0100
+
+[20230627] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.0110, angle=89.4°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1054
+    [200/500] null_mean=0.0977
+    [300/500] null_mean=0.0989
+    [400/500] null_mean=0.0960
+    [500/500] null_mean=0.0925
+  [result] delta=-0.0815, p_less=0.0858, p_greater=0.9162
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.0984, angle=84.4°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0756
+    [200/500] null_mean=0.0819
+    [300/500] null_mean=0.0767
+    [400/500] null_mean=0.0791
+    [500/500] null_mean=0.0784
+  [result] delta=0.0200, p_less=0.6687, p_greater=0.3333
+
+[20230705] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.1486, angle=81.5°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0884
+    [200/500] null_mean=0.0873
+    [300/500] null_mean=0.0872
+    [400/500] null_mean=0.0868
+    [500/500] null_mean=0.0874
+  [result] delta=0.0612, p_less=0.8244, p_greater=0.1776
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.0122, angle=89.3°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1752
+    [200/500] null_mean=0.1751
+    [300/500] null_mean=0.1806
+    [400/500] null_mean=0.1760
+    [500/500] null_mean=0.1771
+  [result] delta=-0.1649, p_less=0.0379, p_greater=0.9641
+
+[20230707] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.0109, angle=89.4°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1093
+    [200/500] null_mean=0.1054
+    [300/500] null_mean=0.1076
+    [400/500] null_mean=0.1060
+    [500/500] null_mean=0.1082
+  [result] delta=-0.0973, p_less=0.0439, p_greater=0.9581
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.4968, angle=60.2°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.3218
+    [200/500] null_mean=0.3330
+    [300/500] null_mean=0.3365
+    [400/500] null_mean=0.3393
+    [500/500] null_mean=0.3465
+  [result] delta=0.1503, p_less=0.6427, p_greater=0.3593
+
+[20230710] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.3456, angle=69.8°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1005
+    [200/500] null_mean=0.1000
+    [300/500] null_mean=0.0977
+    [400/500] null_mean=0.0960
+    [500/500] null_mean=0.0947
+  [result] delta=0.2508, p_less=1.0000, p_greater=0.0020
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.2090, angle=77.9°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1213
+    [200/500] null_mean=0.1259
+    [300/500] null_mean=0.1247
+    [400/500] null_mean=0.1247
+    [500/500] null_mean=0.1243
+  [result] delta=0.0847, p_less=0.8144, p_greater=0.1876
+
+[20231025] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.0503, angle=87.1°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0904
+    [200/500] null_mean=0.0976
+    [300/500] null_mean=0.0980
+    [400/500] null_mean=0.1009
+    [500/500] null_mean=0.1001
+  [result] delta=-0.0499, p_less=0.3094, p_greater=0.6926
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.1961, angle=78.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0964
+    [200/500] null_mean=0.0958
+    [300/500] null_mean=0.0966
+    [400/500] null_mean=0.0986
+    [500/500] null_mean=0.0994
+  [result] delta=0.0968, p_less=0.8723, p_greater=0.1297
+
+[20231103] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.1152, angle=83.4°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0862
+    [200/500] null_mean=0.0801
+    [300/500] null_mean=0.0822
+    [400/500] null_mean=0.0836
+    [500/500] null_mean=0.0837
+  [result] delta=0.0314, p_less=0.7305, p_greater=0.2715
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.1090, angle=83.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1338
+    [200/500] null_mean=0.1326
+    [300/500] null_mean=0.1300
+    [400/500] null_mean=0.1254
+    [500/500] null_mean=0.1237
+  [result] delta=-0.0147, p_less=0.5070, p_greater=0.4950
+
+[20231109] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.0009, angle=89.9°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1028
+    [200/500] null_mean=0.0953
+    [300/500] null_mean=0.0985
+    [400/500] null_mean=0.0980
+    [500/500] null_mean=0.0973
+  [result] delta=-0.0964, p_less=0.0060, p_greater=0.9960
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.2554, angle=75.2°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1175
+    [200/500] null_mean=0.1190
+    [300/500] null_mean=0.1169
+    [400/500] null_mean=0.1163
+    [500/500] null_mean=0.1188
+  [result] delta=0.1365, p_less=0.9281, p_greater=0.0739
+
+[20231121] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.1183, angle=83.2°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1074
+    [200/500] null_mean=0.1100
+    [300/500] null_mean=0.1063
+    [400/500] null_mean=0.1043
+    [500/500] null_mean=0.1012
+  [result] delta=0.0171, p_less=0.6527, p_greater=0.3493
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.0192, angle=88.9°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1272
+    [200/500] null_mean=0.1163
+    [300/500] null_mean=0.1146
+    [400/500] null_mean=0.1137
+    [500/500] null_mean=0.1108
+  [result] delta=-0.0916, p_less=0.1038, p_greater=0.8982
+
+[20231123] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [obs] alignment=0.1221, angle=83.0°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0639
+    [200/500] null_mean=0.0693
+    [300/500] null_mean=0.0773
+    [400/500] null_mean=0.0753
+    [500/500] null_mean=0.0751
+  [result] delta=0.0471, p_less=0.8024, p_greater=0.1996
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [convert] Converted axes to raw space
+  [obs] alignment=0.1188, angle=83.2°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1094
+    [200/500] null_mean=0.1098
+    [300/500] null_mean=0.1104
+    [400/500] null_mean=0.1090
+    [500/500] null_mean=0.1118
+  [result] delta=0.0071, p_less=0.5828, p_greater=0.4192
+
+[20231130] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [skip] Missing sC or sS_raw
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [skip] Missing sC or sS_raw
+
+[20231205] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw
+  [skip] Missing sC or sS_raw
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw
+  [skip] Missing sC or sS_raw
+
+============================================================
+[same-alignment] 21 sessions
+  Mean delta: 0.0148 ± 0.0163
+  Group p (obs < null): 0.7932
+  Group p (obs > null): 0.2068
+[ok] Saved plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/axis_alignment_alignment_correctonly/figs
+
+============================================================
+[cross-alignment] 21 sessions
+  Mean delta: 0.1568 ± 0.0410
+  Group p (obs < null): 0.9994
+  Group p (obs > null): 0.0006
+[ok] Saved plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/axis_alignment_alignment_correctonly/figs
+
+[done] Results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/axis_alignment_alignment_correctonly
+
+==============================================================
+NOFILTER REGIME (out_nofilter/)
+==============================================================
+
+[2] Running BOTH same-alignment and cross-alignment analysis - NOFILTER
+[info] Processing 23 sessions
+[info] Mode: both
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+[info] n_perms: 500
+
+[20200327] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0686, angle=86.1°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1395
+    [200/500] null_mean=0.1422
+    [300/500] null_mean=0.1417
+    [400/500] null_mean=0.1414
+    [500/500] null_mean=0.1365
+  [result] delta=-0.0679, p_less=0.2934, p_greater=0.7086
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.3031, angle=72.4°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1457
+    [200/500] null_mean=0.1494
+    [300/500] null_mean=0.1463
+    [400/500] null_mean=0.1527
+    [500/500] null_mean=0.1537
+  [result] delta=0.1495, p_less=0.8782, p_greater=0.1238
+
+[20200328] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.1040, angle=84.0°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0882
+    [200/500] null_mean=0.0882
+    [300/500] null_mean=0.0869
+    [400/500] null_mean=0.0892
+    [500/500] null_mean=0.0888
+  [result] delta=0.0152, p_less=0.6507, p_greater=0.3513
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.3641, angle=68.6°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0944
+    [200/500] null_mean=0.0950
+    [300/500] null_mean=0.0981
+    [400/500] null_mean=0.0947
+    [500/500] null_mean=0.0936
+  [result] delta=0.2705, p_less=0.9980, p_greater=0.0040
+
+[20200401] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.2193, angle=77.3°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1012
+    [200/500] null_mean=0.0921
+    [300/500] null_mean=0.0907
+    [400/500] null_mean=0.0910
+    [500/500] null_mean=0.0890
+  [result] delta=0.1303, p_less=0.9541, p_greater=0.0479
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.4321, angle=64.4°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1080
+    [200/500] null_mean=0.1085
+    [300/500] null_mean=0.1030
+    [400/500] null_mean=0.1038
+    [500/500] null_mean=0.1042
+  [result] delta=0.3279, p_less=1.0000, p_greater=0.0020
+
+[20200402] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.1250, angle=82.8°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0722
+    [200/500] null_mean=0.0748
+    [300/500] null_mean=0.0772
+    [400/500] null_mean=0.0784
+    [500/500] null_mean=0.0777
+  [result] delta=0.0472, p_less=0.8104, p_greater=0.1916
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.3795, angle=67.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1277
+    [200/500] null_mean=0.1215
+    [300/500] null_mean=0.1221
+    [400/500] null_mean=0.1212
+    [500/500] null_mean=0.1168
+  [result] delta=0.2627, p_less=0.9940, p_greater=0.0080
+
+[20200926] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.1374, angle=82.1°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0756
+    [200/500] null_mean=0.0793
+    [300/500] null_mean=0.0783
+    [400/500] null_mean=0.0793
+    [500/500] null_mean=0.0779
+  [result] delta=0.0595, p_less=0.8543, p_greater=0.1477
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.0573, angle=86.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1015
+    [200/500] null_mean=0.0981
+    [300/500] null_mean=0.0978
+    [400/500] null_mean=0.0978
+    [500/500] null_mean=0.0962
+  [result] delta=-0.0389, p_less=0.3493, p_greater=0.6527
+
+[20200929] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0930, angle=84.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0894
+    [200/500] null_mean=0.0896
+    [300/500] null_mean=0.0873
+    [400/500] null_mean=0.0878
+    [500/500] null_mean=0.0878
+  [result] delta=0.0052, p_less=0.6088, p_greater=0.3932
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.0736, angle=85.8°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1572
+    [200/500] null_mean=0.1581
+    [300/500] null_mean=0.1585
+    [400/500] null_mean=0.1641
+    [500/500] null_mean=0.1670
+  [result] delta=-0.0934, p_less=0.2794, p_greater=0.7226
+
+[20201001] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0257, angle=88.5°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0624
+    [200/500] null_mean=0.0598
+    [300/500] null_mean=0.0611
+    [400/500] null_mean=0.0622
+    [500/500] null_mean=0.0622
+  [result] delta=-0.0366, p_less=0.2435, p_greater=0.7585
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.2019, angle=78.4°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1095
+    [200/500] null_mean=0.1093
+    [300/500] null_mean=0.1197
+    [400/500] null_mean=0.1194
+    [500/500] null_mean=0.1208
+  [result] delta=0.0811, p_less=0.8144, p_greater=0.1876
+
+[20201004] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0541, angle=86.9°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0724
+    [200/500] null_mean=0.0728
+    [300/500] null_mean=0.0710
+    [400/500] null_mean=0.0717
+    [500/500] null_mean=0.0727
+  [result] delta=-0.0187, p_less=0.4531, p_greater=0.5489
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.4421, angle=63.8°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0924
+    [200/500] null_mean=0.0930
+    [300/500] null_mean=0.0903
+    [400/500] null_mean=0.0882
+    [500/500] null_mean=0.0893
+  [result] delta=0.3528, p_less=1.0000, p_greater=0.0020
+
+[20201204] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0624, angle=86.4°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0744
+    [200/500] null_mean=0.0881
+    [300/500] null_mean=0.0872
+    [400/500] null_mean=0.0874
+    [500/500] null_mean=0.0869
+  [result] delta=-0.0245, p_less=0.4351, p_greater=0.5669
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.5201, angle=58.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1495
+    [200/500] null_mean=0.1406
+    [300/500] null_mean=0.1294
+    [400/500] null_mean=0.1357
+    [500/500] null_mean=0.1299
+  [result] delta=0.3902, p_less=1.0000, p_greater=0.0020
+
+[20201211] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.1674, angle=80.4°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0931
+    [200/500] null_mean=0.0953
+    [300/500] null_mean=0.0961
+    [400/500] null_mean=0.1012
+    [500/500] null_mean=0.1023
+  [result] delta=0.0651, p_less=0.8124, p_greater=0.1896
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.5693, angle=55.3°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0993
+    [200/500] null_mean=0.0965
+    [300/500] null_mean=0.1022
+    [400/500] null_mean=0.0991
+    [500/500] null_mean=0.1009
+  [result] delta=0.4684, p_less=1.0000, p_greater=0.0020
+
+[20201216] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0741, angle=85.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0908
+    [200/500] null_mean=0.0937
+    [300/500] null_mean=0.0882
+    [400/500] null_mean=0.0883
+    [500/500] null_mean=0.0874
+  [result] delta=-0.0132, p_less=0.4950, p_greater=0.5070
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.4253, angle=64.8°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1414
+    [200/500] null_mean=0.1296
+    [300/500] null_mean=0.1354
+    [400/500] null_mean=0.1325
+    [500/500] null_mean=0.1328
+  [result] delta=0.2925, p_less=0.9940, p_greater=0.0080
+
+[20230622] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0812, angle=85.3°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0665
+    [200/500] null_mean=0.0684
+    [300/500] null_mean=0.0682
+    [400/500] null_mean=0.0668
+    [500/500] null_mean=0.0649
+  [result] delta=0.0163, p_less=0.6846, p_greater=0.3174
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.0712, angle=85.9°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0774
+    [200/500] null_mean=0.0759
+    [300/500] null_mean=0.0815
+    [400/500] null_mean=0.0809
+    [500/500] null_mean=0.0806
+  [result] delta=-0.0095, p_less=0.4910, p_greater=0.5110
+
+[20230627] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0046, angle=89.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1122
+    [200/500] null_mean=0.1091
+    [300/500] null_mean=0.1043
+    [400/500] null_mean=0.1061
+    [500/500] null_mean=0.1058
+  [result] delta=-0.1012, p_less=0.0240, p_greater=0.9780
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.1999, angle=78.5°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1194
+    [200/500] null_mean=0.1115
+    [300/500] null_mean=0.1075
+    [400/500] null_mean=0.1107
+    [500/500] null_mean=0.1122
+  [result] delta=0.0877, p_less=0.8403, p_greater=0.1617
+
+[20230705] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.2201, angle=77.3°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0990
+    [200/500] null_mean=0.0941
+    [300/500] null_mean=0.0941
+    [400/500] null_mean=0.0926
+    [500/500] null_mean=0.0917
+  [result] delta=0.1284, p_less=0.9521, p_greater=0.0499
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.0027, angle=89.8°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1122
+    [200/500] null_mean=0.1239
+    [300/500] null_mean=0.1254
+    [400/500] null_mean=0.1256
+    [500/500] null_mean=0.1265
+  [result] delta=-0.1238, p_less=0.0080, p_greater=0.9940
+
+[20230707] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0570, angle=86.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1287
+    [200/500] null_mean=0.1204
+    [300/500] null_mean=0.1171
+    [400/500] null_mean=0.1173
+    [500/500] null_mean=0.1165
+  [result] delta=-0.0595, p_less=0.2954, p_greater=0.7066
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.6601, angle=48.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.3596
+    [200/500] null_mean=0.3804
+    [300/500] null_mean=0.3729
+    [400/500] null_mean=0.3746
+    [500/500] null_mean=0.3795
+  [result] delta=0.2806, p_less=0.8982, p_greater=0.1038
+
+[20230710] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.3215, angle=71.2°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0984
+    [200/500] null_mean=0.0921
+    [300/500] null_mean=0.0962
+    [400/500] null_mean=0.0943
+    [500/500] null_mean=0.0948
+  [result] delta=0.2267, p_less=0.9880, p_greater=0.0140
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.2496, angle=75.5°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1709
+    [200/500] null_mean=0.1579
+    [300/500] null_mean=0.1563
+    [400/500] null_mean=0.1513
+    [500/500] null_mean=0.1489
+  [result] delta=0.1007, p_less=0.8104, p_greater=0.1916
+
+[20231025] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0402, angle=87.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0988
+    [200/500] null_mean=0.0965
+    [300/500] null_mean=0.0981
+    [400/500] null_mean=0.0963
+    [500/500] null_mean=0.0960
+  [result] delta=-0.0558, p_less=0.2675, p_greater=0.7345
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.1780, angle=79.7°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1252
+    [200/500] null_mean=0.1218
+    [300/500] null_mean=0.1267
+    [400/500] null_mean=0.1237
+    [500/500] null_mean=0.1267
+  [result] delta=0.0514, p_less=0.7485, p_greater=0.2535
+
+[20231103] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0134, angle=89.2°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0695
+    [200/500] null_mean=0.0741
+    [300/500] null_mean=0.0742
+    [400/500] null_mean=0.0761
+    [500/500] null_mean=0.0768
+  [result] delta=-0.0634, p_less=0.1118, p_greater=0.8902
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.0762, angle=85.6°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0970
+    [200/500] null_mean=0.0939
+    [300/500] null_mean=0.0932
+    [400/500] null_mean=0.0946
+    [500/500] null_mean=0.0972
+  [result] delta=-0.0210, p_less=0.4790, p_greater=0.5230
+
+[20231109] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0192, angle=88.9°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1007
+    [200/500] null_mean=0.1047
+    [300/500] null_mean=0.1080
+    [400/500] null_mean=0.1087
+    [500/500] null_mean=0.1061
+  [result] delta=-0.0869, p_less=0.1417, p_greater=0.8603
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.1395, angle=82.0°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1108
+    [200/500] null_mean=0.1069
+    [300/500] null_mean=0.1103
+    [400/500] null_mean=0.1083
+    [500/500] null_mean=0.1077
+  [result] delta=0.0318, p_less=0.7046, p_greater=0.2974
+
+[20231121] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.1075, angle=83.8°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1137
+    [200/500] null_mean=0.1076
+    [300/500] null_mean=0.1079
+    [400/500] null_mean=0.1099
+    [500/500] null_mean=0.1112
+  [result] delta=-0.0037, p_less=0.5609, p_greater=0.4411
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.0906, angle=84.8°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.1580
+    [200/500] null_mean=0.1686
+    [300/500] null_mean=0.1783
+    [400/500] null_mean=0.1711
+    [500/500] null_mean=0.1734
+  [result] delta=-0.0828, p_less=0.3034, p_greater=0.6986
+
+[20231123] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0013, angle=89.9°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.0710
+    [200/500] null_mean=0.0701
+    [300/500] null_mean=0.0658
+    [400/500] null_mean=0.0671
+    [500/500] null_mean=0.0680
+  [result] delta=-0.0668, p_less=0.0220, p_greater=0.9800
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.1022, angle=84.1°
+  [null] Running 500 permutations...
+    [100/500] null_mean=0.2344
+    [200/500] null_mean=0.2283
+    [300/500] null_mean=0.2324
+    [400/500] null_mean=0.2308
+    [500/500] null_mean=0.2329
+  [result] delta=-0.1307, p_less=0.1856, p_greater=0.8164
+
+[20231130] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [skip] Missing sC or sS_raw
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [skip] Missing sC or sS_raw
+
+[20231205] Processing...
+  [same-alignment] axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  [obs] alignment=0.0296, angle=88.3°
+  [skip] Not enough valid trials: 26
+  [cross-alignment] stim:axes_peakbin_stimCR-stim-vertical-20mssw_nofilter vs sacc:axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter
+  [convert] Converted axes to raw space
+  [obs] alignment=0.0584, angle=86.7°
+  [skip] Not enough valid trials: 26
+
+============================================================
+[same-alignment] 21 sessions
+  Mean delta: 0.0046 ± 0.0175
+  Group p (obs < null): 0.5966
+  Group p (obs > null): 0.4034
+[ok] Saved plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/axis_alignment_alignment_nofilter/figs
+
+============================================================
+[cross-alignment] 21 sessions
+  Mean delta: 0.1261 ± 0.0392
+  Group p (obs < null): 0.9973
+  Group p (obs > null): 0.0027
+[ok] Saved plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/axis_alignment_alignment_nofilter/figs
+
+[done] Results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/axis_alignment_alignment_nofilter
+
+==============================================================
+[done] Axis alignment analysis complete
+==============================================================
+
+Results saved to:
+  /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/axis_alignment_alignment_correctonly/
+  /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/axis_alignment_alignment_nofilter/

@@ -1,0 +1,67 @@
+==============================================================
+AXIS ALIGNMENT ANALYSIS - SUMMARY
+==============================================================
+
+[1] Summarizing CORRECT-ONLY results (correctonly)
+
+======================================================================
+SUMMARIZING ALIGNMENT ANALYSIS RESULTS
+======================================================================
+[info] Results dir: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/correctonly
+[info] Summary dir: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_correctonly
+
+======================================================================
+[Analysis A] ALIGNMENT INDEX RESULTS
+======================================================================
+[info] Loaded 21 sessions
+
+  Mean AI_obs: 0.3152
+  Mean AI_null: 0.4864
+  Mean Δ_AI: -0.1712 ± 0.0216
+
+  Group-level tests (sign-flip on Δ_AI):
+    p(less aligned than chance, Δ<0): 0.0000
+    p(more aligned than chance, Δ>0): 1.0000
+
+  >>> SIGNIFICANT: Category and saccade subspaces are LESS aligned
+      than expected given the neural manifold constraints.
+[ok] Saved AI plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_correctonly/figs
+
+======================================================================
+[Analysis B] AXIS-SHUFFLE RESULTS
+======================================================================
+[info] Loaded 21 sessions
+
+  Mean |cos(θ)|_obs: 0.1019
+  Mean |cos(θ)|_null: 0.0874
+  Mean Δ: 0.0145 ± 0.0162
+
+  Group-level tests (sign-flip on Δ):
+    p(more aligned than shuffle, Δ>0): 0.2119
+    p(less aligned than shuffle, Δ<0): 0.7881
+
+  NOTE: The shuffle null tests whether alignment is LABEL-SPECIFIC.
+        It is NOT appropriate for testing 'orthogonal by design'.
+        Use Alignment Index (Analysis A) for that question.
+[ok] Saved axis-shuffle plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_correctonly/figs
+
+======================================================================
+[done] Summary saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_correctonly
+======================================================================
+[WARN] No results found for tag=nofilter in /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter (optional)
+
+==============================================================
+[done] Summary complete
+==============================================================
+
+Results saved to:
+  /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_correctonly/
+
+Key outputs:
+  - summary_alignment_index.json: AI analysis (primary for Dave's question)
+  - summary_axis_shuffle.json: Axis-shuffle analysis (supplementary)
+  - figs/: Publication-ready figures
+
+Interpretation guide:
+  Analysis A (AI): group_p_less < 0.05 means subspaces are MORE ORTHOGONAL than chance
+  Analysis B (shuffle): group_p_greater < 0.05 means alignment is LABEL-SPECIFIC

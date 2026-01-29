@@ -1,0 +1,50 @@
+[info] task=17 SID=20231025
+[info] Training C+S on sacc-aligned data for axis alignment analysis
+
+==================== CORRECT-ONLY: Train C+S on sacc-aligned ====================
+
+========== Train C+S axes on sacc-aligned (correct-only) ==========
+
+[RUN] python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231025 --orientation horizontal --features C S --tag axes_peakbin_saccCS-sacc-horizontal-20mssw --norm global --clf_binary logreg --C_grid 0.1 0.3 1 3 10 --lda_shrinkage auto --searchC --searchS --search_range_C=-0.30:-0.05 --search_range_S=-0.20:0.05 --search_step_ms 20 --search_len_ms 50 100 150 200 250 --search_score_mode peak_bin_auc --search_tiebreak shortest_then_closest0 --search_tol 0.01 --pt_min_ms_sacc 200 --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20231025][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw/axes_SFEF.npz
+    → winC_selected: [-0.16, -0.06], score: 0.6929, peak@-110ms (cv_auc=0.7389)
+[20231025][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw/axes_SLIP.npz
+    → winC_selected: [-0.3, -0.19999999999999998], score: 0.6286, peak@-290ms (cv_auc=0.5891)
+[20231025][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw/axes_SSC.npz
+    → winC_selected: [-0.1, -0.05], score: 0.6286, peak@-60ms (cv_auc=0.6669)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw/config.json
+
+========== QC for C+S axes (correct-only) ==========
+
+[RUN] python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20231025 --orientation horizontal --tag axes_peakbin_saccCS-sacc-horizontal-20mssw --thr 0.60 --k 5 --pt_min_ms_sacc 200 --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20231025][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/qc/axes_peakbin_saccCS-sacc-horizontal-20mssw/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=-149.99999850988388, Sraw=None, Sinv=None, T=None
+[20231025][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/qc/axes_peakbin_saccCS-sacc-horizontal-20mssw/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=-319.9999928474426, Sraw=-60.00000052154064, Sinv=-60.00000052154064, T=None
+[20231025][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20231025/qc/axes_peakbin_saccCS-sacc-horizontal-20mssw/qc_axes_SSC.pdf (+ .png, .json)   lat(ms): C=80.0000000745058, Sraw=-80.0000000745058, Sinv=-70.00000029802322, T=None
+
+==================== NOFILTER: Train C+S on sacc-aligned ====================
+
+========== Train C+S axes on sacc-aligned (nofilter) ==========
+
+[RUN] python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align sacc --sid 20231025 --orientation horizontal --features C S --tag axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter --norm global --clf_binary logreg --C_grid 0.1 0.3 1 3 10 --lda_shrinkage auto --searchC --searchS --search_range_C=-0.30:-0.05 --search_range_S=-0.20:0.05 --search_step_ms 20 --search_len_ms 50 100 150 200 250 --search_score_mode peak_bin_auc --search_tiebreak shortest_then_closest0 --search_tol 0.01 --pt_min_ms_sacc 200 --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20231025][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter/axes_SFEF.npz
+    → winC_selected: [-0.12000000000000001, -0.07], score: 0.6845, peak@-70ms (cv_auc=0.7188)
+[20231025][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter/axes_SLIP.npz
+    → winC_selected: [-0.14, -0.09000000000000001], score: 0.6207, peak@-120ms (cv_auc=0.6136)
+[20231025][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter/axes_SSC.npz
+    → winC_selected: [-0.1, -0.05], score: 0.5999, peak@-60ms (cv_auc=0.6256)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter/config.json
+
+========== QC for C+S axes (nofilter) ==========
+
+[RUN] python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align sacc --sid 20231025 --orientation horizontal --tag axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter --thr 0.60 --k 5 --pt_min_ms_sacc 200 --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20231025][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/qc/axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=-119.99999918043613, Sraw=None, Sinv=None, T=None
+[20231025][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/qc/axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=-149.99999850988388, Sraw=-49.999999813735485, Sinv=-49.999999813735485, T=None
+[20231025][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/qc/axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter/qc_axes_SSC.pdf (+ .png, .json)   lat(ms): C=70.00000029802322, Sraw=-80.0000000745058, Sinv=-80.0000000745058, T=None
+
+[done] C+S axes training complete for SID=20231025
