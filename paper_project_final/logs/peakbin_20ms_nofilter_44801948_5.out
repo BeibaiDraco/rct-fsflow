@@ -1,0 +1,226 @@
+[info] task=5 SID=20200926
+[info] PAPER_HOME=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final
+[info] OUT_ROOT=/project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+[info] MODE: NO CORRECT FILTER + FORCE ALL CORRECT (replicates OLD bug)
+[info] DRY_RUN=0 CONTINUE_ON_ERROR=0
+
+==================== BUILD CACHES (REPLICATE OLD BUG) ====================
+Using --no_correct_filter --force_all_correct
+  - All trials kept in cache
+  - lab_is_correct = True for ALL trials (the bug)
+
+========== Build STIM caches (all trials, lab_is_correct=True) ==========
+
+[RUN] python cli/build_cache.py --root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/RCT_02 --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align stim --sid 20200926 --no_correct_filter --force_all_correct
+[ok] sid=20200926 (stim) wrote 3 caches (t0=-0.3, t1=0.8, bin_ms=5.0):
+    /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/caches/area_MFEF.npz
+    /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/caches/area_MLIP.npz
+    /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/caches/area_MSC.npz
+
+========== Build SACC caches (all trials, lab_is_correct=True) ==========
+
+[RUN] python cli/build_cache.py --root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/RCT_02 --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align sacc --sid 20200926 --no_correct_filter --force_all_correct
+[ok] sid=20200926 (sacc) wrote 3 caches (t0=-0.4, t1=0.2, bin_ms=5.0):
+    /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/caches/area_MFEF.npz
+    /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/caches/area_MLIP.npz
+    /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/caches/area_MSC.npz
+
+========== STIM 20ms sliding: train axes (C,R) on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align stim --sid 20200926 --orientation vertical --features C R --tag axes_peakbin_stimCR-stim-vertical-20mssw_nofilter --norm global --clf_binary logreg --C_grid 0.1 0.3 1 3 10 --lda_shrinkage auto --searchC --searchR --search_range_C=0.00:0.50 --search_range_R=0.00:0.50 --search_step_ms 20 --search_len_ms 50 100 150 200 250 --search_score_mode peak_bin_auc --search_tiebreak shortest_then_earliest --search_tol 0.01 --pt_min_ms_stim 200 --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/axes/axes_peakbin_stimCR-stim-vertical-20mssw_nofilter/axes_MFEF.npz
+    → winC_selected: [0.3, 0.35], score: 0.9542, peak@340ms (cv_auc=0.9922)
+[20200926][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/axes/axes_peakbin_stimCR-stim-vertical-20mssw_nofilter/axes_MLIP.npz
+    → winC_selected: [0.4200000000000001, 0.4700000000000001], score: 0.9352, peak@460ms (cv_auc=0.9856)
+[20200926][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/axes/axes_peakbin_stimCR-stim-vertical-20mssw_nofilter/axes_MSC.npz
+    → winC_selected: [0.1, 0.25], score: 0.6571, peak@200ms (cv_auc=0.7198)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/axes/axes_peakbin_stimCR-stim-vertical-20mssw_nofilter/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/axes/axes_peakbin_stimCR-stim-vertical-20mssw_nofilter/config.json
+
+========== STIM 20ms sliding: QC on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align stim --sid 20200926 --orientation vertical --tag axes_peakbin_stimCR-stim-vertical-20mssw_nofilter --thr 0.60 --k 5 --pt_min_ms_stim 200 --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/qc/axes_peakbin_stimCR-stim-vertical-20mssw_nofilter/qc_axes_MFEF.pdf (+ .png, .json)   lat(ms): C=220.0000025331974, Sraw=None, Sinv=None, T=None
+[20200926][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/qc/axes_peakbin_stimCR-stim-vertical-20mssw_nofilter/qc_axes_MLIP.pdf (+ .png, .json)   lat(ms): C=220.0000025331974, Sraw=None, Sinv=None, T=None
+[20200926][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/qc/axes_peakbin_stimCR-stim-vertical-20mssw_nofilter/qc_axes_MSC.pdf (+ .png, .json)   lat(ms): C=169.99999806284904, Sraw=None, Sinv=None, T=None
+
+==================== STIM C: LAG 30ms [ALL TRIALS] ====================
+
+========== STIM lag30ms: flow feature=C on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align stim --sid 20200926 --feature C --orientation vertical --lags_ms 30 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical-20mssw_nofilter --tag evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter --flow_tag_base evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF->MLIP] [evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMLIP.npz
+[20200926][MFEF->MSC] [evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMSC.npz
+[20200926][MLIP->MFEF] [evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMFEF.npz
+[20200926][MLIP->MSC] [evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMSC.npz
+[20200926][MSC->MFEF] [evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMFEF.npz
+[20200926][MSC->MLIP] [evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMLIP.npz
+
+==================== STIM C: LAG 40ms [ALL TRIALS] ====================
+
+========== STIM lag40ms: flow feature=C on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align stim --sid 20200926 --feature C --orientation vertical --lags_ms 40 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical-20mssw_nofilter --tag evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter --flow_tag_base evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF->MLIP] [evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMLIP.npz
+[20200926][MFEF->MSC] [evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMSC.npz
+[20200926][MLIP->MFEF] [evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMFEF.npz
+[20200926][MLIP->MSC] [evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMSC.npz
+[20200926][MSC->MFEF] [evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMFEF.npz
+[20200926][MSC->MLIP] [evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMLIP.npz
+
+==================== STIM C: LAG 50ms [ALL TRIALS] ====================
+
+========== STIM lag50ms: flow feature=C on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align stim --sid 20200926 --feature C --orientation vertical --lags_ms 50 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical-20mssw_nofilter --tag evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter --flow_tag_base evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF->MLIP] [evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMLIP.npz
+[20200926][MFEF->MSC] [evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMSC.npz
+[20200926][MLIP->MFEF] [evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMFEF.npz
+[20200926][MLIP->MSC] [evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMSC.npz
+[20200926][MSC->MFEF] [evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMFEF.npz
+[20200926][MSC->MLIP] [evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMLIP.npz
+
+==================== STIM C: LAG 60ms [ALL TRIALS] ====================
+
+========== STIM lag60ms: flow feature=C on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align stim --sid 20200926 --feature C --orientation vertical --lags_ms 60 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical-20mssw_nofilter --tag evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter --flow_tag_base evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF->MLIP] [evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMLIP.npz
+[20200926][MFEF->MSC] [evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMSC.npz
+[20200926][MLIP->MFEF] [evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMFEF.npz
+[20200926][MLIP->MSC] [evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMSC.npz
+[20200926][MSC->MFEF] [evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMFEF.npz
+[20200926][MSC->MLIP] [evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMLIP.npz
+
+==================== STIM C: LAG 80ms [ALL TRIALS] ====================
+
+========== STIM lag80ms: flow feature=C on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align stim --sid 20200926 --feature C --orientation vertical --lags_ms 80 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical-20mssw_nofilter --tag evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter --flow_tag_base evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF->MLIP] [evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMLIP.npz
+[20200926][MFEF->MSC] [evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMSC.npz
+[20200926][MLIP->MFEF] [evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMFEF.npz
+[20200926][MLIP->MSC] [evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMSC.npz
+[20200926][MSC->MFEF] [evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMFEF.npz
+[20200926][MSC->MLIP] [evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMLIP.npz
+
+==================== STIM C: LAG 100ms [ALL TRIALS] ====================
+
+========== STIM lag100ms: flow feature=C on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align stim --sid 20200926 --feature C --orientation vertical --lags_ms 100 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_stimCR-stim-vertical-20mssw_nofilter --tag evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter --flow_tag_base evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF->MLIP] [evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMLIP.npz
+[20200926][MFEF->MSC] [evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial/C/flow_C_MFEFtoMSC.npz
+[20200926][MLIP->MFEF] [evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMFEF.npz
+[20200926][MLIP->MSC] [evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial/C/flow_C_MLIPtoMSC.npz
+[20200926][MSC->MFEF] [evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMFEF.npz
+[20200926][MSC->MLIP] [evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20200926/flow/evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial/C/flow_C_MSCtoMLIP.npz
+
+========== SACC 20ms sliding: train axes (S) on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align sacc --sid 20200926 --orientation horizontal --features S --tag axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter --norm global --clf_binary logreg --C_grid 0.1 0.3 1 3 10 --lda_shrinkage auto --searchS --search_range_S=-0.20:0.05 --search_step_ms 20 --search_len_ms 50 100 150 200 250 --search_score_mode peak_bin_auc --search_tiebreak shortest_then_closest0 --search_tol 0.01 --pt_min_ms_sacc 200 --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/axes/axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter/axes_MFEF.npz
+[20200926][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/axes/axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter/axes_MLIP.npz
+[20200926][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/axes/axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter/axes_MSC.npz
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/axes/axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/axes/axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter/config.json
+
+========== SACC 20ms sliding: QC on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align sacc --sid 20200926 --orientation horizontal --tag axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter --thr 0.60 --k 5 --pt_min_ms_sacc 200 --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/qc/axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter/qc_axes_MFEF.pdf (+ .png, .json)   lat(ms): C=None, Sraw=-119.99999918043613, Sinv=-119.99999918043613, T=None
+[20200926][MLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/qc/axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter/qc_axes_MLIP.pdf (+ .png, .json)   lat(ms): C=None, Sraw=-160.0000001490116, Sinv=-160.0000001490116, T=None
+[20200926][MSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/qc/axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter/qc_axes_MSC.pdf (+ .png, .json)   lat(ms): C=None, Sraw=None, Sinv=None, T=None
+
+==================== SACC S: LAG 30ms [ALL TRIALS] ====================
+
+========== SACC lag30ms: flow feature=S on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align sacc --sid 20200926 --feature S --orientation horizontal --lags_ms 30 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter --tag evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter --flow_tag_base evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF->MLIP] [evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial/S/flow_S_MFEFtoMLIP.npz
+[20200926][MFEF->MSC] [evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial/S/flow_S_MFEFtoMSC.npz
+[20200926][MLIP->MFEF] [evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial/S/flow_S_MLIPtoMFEF.npz
+[20200926][MLIP->MSC] [evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial/S/flow_S_MLIPtoMSC.npz
+[20200926][MSC->MFEF] [evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial/S/flow_S_MSCtoMFEF.npz
+[20200926][MSC->MLIP] [evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial/S/flow_S_MSCtoMLIP.npz
+
+==================== SACC S: LAG 50ms [ALL TRIALS] ====================
+
+========== SACC lag50ms: flow feature=S on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align sacc --sid 20200926 --feature S --orientation horizontal --lags_ms 50 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter --tag evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter --flow_tag_base evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF->MLIP] [evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial/S/flow_S_MFEFtoMLIP.npz
+[20200926][MFEF->MSC] [evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial/S/flow_S_MFEFtoMSC.npz
+[20200926][MLIP->MFEF] [evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial/S/flow_S_MLIPtoMFEF.npz
+[20200926][MLIP->MSC] [evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial/S/flow_S_MLIPtoMSC.npz
+[20200926][MSC->MFEF] [evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial/S/flow_S_MSCtoMFEF.npz
+[20200926][MSC->MLIP] [evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial/S/flow_S_MSCtoMLIP.npz
+
+==================== SACC S: LAG 60ms [ALL TRIALS] ====================
+
+========== SACC lag60ms: flow feature=S on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align sacc --sid 20200926 --feature S --orientation horizontal --lags_ms 60 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter --tag evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter --flow_tag_base evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF->MLIP] [evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial/S/flow_S_MFEFtoMLIP.npz
+[20200926][MFEF->MSC] [evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial/S/flow_S_MFEFtoMSC.npz
+[20200926][MLIP->MFEF] [evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial/S/flow_S_MLIPtoMFEF.npz
+[20200926][MLIP->MSC] [evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial/S/flow_S_MLIPtoMSC.npz
+[20200926][MSC->MFEF] [evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial/S/flow_S_MSCtoMFEF.npz
+[20200926][MSC->MLIP] [evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial/S/flow_S_MSCtoMLIP.npz
+
+==================== SACC S: LAG 80ms [ALL TRIALS] ====================
+
+========== SACC lag80ms: flow feature=S on ALL trials [NOFILTER] ==========
+
+[RUN] python cli/flow_session.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter --align sacc --sid 20200926 --feature S --orientation horizontal --lags_ms 80 --ridge 1e-2 --perms 500 --perm-within CR --null_method trial_shuffle --standardize_mode none --pt_min_ms 200 --no_induced --evoked_subtract --evoked_sigma_ms 10 --axes_tag axes_peakbin_saccS-sacc-horizontal-20mssw_nofilter --tag evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter --flow_tag_base evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter --save_null_samples --norm auto --sliding_window_ms 20 --sliding_step_ms 10
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20200926][MFEF->MLIP] [evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial/S/flow_S_MFEFtoMLIP.npz
+[20200926][MFEF->MSC] [evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial/S/flow_S_MFEFtoMSC.npz
+[20200926][MLIP->MFEF] [evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial/S/flow_S_MLIPtoMFEF.npz
+[20200926][MLIP->MSC] [evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial/S/flow_S_MLIPtoMSC.npz
+[20200926][MSC->MFEF] [evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial/S/flow_S_MSCtoMFEF.npz
+[20200926][MSC->MLIP] [evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20200926/flow/evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial/S/flow_S_MSCtoMLIP.npz
+
+[done] 20ms sliding window peakbin MULTI-LAG (NO CORRECT FILTER) complete for SID=20200926
+
+============================================================
+NO CORRECT FILTER workflow completed (REPLICATES OLD BUG).
+
+KEY: This replicates the old bug where:
+  - All trials are kept (correct + incorrect)
+  - lab_is_correct = True for ALL trials
+  - ALL downstream steps use ALL trials
+
+Results stored in: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+
+Flow tags generated (with _nofilter suffix):
+
+STIM C lags:
+  - evoked_peakbin_stimC_vertical_lag30ms_20mssw_nofilter-none-trial
+  - evoked_peakbin_stimC_vertical_lag40ms_20mssw_nofilter-none-trial
+  - evoked_peakbin_stimC_vertical_lag50ms_20mssw_nofilter-none-trial
+  - evoked_peakbin_stimC_vertical_lag60ms_20mssw_nofilter-none-trial
+  - evoked_peakbin_stimC_vertical_lag80ms_20mssw_nofilter-none-trial
+  - evoked_peakbin_stimC_vertical_lag100ms_20mssw_nofilter-none-trial
+
+SACC S lags:
+  - evoked_peakbin_saccS_horizontal_lag30ms_20mssw_nofilter-none-trial
+  - evoked_peakbin_saccS_horizontal_lag50ms_20mssw_nofilter-none-trial
+  - evoked_peakbin_saccS_horizontal_lag60ms_20mssw_nofilter-none-trial
+  - evoked_peakbin_saccS_horizontal_lag80ms_20mssw_nofilter-none-trial
+
+Compare with out/ (correct-only) to see impact of the bug.
+============================================================
