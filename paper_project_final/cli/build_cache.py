@@ -33,6 +33,8 @@ def main():
     ap.add_argument("--bin_ms", type=float, default=None)
 
     ap.add_argument("--no_correct_filter", action="store_true", help="Keep incorrect trials too")
+    ap.add_argument("--force_all_correct", action="store_true", 
+                    help="Force lab_is_correct=True for all trials (replicates old bug behavior)")
     args = ap.parse_args()
 
     if not args.root:
@@ -71,7 +73,8 @@ def main():
         t0=t0, t1=t1, bin_s=bin_ms/1000.0,
         out_root=args.out_root,
         correct_only=(not args.no_correct_filter),
-        stim_targets_vert_only=vert_only
+        stim_targets_vert_only=vert_only,
+        force_all_correct=args.force_all_correct
     )
     if not saved:
         print(f"[warn] nothing saved for sid={sid} ({args.align})")

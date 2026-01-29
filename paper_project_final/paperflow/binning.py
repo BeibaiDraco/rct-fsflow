@@ -64,6 +64,7 @@ def build_cache_for_session(
     out_root: str,
     correct_only: bool = True,
     stim_targets_vert_only: bool = True,
+    force_all_correct: bool = False,
 ) -> List[str]:
     """
     Build caches for all areas in <sid>, aligned to 'stim', 'sacc', or 'targ'.
@@ -123,7 +124,10 @@ def build_cache_for_session(
     PT = col("PT_ms")
     # Compute is_correct label for each trial
     # Check for is_correct (bool) first, then trial_error (int, 0=correct) as fallback
-    if "is_correct" in df.columns:
+    if force_all_correct:
+        # Force all trials to be marked as correct (replicates old bug behavior)
+        IC = np.ones(nT, dtype=bool)
+    elif "is_correct" in df.columns:
         IC = df["is_correct"].fillna(False).astype(bool).to_numpy()
     elif "trial_error" in df.columns:
         IC = (df["trial_error"].fillna(0).to_numpy(int) == 0)

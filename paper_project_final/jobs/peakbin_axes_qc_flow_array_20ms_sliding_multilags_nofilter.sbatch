@@ -12,16 +12,24 @@
 #SBATCH -e /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/logs/peakbin_20ms_nofilter_%A_%a.err
 
 # =============================================================================
-# 20ms SLIDING WINDOW WORKFLOW - MULTIPLE LAGS - NO CORRECT FILTER
+# 20ms SLIDING WINDOW WORKFLOW - NO CORRECT FILTER (REPLICATES OLD BUG)
 #
-# Purpose: Run the same analysis as multilags.sbatch BUT WITHOUT filtering
-#          for correct trials. This allows comparison of results with/without
-#          the correct trial filter to assess impact of the filtering bug.
+# Purpose: EXACTLY replicate the OLD buggy behavior where:
+#   1. All trials are kept in cache (correct + incorrect)
+#   2. lab_is_correct = True for ALL trials (the bug)
+#   3. Downstream (axes, qc, flow) uses ALL trials including incorrect
 #
-# KEY DIFFERENCES FROM MAIN WORKFLOW:
-#   1. Caches are built with --no_correct_filter (correct_only=False)
-#   2. All tags have "_nofilter" suffix to avoid overwriting
-#   3. Caches stored in separate directories (out_nofilter/)
+# This uses:
+#   --no_correct_filter   -> keep all trials in cache
+#   --force_all_correct   -> set lab_is_correct = True for ALL trials
+#
+# KEY BEHAVIOR:
+#   - Caches contain ALL trials (same as before)
+#   - lab_is_correct = True for ALL (replicates the bug)
+#   - train_axes uses ALL trials (correct + incorrect)
+#   - qc_axes uses ALL trials
+#   - flow_session uses ALL trials
+#   - trial_onset will use ALL trials
 #
 # STIM C lags: 30ms, 40ms, 50ms, 60ms, 80ms, 100ms
 # SACC S lags: 30ms, 50ms, 60ms, 80ms
@@ -112,7 +120,8 @@ fi
 
 echo "[info] task=${TASK_ID} SID=${SID}"
 echo "[info] PAPER_HOME=$PAPER_HOME"
-echo "[info] OUT_ROOT=$OUT_ROOT (NO CORRECT FILTER)"
+echo "[info] OUT_ROOT=$OUT_ROOT"
+echo "[info] MODE: NO CORRECT FILTER + FORCE ALL CORRECT (replicates OLD bug)"
 echo "[info] DRY_RUN=$DRY_RUN CONTINUE_ON_ERROR=$CONTINUE_ON_ERROR"
 
 # ------------ Shared analysis knobs ------------
@@ -169,35 +178,42 @@ CGRID_ARGS=()
 for C in "${C_GRID[@]}"; do CGRID_ARGS+=("$C"); done
 
 # ======================================================================================
-# STEP 0: Build caches WITHOUT correct filter
+# STEP 0: Build caches with ALL trials and lab_is_correct = True for all
+# This replicates the OLD bug where incorrect trials were included
 # ======================================================================================
 echo ""
-echo "==================== BUILD CACHES (NO CORRECT FILTER) ===================="
+echo "==================== BUILD CACHES (REPLICATE OLD BUG) ===================="
+echo "Using --no_correct_filter --force_all_correct"
+echo "  - All trials kept in cache"
+echo "  - lab_is_correct = True for ALL trials (the bug)"
 
-# Build STIM caches without correct filter
-run_step "Build STIM caches (no correct filter)" \
+# Build STIM caches - keep all trials, force lab_is_correct=True
+run_step "Build STIM caches (all trials, lab_is_correct=True)" \
   python cli/build_cache.py \
     --root "$PAPER_DATA" \
     --out_root "$OUT_ROOT" \
     --align stim \
     --sid "$SID" \
-    --no_correct_filter
+    --no_correct_filter \
+    --force_all_correct
 
-# Build SACC caches without correct filter
-run_step "Build SACC caches (no correct filter)" \
+# Build SACC caches - keep all trials, force lab_is_correct=True
+run_step "Build SACC caches (all trials, lab_is_correct=True)" \
   python cli/build_cache.py \
     --root "$PAPER_DATA" \
     --out_root "$OUT_ROOT" \
     --align sacc \
     --sid "$SID" \
-    --no_correct_filter
+    --no_correct_filter \
+    --force_all_correct
 
 # ======================================================================================
 # STIM: train axes → QC (once), then flow(C) for ALL lags
+# All steps now use ALL trials (correct + incorrect) because lab_is_correct=True
 # ======================================================================================
 if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
 
-  run_step "STIM 20ms sliding: train axes (C,R) peakbin [NOFILTER]" \
+  run_step "STIM 20ms sliding: train axes (C,R) on ALL trials [NOFILTER]" \
     python cli/train_axes.py \
       --out_root "$OUT_ROOT" \
       --align stim --sid "$SID" \
@@ -220,7 +236,7 @@ if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
       --sliding_window_ms "$WINDOW_MS" \
       --sliding_step_ms "$STEP_MS"
 
-  run_step "STIM 20ms sliding: QC [NOFILTER]" \
+  run_step "STIM 20ms sliding: QC on ALL trials [NOFILTER]" \
     python cli/qc_axes.py \
       --out_root "$OUT_ROOT" \
       --align stim --sid "$SID" \
@@ -233,15 +249,15 @@ if [[ -d "$OUT_ROOT/stim/$SID/caches" ]]; then
       --sliding_step_ms "$STEP_MS"
 
   # ====================================================================================
-  # STIM: flow(C) for EACH lag value
+  # STIM: flow(C) for EACH lag value - uses ALL trials
   # ====================================================================================
   for LAG in "${STIM_LAGS[@]}"; do
     FLOW_TAG_STIM_C="evoked_peakbin_stimC_${ORI_STIM}_lag${LAG}ms_20mssw_nofilter"
     
     echo ""
-    echo "==================== STIM C: LAG ${LAG}ms [NOFILTER] ===================="
+    echo "==================== STIM C: LAG ${LAG}ms [ALL TRIALS] ===================="
     
-    run_step "STIM lag${LAG}ms: flow feature=C (save null) [NOFILTER]" \
+    run_step "STIM lag${LAG}ms: flow feature=C on ALL trials [NOFILTER]" \
       python cli/flow_session.py \
         --out_root "$OUT_ROOT" \
         --align stim --sid "$SID" \
@@ -271,10 +287,11 @@ fi
 
 # ======================================================================================
 # SACC: train axes → QC (once), then flow(S) for ALL lags
+# All steps now use ALL trials (correct + incorrect)
 # ======================================================================================
 if [[ -d "$OUT_ROOT/sacc/$SID/caches" ]]; then
 
-  run_step "SACC 20ms sliding: train axes (S) peakbin [NOFILTER]" \
+  run_step "SACC 20ms sliding: train axes (S) on ALL trials [NOFILTER]" \
     python cli/train_axes.py \
       --out_root "$OUT_ROOT" \
       --align sacc --sid "$SID" \
@@ -296,7 +313,7 @@ if [[ -d "$OUT_ROOT/sacc/$SID/caches" ]]; then
       --sliding_window_ms "$WINDOW_MS" \
       --sliding_step_ms "$STEP_MS"
 
-  run_step "SACC 20ms sliding: QC [NOFILTER]" \
+  run_step "SACC 20ms sliding: QC on ALL trials [NOFILTER]" \
     python cli/qc_axes.py \
       --out_root "$OUT_ROOT" \
       --align sacc --sid "$SID" \
@@ -309,15 +326,15 @@ if [[ -d "$OUT_ROOT/sacc/$SID/caches" ]]; then
       --sliding_step_ms "$STEP_MS"
 
   # ====================================================================================
-  # SACC: flow(S) for EACH lag value
+  # SACC: flow(S) for EACH lag value - uses ALL trials
   # ====================================================================================
   for LAG in "${SACC_LAGS[@]}"; do
     FLOW_TAG_SACC_S="evoked_peakbin_saccS_${ORI_SACC}_lag${LAG}ms_20mssw_nofilter"
     
     echo ""
-    echo "==================== SACC S: LAG ${LAG}ms [NOFILTER] ===================="
+    echo "==================== SACC S: LAG ${LAG}ms [ALL TRIALS] ===================="
     
-    run_step "SACC lag${LAG}ms: flow feature=S (save null) [NOFILTER]" \
+    run_step "SACC lag${LAG}ms: flow feature=S on ALL trials [NOFILTER]" \
       python cli/flow_session.py \
         --out_root "$OUT_ROOT" \
         --align sacc --sid "$SID" \
@@ -349,7 +366,12 @@ echo ""
 echo "[done] 20ms sliding window peakbin MULTI-LAG (NO CORRECT FILTER) complete for SID=$SID"
 echo ""
 echo "============================================================"
-echo "Multi-lag workflow (NO CORRECT FILTER) completed."
+echo "NO CORRECT FILTER workflow completed (REPLICATES OLD BUG)."
+echo ""
+echo "KEY: This replicates the old bug where:"
+echo "  - All trials are kept (correct + incorrect)"
+echo "  - lab_is_correct = True for ALL trials"
+echo "  - ALL downstream steps use ALL trials"
 echo ""
 echo "Results stored in: $OUT_ROOT"
 echo ""
@@ -365,6 +387,5 @@ for LAG in "${SACC_LAGS[@]}"; do
   echo "  - evoked_peakbin_saccS_${ORI_SACC}_lag${LAG}ms_20mssw_nofilter-none-trial"
 done
 echo ""
-echo "To compare with filtered results, run summarize_flow_across_sessions.py"
-echo "with --out_root out_nofilter"
+echo "Compare with out/ (correct-only) to see impact of the bug."
 echo "============================================================"
