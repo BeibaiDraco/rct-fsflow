@@ -1,0 +1,72 @@
+==============================================================
+TRAIN AXES FOR ALL FOUR CASES - Session 20231025
+Filter mode: both
+==============================================================
+
+==============================================================
+TRAINING AXES - CORRECT-ONLY (out/)
+==============================================================
+[skip] Case i: Sacc C+S, horizontal (correct-only) - already exists
+[skip] Case ii: Sacc C+S, pooled (correct-only) - already exists
+[skip] Case iii: Stim C, vertical (correct-only) - already exists
+[skip] Case iv: Stim C, pooled (correct-only) - already exists
+
+==============================================================
+TRAINING AXES - ALL-TRIALS (out_nofilter/)
+==============================================================
+[skip] Case i: Sacc C+S, horizontal (all-trials) - already exists
+
+------------------------------------------------------------
+[train] Case ii: Sacc C+S, pooled (all-trials)
+  Align: sacc, Features: C S, Orientation: pooled
+  Tag: axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+------------------------------------------------------------
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20231025][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/axes/axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter/axes_SFEF.npz
+    → winC_selected: [-0.12000000000000001, -0.09000000000000001], score: 0.6529, peak@-100ms (cv_auc=0.6818)
+[20231025][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/axes/axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter/axes_SLIP.npz
+    → winC_selected: [-0.16, -0.06], score: 0.5912, peak@-120ms (cv_auc=0.6006)
+[20231025][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/axes/axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter/axes_SSC.npz
+    → winC_selected: [-0.1, -0.07], score: 0.6012, peak@-80ms (cv_auc=0.6370)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/axes/axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/20231025/axes/axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter/config.json
+[done] axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter
+
+------------------------------------------------------------
+[train] Case iii: Stim C, vertical (all-trials)
+  Align: stim, Features: C, Orientation: vertical
+  Tag: axes_peakbin_stimC-stim-vertical-20mssw_nofilter
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+------------------------------------------------------------
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20231025][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20231025/axes/axes_peakbin_stimC-stim-vertical-20mssw_nofilter/axes_SFEF.npz
+    → winC_selected: [0.19999999999999998, 0.22999999999999998], score: 0.7234, peak@220ms (cv_auc=0.7328)
+[20231025][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20231025/axes/axes_peakbin_stimC-stim-vertical-20mssw_nofilter/axes_SLIP.npz
+    → winC_selected: [0.4000000000000001, 0.5000000000000001], score: 0.6818, peak@430ms (cv_auc=0.7430)
+[20231025][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20231025/axes/axes_peakbin_stimC-stim-vertical-20mssw_nofilter/axes_SSC.npz
+    → winC_selected: [0.21999999999999997, 0.24999999999999997], score: 0.7538, peak@240ms (cv_auc=0.7627)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20231025/axes/axes_peakbin_stimC-stim-vertical-20mssw_nofilter/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20231025/axes/axes_peakbin_stimC-stim-vertical-20mssw_nofilter/config.json
+[done] axes_peakbin_stimC-stim-vertical-20mssw_nofilter
+
+------------------------------------------------------------
+[train] Case iv: Stim C, pooled (all-trials)
+  Align: stim, Features: C, Orientation: pooled
+  Tag: axes_peakbin_stimC-stim-pooled-20mssw_nofilter
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+------------------------------------------------------------
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20231025][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20231025/axes/axes_peakbin_stimC-stim-pooled-20mssw_nofilter/axes_SFEF.npz
+    → winC_selected: [0.32, 0.35], score: 0.7179, peak@350ms (cv_auc=0.7626)
+[20231025][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20231025/axes/axes_peakbin_stimC-stim-pooled-20mssw_nofilter/axes_SLIP.npz
+    → winC_selected: [0.27999999999999997, 0.38], score: 0.6750, peak@370ms (cv_auc=0.7439)
+[20231025][SSC] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20231025/axes/axes_peakbin_stimC-stim-pooled-20mssw_nofilter/axes_SSC.npz
+    → winC_selected: [0.4200000000000001, 0.45000000000000007], score: 0.6922, peak@420ms (cv_auc=0.7430)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20231025/axes/axes_peakbin_stimC-stim-pooled-20mssw_nofilter/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/stim/20231025/axes/axes_peakbin_stimC-stim-pooled-20mssw_nofilter/config.json
+[done] axes_peakbin_stimC-stim-pooled-20mssw_nofilter
+
+==============================================================
+[done] All axes training complete for SID=20231025
+==============================================================

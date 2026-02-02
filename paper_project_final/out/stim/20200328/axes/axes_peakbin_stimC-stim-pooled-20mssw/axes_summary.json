@@ -1,0 +1,87 @@
+{
+  "sid": "20200328",
+  "align": "stim",
+  "features": [
+    "C"
+  ],
+  "winC": [
+    0.1,
+    0.3
+  ],
+  "winR": null,
+  "winS": null,
+  "winT": null,
+  "pt_min_ms": 200.0,
+  "orientation": "pooled",
+  "areas": [
+    "MFEF",
+    "MLIP"
+  ],
+  "tag": "axes_peakbin_stimC-stim-pooled-20mssw",
+  "norm": "global",
+  "baseline_win": null,
+  "clf_binary": "logreg",
+  "C_grid": [
+    0.1,
+    0.3,
+    1.0,
+    3.0,
+    10.0
+  ],
+  "lda_shrinkage": null,
+  "searchC": true,
+  "searchS": false,
+  "searchT": false,
+  "searchR": false,
+  "search_step_ms": 20.0,
+  "search_len_ms": [
+    50.0,
+    100.0,
+    150.0,
+    200.0,
+    250.0
+  ],
+  "search_range_C": "0.00:0.50",
+  "search_range_S": null,
+  "search_range_T": null,
+  "search_range_R": null,
+  "search_score_mode": "peak_bin_auc",
+  "search_tiebreak": "shortest_then_earliest",
+  "search_tol": 0.01,
+  "per_area_results": {
+    "MFEF": {
+      "winC_selected": [
+        0.25999999999999995,
+        0.30999999999999994
+      ],
+      "winC_cv_best": 0.9040061790466198,
+      "winC_best_param": 0.1,
+      "winC_peak_time_ms": 299.99999701976776,
+      "winC_peak_auc": 0.9040061790466198,
+      "winC_mean_bin_auc": 0.8916407991955582,
+      "winC_cv_auc_original": 0.9488306756342272,
+      "sC_auc": 0.9040061790466198,
+      "n_trials_C": 524
+    },
+    "MLIP": {
+      "winC_selected": [
+        0.4200000000000001,
+        0.4700000000000001
+      ],
+      "winC_cv_best": 0.9102726650053192,
+      "winC_best_param": 0.1,
+      "winC_peak_time_ms": 420.00000178813934,
+      "winC_peak_auc": 0.9102726650053192,
+      "winC_mean_bin_auc": 0.8922504456977416,
+      "winC_cv_auc_original": 0.9692872644407975,
+      "sC_auc": 0.9102726650053192,
+      "n_trials_C": 524
+    }
+  },
+  "rebin_factor": null,
+  "sliding_window_ms": 20.0,
+  "sliding_step_ms": 10.0,
+  "sliding_window_bins": 2,
+  "sliding_step_bins": 1,
+  "correct_mode": "correctonly"
+}

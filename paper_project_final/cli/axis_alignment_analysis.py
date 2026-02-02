@@ -151,14 +151,75 @@ def trial_mask(cache: Dict, orientation: str, pt_min_ms: Optional[float]) -> np.
 # ANALYSIS A: Alignment Index with Covariance-Matched Null
 # =============================================================================
 
+def build_rich_cond_id(
+    C: np.ndarray,
+    S: np.ndarray,
+    R: np.ndarray,
+    orientation: np.ndarray,
+) -> np.ndarray:
+    """
+    Build a rich condition ID for covariance estimation.
+    
+    Combines: sign(C) × sign(S) × R_binned × orientation
+    Gives ~24 conditions vs ~4 for simple C×S.
+    
+    This provides a much more stable manifold geometry estimate than
+    using just 2 conditions per epoch (C=±1 or S=±1).
+    
+    Returns condition IDs (0, 1, 2, ...) or -1 for invalid trials.
+    """
+    N = len(C)
+    
+    # Encode sign(C): 0 or 1
+    C_sign = np.zeros(N, dtype=int)
+    C_sign[np.sign(C) > 0] = 1
+    
+    # Encode sign(S): 0 or 2
+    S_sign = np.zeros(N, dtype=int)
+    S_sign[np.sign(S) > 0] = 2
+    
+    # Encode R (bin into 3 levels): 0, 4, 8
+    R_binned = np.zeros(N, dtype=int)
+    R_valid = np.isfinite(R)
+    if R_valid.sum() > 10:
+        R_percentiles = np.percentile(R[R_valid], [33, 67])
+        R_binned[R_valid] = np.digitize(R[R_valid], R_percentiles) * 4
+    
+    # Encode orientation: 0 or 12
+    ori_numeric = np.zeros(N, dtype=int)
+    ori_str = np.asarray(orientation).astype(str)
+    ori_numeric[ori_str == "vertical"] = 12
+    
+    cond_id = C_sign + S_sign + R_binned + ori_numeric
+    
+    # Mark invalid trials
+    invalid = ~np.isfinite(C) | ~np.isfinite(S)
+    cond_id[invalid] = -1
+    
+    return cond_id
+
+
 def condition_average_activity(
     Z: np.ndarray,           # (N_trials, B, U)
     labels: np.ndarray,      # (N_trials,) condition labels
     time_s: np.ndarray,      # (B,) time axis
     window: Tuple[float, float],
+    use_rich_cond: bool = False,
+    C: Optional[np.ndarray] = None,
+    S: Optional[np.ndarray] = None,
+    R: Optional[np.ndarray] = None,
+    orientation: Optional[np.ndarray] = None,
 ) -> np.ndarray:
     """
     Compute condition-averaged activity matrix for a time window.
+    
+    Args:
+        Z: Neural data (N_trials, B, U)
+        labels: Simple condition labels (N_trials,) for basic averaging
+        time_s: Time array (B,)
+        window: Time window tuple (start, end) in seconds
+        use_rich_cond: If True, use rich condition IDs for better manifold estimation
+        C, S, R, orientation: Additional labels for rich condition IDs
     
     Returns:
         D: (U, n_conditions * n_time) condition-averaged activity
@@ -167,17 +228,31 @@ def condition_average_activity(
     if not np.any(mask_t):
         return np.array([])
     
-    # Get unique conditions
-    valid = np.isfinite(labels)
-    unique_labels = np.unique(labels[valid])
+    # Determine condition IDs
+    if use_rich_cond and C is not None and S is not None:
+        R_use = R if R is not None else np.full(len(C), np.nan)
+        ori_use = orientation if orientation is not None else np.array(["pooled"] * len(C))
+        cond_ids = build_rich_cond_id(C, S, R_use, ori_use)
+        valid_conds = np.unique(cond_ids[cond_ids >= 0])
+    else:
+        # Simple: use provided labels
+        valid = np.isfinite(labels)
+        unique_labels = np.unique(labels[valid])
+        cond_ids = np.full(len(labels), -1, dtype=int)
+        for i, lab in enumerate(unique_labels):
+            cond_ids[labels == lab] = i
+        valid_conds = np.arange(len(unique_labels))
+    
+    if len(valid_conds) == 0:
+        return np.array([])
     
     # Build condition-averaged matrix
     n_time = mask_t.sum()
     n_units = Z.shape[2]
     D_list = []
     
-    for lab in unique_labels:
-        trial_mask = (labels == lab) & valid
+    for cond in valid_conds:
+        trial_mask = (cond_ids == cond)
         if trial_mask.sum() > 0:
             # Mean across trials, shape (n_time, n_units)
             mean_act = np.nanmean(Z[trial_mask][:, mask_t, :], axis=0)
@@ -950,6 +1025,7 @@ def analyze_session_axis_covariance(
     sliding_step_bins: int,
     qc_threshold_C: float,
     qc_threshold_S: float,
+    use_rich_cond: bool = True,
 ) -> Optional[Dict]:
     """
     ANALYSIS C: Axis angle + covariance-constrained null.
@@ -1046,9 +1122,22 @@ def analyze_session_axis_covariance(
         print(f"  [skip] Not enough valid trials: C={valid_C.sum()}, S={valid_S.sum()}")
         return None
     
-    # Build condition-averaged activity matrices (same as Analysis A)
-    D_C = condition_average_activity(Z, C_labels, time_s, win_C)
-    D_S = condition_average_activity(Z, S_labels, time_s, win_S)
+    # Get additional labels for rich condition IDs
+    R_labels = cache.get("lab_R", np.full(cache["Z"].shape[0], np.nan))[keep].astype(float)
+    ori_labels = cache.get("lab_orientation", np.array(["pooled"] * cache["Z"].shape[0]))[keep]
+    
+    # Build condition-averaged activity matrices
+    # Using rich condition IDs gives a much more stable manifold estimate
+    D_C = condition_average_activity(
+        Z, C_labels, time_s, win_C,
+        use_rich_cond=use_rich_cond,
+        C=C_labels, S=S_labels, R=R_labels, orientation=ori_labels
+    )
+    D_S = condition_average_activity(
+        Z, S_labels, time_s, win_S,
+        use_rich_cond=use_rich_cond,
+        C=C_labels, S=S_labels, R=R_labels, orientation=ori_labels
+    )
     
     if D_C.size == 0 or D_S.size == 0:
         print(f"  [skip] Empty condition-averaged matrix")
@@ -1167,6 +1256,7 @@ def analyze_session_axis_covariance(
         "n_trials": int(keep.sum()),
         "n_valid_C": int(valid_C.sum()),
         "n_valid_S": int(valid_S.sum()),
+        "use_rich_cond": use_rich_cond,
     }
     
     return result
@@ -1291,6 +1381,12 @@ Usage modes:
     parser.add_argument("--C_grid", nargs="+", type=float, default=[0.1, 0.3, 1.0, 3.0, 10.0])
     parser.add_argument("--lda_shrinkage", default="auto")
     
+    # Rich condition IDs for covariance estimation
+    parser.add_argument("--use_rich_cond", action="store_true", default=False,
+                        help="Use rich condition IDs (C×S×R×orientation) for manifold estimation")
+    parser.add_argument("--no_rich_cond", action="store_true", default=True,
+                        help="Disable rich condition IDs, use simple C/S labels only (default: True)")
+    
     # Output
     parser.add_argument("--tag", default="alignment")
     
@@ -1342,6 +1438,9 @@ Usage modes:
     native_bin_ms_sacc = 5.0
     sw_bins_sacc = int(args.sliding_window_ms / native_bin_ms_sacc)
     sw_step_sacc = int(args.sliding_step_ms / native_bin_ms_sacc)
+    
+    # Rich condition IDs
+    use_rich_cond = args.use_rich_cond and not args.no_rich_cond
     
     # Output directory for per-session results
     results_dir = out_root / "sacc" / "alignment" / args.tag
@@ -1413,6 +1512,7 @@ Usage modes:
                 sliding_step_bins=sw_step_sacc,
                 qc_threshold_C=args.qc_threshold_C,
                 qc_threshold_S=args.qc_threshold_S,
+                use_rich_cond=use_rich_cond,
             )
             if result is not None:
                 save_session_result(result, results_dir, "axis_cov")

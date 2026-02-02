@@ -1,0 +1,102 @@
+{
+  "sid": "20201204",
+  "align": "stim",
+  "features": [
+    "C"
+  ],
+  "winC": [
+    0.1,
+    0.3
+  ],
+  "winR": null,
+  "winS": null,
+  "winT": null,
+  "pt_min_ms": 200.0,
+  "orientation": "pooled",
+  "areas": [
+    "MFEF",
+    "MLIP",
+    "MSC"
+  ],
+  "tag": "axes_peakbin_stimC-stim-pooled-20mssw_nofilter",
+  "norm": "global",
+  "baseline_win": null,
+  "clf_binary": "logreg",
+  "C_grid": [
+    0.1,
+    0.3,
+    1.0,
+    3.0,
+    10.0
+  ],
+  "lda_shrinkage": null,
+  "searchC": true,
+  "searchS": true,
+  "searchT": false,
+  "searchR": false,
+  "search_step_ms": 20.0,
+  "search_len_ms": [
+    30,
+    50,
+    100,
+    150,
+    200,
+    250
+  ],
+  "search_range_C": null,
+  "search_range_S": null,
+  "search_range_T": null,
+  "search_range_R": null,
+  "search_score_mode": "peak_bin_auc",
+  "search_tiebreak": "shortest_then_earliest",
+  "search_tol": 0.01,
+  "per_area_results": {
+    "MFEF": {
+      "winC_selected": [
+        0.16,
+        0.19
+      ],
+      "winC_cv_best": 0.8881379391583474,
+      "winC_best_param": 0.3,
+      "winC_peak_time_ms": 179.99999970197678,
+      "winC_peak_auc": 0.8881379391583474,
+      "winC_mean_bin_auc": 0.8791817592838,
+      "winC_cv_auc_original": 0.9629582432007942,
+      "sC_auc": 0.8881379391583474,
+      "n_trials_C": 525
+    },
+    "MLIP": {
+      "winC_selected": [
+        0.4200000000000001,
+        0.45000000000000007
+      ],
+      "winC_cv_best": 0.8822039638366169,
+      "winC_best_param": 0.1,
+      "winC_peak_time_ms": 420.00000178813934,
+      "winC_peak_auc": 0.8822039638366169,
+      "winC_mean_bin_auc": 0.8738060880918024,
+      "winC_cv_auc_original": 0.9202662102053913,
+      "sC_auc": 0.8822039638366169,
+      "n_trials_C": 525
+    },
+    "MSC": {
+      "winC_selected": [
+        0.3,
+        0.35
+      ],
+      "winC_cv_best": 0.7243278263686427,
+      "winC_best_param": 0.1,
+      "winC_peak_time_ms": 319.9999928474426,
+      "winC_peak_auc": 0.7243278263686427,
+      "winC_mean_bin_auc": 0.6956945548782284,
+      "winC_cv_auc_original": 0.7848738450825075,
+      "sC_auc": 0.7243278263686427,
+      "n_trials_C": 525
+    }
+  },
+  "rebin_factor": null,
+  "sliding_window_ms": 20.0,
+  "sliding_step_ms": 10.0,
+  "sliding_window_bins": 2,
+  "sliding_step_bins": 1
+}

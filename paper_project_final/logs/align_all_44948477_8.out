@@ -1,0 +1,97 @@
+==============================================================
+AXIS ALIGNMENT ANALYSIS - ALL FOUR CASES
+Session: 20201004 (task 8)
+Filter mode: both
+==============================================================
+
+==============================================================
+CORRECT-ONLY TRIALS (out/)
+==============================================================
+
+------------------------------------------------------------
+[Case i] Sacc-aligned C & S, horizontal trials (correct-only)
+  Axes: axes_peakbin_saccCS-sacc-horizontal-20mssw
+  Orientation: horizontal
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+------------------------------------------------------------
+======================================================================
+CATEGORY-SACCADE SUBSPACE ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] Mode: axis_cov
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] n_perms: 1000
+
+[Analysis C] Axis Angle + Covariance-Constrained Null (DAVE'S QUESTION)
+             Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw
+             Uses trained sC and sS_raw axes
+             Tests: 'less aligned than geometry-constrained chance'
+
+============================================================
+[20201004] Processing...
+
+  [Analysis C] Axis angle + covariance-constrained null...
+  [axis-cov] Observed: |cos(θ)|=0.0786, θ=85.5°
+  [null] Manifold dim: 87, D_eff=5.9
+         Expected |cos(θ)| ≈ 0.410 (angle ≈ 65.8°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1841
+    [400/1000] null_mean=0.1854
+    [600/1000] null_mean=0.1826
+    [800/1000] null_mean=0.1859
+    [1000/1000] null_mean=0.1868
+  [result] a_obs=0.0786, null_mean=0.1868±0.1295
+           Δ=-0.1083, z=-0.84
+           θ_obs=85.5°, θ_null=79.1°
+           p(more orthogonal)=0.2438, p(more aligned)=0.7572
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_i_correctonly/axis_cov_20201004.json
+
+======================================================================
+[done] Per-session results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_i_correctonly
+======================================================================
+[done] Case i → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_i_correctonly/
+
+------------------------------------------------------------
+[Case ii] Sacc-aligned C & S, pooled trials (correct-only)
+  Axes: axes_peakbin_saccCS-sacc-pooled-20mssw
+  Orientation: pooled
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+------------------------------------------------------------
+======================================================================
+CATEGORY-SACCADE SUBSPACE ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] Mode: axis_cov
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] n_perms: 1000
+
+[Analysis C] Axis Angle + Covariance-Constrained Null (DAVE'S QUESTION)
+             Axes tag: axes_peakbin_saccCS-sacc-pooled-20mssw
+             Uses trained sC and sS_raw axes
+             Tests: 'less aligned than geometry-constrained chance'
+
+============================================================
+[20201004] Processing...
+
+  [Analysis C] Axis angle + covariance-constrained null...
+  [axis-cov] Observed: |cos(θ)|=0.3253, θ=71.0°
+  [null] Manifold dim: 96, D_eff=7.5
+         Expected |cos(θ)| ≈ 0.364 (angle ≈ 68.6°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1963
+    [400/1000] null_mean=0.1919
+    [600/1000] null_mean=0.1931
+    [800/1000] null_mean=0.1918
+    [1000/1000] null_mean=0.1917
+  [result] a_obs=0.3253, null_mean=0.1917±0.1241
+           Δ=0.1336, z=1.08
+           θ_obs=71.0°, θ_null=78.8°
+           p(more orthogonal)=0.8382, p(more aligned)=0.1628
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_ii_correctonly/axis_cov_20201004.json
+
+======================================================================
+[done] Per-session results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_ii_correctonly
+======================================================================
+[done] Case ii → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_ii_correctonly/
+[WARN] Axes not found for Case iii → skipping
+       Missing: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20201004/axes/axes_peakbin_C-stim-vertical-20mssw

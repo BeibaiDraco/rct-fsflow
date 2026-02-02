@@ -1,0 +1,25 @@
+[info] task=15 SID=20230707
+[info] Training C+S on sacc-aligned data for axis alignment analysis
+
+==================== CORRECT-ONLY: Train C+S on sacc-aligned ====================
+
+========== Train C+S axes on sacc-aligned (correct-only) ==========
+
+[RUN] python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --orientation horizontal --features C S --tag axes_peakbin_saccCS-sacc-horizontal-20mssw --norm global --clf_binary logreg --C_grid 0.1 0.3 1 3 10 --lda_shrinkage auto --searchC --searchS --search_range_C=-0.30:-0.05 --search_range_S=-0.20:0.05 --search_step_ms 20 --search_len_ms 50 100 150 200 250 --search_score_mode peak_bin_auc --search_tiebreak shortest_then_closest0 --search_tol 0.01 --pt_min_ms_sacc 200 --sliding_window_ms 20 --sliding_step_ms 10 --correct_mode correctonly
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw/axes_SFEF.npz
+    → winC_selected: [-0.1, -0.05], score: 0.7952, peak@-60ms (cv_auc=0.8826)
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw/axes_SLIP.npz
+    → winC_selected: [-0.12000000000000001, -0.07], score: 0.6242, peak@-70ms (cv_auc=0.5790)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/axes/axes_peakbin_saccCS-sacc-horizontal-20mssw/config.json
+
+========== QC for C+S axes (correct-only) ==========
+
+[RUN] python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align sacc --sid 20230707 --orientation horizontal --tag axes_peakbin_saccCS-sacc-horizontal-20mssw --thr 0.60 --k 5 --pt_min_ms_sacc 200 --norm auto --sliding_window_ms 20 --sliding_step_ms 10 --correct_mode correctonly
+[sliding-window] window=20.0ms (4 bins), step=10.0ms (2 bins), native=5.0ms
+[20230707][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/qc/axes_peakbin_saccCS-sacc-horizontal-20mssw/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=-119.99999918043613, Sraw=-80.0000000745058, Sinv=-80.0000000745058, T=None
+[20230707][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/20230707/qc/axes_peakbin_saccCS-sacc-horizontal-20mssw/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=-119.99999918043613, Sraw=-80.0000000745058, Sinv=-80.0000000745058, T=None
+[WARN] No sacc caches in /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter for SID=20230707
+
+[done] C+S axes training complete for SID=20230707

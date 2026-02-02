@@ -1,0 +1,34 @@
+{
+  "sid": "20230705",
+  "area": "SFEF",
+  "monkey": "S",
+  "analysis": "axis_covariance",
+  "axes_tag": "axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter",
+  "a_obs": 0.22013940060564363,
+  "theta_obs_deg": 77.28277920842474,
+  "null_mean": 0.14509734976173302,
+  "null_std": 0.10331445125104065,
+  "null_angle_mean_deg": 81.6016184158508,
+  "p_orth": 0.7672327672327672,
+  "p_align": 0.23376623376623376,
+  "n_perms_valid": 1000,
+  "delta": 0.07504205084391061,
+  "delta_theta_deg": -4.318839207426052,
+  "z_score": 0.726346120365758,
+  "manifold_dim": 34,
+  "D_eff": 5.592056670105144,
+  "expected_cos": 0.42287714921339326,
+  "expected_angle_deg": 64.98363232888819,
+  "win_C": [
+    -0.3,
+    -0.1
+  ],
+  "win_S": [
+    -0.1,
+    -0.03
+  ],
+  "n_trials": 442,
+  "n_valid_C": 442,
+  "n_valid_S": 442,
+  "use_rich_cond": false
+}

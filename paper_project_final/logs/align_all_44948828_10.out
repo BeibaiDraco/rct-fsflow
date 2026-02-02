@@ -1,0 +1,353 @@
+==============================================================
+AXIS ALIGNMENT ANALYSIS - ALL FOUR CASES
+Session: 20201211 (task 10)
+Filter mode: both
+==============================================================
+
+==============================================================
+CORRECT-ONLY TRIALS (out/)
+==============================================================
+
+------------------------------------------------------------
+[Case i] Sacc-aligned C & S, horizontal trials (correct-only)
+  Axes: axes_peakbin_saccCS-sacc-horizontal-20mssw
+  Orientation: horizontal
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+------------------------------------------------------------
+======================================================================
+CATEGORY-SACCADE SUBSPACE ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] Mode: axis_cov
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] n_perms: 1000
+
+[Analysis C] Axis Angle + Covariance-Constrained Null (DAVE'S QUESTION)
+             Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw
+             Uses trained sC and sS_raw axes
+             Tests: 'less aligned than geometry-constrained chance'
+
+============================================================
+[20201211] Processing...
+
+  [Analysis C] Axis angle + covariance-constrained null...
+  [axis-cov] Observed: |cos(θ)|=0.1049, θ=84.0°
+  [null] Manifold dim: 27, D_eff=2.8
+         Expected |cos(θ)| ≈ 0.600 (angle ≈ 53.1°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1503
+    [400/1000] null_mean=0.1533
+    [600/1000] null_mean=0.1487
+    [800/1000] null_mean=0.1465
+    [1000/1000] null_mean=0.1487
+  [result] a_obs=0.1049, null_mean=0.1487±0.1047
+           Δ=-0.0438, z=-0.42
+           θ_obs=84.0°, θ_null=81.4°
+           p(more orthogonal)=0.3916, p(more aligned)=0.6094
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_i_correctonly/axis_cov_20201211.json
+
+======================================================================
+[done] Per-session results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_i_correctonly
+======================================================================
+[done] Case i → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_i_correctonly/
+
+------------------------------------------------------------
+[Case ii] Sacc-aligned C & S, pooled trials (correct-only)
+  Axes: axes_peakbin_saccCS-sacc-pooled-20mssw
+  Orientation: pooled
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+------------------------------------------------------------
+======================================================================
+CATEGORY-SACCADE SUBSPACE ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] Mode: axis_cov
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+[info] n_perms: 1000
+
+[Analysis C] Axis Angle + Covariance-Constrained Null (DAVE'S QUESTION)
+             Axes tag: axes_peakbin_saccCS-sacc-pooled-20mssw
+             Uses trained sC and sS_raw axes
+             Tests: 'less aligned than geometry-constrained chance'
+
+============================================================
+[20201211] Processing...
+
+  [Analysis C] Axis angle + covariance-constrained null...
+  [axis-cov] Observed: |cos(θ)|=0.0221, θ=88.7°
+  [null] Manifold dim: 26, D_eff=2.4
+         Expected |cos(θ)| ≈ 0.643 (angle ≈ 50.0°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1471
+    [400/1000] null_mean=0.1588
+    [600/1000] null_mean=0.1629
+    [800/1000] null_mean=0.1605
+    [1000/1000] null_mean=0.1598
+  [result] a_obs=0.0221, null_mean=0.1598±0.1091
+           Δ=-0.1377, z=-1.26
+           θ_obs=88.7°, θ_null=80.7°
+           p(more orthogonal)=0.0729, p(more aligned)=0.9281
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_ii_correctonly/axis_cov_20201211.json
+
+======================================================================
+[done] Per-session results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_ii_correctonly
+======================================================================
+[done] Case ii → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/alignment/case_ii_correctonly/
+
+------------------------------------------------------------
+[Case iii] Stim-C (vertical) vs Sacc-S (horizontal) (correct-only)
+  C axes: stim/axes_peakbin_stimC-stim-vertical-20mssw (orientation: vertical)
+  S axes: sacc/axes_peakbin_saccCS-sacc-horizontal-20mssw (orientation: horizontal)
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+------------------------------------------------------------
+======================================================================
+CROSS-ALIGNMENT AXIS ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] C: stim/axes_peakbin_stimC-stim-vertical-20mssw (vertical)
+[info] S: sacc/axes_peakbin_saccCS-sacc-horizontal-20mssw (horizontal)
+[info] win_C: [0.1, 0.3], win_S: [-0.1, -0.03]
+[info] Use rich conditions: False
+
+============================================================
+[20201211] Processing cross-alignment...
+  [cross] Building geometry from both epochs...
+          C epoch: stim, window=(0.1, 0.3), trials=249
+          S epoch: sacc, window=(-0.1, -0.03), trials=302
+          D_C shape: (60, 40), D_S shape: (60, 28)
+  [cross] Observed: |cos(θ)|=0.5581, θ=56.1°
+  [null] Manifold dim: 40, D_eff=6.9
+         Expected |cos(θ)| ≈ 0.303 (angle ≈ 72.4°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2528
+    [400/1000] null_mean=0.2613
+    [600/1000] null_mean=0.2561
+    [800/1000] null_mean=0.2487
+    [1000/1000] null_mean=0.2502
+  [result] a_obs=0.5581, null_mean=0.2502±0.1575
+           Δ=0.3078, z=1.95
+           θ_obs=56.1°, θ_null=75.3°
+           p(more orthogonal)=0.9690, p(more aligned)=0.0320
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/cross_alignment/case_iii_correctonly/cross_case_iii_correctonly_20201211.json
+
+======================================================================
+[done] Results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/cross_alignment/case_iii_correctonly
+======================================================================
+[done] Case iii → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/cross_alignment/case_iii_correctonly/
+
+------------------------------------------------------------
+[Case iv] Stim-C (pooled) vs Sacc-S (pooled) (correct-only)
+  C axes: stim/axes_peakbin_stimC-stim-pooled-20mssw (orientation: pooled)
+  S axes: sacc/axes_peakbin_saccCS-sacc-pooled-20mssw (orientation: pooled)
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out
+------------------------------------------------------------
+======================================================================
+CROSS-ALIGNMENT AXIS ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] C: stim/axes_peakbin_stimC-stim-pooled-20mssw (pooled)
+[info] S: sacc/axes_peakbin_saccCS-sacc-pooled-20mssw (pooled)
+[info] win_C: [0.1, 0.3], win_S: [-0.1, -0.03]
+[info] Use rich conditions: False
+
+============================================================
+[20201211] Processing cross-alignment...
+  [cross] Building geometry from both epochs...
+          C epoch: stim, window=(0.1, 0.3), trials=551
+          S epoch: sacc, window=(-0.1, -0.03), trials=551
+          D_C shape: (60, 40), D_S shape: (60, 28)
+  [cross] Observed: |cos(θ)|=0.2858, θ=73.4°
+  [null] Manifold dim: 37, D_eff=4.9
+         Expected |cos(θ)| ≈ 0.359 (angle ≈ 69.0°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1597
+    [400/1000] null_mean=0.1676
+    [600/1000] null_mean=0.1711
+    [800/1000] null_mean=0.1692
+    [1000/1000] null_mean=0.1689
+  [result] a_obs=0.2858, null_mean=0.1689±0.1141
+           Δ=0.1169, z=1.02
+           θ_obs=73.4°, θ_null=80.2°
+           p(more orthogonal)=0.8242, p(more aligned)=0.1768
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/cross_alignment/case_iv_correctonly/cross_case_iv_correctonly_20201211.json
+
+======================================================================
+[done] Results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/cross_alignment/case_iv_correctonly
+======================================================================
+[done] Case iv → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/cross_alignment/case_iv_correctonly/
+
+==============================================================
+ALL TRIALS (out_nofilter/)
+==============================================================
+
+------------------------------------------------------------
+[Case i] Sacc-aligned C & S, horizontal trials (all-trials)
+  Axes: axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+  Orientation: horizontal
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+------------------------------------------------------------
+======================================================================
+CATEGORY-SACCADE SUBSPACE ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] Mode: axis_cov
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+[info] n_perms: 1000
+
+[Analysis C] Axis Angle + Covariance-Constrained Null (DAVE'S QUESTION)
+             Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+             Uses trained sC and sS_raw axes
+             Tests: 'less aligned than geometry-constrained chance'
+
+============================================================
+[20201211] Processing...
+
+  [Analysis C] Axis angle + covariance-constrained null...
+  [axis-cov] Observed: |cos(θ)|=0.1674, θ=80.4°
+  [null] Manifold dim: 27, D_eff=2.7
+         Expected |cos(θ)| ≈ 0.606 (angle ≈ 52.7°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1579
+    [400/1000] null_mean=0.1606
+    [600/1000] null_mean=0.1565
+    [800/1000] null_mean=0.1579
+    [1000/1000] null_mean=0.1574
+  [result] a_obs=0.1674, null_mean=0.1574±0.1118
+           Δ=0.0100, z=0.09
+           θ_obs=80.4°, θ_null=80.9°
+           p(more orthogonal)=0.5764, p(more aligned)=0.4246
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/case_i_alltrials/axis_cov_20201211.json
+
+======================================================================
+[done] Per-session results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/case_i_alltrials
+======================================================================
+[done] Case i → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/case_i_alltrials/
+
+------------------------------------------------------------
+[Case ii] Sacc-aligned C & S, pooled trials (all-trials)
+  Axes: axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter
+  Orientation: pooled
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+------------------------------------------------------------
+======================================================================
+CATEGORY-SACCADE SUBSPACE ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] Mode: axis_cov
+[info] out_root: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+[info] n_perms: 1000
+
+[Analysis C] Axis Angle + Covariance-Constrained Null (DAVE'S QUESTION)
+             Axes tag: axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter
+             Uses trained sC and sS_raw axes
+             Tests: 'less aligned than geometry-constrained chance'
+
+============================================================
+[20201211] Processing...
+
+  [Analysis C] Axis angle + covariance-constrained null...
+  [axis-cov] Observed: |cos(θ)|=0.1292, θ=82.6°
+  [null] Manifold dim: 26, D_eff=2.4
+         Expected |cos(θ)| ≈ 0.652 (angle ≈ 49.3°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1585
+    [400/1000] null_mean=0.1739
+    [600/1000] null_mean=0.1774
+    [800/1000] null_mean=0.1753
+    [1000/1000] null_mean=0.1749
+  [result] a_obs=0.1292, null_mean=0.1749±0.1179
+           Δ=-0.0457, z=-0.39
+           θ_obs=82.6°, θ_null=79.8°
+           p(more orthogonal)=0.4096, p(more aligned)=0.5914
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/case_ii_alltrials/axis_cov_20201211.json
+
+======================================================================
+[done] Per-session results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/case_ii_alltrials
+======================================================================
+[done] Case ii → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/alignment/case_ii_alltrials/
+
+------------------------------------------------------------
+[Case iii] Stim-C (vertical) vs Sacc-S (horizontal) (all-trials)
+  C axes: stim/axes_peakbin_stimC-stim-vertical-20mssw_nofilter (orientation: vertical)
+  S axes: sacc/axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter (orientation: horizontal)
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+------------------------------------------------------------
+======================================================================
+CROSS-ALIGNMENT AXIS ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] C: stim/axes_peakbin_stimC-stim-vertical-20mssw_nofilter (vertical)
+[info] S: sacc/axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter (horizontal)
+[info] win_C: [0.1, 0.3], win_S: [-0.1, -0.03]
+[info] Use rich conditions: False
+
+============================================================
+[20201211] Processing cross-alignment...
+  [cross] Building geometry from both epochs...
+          C epoch: stim, window=(0.1, 0.3), trials=256
+          S epoch: sacc, window=(-0.1, -0.03), trials=306
+          D_C shape: (60, 40), D_S shape: (60, 28)
+  [cross] Observed: |cos(θ)|=0.5427, θ=57.1°
+  [null] Manifold dim: 41, D_eff=6.8
+         Expected |cos(θ)| ≈ 0.306 (angle ≈ 72.2°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2272
+    [400/1000] null_mean=0.2232
+    [600/1000] null_mean=0.2225
+    [800/1000] null_mean=0.2244
+    [1000/1000] null_mean=0.2248
+  [result] a_obs=0.5427, null_mean=0.2248±0.1486
+           Δ=0.3179, z=2.14
+           θ_obs=57.1°, θ_null=76.8°
+           p(more orthogonal)=0.9800, p(more aligned)=0.0210
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/cross_alignment/case_iii_alltrials/cross_case_iii_alltrials_20201211.json
+
+======================================================================
+[done] Results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/cross_alignment/case_iii_alltrials
+======================================================================
+[done] Case iii → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/cross_alignment/case_iii_alltrials/
+
+------------------------------------------------------------
+[Case iv] Stim-C (pooled) vs Sacc-S (pooled) (all-trials)
+  C axes: stim/axes_peakbin_stimC-stim-pooled-20mssw_nofilter (orientation: pooled)
+  S axes: sacc/axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter (orientation: pooled)
+  OUT_ROOT: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter
+------------------------------------------------------------
+======================================================================
+CROSS-ALIGNMENT AXIS ANALYSIS
+======================================================================
+[info] Processing 1 session(s)
+[info] C: stim/axes_peakbin_stimC-stim-pooled-20mssw_nofilter (pooled)
+[info] S: sacc/axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter (pooled)
+[info] win_C: [0.1, 0.3], win_S: [-0.1, -0.03]
+[info] Use rich conditions: False
+
+============================================================
+[20201211] Processing cross-alignment...
+  [cross] Building geometry from both epochs...
+          C epoch: stim, window=(0.1, 0.3), trials=562
+          S epoch: sacc, window=(-0.1, -0.03), trials=562
+          D_C shape: (60, 40), D_S shape: (60, 28)
+  [cross] Observed: |cos(θ)|=0.2576, θ=75.1°
+  [null] Manifold dim: 37, D_eff=4.9
+         Expected |cos(θ)| ≈ 0.361 (angle ≈ 68.9°)
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1642
+    [400/1000] null_mean=0.1658
+    [600/1000] null_mean=0.1670
+    [800/1000] null_mean=0.1637
+    [1000/1000] null_mean=0.1639
+  [result] a_obs=0.2576, null_mean=0.1639±0.1163
+           Δ=0.0937, z=0.81
+           θ_obs=75.1°, θ_null=80.5°
+           p(more orthogonal)=0.7812, p(more aligned)=0.2198
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/cross_alignment/case_iv_alltrials/cross_case_iv_alltrials_20201211.json
+
+======================================================================
+[done] Results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/cross_alignment/case_iv_alltrials
+======================================================================
+[done] Case iv → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/cross_alignment/case_iv_alltrials/
+
+==============================================================
+[done] All cases complete for SID=20201211
+==============================================================

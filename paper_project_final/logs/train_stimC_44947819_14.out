@@ -1,0 +1,48 @@
+[info] task=14 SID=20230705
+[info] Training C on stim-aligned data for cross-alignment analysis
+
+==================== CORRECT-ONLY: C on stim-aligned (vertical) ====================
+
+========== Train C axes on stim-aligned (vertical, correctonly) ==========
+
+[RUN] python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230705 --orientation vertical --features C --tag axes_peakbin_stimC-stim-vertical-20mssw --norm global --clf_binary logreg --C_grid 0.1 0.3 1 3 10 --lda_shrinkage auto --searchC --search_range_C=0.00:0.50 --search_step_ms 20 --search_len_ms 50 100 150 200 250 --search_score_mode peak_bin_auc --search_tiebreak shortest_then_earliest --search_tol 0.01 --pt_min_ms_stim 200 --sliding_window_ms 20 --sliding_step_ms 10 --correct_mode correctonly
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20230705][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/axes/axes_peakbin_stimC-stim-vertical-20mssw/axes_SFEF.npz
+    → winC_selected: [0.3, 0.35], score: 0.8347, peak@320ms (cv_auc=0.9012)
+[20230705][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/axes/axes_peakbin_stimC-stim-vertical-20mssw/axes_SLIP.npz
+    → winC_selected: [0.02, 0.12000000000000001], score: 0.8622, peak@70ms (cv_auc=0.8545)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/axes/axes_peakbin_stimC-stim-vertical-20mssw/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/axes/axes_peakbin_stimC-stim-vertical-20mssw/config.json
+
+========== QC for C axes (vertical, correctonly) ==========
+
+[RUN] python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230705 --orientation vertical --tag axes_peakbin_stimC-stim-vertical-20mssw --thr 0.60 --k 5 --pt_min_ms_stim 200 --norm auto --sliding_window_ms 20 --sliding_step_ms 10 --correct_mode correctonly
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20230705][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/qc/axes_peakbin_stimC-stim-vertical-20mssw/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=199.99999552965164, Sraw=None, Sinv=None, T=None
+[20230705][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/qc/axes_peakbin_stimC-stim-vertical-20mssw/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=59.99999865889549, Sraw=None, Sinv=None, T=None
+[done] axes_peakbin_stimC-stim-vertical-20mssw
+
+==================== CORRECT-ONLY: C on stim-aligned (pooled) ====================
+
+========== Train C axes on stim-aligned (pooled, correctonly) ==========
+
+[RUN] python cli/train_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230705 --orientation pooled --features C --tag axes_peakbin_stimC-stim-pooled-20mssw --norm global --clf_binary logreg --C_grid 0.1 0.3 1 3 10 --lda_shrinkage auto --searchC --search_range_C=0.00:0.50 --search_step_ms 20 --search_len_ms 50 100 150 200 250 --search_score_mode peak_bin_auc --search_tiebreak shortest_then_earliest --search_tol 0.01 --pt_min_ms_stim 200 --sliding_window_ms 20 --sliding_step_ms 10 --correct_mode correctonly
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20230705][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/axes/axes_peakbin_stimC-stim-pooled-20mssw/axes_SFEF.npz
+    → winC_selected: [0.27999999999999997, 0.32999999999999996], score: 0.8082, peak@330ms (cv_auc=0.8937)
+[20230705][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/axes/axes_peakbin_stimC-stim-pooled-20mssw/axes_SLIP.npz
+    → winC_selected: [0.34, 0.39], score: 0.7555, peak@380ms (cv_auc=0.8294)
+[ok] axes_summary.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/axes/axes_peakbin_stimC-stim-pooled-20mssw/axes_summary.json
+[ok] config.json → /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/axes/axes_peakbin_stimC-stim-pooled-20mssw/config.json
+
+========== QC for C axes (pooled, correctonly) ==========
+
+[RUN] python cli/qc_axes.py --out_root /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out --align stim --sid 20230705 --orientation pooled --tag axes_peakbin_stimC-stim-pooled-20mssw --thr 0.60 --k 5 --pt_min_ms_stim 200 --norm auto --sliding_window_ms 20 --sliding_step_ms 10 --correct_mode correctonly
+[sliding-window] window=20.0ms (2 bins), step=10.0ms (1 bins), native=10.0ms
+[20230705][SFEF] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/qc/axes_peakbin_stimC-stim-pooled-20mssw/qc_axes_SFEF.pdf (+ .png, .json)   lat(ms): C=170.00000178813934, Sraw=None, Sinv=None, T=None
+[20230705][SLIP] wrote /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/stim/20230705/qc/axes_peakbin_stimC-stim-pooled-20mssw/qc_axes_SLIP.pdf (+ .png, .json)   lat(ms): C=240.00000208616257, Sraw=None, Sinv=None, T=None
+[done] axes_peakbin_stimC-stim-pooled-20mssw
+[WARN] No stim caches in /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter for SID=20230705 → skipping NOFILTER: C on stim-aligned (vertical)
+[WARN] No stim caches in /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter for SID=20230705 → skipping NOFILTER: C on stim-aligned (pooled)
+
+[done] Stim C axes training complete for SID=20230705
