@@ -12,14 +12,16 @@
 #SBATCH -e /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/logs/align_all_%A_%a.err
 
 # =============================================================================
-# AXIS ALIGNMENT ANALYSIS - ALL FOUR CASES
+# AXIS ALIGNMENT ANALYSIS - ALL SIX CASES
 #
-# Runs alignment analysis for ALL four cases defined in the analysis plan:
+# Runs alignment analysis for ALL six cases defined in the analysis plan:
 #
 #   Case i:   Sacc-aligned C & S, horizontal trials
 #   Case ii:  Sacc-aligned C & S, pooled trials
 #   Case iii: Stim-aligned C (vertical) vs Sacc-aligned S (horizontal)
 #   Case iv:  Stim-aligned C (pooled) vs Sacc-aligned S (pooled)
+#   Case v:   Stim-aligned C (horizontal) vs Sacc-aligned S (horizontal)
+#   Case vi:  Sacc-aligned C & S, vertical trials
 #
 # Each case is run for BOTH:
 #   - correctonly: Uses out/ caches (correct trials only)
@@ -28,11 +30,13 @@
 # Prerequisites:
 #   - Sacc-aligned caches in both out/ and out_nofilter/
 #   - Stim-aligned caches in both out/ and out_nofilter/
-#   - Required axes trained:
+#   - Required axes trained (run train_axes_all_cases.sbatch first):
 #     * out/sacc: axes_peakbin_saccCS-sacc-horizontal-20mssw
 #     * out/sacc: axes_peakbin_saccCS-sacc-pooled-20mssw
-#     * out/stim: axes_peakbin_C-stim-vertical-20mssw
-#     * out/stim: axes_peakbin_C-stim-pooled-20mssw
+#     * out/sacc: axes_peakbin_saccCS-sacc-vertical-20mssw
+#     * out/stim: axes_peakbin_stimC-stim-vertical-20mssw
+#     * out/stim: axes_peakbin_stimC-stim-pooled-20mssw
+#     * out/stim: axes_peakbin_stimC-stim-horizontal-20mssw
 #     * Same for out_nofilter/ with _nofilter suffix
 #
 # Usage:
@@ -99,19 +103,40 @@ echo "=============================================================="
 # ------------ Common Parameters ------------
 N_PERMS=1000
 SEED=42
-QC_THR_C=0.60
-QC_THR_S=0.60
+QC_THR_C=0.65
+QC_THR_S=0.65
 PT_MIN=200
 SLIDING_WINDOW_MS=20
 SLIDING_STEP_MS=10
 
-# Windows for Analysis C
-WIN_C_SACC_START=-0.30
-WIN_C_SACC_END=-0.10
-WIN_C_STIM_START=0.10
-WIN_C_STIM_END=0.30
-WIN_S_START=-0.10
-WIN_S_END=-0.03
+# =============================================================================
+# Windows for Covariance Estimation (Null Construction)
+# =============================================================================
+# IMPORTANT: These windows should MATCH the search ranges used for axes training
+# in train_axes_all_cases.sbatch. The null construction samples random axes from 
+# the covariance structure of the neural manifold, and this covariance should be
+# computed over the same time periods where the axes were trained.
+#
+# Design principle: Use ALIGNMENT-BASED windows (same for C and S within alignment)
+#   - SACC-aligned: Use [-0.20, 0.05] for ALL features (matches SEARCH_RANGE_SACC)
+#   - STIM-aligned: Use [0.00, 0.50] for ALL features (matches SEARCH_RANGE_STIM)
+#
+# This ensures the null distribution properly reflects "what alignment would we
+# expect if axes were random directions on the neural manifold during this epoch?"
+# =============================================================================
+
+# SACC-aligned windows (Cases i & ii: both C and S on sacc alignment)
+# Both C and S axes were searched within [-0.20, 0.05], so use this for covariance
+WIN_SACC_START=-0.20
+WIN_SACC_END=0.05
+
+# STIM-aligned windows (Cases iii & iv: C on stim, S on sacc)
+# C was searched within [0.00, 0.50] on stim alignment
+WIN_STIM_START=0.00
+WIN_STIM_END=0.50
+
+# For cross-alignment cases (iii & iv), S is still on sacc alignment
+# So S window uses the sacc range: [-0.20, 0.05]
 
 # =============================================================================
 # Function to run Case i or ii (same-alignment)
@@ -131,14 +156,17 @@ run_case_same_align() {
     echo "  Axes: $AXES_TAG"
     echo "  Orientation: $ORIENTATION"
     echo "  OUT_ROOT: $OUT_ROOT"
+    echo "  Covariance windows (SACC-aligned): C=[$WIN_SACC_START, $WIN_SACC_END], S=[$WIN_SACC_START, $WIN_SACC_END]"
     echo "------------------------------------------------------------"
     
+    # For same-alignment cases (i & ii), both C and S are sacc-aligned
+    # Use the SAME window for both (the sacc search range)
     python cli/axis_alignment_analysis.py \
       --sid "$SID" \
       --out_root "$OUT_ROOT" \
       --mode axis_cov \
-      --win_C "$WIN_C_SACC_START" "$WIN_C_SACC_END" \
-      --win_S "$WIN_S_START" "$WIN_S_END" \
+      --win_C "$WIN_SACC_START" "$WIN_SACC_END" \
+      --win_S "$WIN_SACC_START" "$WIN_SACC_END" \
       --axes_tag "$AXES_TAG" \
       --orientation "$ORIENTATION" \
       --pt_min_ms "$PT_MIN" \
@@ -177,19 +205,23 @@ run_case_cross_align() {
     echo "  C axes: stim/$AXES_TAG_C (orientation: $ORI_C)"
     echo "  S axes: sacc/$AXES_TAG_S (orientation: $ORI_S)"
     echo "  OUT_ROOT: $OUT_ROOT"
+    echo "  Covariance windows: C(stim)=[$WIN_STIM_START, $WIN_STIM_END], S(sacc)=[$WIN_SACC_START, $WIN_SACC_END]"
     echo "------------------------------------------------------------"
     
+    # For cross-alignment cases (iii & iv):
+    # - C is stim-aligned, use STIM search range for its covariance window
+    # - S is sacc-aligned, use SACC search range for its covariance window
     python cli/axis_alignment_cross.py \
       --sid "$SID" \
       --out_root "$OUT_ROOT" \
       --align_C stim \
       --axes_tag_C "$AXES_TAG_C" \
       --orientation_C "$ORI_C" \
-      --win_C "$WIN_C_STIM_START" "$WIN_C_STIM_END" \
+      --win_C "$WIN_STIM_START" "$WIN_STIM_END" \
       --align_S sacc \
       --axes_tag_S "$AXES_TAG_S" \
       --orientation_S "$ORI_S" \
-      --win_S "$WIN_S_START" "$WIN_S_END" \
+      --win_S "$WIN_SACC_START" "$WIN_SACC_END" \
       --pt_min_ms "$PT_MIN" \
       --n_perms "$N_PERMS" \
       --seed "$SEED" \
@@ -254,6 +286,26 @@ if [[ "$FILTER_MODE" == "both" || "$FILTER_MODE" == "correctonly" ]]; then
     "axes_peakbin_saccCS-sacc-pooled-20mssw" \
     "case_iv_correctonly" \
     "Stim-C (pooled) vs Sacc-S (pooled) (correct-only)"
+  
+  # Case v: Stim-aligned C (horizontal) vs Sacc-aligned S (horizontal)
+  run_case_cross_align \
+    "v" \
+    "horizontal" \
+    "horizontal" \
+    "$PROJECT/out" \
+    "axes_peakbin_stimC-stim-horizontal-20mssw" \
+    "axes_peakbin_saccCS-sacc-horizontal-20mssw" \
+    "case_v_correctonly" \
+    "Stim-C (horizontal) vs Sacc-S (horizontal) (correct-only)"
+  
+  # Case vi: Sacc-aligned C & S, vertical trials
+  run_case_same_align \
+    "vi" \
+    "vertical" \
+    "$PROJECT/out" \
+    "axes_peakbin_saccCS-sacc-vertical-20mssw" \
+    "case_vi_correctonly" \
+    "Sacc-aligned C & S, vertical trials (correct-only)"
 fi
 
 # =============================================================================
@@ -304,6 +356,26 @@ if [[ "$FILTER_MODE" == "both" || "$FILTER_MODE" == "alltrials" ]]; then
     "axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter" \
     "case_iv_alltrials" \
     "Stim-C (pooled) vs Sacc-S (pooled) (all-trials)"
+  
+  # Case v: Stim-aligned C (horizontal) vs Sacc-aligned S (horizontal)
+  run_case_cross_align \
+    "v" \
+    "horizontal" \
+    "horizontal" \
+    "$PROJECT/out_nofilter" \
+    "axes_peakbin_stimC-stim-horizontal-20mssw_nofilter" \
+    "axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter" \
+    "case_v_alltrials" \
+    "Stim-C (horizontal) vs Sacc-S (horizontal) (all-trials)"
+  
+  # Case vi: Sacc-aligned C & S, vertical trials
+  run_case_same_align \
+    "vi" \
+    "vertical" \
+    "$PROJECT/out_nofilter" \
+    "axes_peakbin_saccCS-sacc-vertical-20mssw_nofilter" \
+    "case_vi_alltrials" \
+    "Sacc-aligned C & S, vertical trials (all-trials)"
 fi
 
 echo ""

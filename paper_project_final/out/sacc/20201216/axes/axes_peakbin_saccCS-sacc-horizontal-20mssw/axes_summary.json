@@ -46,7 +46,7 @@
     200.0,
     250.0
   ],
-  "search_range_C": "-0.30:-0.05",
+  "search_range_C": "-0.20:0.05",
   "search_range_S": "-0.20:0.05",
   "search_range_T": null,
   "search_range_R": null,
@@ -56,15 +56,15 @@
   "per_area_results": {
     "MFEF": {
       "winC_selected": [
-        -0.12000000000000001,
-        -0.07
+        -0.02000000000000002,
+        0.02999999999999998
       ],
-      "winC_cv_best": 0.8895551257253385,
-      "winC_best_param": 1.0,
-      "winC_peak_time_ms": -70.00000029802322,
-      "winC_peak_auc": 0.8895551257253385,
-      "winC_mean_bin_auc": 0.7974640017193209,
-      "winC_cv_auc_original": 0.9052171965965069,
+      "winC_cv_best": 0.9230818826563507,
+      "winC_best_param": 0.1,
+      "winC_peak_time_ms": 20.000000251457095,
+      "winC_peak_auc": 0.9230818826563507,
+      "winC_mean_bin_auc": 0.9088330109606706,
+      "winC_cv_auc_original": 0.9843484102104793,
       "winS_selected": [
         -0.02000000000000002,
         0.02999999999999998
@@ -72,20 +72,20 @@
       "winS_cv_best": 0.9877328785095775,
       "winS_peak_time_ms": -10.000000009313226,
       "winS_peak_auc": 0.9877328785095775,
-      "sC_auc": 0.8895551257253385,
+      "sC_auc": 0.9230818826563507,
       "n_trials_C": 251
     },
     "MLIP": {
       "winC_selected": [
-        -0.16,
-        -0.06
+        -2.0816681711721685e-17,
+        0.04999999999999998
       ],
-      "winC_cv_best": 0.6854287556415215,
+      "winC_cv_best": 0.8129593810444874,
       "winC_best_param": 0.1,
-      "winC_peak_time_ms": -60.00000052154064,
-      "winC_peak_auc": 0.6854287556415215,
-      "winC_mean_bin_auc": 0.6421985815602836,
-      "winC_cv_auc_original": 0.7665920286609942,
+      "winC_peak_time_ms": 30.00000026077032,
+      "winC_peak_auc": 0.8129593810444874,
+      "winC_mean_bin_auc": 0.75056952503761,
+      "winC_cv_auc_original": 0.8762091356918942,
       "winS_selected": [
         -2.0816681711721685e-17,
         0.04999999999999998
@@ -93,13 +93,13 @@
       "winS_cv_best": 0.9858960902650223,
       "winS_peak_time_ms": 49.999999813735485,
       "winS_peak_auc": 0.9858960902650223,
-      "sC_auc": 0.6854287556415215,
+      "sC_auc": 0.8129593810444874,
       "n_trials_C": 251
     },
     "MSC": {
       "winC_selected": [
-        -0.1,
-        -0.05
+        -0.10000000000000003,
+        -0.05000000000000003
       ],
       "winC_cv_best": 0.6673758865248226,
       "winC_best_param": 10.0,

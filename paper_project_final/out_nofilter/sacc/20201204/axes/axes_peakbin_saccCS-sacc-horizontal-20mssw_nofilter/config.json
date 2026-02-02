@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "created": "2026-01-29T00:22:33.983725",
+    "created": "2026-02-02T12:47:00.445891",
     "script": "cli/train_axes.py",
     "version": "2.0"
   },
@@ -41,7 +41,7 @@
       200.0,
       250.0
     ],
-    "search_range_C": "-0.30:-0.05",
+    "search_range_C": "-0.20:0.05",
     "search_range_S": "-0.20:0.05",
     "search_range_T": null,
     "search_range_R": null,

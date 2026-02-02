@@ -31,19 +31,18 @@
   ],
   "lda_shrinkage": null,
   "searchC": true,
-  "searchS": true,
+  "searchS": false,
   "searchT": false,
   "searchR": false,
   "search_step_ms": 20.0,
   "search_len_ms": [
-    30,
-    50,
-    100,
-    150,
-    200,
-    250
+    50.0,
+    100.0,
+    150.0,
+    200.0,
+    250.0
   ],
-  "search_range_C": null,
+  "search_range_C": "0.00:0.50",
   "search_range_S": null,
   "search_range_T": null,
   "search_range_R": null,
@@ -53,30 +52,30 @@
   "per_area_results": {
     "MFEF": {
       "winC_selected": [
-        0.25999999999999995,
-        0.2899999999999999
+        0.21999999999999997,
+        0.26999999999999996
       ],
-      "winC_cv_best": 0.9853506683757554,
-      "winC_best_param": 1.0,
-      "winC_peak_time_ms": 269.99999582767487,
-      "winC_peak_auc": 0.9853506683757554,
-      "winC_mean_bin_auc": 0.9761490569492768,
-      "winC_cv_auc_original": 0.9940767937944409,
-      "sC_auc": 0.9853506683757554,
+      "winC_cv_best": 0.9920802050906428,
+      "winC_best_param": 0.1,
+      "winC_peak_time_ms": 259.99999046325684,
+      "winC_peak_auc": 0.9920802050906428,
+      "winC_mean_bin_auc": 0.9847738509430508,
+      "winC_cv_auc_original": 0.9995475113122172,
+      "sC_auc": 0.9920802050906428,
       "n_trials_C": 299
     },
     "MLIP": {
       "winC_selected": [
         0.25999999999999995,
-        0.2899999999999999
+        0.30999999999999994
       ],
-      "winC_cv_best": 0.8675151071232375,
+      "winC_cv_best": 0.8671946529939571,
       "winC_best_param": 0.1,
       "winC_peak_time_ms": 280.0000011920929,
-      "winC_peak_auc": 0.8675151071232375,
-      "winC_mean_bin_auc": 0.8258865897576756,
-      "winC_cv_auc_original": 0.8965049773755656,
-      "sC_auc": 0.8675151071232375,
+      "winC_peak_auc": 0.8671946529939571,
+      "winC_mean_bin_auc": 0.8185199597143381,
+      "winC_cv_auc_original": 0.9070957983193277,
+      "sC_auc": 0.8671946529939571,
       "n_trials_C": 299
     },
     "MSC": {

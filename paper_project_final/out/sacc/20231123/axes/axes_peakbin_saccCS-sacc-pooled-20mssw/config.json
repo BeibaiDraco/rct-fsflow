@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "created": "2026-02-01T23:03:24.446032",
+    "created": "2026-02-02T12:49:00.002611",
     "script": "cli/train_axes.py",
     "version": "2.0"
   },
@@ -41,7 +41,7 @@
       200.0,
       250.0
     ],
-    "search_range_C": "-0.30:-0.05",
+    "search_range_C": "-0.20:0.05",
     "search_range_S": "-0.20:0.05",
     "search_range_T": null,
     "search_range_R": null,
@@ -74,8 +74,7 @@
     "select_frac": 1.0,
     "rebin_factor": 1,
     "sliding_window_ms": 20.0,
-    "sliding_step_ms": 10.0,
-    "correct_mode": "correctonly"
+    "sliding_step_ms": 10.0
   },
   "resolved": {
     "auto_tag_generated": false,

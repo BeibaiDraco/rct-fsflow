@@ -1,0 +1,47 @@
+{
+  "sid": "20200401",
+  "area": "MFEF",
+  "monkey": "M",
+  "analysis": "cross_alignment",
+  "align_C": "stim",
+  "axes_tag_C": "axes_peakbin_stimC-stim-horizontal-20mssw_nofilter",
+  "orientation_C": "horizontal",
+  "align_S": "sacc",
+  "axes_tag_S": "axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter",
+  "orientation_S": "horizontal",
+  "a_obs": 0.23952499311277997,
+  "theta_obs_deg": 76.14149322313905,
+  "null_mean": 0.13804878353417446,
+  "null_std": 0.10132381721138445,
+  "null_angle_mean_deg": 82.0111289929586,
+  "p_orth": 0.8321678321678322,
+  "p_align": 0.16883116883116883,
+  "n_perms_valid": 1000,
+  "delta": 0.10147620957860551,
+  "delta_theta_deg": -5.869635769819553,
+  "z_score": 1.001504013285476,
+  "manifold_dim": 63,
+  "D_eff": 9.258108530688316,
+  "expected_cos": 0.2622279185189292,
+  "expected_angle_deg": 74.79769989048881,
+  "D_C_shape": [
+    71,
+    100
+  ],
+  "D_S_shape": [
+    71,
+    100
+  ],
+  "use_rich_cond": false,
+  "win_C": [
+    0.0,
+    0.5
+  ],
+  "win_S": [
+    -0.2,
+    0.05
+  ],
+  "pt_min_ms": 200.0,
+  "n_trials_C": 257,
+  "n_trials_S": 257
+}

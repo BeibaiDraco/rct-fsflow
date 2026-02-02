@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "created": "2026-02-01T23:40:17.878944",
+    "created": "2026-02-02T12:51:34.114315",
     "script": "cli/train_axes.py",
     "version": "2.0"
   },
@@ -35,19 +35,18 @@
     "searchR": false,
     "search_step_ms": 20.0,
     "search_len_ms": [
-      30,
-      50,
-      100,
-      150,
-      200,
-      250
+      50.0,
+      100.0,
+      150.0,
+      200.0,
+      250.0
     ],
-    "search_range_C": null,
-    "search_range_S": null,
+    "search_range_C": "-0.20:0.05",
+    "search_range_S": "-0.20:0.05",
     "search_range_T": null,
     "search_range_R": null,
     "search_score_mode": "peak_bin_auc",
-    "search_tiebreak": "shortest_then_earliest",
+    "search_tiebreak": "shortest_then_closest0",
     "search_tol": 0.01,
     "winC_stim": [
       "0.10:0.30"
@@ -101,8 +100,8 @@
       "SLIP",
       "SSC"
     ],
-    "winC_candidates_count": 41,
-    "winS_candidates_count": 41,
+    "winC_candidates_count": 29,
+    "winS_candidates_count": 29,
     "winT_candidates_count": 0,
     "winR_candidates_count": 0,
     "sliding_window_bins": 4,

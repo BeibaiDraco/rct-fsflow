@@ -1,0 +1,34 @@
+{
+  "sid": "20201001",
+  "area": "MFEF",
+  "monkey": "M",
+  "analysis": "axis_covariance",
+  "axes_tag": "axes_peakbin_saccCS-sacc-vertical-20mssw",
+  "a_obs": 0.022794462198255882,
+  "theta_obs_deg": 88.69386039414324,
+  "null_mean": 0.3098798021660689,
+  "null_std": 0.2016053529328444,
+  "null_angle_mean_deg": 71.43399134479652,
+  "p_orth": 0.03596403596403597,
+  "p_align": 0.965034965034965,
+  "n_perms_valid": 1000,
+  "delta": -0.28708533996781305,
+  "delta_theta_deg": 17.25986904934672,
+  "z_score": -1.4239966141347566,
+  "manifold_dim": 43,
+  "D_eff": 5.393917056784517,
+  "expected_cos": 0.43057406583874436,
+  "expected_angle_deg": 64.49600268275992,
+  "win_C": [
+    -0.2,
+    0.05
+  ],
+  "win_S": [
+    -0.2,
+    0.05
+  ],
+  "n_trials": 292,
+  "n_valid_C": 292,
+  "n_valid_S": 292,
+  "use_rich_cond": false
+}

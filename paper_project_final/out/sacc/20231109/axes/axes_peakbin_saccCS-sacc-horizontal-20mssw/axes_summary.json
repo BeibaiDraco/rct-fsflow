@@ -46,7 +46,7 @@
     200.0,
     250.0
   ],
-  "search_range_C": "-0.30:-0.05",
+  "search_range_C": "-0.20:0.05",
   "search_range_S": "-0.20:0.05",
   "search_range_T": null,
   "search_range_R": null,
@@ -56,15 +56,15 @@
   "per_area_results": {
     "SFEF": {
       "winC_selected": [
-        -0.12000000000000001,
-        -0.07
+        -0.060000000000000026,
+        -0.010000000000000023
       ],
-      "winC_cv_best": 0.7262111801242236,
+      "winC_cv_best": 0.8312422360248447,
       "winC_best_param": 0.1,
-      "winC_peak_time_ms": -80.0000000745058,
-      "winC_peak_auc": 0.7262111801242236,
-      "winC_mean_bin_auc": 0.663944099378882,
-      "winC_cv_auc_original": 0.7894409937888198,
+      "winC_peak_time_ms": -20.000000251457095,
+      "winC_peak_auc": 0.8312422360248447,
+      "winC_mean_bin_auc": 0.7959254658385093,
+      "winC_cv_auc_original": 0.9226708074534162,
       "winS_selected": [
         -0.02000000000000002,
         0.02999999999999998
@@ -72,12 +72,12 @@
       "winS_cv_best": 0.7841217048534121,
       "winS_peak_time_ms": 10.000000009313226,
       "winS_peak_auc": 0.7841217048534121,
-      "sC_auc": 0.7262111801242236,
+      "sC_auc": 0.8312422360248447,
       "n_trials_C": 255
     },
     "SLIP": {
       "winC_selected": [
-        -0.18,
+        -0.18000000000000002,
         -0.13
       ],
       "winC_cv_best": 0.7074534161490684,
@@ -98,15 +98,15 @@
     },
     "SSC": {
       "winC_selected": [
-        -0.1,
-        -0.05
+        -2.0816681711721685e-17,
+        0.04999999999999998
       ],
-      "winC_cv_best": 0.7072049689440995,
-      "winC_best_param": 1.0,
-      "winC_peak_time_ms": -60.00000052154064,
-      "winC_peak_auc": 0.7072049689440995,
-      "winC_mean_bin_auc": 0.6618633540372671,
-      "winC_cv_auc_original": 0.7652173913043478,
+      "winC_cv_best": 0.7356521739130435,
+      "winC_best_param": 0.1,
+      "winC_peak_time_ms": 20.000000251457095,
+      "winC_peak_auc": 0.7356521739130435,
+      "winC_mean_bin_auc": 0.6739648033126294,
+      "winC_cv_auc_original": 0.7909937888198757,
       "winS_selected": [
         -0.02000000000000002,
         0.02999999999999998
@@ -114,7 +114,7 @@
       "winS_cv_best": 0.9990145355999015,
       "winS_peak_time_ms": 0.0,
       "winS_peak_auc": 0.9990145355999015,
-      "sC_auc": 0.7072049689440995,
+      "sC_auc": 0.7356521739130435,
       "n_trials_C": 255
     }
   },

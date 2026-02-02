@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "created": "2026-02-01T23:04:19.795974",
+    "created": "2026-02-02T12:45:59.906948",
     "script": "cli/train_axes.py",
     "version": "2.0"
   },
@@ -73,8 +73,7 @@
     "select_frac": 1.0,
     "rebin_factor": 1,
     "sliding_window_ms": 20.0,
-    "sliding_step_ms": 10.0,
-    "correct_mode": "correctonly"
+    "sliding_step_ms": 10.0
   },
   "resolved": {
     "auto_tag_generated": false,

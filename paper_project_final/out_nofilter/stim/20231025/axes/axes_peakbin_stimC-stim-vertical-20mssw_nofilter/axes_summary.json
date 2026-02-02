@@ -31,19 +31,18 @@
   ],
   "lda_shrinkage": null,
   "searchC": true,
-  "searchS": true,
+  "searchS": false,
   "searchT": false,
   "searchR": false,
   "search_step_ms": 20.0,
   "search_len_ms": [
-    30,
-    50,
-    100,
-    150,
-    200,
-    250
+    50.0,
+    100.0,
+    150.0,
+    200.0,
+    250.0
   ],
-  "search_range_C": null,
+  "search_range_C": "0.00:0.50",
   "search_range_S": null,
   "search_range_T": null,
   "search_range_R": null,
@@ -53,16 +52,16 @@
   "per_area_results": {
     "SFEF": {
       "winC_selected": [
-        0.19999999999999998,
-        0.22999999999999998
+        0.25999999999999995,
+        0.30999999999999994
       ],
-      "winC_cv_best": 0.723443138706394,
+      "winC_cv_best": 0.7233621726658648,
       "winC_best_param": 0.1,
-      "winC_peak_time_ms": 219.9999988079071,
-      "winC_peak_auc": 0.723443138706394,
-      "winC_mean_bin_auc": 0.675461120878443,
-      "winC_cv_auc_original": 0.732810145044972,
-      "sC_auc": 0.723443138706394,
+      "winC_peak_time_ms": 269.99999582767487,
+      "winC_peak_auc": 0.7233621726658648,
+      "winC_mean_bin_auc": 0.692684718238179,
+      "winC_cv_auc_original": 0.786767009696675,
+      "sC_auc": 0.7233621726658648,
       "n_trials_C": 416
     },
     "SLIP": {
@@ -81,16 +80,16 @@
     },
     "SSC": {
       "winC_selected": [
-        0.21999999999999997,
-        0.24999999999999997
+        0.19999999999999998,
+        0.25
       ],
-      "winC_cv_best": 0.7538401036365319,
-      "winC_best_param": 0.1,
+      "winC_cv_best": 0.7459863977051912,
+      "winC_best_param": 0.3,
       "winC_peak_time_ms": 240.00000208616257,
-      "winC_peak_auc": 0.7538401036365319,
-      "winC_mean_bin_auc": 0.7385086055334505,
-      "winC_cv_auc_original": 0.7626675309942469,
-      "sC_auc": 0.7538401036365319,
+      "winC_peak_auc": 0.7459863977051912,
+      "winC_mean_bin_auc": 0.6912117146294069,
+      "winC_cv_auc_original": 0.7790514004807821,
+      "sC_auc": 0.7459863977051912,
       "n_trials_C": 416
     }
   },

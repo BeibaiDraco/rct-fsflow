@@ -30,19 +30,18 @@
   ],
   "lda_shrinkage": null,
   "searchC": true,
-  "searchS": true,
+  "searchS": false,
   "searchT": false,
   "searchR": false,
   "search_step_ms": 20.0,
   "search_len_ms": [
-    30,
-    50,
-    100,
-    150,
-    200,
-    250
+    50.0,
+    100.0,
+    150.0,
+    200.0,
+    250.0
   ],
-  "search_range_C": null,
+  "search_range_C": "0.00:0.50",
   "search_range_S": null,
   "search_range_T": null,
   "search_range_R": null,
@@ -67,15 +66,15 @@
     "MLIP": {
       "winC_selected": [
         0.14,
-        0.17
+        0.19
       ],
-      "winC_cv_best": 0.5840492554410079,
+      "winC_cv_best": 0.5657839035808556,
       "winC_best_param": 0.1,
-      "winC_peak_time_ms": 149.99999850988388,
-      "winC_peak_auc": 0.5840492554410079,
-      "winC_mean_bin_auc": 0.5622146687252022,
-      "winC_cv_auc_original": 0.5857057466204164,
-      "sC_auc": 0.5840492554410079,
+      "winC_peak_time_ms": 140.00000059604645,
+      "winC_peak_auc": 0.5657839035808556,
+      "winC_mean_bin_auc": 0.5196473927984461,
+      "winC_cv_auc_original": 0.528000314997685,
+      "sC_auc": 0.5657839035808556,
       "n_trials_C": 567
     }
   },

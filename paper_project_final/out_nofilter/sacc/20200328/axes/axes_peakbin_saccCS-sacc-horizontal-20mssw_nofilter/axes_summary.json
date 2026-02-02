@@ -45,7 +45,7 @@
     200.0,
     250.0
   ],
-  "search_range_C": "-0.30:-0.05",
+  "search_range_C": "-0.20:0.05",
   "search_range_S": "-0.20:0.05",
   "search_range_T": null,
   "search_range_R": null,
@@ -55,15 +55,15 @@
   "per_area_results": {
     "MFEF": {
       "winC_selected": [
-        -0.1,
-        -0.05
+        -2.0816681711721685e-17,
+        0.04999999999999998
       ],
-      "winC_cv_best": 0.8617724043375296,
+      "winC_cv_best": 0.9379284556898915,
       "winC_best_param": 0.3,
-      "winC_peak_time_ms": -60.00000052154064,
-      "winC_peak_auc": 0.8617724043375296,
-      "winC_mean_bin_auc": 0.8171631559267107,
-      "winC_cv_auc_original": 0.9088572596818473,
+      "winC_peak_time_ms": 10.000000009313226,
+      "winC_peak_auc": 0.9379284556898915,
+      "winC_mean_bin_auc": 0.9168744027587353,
+      "winC_cv_auc_original": 0.9893884226717811,
       "winS_selected": [
         -0.02000000000000002,
         0.02999999999999998
@@ -71,20 +71,20 @@
       "winS_cv_best": 1.0,
       "winS_peak_time_ms": -10.000000009313226,
       "winS_peak_auc": 1.0,
-      "sC_auc": 0.8617724043375296,
+      "sC_auc": 0.9379284556898915,
       "n_trials_C": 255
     },
     "MLIP": {
       "winC_selected": [
-        -0.14,
-        -0.09000000000000001
+        -0.060000000000000026,
+        0.03999999999999998
       ],
-      "winC_cv_best": 0.7288420790228095,
-      "winC_best_param": 0.1,
-      "winC_peak_time_ms": -119.99999918043613,
-      "winC_peak_auc": 0.7288420790228095,
-      "winC_mean_bin_auc": 0.6661099339399227,
-      "winC_cv_auc_original": 0.7296033801281178,
+      "winC_cv_best": 0.8488719930200673,
+      "winC_best_param": 1.0,
+      "winC_peak_time_ms": 0.0,
+      "winC_peak_auc": 0.8488719930200673,
+      "winC_mean_bin_auc": 0.7764621158613431,
+      "winC_cv_auc_original": 0.9241486399657314,
       "winS_selected": [
         -2.0816681711721685e-17,
         0.04999999999999998
@@ -92,7 +92,7 @@
       "winS_cv_best": 0.986061428395214,
       "winS_peak_time_ms": 40.0000000372529,
       "winS_peak_auc": 0.986061428395214,
-      "sC_auc": 0.7288420790228095,
+      "sC_auc": 0.8488719930200673,
       "n_trials_C": 255
     }
   },

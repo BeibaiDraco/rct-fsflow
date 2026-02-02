@@ -1,0 +1,153 @@
+==============================================================
+AXIS ALIGNMENT SUMMARY - ALL SIX CASES
+==============================================================
+
+================================================================================
+SUMMARY STATISTICS BY CASE
+================================================================================
+
+Case i: Sacc C&S, horizontal (correct-only)
+  Sessions: 21
+  Significant (p<0.05): 4 (19.0%)
+  |cos(θ)| obs: 0.0888 ± 0.0873
+  θ obs (deg): 84.9 ± 5.1
+  |cos(θ)| null: 0.2500
+  D_eff: 6.4
+  p_orth median: 0.0879
+
+Case ii: Sacc C&S, pooled (correct-only)
+  Sessions: 22
+  Significant (p<0.05): 4 (18.2%)
+  |cos(θ)| obs: 0.1251 ± 0.1000
+  θ obs (deg): 82.8 ± 5.8
+  |cos(θ)| null: 0.2859
+  D_eff: 5.8
+  p_orth median: 0.2597
+
+Case iii: Stim-C (vert) vs Sacc-S (horiz) (correct-only)
+  Sessions: 21
+  Significant (p<0.05): 0 (0.0%)
+  |cos(θ)| obs: 0.4132 ± 0.2097
+  θ obs (deg): 64.7 ± 14.0
+  |cos(θ)| null: 0.1822
+  D_eff: 8.5
+  p_orth median: 0.9101
+
+Case iv: Stim-C (pooled) vs Sacc-S (pooled) (correct-only)
+  Sessions: 23
+  Significant (p<0.05): 0 (0.0%)
+  |cos(θ)| obs: 0.1890 ± 0.1324
+  θ obs (deg): 79.0 ± 7.8
+  |cos(θ)| null: 0.1616
+  D_eff: 7.0
+  p_orth median: 0.5864
+
+Case v: Stim-C (horiz) vs Sacc-S (horiz) (correct-only)
+  Sessions: 21
+  Significant (p<0.05): 2 (9.5%)
+  |cos(θ)| obs: 0.1316 ± 0.1256
+  θ obs (deg): 82.3 ± 7.4
+  |cos(θ)| null: 0.1436
+  D_eff: 8.5
+  p_orth median: 0.3856
+
+Case vi: Sacc C&S, vertical (correct-only)
+  Sessions: 23
+  Significant (p<0.05): 4 (17.4%)
+  |cos(θ)| obs: 0.1270 ± 0.1208
+  θ obs (deg): 82.6 ± 7.1
+  |cos(θ)| null: 0.3181
+  D_eff: 5.7
+  p_orth median: 0.1079
+
+Case i: Sacc C&S, horizontal (all-trials)
+  Sessions: 21
+  Significant (p<0.05): 4 (19.0%)
+  |cos(θ)| obs: 0.0825 ± 0.0708
+  θ obs (deg): 85.3 ± 4.1
+  |cos(θ)| null: 0.2426
+  D_eff: 6.3
+  p_orth median: 0.1429
+
+Case ii: Sacc C&S, pooled (all-trials)
+  Sessions: 23
+  Significant (p<0.05): 6 (26.1%)
+  |cos(θ)| obs: 0.1051 ± 0.0931
+  θ obs (deg): 83.9 ± 5.4
+  |cos(θ)| null: 0.2726
+  D_eff: 5.6
+  p_orth median: 0.1758
+
+Case iii: Stim-C (vert) vs Sacc-S (horiz) (all-trials)
+  Sessions: 21
+  Significant (p<0.05): 0 (0.0%)
+  |cos(θ)| obs: 0.3831 ± 0.2342
+  θ obs (deg): 66.5 ± 15.4
+  |cos(θ)| null: 0.1789
+  D_eff: 7.9
+  p_orth median: 0.9061
+
+Case iv: Stim-C (pooled) vs Sacc-S (pooled) (all-trials)
+  Sessions: 23
+  Significant (p<0.05): 0 (0.0%)
+  |cos(θ)| obs: 0.2138 ± 0.1522
+  θ obs (deg): 77.5 ± 9.2
+  |cos(θ)| null: 0.1532
+  D_eff: 6.3
+  p_orth median: 0.5824
+
+Case v: Stim-C (horiz) vs Sacc-S (horiz) (all-trials)
+  Sessions: 21
+  Significant (p<0.05): 2 (9.5%)
+  |cos(θ)| obs: 0.1585 ± 0.1446
+  θ obs (deg): 80.7 ± 8.6
+  |cos(θ)| null: 0.1414
+  D_eff: 8.0
+  p_orth median: 0.4166
+
+Case vi: Sacc C&S, vertical (all-trials)
+  Sessions: 23
+  Significant (p<0.05): 9 (39.1%)
+  |cos(θ)| obs: 0.1001 ± 0.0979
+  θ obs (deg): 84.2 ± 5.7
+  |cos(θ)| null: 0.2950
+  D_eff: 5.7
+  p_orth median: 0.1608
+
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_summary.csv
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/axis_alignment_all_cases_summary.csv
+
+================================================================================
+GENERATING COMPREHENSIVE FIGURES FOR ALL SIX CASES
+================================================================================
+
+[Generating combined figures for CORRECT-ONLY trials...]
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_figs/six_cases_summary_correctonly.pdf
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_figs/obs_vs_null_correctonly.pdf
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_figs/angle_comparison_correctonly.pdf
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_figs/summary_bar_chart_correctonly.pdf
+
+[Generating combined figures for ALL TRIALS...]
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_figs/six_cases_summary_alltrials.pdf
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_figs/obs_vs_null_alltrials.pdf
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_figs/angle_comparison_alltrials.pdf
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_figs/summary_bar_chart_alltrials.pdf
+
+[Generating per-case figures...]
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_case_i_correctonly/figs
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_case_ii_correctonly/figs
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/cross_alignment/summary/case_iii_correctonly/figs
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/cross_alignment/summary/case_iv_correctonly/figs
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/cross_alignment/summary/case_v_correctonly/figs
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/sacc/summary/alignment_case_vi_correctonly/figs
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/alignment_case_i_alltrials/figs
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/alignment_case_ii_alltrials/figs
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/cross_alignment/summary/case_iii_alltrials/figs
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/cross_alignment/summary/case_iv_alltrials/figs
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/cross_alignment/summary/case_v_alltrials/figs
+[ok] Saved per-case plots to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/sacc/summary/alignment_case_vi_alltrials/figs
+
+================================================================================
+DONE - ALL SIX CASES PROCESSED
+================================================================================
+[done] Summary complete
