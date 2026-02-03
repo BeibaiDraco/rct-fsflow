@@ -292,6 +292,44 @@ def get_fef_area(sid):
     """Get FEF area name for a session."""
     return "MFEF" if sid.startswith("202") and int(sid[:4]) <= 2021 else "SFEF"
 
+def is_fef_area(area_name):
+    """Check if area is FEF (not LIP, SC, or other)."""
+    return area_name in ["MFEF", "SFEF", "FEF"]
+
+def get_fef_data_from_per_area(per_area_results, key, sid=None):
+    """Get data for FEF area only from per_area_results dict.
+    
+    Parameters:
+    -----------
+    per_area_results : dict
+        Dictionary with area names as keys
+    key : str
+        Key to extract (e.g., 'winC_selected', 'winS_selected')
+    sid : str, optional
+        Session ID to determine which FEF area to prioritize
+    
+    Returns:
+    --------
+    value or None
+    """
+    if not per_area_results:
+        return None
+    
+    # Try specific FEF area first if sid provided
+    if sid:
+        fef_area = get_fef_area(sid)
+        if fef_area in per_area_results:
+            area_data = per_area_results[fef_area]
+            if area_data and key in area_data:
+                return area_data[key]
+    
+    # Fall back to any FEF area
+    for area_name, area_data in per_area_results.items():
+        if is_fef_area(area_name) and area_data and key in area_data:
+            return area_data[key]
+    
+    return None
+
 # Define axes paths for each case type
 # Maps: case_key -> {feature: (align, axes_tag)}
 AXES_INFO = {
@@ -556,7 +594,7 @@ if window_data:
     plt.tight_layout()
     
     # Renamed from window_timing_comparison to peak_time_comparison
-    timing_fig_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / "peak_time_comparison.pdf"
+    timing_fig_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / "window_comparison" / "peak_time_comparison.pdf"
     timing_fig_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(timing_fig_path, dpi=150, bbox_inches='tight')
     fig.savefig(timing_fig_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
@@ -654,7 +692,7 @@ if window_data:
     
     plt.tight_layout()
     
-    wc_fig_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / "window_center_comparison.pdf"
+    wc_fig_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / "window_comparison" / "window_center_comparison.pdf"
     fig_wc.savefig(wc_fig_path, dpi=150, bbox_inches='tight')
     fig_wc.savefig(wc_fig_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
     plt.close(fig_wc)
@@ -745,7 +783,7 @@ if window_data:
                       bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
             
             plt.tight_layout(rect=[0, 0.06, 1, 1])
-            abs_fig_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / "window_comparison_absolute_time.pdf"
+            abs_fig_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / "window_comparison" / "window_comparison_absolute_time.pdf"
             fig2.savefig(abs_fig_path, dpi=150, bbox_inches='tight')
             fig2.savefig(abs_fig_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
             plt.close(fig2)
@@ -815,23 +853,15 @@ if window_data:
         if rt is None or len(rt) < 10:
             continue
         
-        # Get stim-aligned C window
-        stim_win_C = None
+        # Get stim-aligned C window (FEF only)
         per_area = stim_summary.get("per_area_results") or {}
-        for area_name, area_data in per_area.items():
-            if area_data and "winC_selected" in area_data:
-                stim_win_C = area_data["winC_selected"]
-                break
+        stim_win_C = get_fef_data_from_per_area(per_area, "winC_selected", sid)
         if stim_win_C is None:
             stim_win_C = stim_summary.get("winC")
         
-        # Get sacc-aligned S window
-        sacc_win_S = None
+        # Get sacc-aligned S window (FEF only)
         per_area = sacc_summary.get("per_area_results") or {}
-        for area_name, area_data in per_area.items():
-            if area_data and "winS_selected" in area_data:
-                sacc_win_S = area_data["winS_selected"]
-                break
+        sacc_win_S = get_fef_data_from_per_area(per_area, "winS_selected", sid)
         if sacc_win_S is None:
             sacc_win_S = sacc_summary.get("winS")
         
@@ -927,7 +957,7 @@ if window_data:
         ax3.grid(axis='x', alpha=0.3)
         
         plt.tight_layout()
-        timeline_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / "window_absolute_timeline_detailed.pdf"
+        timeline_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / "window_comparison" / "window_absolute_timeline_detailed.pdf"
         fig3.savefig(timeline_path, dpi=150, bbox_inches='tight')
         fig3.savefig(timeline_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
         plt.close(fig3)
@@ -986,7 +1016,7 @@ if window_data:
         
         plt.suptitle("Training Window Comparison Across All Sessions", fontsize=14, fontweight='bold')
         plt.tight_layout()
-        summary_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / "window_comparison_all_sessions.pdf"
+        summary_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / "window_comparison" / "window_comparison_all_sessions.pdf"
         fig4.savefig(summary_path, dpi=150, bbox_inches='tight')
         fig4.savefig(summary_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
         plt.close(fig4)
@@ -1042,21 +1072,16 @@ if window_data:
         },
     ]
     
-    def load_axes_summary_for_C(path):
-        """Load axes_summary.json and extract C window info."""
+    def load_axes_summary_for_C(path, sid=None):
+        """Load axes_summary.json and extract C window info (FEF only)."""
         if not path.exists():
             return None
         with open(path) as f:
             summary = json.load(f)
-        # Get C window from per_area_results or fallback
-        win_C = None
-        peak_C = None
+        # Get C window from per_area_results (FEF only) or fallback
         per_area = summary.get("per_area_results") or {}
-        for area_name, area_data in per_area.items():
-            if area_data and "winC_selected" in area_data:
-                win_C = area_data["winC_selected"]
-                peak_C = area_data.get("winC_peak_time_ms")
-                break
+        win_C = get_fef_data_from_per_area(per_area, "winC_selected", sid)
+        peak_C = get_fef_data_from_per_area(per_area, "winC_peak_time_ms", sid)
         if win_C is None:
             win_C = summary.get("winC")
         return {"win_C": win_C, "peak_C": peak_C}
@@ -1085,13 +1110,13 @@ if window_data:
         for sid in sessions:
             area = get_fef_area(sid)
             
-            # Load sacc-aligned C info
+            # Load sacc-aligned C info (FEF only)
             sacc_path = PROJECT / "out" / "sacc" / sid / "axes" / comp['sacc_tag'] / "axes_summary.json"
-            sacc_info = load_axes_summary_for_C(sacc_path)
+            sacc_info = load_axes_summary_for_C(sacc_path, sid)
             
-            # Load stim-aligned C info
+            # Load stim-aligned C info (FEF only)
             stim_path = PROJECT / "out" / "stim" / sid / "axes" / comp['stim_tag'] / "axes_summary.json"
-            stim_info = load_axes_summary_for_C(stim_path)
+            stim_info = load_axes_summary_for_C(stim_path, sid)
             
             if sacc_info is None or stim_info is None:
                 continue
@@ -1202,7 +1227,7 @@ if window_data:
         ax.grid(axis='x', alpha=0.3)
         
         plt.tight_layout()
-        out_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / f"C_window_comparison_{comp['name']}.pdf"
+        out_path = PROJECT / "out" / "axis_alignment_all_cases_figs" / "window_comparison" / f"C_window_comparison_{comp['name']}.pdf"
         fig.savefig(out_path, dpi=150, bbox_inches='tight')
         fig.savefig(out_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
         plt.close(fig)
@@ -1244,8 +1269,19 @@ for case_tag, rel_path, prefix, case_label in CASE_CONFIGS:
         else:
             all_trials[case_tag] = results
 
-combined_figs_dir = PROJECT / "out" / "axis_alignment_all_cases_figs"
-combined_figs_dir.mkdir(parents=True, exist_ok=True)
+# Create organized subfolder structure for figures
+base_figs_dir = PROJECT / "out" / "axis_alignment_all_cases_figs"
+base_figs_dir.mkdir(parents=True, exist_ok=True)
+
+# Subfolders for different figure types
+alignment_summary_dir = base_figs_dir / "alignment_summary"
+alignment_summary_dir.mkdir(parents=True, exist_ok=True)
+
+window_comparison_dir = base_figs_dir / "window_comparison"
+window_comparison_dir.mkdir(parents=True, exist_ok=True)
+
+# For backward compatibility, also use combined_figs_dir for alignment summary
+combined_figs_dir = alignment_summary_dir
 
 # =============================================================================
 # FIGURE 1: Six Cases Histogram Summary (2x3 grid) - Using |cos(θ)|
@@ -1691,17 +1727,14 @@ def generate_window_comparison_figures_for_filter(out_root, filter_tag, figs_dir
         },
     ]
     
-    def load_axes_summary_for_C_filt(path):
+    def load_axes_summary_for_C_filt(path, sid=None):
+        """Load axes_summary.json and extract C window info (FEF only)."""
         if not path.exists():
             return None
         with open(path) as f:
             summary = json.load(f)
-        win_C = None
         per_area = summary.get("per_area_results") or {}
-        for area_name, area_data in per_area.items():
-            if area_data and "winC_selected" in area_data:
-                win_C = area_data["winC_selected"]
-                break
+        win_C = get_fef_data_from_per_area(per_area, "winC_selected", sid)
         if win_C is None:
             win_C = summary.get("winC")
         return {"win_C": win_C}
@@ -1727,10 +1760,10 @@ def generate_window_comparison_figures_for_filter(out_root, filter_tag, figs_dir
             area = get_fef_area(sid)
             
             sacc_path = out_root / "sacc" / sid / "axes" / comp['sacc_tag'] / "axes_summary.json"
-            sacc_info = load_axes_summary_for_C_filt(sacc_path)
+            sacc_info = load_axes_summary_for_C_filt(sacc_path, sid)
             
             stim_path = out_root / "stim" / sid / "axes" / comp['stim_tag'] / "axes_summary.json"
-            stim_info = load_axes_summary_for_C_filt(stim_path)
+            stim_info = load_axes_summary_for_C_filt(stim_path, sid)
             
             if sacc_info is None or stim_info is None:
                 continue
@@ -1868,21 +1901,15 @@ def generate_window_comparison_figures_for_filter(out_root, filter_tag, figs_dir
         if rt is None or len(rt) < 10:
             continue
         
-        stim_win_C = None
+        # Get stim-aligned C window (FEF only)
         per_area = stim_summary.get("per_area_results") or {}
-        for area_name, area_data in per_area.items():
-            if area_data and "winC_selected" in area_data:
-                stim_win_C = area_data["winC_selected"]
-                break
+        stim_win_C = get_fef_data_from_per_area(per_area, "winC_selected", sid)
         if stim_win_C is None:
             stim_win_C = stim_summary.get("winC")
         
-        sacc_win_S = None
+        # Get sacc-aligned S window (FEF only)
         per_area = sacc_summary.get("per_area_results") or {}
-        for area_name, area_data in per_area.items():
-            if area_data and "winS_selected" in area_data:
-                sacc_win_S = area_data["winS_selected"]
-                break
+        sacc_win_S = get_fef_data_from_per_area(per_area, "winS_selected", sid)
         if sacc_win_S is None:
             sacc_win_S = sacc_summary.get("winS")
         
@@ -2022,8 +2049,8 @@ def generate_window_comparison_figures_for_filter(out_root, filter_tag, figs_dir
     else:
         print(f"  [warn] No session window data for {filter_tag}")
 
-# Generate for both filter modes
-figs_dir_combined = PROJECT / "out" / "axis_alignment_all_cases_figs"
+# Generate for both filter modes - use window_comparison subfolder
+figs_dir_combined = PROJECT / "out" / "axis_alignment_all_cases_figs" / "window_comparison"
 figs_dir_combined.mkdir(parents=True, exist_ok=True)
 
 generate_window_comparison_figures_for_filter(
@@ -2034,7 +2061,12 @@ generate_window_comparison_figures_for_filter(
 )
 
 print("\n" + "="*80)
-print("DONE - ALL FIGURES GENERATED WITH FILTER SUFFIXES")
+print("DONE - ALL FIGURES GENERATED")
+print("="*80)
+print("\nFigures organized in:")
+print(f"  {base_figs_dir}/")
+print(f"    alignment_summary/  - cos_comparison, obs_vs_null, six_cases, summary_bar_chart")
+print(f"    window_comparison/  - window timing, C_window_comparison, peak_time, etc.")
 print("="*80)
 PYTHON_SCRIPT
 

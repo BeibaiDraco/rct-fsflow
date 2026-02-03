@@ -1,0 +1,232 @@
+==============================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+Session: 20231109 (task 19)
+==============================================================
+
+==============================================================
+CORRECT-ONLY TRIALS (out/)
+==============================================================
+
+------------------------------------------------------------
+Orientation: horizontal, Filter: correctonly
+Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231109
+Orientation: horizontal
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw
+======================================================================
+[auto] Using C window length from axes: 50ms
+
+[temporal] Session 20231109, orientation=horizontal, area=SFEF
+  [S axis] Window: [-20, 30] ms
+  [trials] 255 trials (orientation=horizontal, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.003, 0.094]
+  [result] Peak alignment: 0.094 at 130ms
+
+[temporal] Session 20231109, orientation=horizontal, area=SLIP
+  [S axis] Window: [-0, 50] ms
+  [trials] 255 trials (orientation=horizontal, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.007, 0.339]
+  [result] Peak alignment: 0.339 at 190ms
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_horizontal_correctonly/temporal_20231109_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_horizontal_correctonly/temporal_20231109_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+------------------------------------------------------------
+Orientation: pooled, Filter: correctonly
+Axes tag: axes_peakbin_saccCS-sacc-pooled-20mssw
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231109
+Orientation: pooled
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-pooled-20mssw
+======================================================================
+[auto] Using C window length from axes: 50ms
+
+[temporal] Session 20231109, orientation=pooled, area=SFEF
+  [S axis] Window: [-60, 40] ms
+  [trials] 651 trials (orientation=pooled, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.002, 0.198]
+  [result] Peak alignment: 0.198 at -130ms
+
+[temporal] Session 20231109, orientation=pooled, area=SLIP
+  [S axis] Window: [-0, 50] ms
+  [trials] 651 trials (orientation=pooled, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.008, 0.417]
+  [result] Peak alignment: 0.417 at -150ms
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_pooled_correctonly/temporal_20231109_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_pooled_correctonly/temporal_20231109_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+------------------------------------------------------------
+Orientation: vertical, Filter: correctonly
+Axes tag: axes_peakbin_saccCS-sacc-vertical-20mssw
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231109
+Orientation: vertical
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-vertical-20mssw
+======================================================================
+[auto] Using C window length from axes: 50ms
+
+[temporal] Session 20231109, orientation=vertical, area=SFEF
+  [S axis] Window: [-0, 50] ms
+  [trials] 396 trials (orientation=vertical, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.000, 0.366]
+  [result] Peak alignment: 0.366 at -50ms
+
+[temporal] Session 20231109, orientation=vertical, area=SLIP
+  [S axis] Window: [-0, 50] ms
+  [trials] 396 trials (orientation=vertical, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.005, 0.600]
+  [result] Peak alignment: 0.600 at -70ms
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_vertical_correctonly/temporal_20231109_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_vertical_correctonly/temporal_20231109_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+==============================================================
+ALL TRIALS (out_nofilter/)
+==============================================================
+
+------------------------------------------------------------
+Orientation: horizontal, Filter: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231109
+Orientation: horizontal
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+======================================================================
+[auto] Using C window length from axes: 50ms
+
+[temporal] Session 20231109, orientation=horizontal, area=SFEF
+  [S axis] Window: [-100, 50] ms
+  [trials] 275 trials (orientation=horizontal, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.001, 0.115]
+  [result] Peak alignment: 0.115 at 150ms
+
+[temporal] Session 20231109, orientation=horizontal, area=SLIP
+  [S axis] Window: [-0, 50] ms
+  [trials] 275 trials (orientation=horizontal, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.003, 0.345]
+  [result] Peak alignment: 0.345 at 190ms
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_horizontal_alltrials/temporal_20231109_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_horizontal_alltrials/temporal_20231109_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+------------------------------------------------------------
+Orientation: pooled, Filter: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231109
+Orientation: pooled
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter
+======================================================================
+[auto] Using C window length from axes: 50ms
+
+[temporal] Session 20231109, orientation=pooled, area=SFEF
+  [S axis] Window: [-80, -30] ms
+  [trials] 729 trials (orientation=pooled, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.004, 0.290]
+  [result] Peak alignment: 0.290 at -250ms
+
+[temporal] Session 20231109, orientation=pooled, area=SLIP
+  [S axis] Window: [-0, 50] ms
+  [trials] 729 trials (orientation=pooled, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.009, 0.331]
+  [result] Peak alignment: 0.331 at -150ms
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_pooled_alltrials/temporal_20231109_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_pooled_alltrials/temporal_20231109_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+------------------------------------------------------------
+Orientation: vertical, Filter: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-vertical-20mssw_nofilter
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231109
+Orientation: vertical
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-vertical-20mssw_nofilter
+======================================================================
+[auto] Using C window length from axes: 50ms
+
+[temporal] Session 20231109, orientation=vertical, area=SFEF
+  [S axis] Window: [-0, 50] ms
+  [trials] 454 trials (orientation=vertical, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.013, 0.298]
+  [result] Peak alignment: 0.298 at -50ms
+
+[temporal] Session 20231109, orientation=vertical, area=SLIP
+  [S axis] Window: [-0, 50] ms
+  [trials] 454 trials (orientation=vertical, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.022, 0.583]
+  [result] Peak alignment: 0.583 at -70ms
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_vertical_alltrials/temporal_20231109_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_vertical_alltrials/temporal_20231109_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+==============================================================
+[done] Temporal alignment analysis complete for SID=20231109
+==============================================================

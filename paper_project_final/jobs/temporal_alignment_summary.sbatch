@@ -62,8 +62,25 @@ ORIENTATION_COLORS = {
     "vertical": "#9b59b6",    # purple
 }
 
-def load_results(out_root: Path, orientation: str, filter_tag: str) -> list:
-    """Load all temporal alignment results for an orientation."""
+def is_fef_area(area: str) -> bool:
+    """Check if area is FEF (not LIP or other)."""
+    return area in ["MFEF", "SFEF", "FEF"]
+
+
+def load_results(out_root: Path, orientation: str, filter_tag: str, fef_only: bool = True) -> list:
+    """Load all temporal alignment results for an orientation.
+    
+    Parameters:
+    -----------
+    out_root : Path
+        Root directory for results
+    orientation : str
+        Trial orientation (horizontal, pooled, vertical)
+    filter_tag : str
+        Filter tag (correctonly, alltrials)
+    fef_only : bool
+        If True, only include FEF results (exclude LIP, SC, etc.)
+    """
     results_dir = out_root / "temporal_alignment" / f"temporal_alignment_{orientation}_{filter_tag}"
     results = []
     
@@ -75,6 +92,11 @@ def load_results(out_root: Path, orientation: str, filter_tag: str) -> list:
         try:
             with open(json_file) as f:
                 data = json.load(f)
+            
+            # Filter to FEF only if requested
+            if fef_only and not is_fef_area(data.get("area", "")):
+                continue
+                
             results.append(data)
         except Exception as e:
             print(f"  [warn] Failed to load {json_file}: {e}")
@@ -100,9 +122,12 @@ def plot_temporal_alignment_curves(results: list, out_path: Path, title: str,
     for r in results:
         session_results[r["sid"]].append(r)
     
-    # Plot each session
+    # Plot each session and collect null values
     all_alignments = []
     all_times = []
+    null_means = []
+    null_stds = []
+    D_effs = []
     
     for i, (sid, sess_results) in enumerate(sorted(session_results.items())):
         color = COLORS_BY_SESSION[i % len(COLORS_BY_SESSION)]
@@ -112,10 +137,18 @@ def plot_temporal_alignment_curves(results: list, out_path: Path, title: str,
             alignments = np.array(r["alignments"])
             
             ax.plot(times, alignments, color=color, alpha=0.7, linewidth=1.5,
-                    label=f"{sid} ({r['area']})" if r == sess_results[0] else None)
+                    label=f"{sid}" if r == sess_results[0] else None)
             
             all_alignments.extend(alignments)
             all_times.extend(times)
+            
+            # Collect null statistics if available
+            if "null_mean" in r and r["null_mean"] is not None:
+                null_means.append(r["null_mean"])
+            if "null_std" in r and r["null_std"] is not None:
+                null_stds.append(r["null_std"])
+            if "D_eff" in r and r["D_eff"] is not None:
+                D_effs.append(r["D_eff"])
     
     # Add mean curve
     if all_times:
@@ -134,12 +167,23 @@ def plot_temporal_alignment_curves(results: list, out_path: Path, title: str,
             ax.plot(mean_times, mean_alignments, 'k-', linewidth=3, alpha=0.9,
                     label='Mean', zorder=100)
     
+    # Add null reference line (mean across sessions)
+    if null_means:
+        null_mean_avg = np.mean(null_means)
+        null_std_avg = np.mean(null_stds) if null_stds else 0
+        D_eff_avg = np.mean(D_effs) if D_effs else 0
+        
+        # Plot null mean as horizontal line
+        ax.axhline(null_mean_avg, color='red', linestyle='-', linewidth=2, alpha=0.8,
+                   label=f'Null mean ({null_mean_avg:.3f})')
+        # Plot null ± std as shaded band
+        if null_std_avg > 0:
+            ax.axhspan(null_mean_avg - null_std_avg, null_mean_avg + null_std_avg,
+                       color='red', alpha=0.15, label=f'Null ± std')
+    
     # Reference lines
     ax.axvline(0, color='purple', linestyle='--', linewidth=2, alpha=0.7,
                label='Saccade onset')
-    ax.axhline(0.1, color='gray', linestyle=':', alpha=0.5)
-    ax.axhline(0.2, color='gray', linestyle=':', alpha=0.5)
-    ax.axhline(0.3, color='gray', linestyle=':', alpha=0.5)
     
     # Labels
     ax.set_xlabel('Time from Saccade Onset (ms)', fontsize=14)
@@ -159,7 +203,10 @@ def plot_temporal_alignment_curves(results: list, out_path: Path, title: str,
     if all_alignments:
         stats_text = f"N sessions: {n_sessions}\n"
         stats_text += f"Mean |cos(θ)|: {np.mean(all_alignments):.3f}\n"
-        stats_text += f"Max |cos(θ)|: {np.max(all_alignments):.3f}"
+        stats_text += f"Max |cos(θ)|: {np.max(all_alignments):.3f}\n"
+        if null_means:
+            stats_text += f"Null mean: {np.mean(null_means):.3f}\n"
+            stats_text += f"D_eff: {np.mean(D_effs):.1f}" if D_effs else ""
         ax.text(0.02, 0.98, stats_text, transform=ax.transAxes, fontsize=10,
                 va='top', ha='left', bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
     
@@ -197,6 +244,8 @@ def plot_comparison_figure(all_results: dict, out_path: Path, filter_tag: str):
         
         all_alignments = []
         all_times = []
+        null_means = []
+        D_effs = []
         
         for i, (sid, sess_results) in enumerate(sorted(session_results.items())):
             color = COLORS_BY_SESSION[i % len(COLORS_BY_SESSION)]
@@ -207,6 +256,18 @@ def plot_comparison_figure(all_results: dict, out_path: Path, filter_tag: str):
                 ax.plot(times, alignments, color=color, alpha=0.5, linewidth=1)
                 all_alignments.extend(alignments)
                 all_times.extend(times)
+                
+                # Collect null statistics
+                if "null_mean" in r and r["null_mean"] is not None:
+                    null_means.append(r["null_mean"])
+                if "D_eff" in r and r["D_eff"] is not None:
+                    D_effs.append(r["D_eff"])
+        
+        # Plot null line
+        if null_means:
+            null_mean_avg = np.mean(null_means)
+            ax.axhline(null_mean_avg, color='red', linestyle='-', linewidth=2, alpha=0.7,
+                       label=f'Null ({null_mean_avg:.3f})')
         
         # Mean curve
         if all_times:
@@ -235,11 +296,15 @@ def plot_comparison_figure(all_results: dict, out_path: Path, filter_tag: str):
         
         n_sess = len(session_results)
         mean_align = np.mean(all_alignments) if all_alignments else 0
-        ax.text(0.02, 0.98, f"N={n_sess}, mean={mean_align:.3f}",
+        null_avg = np.mean(null_means) if null_means else 0
+        stats_txt = f"N={n_sess}, mean={mean_align:.3f}"
+        if null_means:
+            stats_txt += f"\nnull={null_avg:.3f}"
+        ax.text(0.02, 0.98, stats_txt,
                 transform=ax.transAxes, fontsize=9, va='top')
     
     filter_label = "Correct Trials Only" if filter_tag == "correctonly" else "All Trials"
-    plt.suptitle(f"Temporal C-S Alignment Across Trial Types ({filter_label})", 
+    plt.suptitle(f"Temporal C-S Alignment (FEF) Across Trial Types ({filter_label})", 
                  fontsize=14, fontweight='bold')
     plt.tight_layout()
     
@@ -257,7 +322,8 @@ print("\n" + "=" * 70)
 print("GENERATING TEMPORAL ALIGNMENT FIGURES")
 print("=" * 70)
 
-figs_dir = PROJECT / "out" / "axis_alignment_all_cases_figs"
+# Use temporal subfolder for temporal alignment figures
+figs_dir = PROJECT / "out" / "axis_alignment_all_cases_figs" / "temporal"
 figs_dir.mkdir(parents=True, exist_ok=True)
 
 for filter_tag, out_root in [("correctonly", PROJECT / "out"), 
@@ -273,9 +339,9 @@ for filter_tag, out_root in [("correctonly", PROJECT / "out"),
         if results:
             print(f"  {orient}: {len(results)} results from {len(set(r['sid'] for r in results))} sessions")
             
-            # Individual figure for this orientation
+            # Individual figure for this orientation (FEF only)
             out_path = figs_dir / f"temporal_alignment_{orient}_{filter_tag}.pdf"
-            title = f"Temporal C-S Alignment: {orient.capitalize()} Trials ({filter_tag})"
+            title = f"Temporal C-S Alignment (FEF): {orient.capitalize()} Trials ({filter_tag})"
             plot_temporal_alignment_curves(results, out_path, title, orient, filter_tag)
         else:
             print(f"  {orient}: No results")
@@ -287,6 +353,7 @@ for filter_tag, out_root in [("correctonly", PROJECT / "out"),
 
 print("\n" + "=" * 70)
 print("[done] Temporal alignment summary complete")
+print(f"Figures saved to: {figs_dir}")
 print("=" * 70)
 PYTHON_SCRIPT
 

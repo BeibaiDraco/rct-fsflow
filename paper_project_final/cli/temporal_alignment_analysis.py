@@ -139,6 +139,93 @@ def compute_alignment(v1: np.ndarray, v2: np.ndarray) -> float:
     return abs(float(np.dot(v1, v2)))
 
 
+def compute_null_alignment(Z: np.ndarray, keep: np.ndarray, sS: np.ndarray,
+                           n_perms: int = 500, seed: int = 42) -> Dict:
+    """
+    Compute null distribution for C-S alignment using covariance-constrained random axes.
+    
+    The null represents: "What alignment would we expect between a random direction
+    in neural space and the fixed S axis?"
+    
+    Method:
+    1. Compute covariance matrix of neural activity (trial-averaged)
+    2. Generate random axes constrained by this covariance: s_rand = cov_sqrt @ z / ||...||
+    3. Compute alignment of each random axis with S axis
+    
+    Parameters:
+    -----------
+    Z : np.ndarray
+        Neural data (N, T, U) - trials x time x units
+    keep : np.ndarray
+        Boolean mask for valid trials
+    sS : np.ndarray
+        Fixed S axis (unit vector)
+    n_perms : int
+        Number of random axes to generate
+    seed : int
+        Random seed
+    
+    Returns:
+    --------
+    dict : null_mean, null_std, null_alignments, D_eff, expected_cos
+    """
+    # Get trial-averaged activity
+    # Z has shape (N, T, U) = (trials, time, units)
+    Z_keep = Z[keep]  # (n_trials, T, U)
+    n_trials, n_time, n_units = Z_keep.shape
+    
+    # Average over time for each trial: (n_trials, U)
+    Z_mean = np.mean(Z_keep, axis=1)  # (n_trials, U)
+    
+    # Compute covariance
+    Z_centered = Z_mean - np.mean(Z_mean, axis=0, keepdims=True)
+    cov = (Z_centered.T @ Z_centered) / (n_trials - 1)
+    
+    # SVD of covariance
+    U_cov, s_cov, _ = np.linalg.svd(cov, full_matrices=False)
+    
+    # Keep significant dimensions (eigenvalues > 1e-10)
+    n_keep = np.sum(s_cov > 1e-10 * s_cov[0])
+    n_keep = max(2, min(n_keep, n_units - 1))
+    
+    # Covariance factor: L = U @ diag(s), so LL.T ∝ Σ
+    cov_sqrt = U_cov[:, :n_keep] * s_cov[:n_keep]
+    
+    # Effective dimensionality
+    D_eff = (np.sum(s_cov**2)**2) / np.sum(s_cov**4) if np.sum(s_cov**4) > 0 else n_keep
+    
+    # Expected alignment under random null: E[|cos(θ)|] ≈ sqrt(2/(π * D_eff))
+    expected_cos = np.sqrt(2.0 / (np.pi * D_eff))
+    
+    # Generate null distribution
+    rng = np.random.default_rng(seed)
+    null_alignments = np.empty(n_perms, dtype=float)
+    
+    for i in range(n_perms):
+        # Random direction in neural space, constrained by covariance
+        z = rng.standard_normal(n_keep)
+        s_rand = cov_sqrt @ z
+        norm = np.linalg.norm(s_rand)
+        if norm > 1e-10:
+            s_rand = s_rand / norm
+            null_alignments[i] = abs(float(np.dot(s_rand, sS)))
+        else:
+            null_alignments[i] = np.nan
+    
+    # Remove NaN values
+    valid_null = null_alignments[np.isfinite(null_alignments)]
+    
+    return {
+        "null_mean": float(np.mean(valid_null)) if len(valid_null) > 0 else np.nan,
+        "null_std": float(np.std(valid_null)) if len(valid_null) > 0 else np.nan,
+        "null_median": float(np.median(valid_null)) if len(valid_null) > 0 else np.nan,
+        "null_alignments": valid_null.tolist(),
+        "D_eff": float(D_eff),
+        "expected_cos": float(expected_cos),
+        "manifold_dim": int(n_keep),
+    }
+
+
 def run_temporal_alignment_analysis(
     sid: str,
     out_root: str,
@@ -283,6 +370,24 @@ def run_temporal_alignment_analysis(
     print(f"  [result] Alignment range: [{alignments.min():.3f}, {alignments.max():.3f}]")
     print(f"  [result] Peak alignment: {alignments.max():.3f} at {valid_centers[np.argmax(alignments)]:.0f}ms")
     
+    # Compute null distribution
+    # Need to load raw cache (without sliding window) to match sS dimensions
+    print(f"  [null] Computing covariance-constrained null...")
+    try:
+        raw_cache = load_cache(out_root, "sacc", sid, area, 0, 0)  # No sliding window
+        Z_raw = raw_cache["Z"]
+        # Build trial mask for raw cache (same trials)
+        keep_raw = trial_mask(raw_cache, orientation, pt_min_ms)
+        null_stats = compute_null_alignment(Z_raw, keep_raw, sS, n_perms=500, seed=42)
+    except Exception as e:
+        print(f"  [null] Failed to compute null: {e}")
+        null_stats = {
+            "null_mean": np.nan, "null_std": np.nan, "null_median": np.nan,
+            "D_eff": np.nan, "expected_cos": np.nan, "manifold_dim": 0
+        }
+    print(f"  [null] D_eff={null_stats['D_eff']:.1f}, expected |cos|={null_stats['expected_cos']:.3f}")
+    print(f"  [null] null_mean={null_stats['null_mean']:.3f} ± {null_stats['null_std']:.3f}")
+    
     # Get reaction time info
     rt = cache["lab_PT_ms"][keep]
     rt_valid = rt[np.isfinite(rt)]
@@ -311,6 +416,14 @@ def run_temporal_alignment_analysis(
         "n_trials": int(n_trials),
         "rt_mean_ms": rt_mean,
         "rt_std_ms": rt_std,
+        
+        # Null distribution
+        "null_mean": null_stats["null_mean"],
+        "null_std": null_stats["null_std"],
+        "null_median": null_stats["null_median"],
+        "D_eff": null_stats["D_eff"],
+        "expected_cos": null_stats["expected_cos"],
+        "manifold_dim": null_stats["manifold_dim"],
         
         # Settings
         "window_length_ms": window_length_ms,
