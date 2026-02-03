@@ -1,0 +1,34 @@
+==============================================================
+WINDOW COMPARISON VISUALIZATION
+==============================================================
+Start: Mon Feb  2 20:57:30 CST 2026
+
+[info] Found 23 sessions
+[info] Stim tag: axes_peakbin_stimCR-stim-vertical-20mssw
+[info] Sacc tag: axes_peakbin_saccCS-sacc-horizontal-20mssw
+
+[info] Loaded data for 23 sessions
+
+[generating figures...]
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_figs/window_comparison_all_sessions.pdf
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_figs/window_absolute_timeline_detailed.pdf
+
+============================================================
+SUMMARY STATISTICS
+============================================================
+Window overlap across sessions:
+  Mean:   45.4%
+  Median: 52.9%
+  Range:  0.7% - 79.2%
+  Sessions with >50% overlap: 13/23
+  Sessions with <10% overlap: 2/23
+
+Reaction time (median per session):
+  Mean:   250.0 ms
+  Range:  200.9 - 303.1 ms
+
+[done] Figures saved to: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/axis_alignment_all_cases_figs
+
+==============================================================
+End: Mon Feb  2 20:57:32 CST 2026
+[done] Window comparison visualization complete
