@@ -1722,7 +1722,7 @@ def generate_window_comparison_figures_for_filter(out_root, filter_tag, figs_dir
         {
             'name': 'vertical',
             'sacc_tag': f'axes_peakbin_saccCS-sacc-vertical-20mssw{nofilter_suffix}',
-            'stim_tag': f'axes_peakbin_stimCR-stim-vertical-20mssw_mixedtrain{nofilter_suffix}' if nofilter_suffix else 'axes_peakbin_stimCR-stim-vertical-20mssw_mixedtrain',
+            'stim_tag': f'axes_peakbin_stimCR-stim-vertical-20mssw{"_nofilter" if nofilter_suffix else "_mixedtrain"}',
             'title': f'Case iii vs vi: Vertical ({filter_tag})\nSacc-C (blue) vs Stim-C (red)',
         },
     ]
@@ -1806,6 +1806,8 @@ def generate_window_comparison_figures_for_filter(out_root, filter_tag, figs_dir
                 "sacc_win_abs_q10": sacc_win_abs_q10,
                 "sacc_win_abs_q90": sacc_win_abs_q90,
                 "rt_median": rt_median,
+                "rt_q10": rt_q10,
+                "rt_q90": rt_q90,
                 "frac_overlap": frac_overlap,
             })
         
@@ -1863,18 +1865,608 @@ def generate_window_comparison_figures_for_filter(out_root, filter_tag, figs_dir
         ax.grid(axis='x', alpha=0.3)
         
         plt.tight_layout()
-        out_path = figs_dir / f"C_window_comparison_{comp['name']}_{filter_tag}.pdf"
+        out_path = figs_dir / f"C_window_comparison_{comp['name']}_stimaligned_{filter_tag}.pdf"
         fig.savefig(out_path, dpi=150, bbox_inches='tight')
         fig.savefig(out_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
         plt.close(fig)
         print(f"    [saved] {out_path}")
+        
+        # ==========================================================================
+        # SACC-ALIGNED VERSION of C window comparison
+        # Convert Stim-C to sacc timeline: sacc_time = stim_time - RT
+        # ==========================================================================
+        print(f"  Generating {comp['name']} C comparison SACC-ALIGNED ({filter_tag})...")
+        
+        fig2, ax2 = plt.subplots(figsize=(12, max(8, n * 0.4)))
+        y_positions2 = np.arange(n) * 2
+        
+        for i, r in enumerate(session_data):
+            y = y_positions2[i]
+            
+            # Sacc-C window (blue) - already sacc-aligned, plot as is
+            sacc_start, sacc_end = r["sacc_win_ms"]
+            rect_sacc = plt.Rectangle((sacc_start, y + 0.2), sacc_end - sacc_start, 0.6,
+                                       facecolor='blue', edgecolor='darkblue', alpha=0.7, linewidth=1)
+            ax2.add_patch(rect_sacc)
+            
+            # Stim-C window (red) - convert to sacc timeline: sacc_time = stim_time - RT
+            stim_start, stim_end = r["stim_win_ms"]
+            rt_median = r["rt_median"]
+            
+            # Convert stim-C to sacc timeline using median RT
+            stim_sacc_median = [stim_start - rt_median, stim_end - rt_median]
+            rect_stim = plt.Rectangle((stim_sacc_median[0], y - 0.8), stim_sacc_median[1] - stim_sacc_median[0], 0.6,
+                                       facecolor='red', edgecolor='darkred', alpha=0.7, linewidth=1)
+            ax2.add_patch(rect_stim)
+            
+            # Stim-C RT variability range (convert using q10 and q90 RT)
+            rt_q10 = r.get("rt_q10", rt_median - 50)
+            rt_q90 = r.get("rt_q90", rt_median + 50)
+            # Note: higher RT means earlier sacc time for stim window
+            stim_sacc_q10 = [stim_start - rt_q90, stim_end - rt_q90]  # Later RT = earlier in sacc time
+            stim_sacc_q90 = [stim_start - rt_q10, stim_end - rt_q10]  # Earlier RT = later in sacc time
+            rect_bg = plt.Rectangle((stim_sacc_q10[0], y - 0.8), stim_sacc_q90[1] - stim_sacc_q10[0], 0.6,
+                                     facecolor='red', alpha=0.15, linewidth=0)
+            ax2.add_patch(rect_bg)
+            
+            # Session label
+            ax2.text(-295, y, f"{r['sid']} RT={rt_median:.0f}", fontsize=7, ha='left', va='center')
+        
+        ax2.axvline(0, color='purple', linewidth=2, label='Saccade onset', zorder=0)
+        
+        import matplotlib.patches as mpatches
+        sacc_patch = mpatches.Patch(color='blue', alpha=0.7, label='Sacc-aligned C')
+        stim_patch = mpatches.Patch(color='red', alpha=0.7, label='Stim-aligned C (→sacc, median RT)')
+        stim_range_patch = mpatches.Patch(color='red', alpha=0.15, label='Stim-C RT range (10-90%ile)')
+        ax2.legend(handles=[sacc_patch, stim_patch, stim_range_patch], loc='upper right', fontsize=9)
+        
+        ax2.set_xlim(-300, 200)  # Typical range for sacc-aligned windows
+        ax2.set_ylim(-1.5, n * 2)
+        ax2.set_yticks([])
+        ax2.set_xlabel("Time from Saccade Onset (ms)")
+        ax2.set_title(comp['title'].replace('Sacc-C (blue) vs Stim-C (red)', 'Sacc-C (blue) vs Stim-C→sacc (red)') + "\n(Sacc-aligned timeline)")
+        ax2.grid(axis='x', alpha=0.3)
+        
+        plt.tight_layout()
+        out_path2 = figs_dir / f"C_window_comparison_{comp['name']}_saccaligned_{filter_tag}.pdf"
+        fig2.savefig(out_path2, dpi=150, bbox_inches='tight')
+        fig2.savefig(out_path2.with_suffix('.png'), dpi=150, bbox_inches='tight')
+        plt.close(fig2)
+        print(f"    [saved] {out_path2}")
     
-    # Generate window_absolute_timeline_detailed with filter suffix
-    stim_tag = f"axes_peakbin_stimCR-stim-vertical-20mssw{nofilter_suffix if nofilter_suffix else '_mixedtrain'}"
-    if nofilter_suffix:
-        stim_tag = "axes_peakbin_stimCR-stim-vertical-20mssw_mixedtrain_nofilter"
-    else:
-        stim_tag = "axes_peakbin_stimCR-stim-vertical-20mssw_mixedtrain"
+    # ==========================================================================
+    # C vs S WINDOW COMPARISONS FOR ALL SIX CASES
+    # ==========================================================================
+    print(f"\n  Generating C vs S window comparison figures for all cases ({filter_tag})...")
+    
+    def load_axes_summary_CS(path, sid=None):
+        """Load axes_summary.json and extract both C and S window info (FEF only)."""
+        if not path.exists():
+            return None
+        with open(path) as f:
+            summary = json.load(f)
+        per_area = summary.get("per_area_results") or {}
+        win_C = get_fef_data_from_per_area(per_area, "winC_selected", sid)
+        win_S = get_fef_data_from_per_area(per_area, "winS_selected", sid)
+        if win_C is None:
+            win_C = summary.get("winC")
+        if win_S is None:
+            win_S = summary.get("winS")
+        return {"win_C": win_C, "win_S": win_S}
+    
+    # Define all six cases for C vs S window comparison
+    CS_WINDOW_CASES = [
+        # Same-alignment cases (both C and S on sacc-aligned)
+        {
+            'case': 'case_i',
+            'name': 'horizontal',
+            'title': f'Case i: Sacc-C vs Sacc-S (Horizontal)\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-horizontal-20mssw{nofilter_suffix}',
+            'stim_tag': None,  # No stim tag for same-alignment
+            'same_alignment': True,
+        },
+        {
+            'case': 'case_ii',
+            'name': 'pooled',
+            'title': f'Case ii: Sacc-C vs Sacc-S (Pooled)\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-pooled-20mssw{nofilter_suffix}',
+            'stim_tag': None,
+            'same_alignment': True,
+        },
+        {
+            'case': 'case_iii',
+            'name': 'vertical',
+            'title': f'Case iii: Sacc-C vs Sacc-S (Vertical)\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-vertical-20mssw{nofilter_suffix}',
+            'stim_tag': None,
+            'same_alignment': True,
+        },
+        # Cross-alignment cases (C on stim, S on sacc)
+        {
+            'case': 'case_iv',
+            'name': 'horizontal',
+            'title': f'Case iv: Stim-C vs Sacc-S (Horizontal)\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-horizontal-20mssw{nofilter_suffix}',
+            'stim_tag': f'axes_peakbin_stimC-stim-horizontal-20mssw{nofilter_suffix}',
+            'same_alignment': False,
+        },
+        {
+            'case': 'case_v',
+            'name': 'pooled',
+            'title': f'Case v: Stim-C vs Sacc-S (Pooled)\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-pooled-20mssw{nofilter_suffix}',
+            'stim_tag': f'axes_peakbin_stimC-stim-pooled-20mssw{nofilter_suffix}',
+            'same_alignment': False,
+        },
+        {
+            'case': 'case_vi',
+            'name': 'vertical',
+            'title': f'Case vi: Stim-C(vert) vs Sacc-S(horiz)\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-horizontal-20mssw{nofilter_suffix}',
+            'stim_tag': f'axes_peakbin_stimCR-stim-vertical-20mssw{"_nofilter" if nofilter_suffix else "_mixedtrain"}',
+            'same_alignment': False,
+        },
+    ]
+    
+    for case_info in CS_WINDOW_CASES:
+        print(f"    Generating CS_window_{case_info['case']}_{case_info['name']}...")
+        
+        session_data = []
+        for sid in sessions:
+            area = get_fef_area(sid)
+            
+            # Load sacc-aligned axes summary (always needed for S axis)
+            sacc_path = out_root / "sacc" / sid / "axes" / case_info['sacc_tag'] / "axes_summary.json"
+            sacc_info = load_axes_summary_CS(sacc_path, sid)
+            
+            if sacc_info is None or sacc_info["win_S"] is None:
+                continue
+            
+            # Get C window based on alignment type
+            if case_info['same_alignment']:
+                # Same alignment: C comes from sacc-aligned axes
+                win_C = sacc_info["win_C"]
+                if win_C is None:
+                    continue
+                win_C_ms = [win_C[0] * 1000, win_C[1] * 1000]
+                c_is_stim_aligned = False
+            else:
+                # Cross alignment: C comes from stim-aligned axes
+                stim_path = out_root / "stim" / sid / "axes" / case_info['stim_tag'] / "axes_summary.json"
+                stim_info = load_axes_summary_CS(stim_path, sid)
+                if stim_info is None or stim_info["win_C"] is None:
+                    continue
+                win_C = stim_info["win_C"]
+                win_C_ms = [win_C[0] * 1000, win_C[1] * 1000]
+                c_is_stim_aligned = True
+            
+            # S window is always sacc-aligned
+            win_S = sacc_info["win_S"]
+            win_S_ms = [win_S[0] * 1000, win_S[1] * 1000]
+            
+            # Load RT for conversion to absolute time
+            rt = None
+            for alt_area in [area, "MFEF", "MLIP", "SFEF", "SLIP"]:
+                cache_path = out_root / "sacc" / sid / "caches" / f"area_{alt_area}.npz"
+                rt = load_rt_filt(cache_path)
+                if rt is not None and len(rt) >= 10:
+                    break
+            
+            if rt is None or len(rt) < 10:
+                continue
+            
+            rt_median = np.median(rt)
+            rt_q10, rt_q90 = np.percentile(rt, [10, 90])
+            
+            session_data.append({
+                "sid": sid,
+                "win_C_ms": win_C_ms,
+                "win_S_ms": win_S_ms,
+                "c_is_stim_aligned": c_is_stim_aligned,
+                "rt_median": rt_median,
+                "rt_q10": rt_q10,
+                "rt_q90": rt_q90,
+            })
+        
+        if not session_data:
+            print(f"      [skip] No data for {case_info['case']}")
+            continue
+        
+        session_data.sort(key=lambda x: x["rt_median"])
+        n = len(session_data)
+        
+        # Create figure
+        fig, ax = plt.subplots(figsize=(12, max(8, n * 0.4)))
+        y_positions = np.arange(n) * 2
+        
+        for i, r in enumerate(session_data):
+            y = y_positions[i]
+            
+            if case_info['same_alignment']:
+                # Both windows are sacc-aligned: plot relative to saccade onset
+                # C window (blue)
+                c_start, c_end = r["win_C_ms"]
+                rect_c = plt.Rectangle((c_start, y + 0.2), c_end - c_start, 0.6,
+                                        facecolor='blue', alpha=0.7, edgecolor='darkblue', linewidth=1)
+                ax.add_patch(rect_c)
+                
+                # S window (green)
+                s_start, s_end = r["win_S_ms"]
+                rect_s = plt.Rectangle((s_start, y + 0.8), s_end - s_start, 0.6,
+                                        facecolor='green', alpha=0.7, edgecolor='darkgreen', linewidth=1)
+                ax.add_patch(rect_s)
+                
+                # Session label with RT on left side (inside figure)
+                ax.text(-375, y + 0.7, f"{r['sid']} RT={r['rt_median']:.0f}", fontsize=7, va='center', ha='left')
+                
+            else:
+                # Cross alignment: C is stim-aligned, S is sacc-aligned
+                # Convert to absolute time (from stim onset)
+                
+                # C window (red) - already in stim-aligned time
+                c_start, c_end = r["win_C_ms"]
+                rect_c = plt.Rectangle((c_start, y + 0.2), c_end - c_start, 0.6,
+                                        facecolor='red', alpha=0.7, edgecolor='darkred', linewidth=1)
+                ax.add_patch(rect_c)
+                
+                # S window (blue) - convert sacc-aligned to stim-aligned using median RT
+                s_start, s_end = r["win_S_ms"]
+                s_abs_median = [r["rt_median"] + s_start, r["rt_median"] + s_end]
+                rect_s_med = plt.Rectangle((s_abs_median[0], y + 0.8), s_abs_median[1] - s_abs_median[0], 0.6,
+                                           facecolor='blue', alpha=0.7, edgecolor='darkblue', linewidth=1)
+                ax.add_patch(rect_s_med)
+                
+                # RT variability range for S window
+                s_abs_q10 = [r["rt_q10"] + s_start, r["rt_q10"] + s_end]
+                s_abs_q90 = [r["rt_q90"] + s_start, r["rt_q90"] + s_end]
+                ax.plot([s_abs_q10[0], s_abs_q90[1]], [y + 1.1, y + 1.1], 
+                        color='blue', alpha=0.3, linewidth=8, solid_capstyle='butt')
+                
+                # Session label with RT on left side (inside figure)
+                ax.text(-75, y + 0.7, f"{r['sid']} RT={r['rt_median']:.0f}", fontsize=7, va='center', ha='left')
+        
+        # Styling
+        if case_info['same_alignment']:
+            ax.axvline(0, color='purple', linestyle='--', linewidth=2, alpha=0.7, label='Saccade onset')
+            ax.set_xlim(-380, 150)  # Extra space on left for session labels
+            ax.set_xlabel("Time from Saccade Onset (ms)")
+            # Legend
+            from matplotlib.patches import Patch
+            legend_elements = [
+                Patch(facecolor='blue', alpha=0.7, edgecolor='darkblue', label='C window (sacc-aligned)'),
+                Patch(facecolor='green', alpha=0.7, edgecolor='darkgreen', label='S window (sacc-aligned)'),
+            ]
+        else:
+            ax.axvline(0, color='green', linestyle='--', linewidth=2, alpha=0.7, label='Stim onset')
+            ax.set_xlim(-80, 500)  # Extended to 500ms, extra space on left for labels
+            ax.set_xlabel("Time from Stimulus Onset (ms)")
+            # Legend
+            from matplotlib.patches import Patch
+            legend_elements = [
+                Patch(facecolor='red', alpha=0.7, edgecolor='darkred', label='C window (stim-aligned)'),
+                Patch(facecolor='blue', alpha=0.7, edgecolor='darkblue', label='S window (sacc→stim, median RT)'),
+            ]
+        
+        ax.legend(handles=legend_elements, loc='lower right', fontsize=9)
+        ax.set_ylim(-1, n * 2)
+        ax.set_yticks([])
+        ax.set_title(case_info['title'])
+        ax.grid(axis='x', alpha=0.3)
+        
+        plt.tight_layout()
+        out_path = figs_dir / f"CS_window_{case_info['case']}_{case_info['name']}_{filter_tag}.pdf"
+        fig.savefig(out_path, dpi=150, bbox_inches='tight')
+        fig.savefig(out_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
+        plt.close(fig)
+        print(f"      [saved] {out_path}")
+    
+    # ==========================================================================
+    # ADDITIONAL: Cases i, ii, iii in STIMULUS-ALIGNED time
+    # Both C and S are sacc-aligned, convert both to stim timeline using RT
+    # ==========================================================================
+    print(f"\n  Generating stimulus-aligned versions of Cases i, ii, iii ({filter_tag})...")
+    
+    CS_STIM_ALIGNED_CASES = [
+        {
+            'case': 'case_i',
+            'name': 'horizontal',
+            'title': f'Case i: Sacc-C & Sacc-S → Stim Timeline (Horizontal)\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-horizontal-20mssw{nofilter_suffix}',
+        },
+        {
+            'case': 'case_ii',
+            'name': 'pooled',
+            'title': f'Case ii: Sacc-C & Sacc-S → Stim Timeline (Pooled)\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-pooled-20mssw{nofilter_suffix}',
+        },
+        {
+            'case': 'case_iii',
+            'name': 'vertical',
+            'title': f'Case iii: Sacc-C & Sacc-S → Stim Timeline (Vertical)\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-vertical-20mssw{nofilter_suffix}',
+        },
+    ]
+    
+    for case_info in CS_STIM_ALIGNED_CASES:
+        print(f"    Generating CS_window_{case_info['case']}_{case_info['name']}_stimaligned...")
+        
+        session_data = []
+        for sid in sessions:
+            area = get_fef_area(sid)
+            
+            # Load sacc-aligned axes summary
+            sacc_path = out_root / "sacc" / sid / "axes" / case_info['sacc_tag'] / "axes_summary.json"
+            sacc_info = load_axes_summary_CS(sacc_path, sid)
+            
+            if sacc_info is None or sacc_info["win_C"] is None or sacc_info["win_S"] is None:
+                continue
+            
+            win_C = sacc_info["win_C"]
+            win_S = sacc_info["win_S"]
+            win_C_ms = [win_C[0] * 1000, win_C[1] * 1000]
+            win_S_ms = [win_S[0] * 1000, win_S[1] * 1000]
+            
+            # Load RT
+            rt = None
+            for alt_area in [area, "MFEF", "MLIP", "SFEF", "SLIP"]:
+                cache_path = out_root / "sacc" / sid / "caches" / f"area_{alt_area}.npz"
+                rt = load_rt_filt(cache_path)
+                if rt is not None and len(rt) >= 10:
+                    break
+            
+            if rt is None or len(rt) < 10:
+                continue
+            
+            rt_median = np.median(rt)
+            rt_q10, rt_q90 = np.percentile(rt, [10, 90])
+            
+            # Convert both windows to stim-aligned time
+            # stim_time = sacc_time + RT
+            win_C_stim_median = [rt_median + win_C_ms[0], rt_median + win_C_ms[1]]
+            win_C_stim_q10 = [rt_q10 + win_C_ms[0], rt_q10 + win_C_ms[1]]
+            win_C_stim_q90 = [rt_q90 + win_C_ms[0], rt_q90 + win_C_ms[1]]
+            
+            win_S_stim_median = [rt_median + win_S_ms[0], rt_median + win_S_ms[1]]
+            win_S_stim_q10 = [rt_q10 + win_S_ms[0], rt_q10 + win_S_ms[1]]
+            win_S_stim_q90 = [rt_q90 + win_S_ms[0], rt_q90 + win_S_ms[1]]
+            
+            session_data.append({
+                "sid": sid,
+                "win_C_sacc_ms": win_C_ms,
+                "win_S_sacc_ms": win_S_ms,
+                "win_C_stim_median": win_C_stim_median,
+                "win_C_stim_q10": win_C_stim_q10,
+                "win_C_stim_q90": win_C_stim_q90,
+                "win_S_stim_median": win_S_stim_median,
+                "win_S_stim_q10": win_S_stim_q10,
+                "win_S_stim_q90": win_S_stim_q90,
+                "rt_median": rt_median,
+                "rt_q10": rt_q10,
+                "rt_q90": rt_q90,
+            })
+        
+        if not session_data:
+            print(f"      [skip] No data for {case_info['case']}")
+            continue
+        
+        session_data.sort(key=lambda x: x["rt_median"])
+        n = len(session_data)
+        
+        # Create figure
+        fig, ax = plt.subplots(figsize=(14, max(8, n * 0.4)))
+        y_positions = np.arange(n) * 2
+        
+        for i, r in enumerate(session_data):
+            y = y_positions[i]
+            
+            # C window (blue) - converted to stim timeline
+            c_start, c_end = r["win_C_stim_median"]
+            rect_c = plt.Rectangle((c_start, y + 0.2), c_end - c_start, 0.5,
+                                    facecolor='blue', alpha=0.7, edgecolor='darkblue', linewidth=1)
+            ax.add_patch(rect_c)
+            
+            # C window RT variability range (light blue band)
+            c_range_start = r["win_C_stim_q10"][0]
+            c_range_end = r["win_C_stim_q90"][1]
+            ax.plot([c_range_start, c_range_end], [y + 0.45, y + 0.45], 
+                    color='blue', alpha=0.25, linewidth=6, solid_capstyle='butt')
+            
+            # S window (green) - converted to stim timeline
+            s_start, s_end = r["win_S_stim_median"]
+            rect_s = plt.Rectangle((s_start, y + 0.9), s_end - s_start, 0.5,
+                                    facecolor='green', alpha=0.7, edgecolor='darkgreen', linewidth=1)
+            ax.add_patch(rect_s)
+            
+            # S window RT variability range (light green band)
+            s_range_start = r["win_S_stim_q10"][0]
+            s_range_end = r["win_S_stim_q90"][1]
+            ax.plot([s_range_start, s_range_end], [y + 1.15, y + 1.15], 
+                    color='green', alpha=0.25, linewidth=6, solid_capstyle='butt')
+            
+            # Session label with RT on left side
+            ax.text(-45, y + 0.7, f"{r['sid']} RT={r['rt_median']:.0f}", fontsize=7, va='center', ha='left')
+        
+        # Styling
+        ax.axvline(0, color='green', linestyle='--', linewidth=2, alpha=0.7, label='Stim onset')
+        ax.set_xlim(-50, 500)
+        ax.set_xlabel("Time from Stimulus Onset (ms)")
+        
+        # Legend
+        from matplotlib.patches import Patch
+        from matplotlib.lines import Line2D
+        legend_elements = [
+            Patch(facecolor='blue', alpha=0.7, edgecolor='darkblue', label='C window (sacc→stim, median RT)'),
+            Patch(facecolor='green', alpha=0.7, edgecolor='darkgreen', label='S window (sacc→stim, median RT)'),
+            Line2D([0], [0], color='blue', alpha=0.25, linewidth=6, label='C window RT range (10-90%)'),
+            Line2D([0], [0], color='green', alpha=0.25, linewidth=6, label='S window RT range (10-90%)'),
+        ]
+        
+        ax.legend(handles=legend_elements, loc='lower right', fontsize=8)
+        ax.set_ylim(-1, n * 2)
+        ax.set_yticks([])
+        ax.set_title(case_info['title'])
+        ax.grid(axis='x', alpha=0.3)
+        
+        plt.tight_layout()
+        out_path = figs_dir / f"CS_window_{case_info['case']}_{case_info['name']}_stimaligned_{filter_tag}.pdf"
+        fig.savefig(out_path, dpi=150, bbox_inches='tight')
+        fig.savefig(out_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
+        plt.close(fig)
+        print(f"      [saved] {out_path}")
+    
+    # ==========================================================================
+    # ADDITIONAL: Cases iv, v, vi in SACCADE-ALIGNED time
+    # C is stim-aligned, S is sacc-aligned. Convert C to sacc timeline using RT
+    # sacc_time = stim_time - RT
+    # ==========================================================================
+    print(f"\n  Generating saccade-aligned versions of Cases iv, v, vi ({filter_tag})...")
+    
+    CS_SACC_ALIGNED_CASES = [
+        {
+            'case': 'case_iv',
+            'name': 'horizontal',
+            'title': f'Case iv: Stim-C & Sacc-S → Sacc Timeline (Horizontal)\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-horizontal-20mssw{nofilter_suffix}',
+            'stim_tag': f'axes_peakbin_stimC-stim-horizontal-20mssw{nofilter_suffix}',
+        },
+        {
+            'case': 'case_v',
+            'name': 'pooled',
+            'title': f'Case v: Stim-C & Sacc-S → Sacc Timeline (Pooled)\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-pooled-20mssw{nofilter_suffix}',
+            'stim_tag': f'axes_peakbin_stimC-stim-pooled-20mssw{nofilter_suffix}',
+        },
+        {
+            'case': 'case_vi',
+            'name': 'vertical',
+            'title': f'Case vi: Stim-C(vert) & Sacc-S(horiz) → Sacc Timeline\n({filter_tag})',
+            'sacc_tag': f'axes_peakbin_saccCS-sacc-horizontal-20mssw{nofilter_suffix}',
+            'stim_tag': f'axes_peakbin_stimCR-stim-vertical-20mssw{"_nofilter" if nofilter_suffix else "_mixedtrain"}',
+        },
+    ]
+    
+    for case_info in CS_SACC_ALIGNED_CASES:
+        print(f"    Generating CS_window_{case_info['case']}_{case_info['name']}_saccaligned...")
+        
+        session_data = []
+        for sid in sessions:
+            area = get_fef_area(sid)
+            
+            # Load sacc-aligned axes summary (for S window)
+            sacc_path = out_root / "sacc" / sid / "axes" / case_info['sacc_tag'] / "axes_summary.json"
+            sacc_info = load_axes_summary_CS(sacc_path, sid)
+            
+            if sacc_info is None or sacc_info["win_S"] is None:
+                continue
+            
+            # Load stim-aligned axes summary (for C window)
+            stim_path = out_root / "stim" / sid / "axes" / case_info['stim_tag'] / "axes_summary.json"
+            stim_info = load_axes_summary_CS(stim_path, sid)
+            
+            if stim_info is None or stim_info["win_C"] is None:
+                continue
+            
+            win_C_stim = stim_info["win_C"]
+            win_S_sacc = sacc_info["win_S"]
+            win_C_stim_ms = [win_C_stim[0] * 1000, win_C_stim[1] * 1000]
+            win_S_sacc_ms = [win_S_sacc[0] * 1000, win_S_sacc[1] * 1000]
+            
+            # Load RT
+            rt = None
+            for alt_area in [area, "MFEF", "MLIP", "SFEF", "SLIP"]:
+                cache_path = out_root / "sacc" / sid / "caches" / f"area_{alt_area}.npz"
+                rt = load_rt_filt(cache_path)
+                if rt is not None and len(rt) >= 10:
+                    break
+            
+            if rt is None or len(rt) < 10:
+                continue
+            
+            rt_median = np.median(rt)
+            rt_q10, rt_q90 = np.percentile(rt, [10, 90])
+            
+            # Convert C window to sacc-aligned time: sacc_time = stim_time - RT
+            win_C_sacc_median = [win_C_stim_ms[0] - rt_median, win_C_stim_ms[1] - rt_median]
+            win_C_sacc_q10 = [win_C_stim_ms[0] - rt_q90, win_C_stim_ms[1] - rt_q90]  # Note: q90 RT gives earlier sacc time
+            win_C_sacc_q90 = [win_C_stim_ms[0] - rt_q10, win_C_stim_ms[1] - rt_q10]  # Note: q10 RT gives later sacc time
+            
+            session_data.append({
+                "sid": sid,
+                "win_C_stim_ms": win_C_stim_ms,
+                "win_S_sacc_ms": win_S_sacc_ms,
+                "win_C_sacc_median": win_C_sacc_median,
+                "win_C_sacc_q10": win_C_sacc_q10,
+                "win_C_sacc_q90": win_C_sacc_q90,
+                "rt_median": rt_median,
+                "rt_q10": rt_q10,
+                "rt_q90": rt_q90,
+            })
+        
+        if not session_data:
+            print(f"      [skip] No data for {case_info['case']}")
+            continue
+        
+        session_data.sort(key=lambda x: x["rt_median"])
+        n = len(session_data)
+        
+        # Create figure
+        fig, ax = plt.subplots(figsize=(14, max(8, n * 0.4)))
+        y_positions = np.arange(n) * 2
+        
+        for i, r in enumerate(session_data):
+            y = y_positions[i]
+            
+            # C window (red) - converted to sacc timeline
+            c_start, c_end = r["win_C_sacc_median"]
+            rect_c = plt.Rectangle((c_start, y + 0.2), c_end - c_start, 0.5,
+                                    facecolor='red', alpha=0.7, edgecolor='darkred', linewidth=1)
+            ax.add_patch(rect_c)
+            
+            # C window RT variability range (light red band)
+            c_range_start = r["win_C_sacc_q10"][0]
+            c_range_end = r["win_C_sacc_q90"][1]
+            ax.plot([c_range_start, c_range_end], [y + 0.45, y + 0.45], 
+                    color='red', alpha=0.25, linewidth=6, solid_capstyle='butt')
+            
+            # S window (green) - already sacc-aligned
+            s_start, s_end = r["win_S_sacc_ms"]
+            rect_s = plt.Rectangle((s_start, y + 0.9), s_end - s_start, 0.5,
+                                    facecolor='green', alpha=0.7, edgecolor='darkgreen', linewidth=1)
+            ax.add_patch(rect_s)
+            
+            # Session label with RT on left side
+            ax.text(-295, y + 0.7, f"{r['sid']} RT={r['rt_median']:.0f}", fontsize=7, va='center', ha='left')
+        
+        # Styling
+        ax.axvline(0, color='purple', linestyle='--', linewidth=2, alpha=0.7, label='Saccade onset')
+        ax.set_xlim(-300, 200)  # Typical range for sacc-aligned windows
+        ax.set_xlabel("Time from Saccade Onset (ms)")
+        
+        # Legend
+        from matplotlib.patches import Patch
+        from matplotlib.lines import Line2D
+        legend_elements = [
+            Patch(facecolor='red', alpha=0.7, edgecolor='darkred', label='C window (stim→sacc, median RT)'),
+            Patch(facecolor='green', alpha=0.7, edgecolor='darkgreen', label='S window (sacc-aligned)'),
+            Line2D([0], [0], color='red', alpha=0.25, linewidth=6, label='C window RT range (10-90%)'),
+        ]
+        
+        ax.legend(handles=legend_elements, loc='lower right', fontsize=8)
+        ax.set_ylim(-1, n * 2)
+        ax.set_yticks([])
+        ax.set_title(case_info['title'])
+        ax.grid(axis='x', alpha=0.3)
+        
+        plt.tight_layout()
+        out_path = figs_dir / f"CS_window_{case_info['case']}_{case_info['name']}_saccaligned_{filter_tag}.pdf"
+        fig.savefig(out_path, dpi=150, bbox_inches='tight')
+        fig.savefig(out_path.with_suffix('.png'), dpi=150, bbox_inches='tight')
+        plt.close(fig)
+        print(f"      [saved] {out_path}")
+    
+    # Generate window_absolute_timeline_detailed with filter suffix (LEGACY - Case vi only)
+    # Case vi stim tag: correctonly uses _mixedtrain, alltrials uses _nofilter
+    stim_tag = f'axes_peakbin_stimCR-stim-vertical-20mssw{"_nofilter" if nofilter_suffix else "_mixedtrain"}'
     sacc_tag = f"axes_peakbin_saccCS-sacc-horizontal-20mssw{nofilter_suffix}"
     
     all_session_windows_filt = []
