@@ -1,0 +1,48 @@
+{
+  "sid": "20201216",
+  "area": "MFEF",
+  "monkey": "M",
+  "analysis": "reverse_cross_alignment",
+  "description": "Stim-C(horizontal) vs Sacc-S(vertical) - reverse of Case vi",
+  "null_mode": "s_epoch",
+  "align_C": "stim",
+  "axes_tag_C": "axes_peakbin_stimC-stim-horizontal-20mssw_nofilter",
+  "orientation_C": "horizontal",
+  "align_S": "sacc",
+  "axes_tag_S": "axes_peakbin_saccCS-sacc-vertical-20mssw_nofilter",
+  "orientation_S": "vertical",
+  "a_obs": 0.594480594274432,
+  "theta_obs_deg": 53.52438630473789,
+  "null_mean": 0.2244123290973443,
+  "null_std": 0.13502756984821745,
+  "null_angle_mean_deg": 76.89555427601167,
+  "p_orth": 1.0,
+  "p_align": 0.000999000999000999,
+  "n_perms_valid": 1000,
+  "delta": 0.3700682651770877,
+  "delta_theta_deg": -23.371167971273778,
+  "z_score": 2.740686702671729,
+  "manifold_dim": 37,
+  "D_eff": 4.440916368825807,
+  "expected_cos": 0.3786201857107576,
+  "expected_angle_deg": 67.75176005569682,
+  "D_C_shape": [
+    77,
+    102
+  ],
+  "D_S_shape": [
+    77,
+    52
+  ],
+  "win_C": [
+    0.0,
+    0.5
+  ],
+  "win_S": [
+    -0.2,
+    0.05
+  ],
+  "pt_min_ms": 200.0,
+  "n_trials_C": 252,
+  "n_trials_S": 267
+}

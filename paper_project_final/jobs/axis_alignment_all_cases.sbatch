@@ -75,7 +75,8 @@ export NUMEXPR_NUM_THREADS=1
 
 export PAPER_HOME="$PROJECT"
 export PAPER_DATA="$PROJECT/RCT_02"
-export PYTHONPATH="$PAPER_HOME${PYTHONPATH:+:$PYTHONPATH}"
+# Add both project root and cli/ to PYTHONPATH for imports
+export PYTHONPATH="$PAPER_HOME/cli:$PAPER_HOME${PYTHONPATH:+:$PYTHONPATH}"
 
 cd "$PROJECT"
 mkdir -p logs
@@ -121,9 +122,20 @@ SLIDING_STEP_MS=10
 #   - SACC-aligned: Use [-0.20, 0.05] for ALL features (matches SEARCH_RANGE_SACC)
 #   - STIM-aligned: Use [0.00, 0.50] for ALL features (matches SEARCH_RANGE_STIM)
 #
+# NULL MODE for Cross-Alignment (Cases iii, iv, v):
+#   - s_epoch (recommended): Uses S-epoch geometry ONLY for null
+#     This tests: "Is S more aligned with C than a random S from S-epoch manifold?"
+#     More comparable to same-alignment nulls and directly tests whether S has
+#     C-related information.
+#   - combined (legacy): Uses joint C+S epoch geometry
+#     This tests: "Is alignment unusual given joint structure?"
+#
 # This ensures the null distribution properly reflects "what alignment would we
 # expect if axes were random directions on the neural manifold during this epoch?"
 # =============================================================================
+
+# Null mode for cross-alignment (s_epoch = fixed-axis null, recommended)
+NULL_MODE="s_epoch"
 
 # SACC-aligned windows (Cases i & ii: both C and S on sacc alignment)
 # Both C and S axes were searched within [-0.20, 0.05], so use this for covariance
@@ -206,11 +218,13 @@ run_case_cross_align() {
     echo "  S axes: sacc/$AXES_TAG_S (orientation: $ORI_S)"
     echo "  OUT_ROOT: $OUT_ROOT"
     echo "  Covariance windows: C(stim)=[$WIN_STIM_START, $WIN_STIM_END], S(sacc)=[$WIN_SACC_START, $WIN_SACC_END]"
+    echo "  Null mode: $NULL_MODE (fixed-axis null using S-epoch geometry)"
     echo "------------------------------------------------------------"
     
-    # For cross-alignment cases (iii & iv):
+    # For cross-alignment cases (iii, iv, v):
     # - C is stim-aligned, use STIM search range for its covariance window
     # - S is sacc-aligned, use SACC search range for its covariance window
+    # - Null mode: s_epoch = sample random S from S-epoch geometry only (fixed-axis null)
     python cli/axis_alignment_cross.py \
       --sid "$SID" \
       --out_root "$OUT_ROOT" \
@@ -228,6 +242,7 @@ run_case_cross_align() {
       --qc_threshold_C "$QC_THR_C" \
       --qc_threshold_S "$QC_THR_S" \
       --no_rich_cond \
+      --null_mode "$NULL_MODE" \
       --tag "$TAG"
     
     echo "[done] Case $CASE_NUM → $OUT_ROOT/cross_alignment/$TAG/"

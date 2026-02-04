@@ -41,7 +41,8 @@ module load python/3.11.9
 source "$BASE/runtime/venv/bin/activate"
 
 export PAPER_HOME="$PROJECT"
-export PYTHONPATH="$PAPER_HOME${PYTHONPATH:+:$PYTHONPATH}"
+# Add both project root and cli/ to PYTHONPATH for imports
+export PYTHONPATH="$PAPER_HOME/cli:$PAPER_HOME${PYTHONPATH:+:$PYTHONPATH}"
 
 cd "$PROJECT"
 

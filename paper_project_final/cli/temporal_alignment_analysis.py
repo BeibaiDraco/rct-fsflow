@@ -371,14 +371,13 @@ def run_temporal_alignment_analysis(
     print(f"  [result] Peak alignment: {alignments.max():.3f} at {valid_centers[np.argmax(alignments)]:.0f}ms")
     
     # Compute null distribution
-    # Need to load raw cache (without sliding window) to match sS dimensions
+    # Use the SAME SW-transformed cache that was used for analysis
+    # This ensures consistency: S axis was trained on SW data, null should use same data
     print(f"  [null] Computing covariance-constrained null...")
     try:
-        raw_cache = load_cache(out_root, "sacc", sid, area, 0, 0)  # No sliding window
-        Z_raw = raw_cache["Z"]
-        # Build trial mask for raw cache (same trials)
-        keep_raw = trial_mask(raw_cache, orientation, pt_min_ms)
-        null_stats = compute_null_alignment(Z_raw, keep_raw, sS, n_perms=500, seed=42)
+        # Use the already-loaded SW-transformed cache (not raw cache!)
+        Z_for_null = cache["Z"]
+        null_stats = compute_null_alignment(Z_for_null, keep, sS, n_perms=500, seed=42)
     except Exception as e:
         print(f"  [null] Failed to compute null: {e}")
         null_stats = {

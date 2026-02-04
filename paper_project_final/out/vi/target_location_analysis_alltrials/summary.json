@@ -1,0 +1,227 @@
+{
+  "analysis": "target_location_confound",
+  "n_sessions": 22,
+  "mean_cos_CS_original": 0.3046505184805023,
+  "per_session": [
+    {
+      "sid": "20200327",
+      "area": "MFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.146611",
+      "cos_CS_original": 0.21463007821359423,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.1692033666116266,
+      "cos_Shoriz_Svert": 0.028767696837000804
+    },
+    {
+      "sid": "20200328",
+      "area": "MFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.195062",
+      "cos_CS_original": 0.5679063174191301,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.38494706285193014,
+      "cos_Shoriz_Svert": 0.07585204307282467
+    },
+    {
+      "sid": "20200401",
+      "area": "MFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.255217",
+      "cos_CS_original": 0.6641234418680106,
+      "cos_CS_after_orth": 0.9999999998,
+      "cos_Cvert_Choriz": 0.2705020617517218,
+      "cos_Shoriz_Svert": 0.048531025143422724
+    },
+    {
+      "sid": "20200402",
+      "area": "MFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.319861",
+      "cos_CS_original": 0.5450093583326329,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.5892722034075066,
+      "cos_Shoriz_Svert": 0.006092065470427864
+    },
+    {
+      "sid": "20200926",
+      "area": "MFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.393208",
+      "cos_CS_original": 0.013214442562703285,
+      "cos_CS_after_orth": 0.9999999997999998,
+      "cos_Cvert_Choriz": 0.49058961961023057,
+      "cos_Shoriz_Svert": 0.4468909374515007
+    },
+    {
+      "sid": "20200929",
+      "area": "MFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.479625",
+      "cos_CS_original": 0.27279102277322503,
+      "cos_CS_after_orth": 0.9999999998000005,
+      "cos_Cvert_Choriz": 0.40224915357770763,
+      "cos_Shoriz_Svert": 0.1354782043433566
+    },
+    {
+      "sid": "20201001",
+      "area": "MFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.559293",
+      "cos_CS_original": 0.4768131752142249,
+      "cos_CS_after_orth": 0.9999999997999998,
+      "cos_Cvert_Choriz": 0.3437404331713036,
+      "cos_Shoriz_Svert": 0.07953332416793213
+    },
+    {
+      "sid": "20201004",
+      "area": "MFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.693983",
+      "cos_CS_original": 0.43766400174246634,
+      "cos_CS_after_orth": 0.9999999998,
+      "cos_Cvert_Choriz": 0.38237942120359797,
+      "cos_Shoriz_Svert": 0.031964349866357884
+    },
+    {
+      "sid": "20201204",
+      "area": "MFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.820107",
+      "cos_CS_original": 0.7045993633565479,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.18569121880369857,
+      "cos_Shoriz_Svert": 0.002839327727717657
+    },
+    {
+      "sid": "20201211",
+      "area": "MFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.872018",
+      "cos_CS_original": 0.5586929823697521,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.3345948164631396,
+      "cos_Shoriz_Svert": 0.12051645241337448
+    },
+    {
+      "sid": "20201216",
+      "area": "MFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.918030",
+      "cos_CS_original": 0.51238867481541,
+      "cos_CS_after_orth": 0.9999999998000002,
+      "cos_Cvert_Choriz": 0.4513654900535431,
+      "cos_Shoriz_Svert": 0.0808381501307707
+    },
+    {
+      "sid": "20230622",
+      "area": "SFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:17.975654",
+      "cos_CS_original": 0.10600728366692191,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.4461673925541128,
+      "cos_Shoriz_Svert": 0.3019010951620246
+    },
+    {
+      "sid": "20230627",
+      "area": "SFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:18.130308",
+      "cos_CS_original": 0.05834995662425039,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.5491891437247521,
+      "cos_Shoriz_Svert": 0.13235465175939543
+    },
+    {
+      "sid": "20230705",
+      "area": "SFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:18.211814",
+      "cos_CS_original": 0.1802740935231178,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.33980697960279366,
+      "cos_Shoriz_Svert": 0.34200761816693653
+    },
+    {
+      "sid": "20230707",
+      "area": "SFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:18.299020",
+      "cos_CS_original": 0.20744107878778878,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.8445489074561229,
+      "cos_Shoriz_Svert": 0.5608550979428508
+    },
+    {
+      "sid": "20230710",
+      "area": "SFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:18.339652",
+      "cos_CS_original": 0.4186499249880279,
+      "cos_CS_after_orth": 0.9999999998,
+      "cos_Cvert_Choriz": 0.2480105762029805,
+      "cos_Shoriz_Svert": 0.48281136623409343
+    },
+    {
+      "sid": "20231025",
+      "area": "SFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:18.405008",
+      "cos_CS_original": 0.14383254504860948,
+      "cos_CS_after_orth": 0.9999999998,
+      "cos_Cvert_Choriz": 0.6079221731220308,
+      "cos_Shoriz_Svert": 0.09663171721719685
+    },
+    {
+      "sid": "20231103",
+      "area": "SFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:18.448739",
+      "cos_CS_original": 0.07134380127779708,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.20188279206788423,
+      "cos_Shoriz_Svert": 0.21544836070911574
+    },
+    {
+      "sid": "20231109",
+      "area": "SFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:18.503977",
+      "cos_CS_original": 0.25737889110419043,
+      "cos_CS_after_orth": 0.9999999997999998,
+      "cos_Cvert_Choriz": 0.5469806227371589,
+      "cos_Shoriz_Svert": 0.034643257917431974
+    },
+    {
+      "sid": "20231121",
+      "area": "SFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:18.561732",
+      "cos_CS_original": 0.1255950954876221,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.6161590816532709,
+      "cos_Shoriz_Svert": 0.044383698394404786
+    },
+    {
+      "sid": "20231123",
+      "area": "SFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:18.631254",
+      "cos_CS_original": 0.12894505535353618,
+      "cos_CS_after_orth": 0.9999999998000001,
+      "cos_Cvert_Choriz": 0.6140585824710821,
+      "cos_Shoriz_Svert": 0.0535194034591994
+    },
+    {
+      "sid": "20231205",
+      "area": "SFEF",
+      "analysis": "target_location_confound",
+      "timestamp": "2026-02-03T21:56:18.755331",
+      "cos_CS_original": 0.03666082204149196,
+      "cos_CS_after_orth": 0.9999999998,
+      "cos_Cvert_Choriz": 0.1775996531426617,
+      "cos_Shoriz_Svert": 0.14811147134767358
+    }
+  ]
+}

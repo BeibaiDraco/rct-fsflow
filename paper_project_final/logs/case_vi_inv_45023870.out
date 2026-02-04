@@ -1,0 +1,2397 @@
+==============================================================
+CASE VI INVESTIGATION
+Filter mode: both
+==============================================================
+Start time: Tue Feb  3 21:54:40 CST 2026
+
+
+######################################################################
+RUNNING ANALYSES FOR: correctonly
+######################################################################
+
+Cleaning up old outputs for correctonly...
+Done cleaning.
+
+==============================================================
+[1/6] CASE VI DRIVER ANALYSIS (correctonly)
+==============================================================
+======================================================================
+ANALYZING CASE VI DRIVERS (correctonly)
+======================================================================
+
+======================================================================
+CROSS-ORIENTATION MATRIX
+======================================================================
+
+Cross-Orientation Matrix (Stim-C vs Sacc-S):
+                    S(horizontal)    S(vertical)
+C(horizontal)    0.076 ± 0.079       0.163 ± 0.110   
+C(vertical  )    0.351 ± 0.194       0.114 ± 0.106   
+
+*** ASYMMETRY: C(v)-S(h) - C(h)-S(v) = 0.188 ***
+    Significant asymmetry detected!
+
+[Case vi] Loaded 21 sessions
+[Case iv] Loaded 21 sessions
+[Case v] Loaded 23 sessions
+[Case i] Loaded 21 sessions
+[Case iii] Loaded 23 sessions
+
+======================================================================
+CASE VI SUMMARY STATISTICS
+======================================================================
+N sessions: 21
+a_obs:      mean=0.392, std=0.238, min=0.004, max=0.844
+null_mean:  mean=0.232, std=0.096
+delta:      mean=0.160, std=0.180
+D_eff:      mean=6.4, std=4.0
+auc_C:      mean=0.906, std=0.097
+auc_S:      mean=0.894, std=0.121
+
+High alignment sessions (a_obs >= 0.539): ['20200328', '20200401', '20201204', '20201211', '20201216', '20230622']
+Low alignment sessions (a_obs <= 0.269): ['20200327', '20200926', '20230705', '20231103', '20231121', '20231123']
+
+======================================================================
+CORRELATION ANALYSIS
+======================================================================
+a_obs vs D_eff:       r=-0.287, p=0.2080
+a_obs vs manifold_dim: r=-0.264, p=0.2473
+a_obs vs null_mean:   r=0.731, p=0.0002
+a_obs vs auc_C:       r=0.172, p=0.4550
+a_obs vs auc_S:       r=0.222, p=0.3329
+a_obs vs n_trials_C:  r=-0.153, p=0.5089
+a_obs vs n_trials_S:  r=0.198, p=0.3903
+
+======================================================================
+COMPARISON WITH OTHER CASES
+======================================================================
+case_i (sacc-horiz)                     : N=21, a_obs=0.089±0.087, null=0.250, delta=-0.161
+case_iii (sacc-vert)                    : N=23, a_obs=0.127±0.121, null=0.318, delta=-0.191
+case_iv (stim-horiz vs sacc-horiz)      : N=21, a_obs=0.162±0.126, null=0.233, delta=-0.071
+case_v (stim-pool vs sacc-pool)         : N=23, a_obs=0.181±0.131, null=0.277, delta=-0.095
+case_vi (stim-vert vs sacc-horiz)       : N=21, a_obs=0.392±0.238, null=0.232, delta=0.160
+
+t-test (case vi vs case iv): t=3.814, p=0.0005
+Mann-Whitney U (case vi > case iv): U=348.0, p=0.0007
+
+======================================================================
+GENERATING FIGURES
+======================================================================
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_correctonly/case_vi_correlations.png
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_correctonly/case_comparison.png
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_correctonly/case_vi_sessions.png
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_correctonly/case_vi_analysis.json
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/diagnose_case_vi_matrix.json
+
+======================================================================
+ANALYSIS COMPLETE
+======================================================================
+
+[1/6] DONE
+
+==============================================================
+[2/6] REVERSE CASE ANALYSIS (correctonly)
+==============================================================
+======================================================================
+REVERSE CASE ANALYSIS: Stim-C(horiz) vs Sacc-S(vert)
+======================================================================
+[info] Processing 23 session(s)
+[info] Axes suffix: 20mssw
+
+============================================================
+[20200327] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=284
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=261
+            D_C shape: (41, 102), D_S shape: (41, 52)
+  [reverse] Observed: |cos(θ)|=0.3072, θ=72.1°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (41, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 35, D_eff=19.4
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1230
+    [400/1000] null_mean=0.1213
+    [600/1000] null_mean=0.1207
+    [800/1000] null_mean=0.1212
+    [1000/1000] null_mean=0.1223
+  [result] a_obs=0.3072, null_mean=0.1223±0.0900
+           Δ=0.1849, z=2.05
+           p(more orthogonal)=0.9610, p(more aligned)=0.0400
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20200327.json
+
+============================================================
+[20200328] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=247
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=277
+            D_C shape: (60, 102), D_S shape: (60, 52)
+  [reverse] Observed: |cos(θ)|=0.3332, θ=70.5°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (60, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 30, D_eff=3.7
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1498
+    [400/1000] null_mean=0.1515
+    [600/1000] null_mean=0.1533
+    [800/1000] null_mean=0.1539
+    [1000/1000] null_mean=0.1532
+  [result] a_obs=0.3332, null_mean=0.1532±0.0972
+           Δ=0.1800, z=1.85
+           p(more orthogonal)=0.9510, p(more aligned)=0.0500
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20200328.json
+
+============================================================
+[20200401] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=250
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=253
+            D_C shape: (71, 102), D_S shape: (71, 52)
+  [reverse] Observed: |cos(θ)|=0.0149, θ=89.1°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (71, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 40, D_eff=6.7
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1904
+    [400/1000] null_mean=0.2006
+    [600/1000] null_mean=0.2016
+    [800/1000] null_mean=0.2007
+    [1000/1000] null_mean=0.2059
+  [result] a_obs=0.0149, null_mean=0.2059±0.1317
+           Δ=-0.1911, z=-1.45
+           p(more orthogonal)=0.0460, p(more aligned)=0.9550
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20200401.json
+
+============================================================
+[20200402] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=237
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=217
+            D_C shape: (80, 102), D_S shape: (80, 52)
+  [reverse] Observed: |cos(θ)|=0.4020, θ=66.3°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (80, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 40, D_eff=4.8
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2041
+    [400/1000] null_mean=0.2076
+    [600/1000] null_mean=0.2026
+    [800/1000] null_mean=0.2036
+    [1000/1000] null_mean=0.2063
+  [result] a_obs=0.4020, null_mean=0.2063±0.1253
+           Δ=0.1957, z=1.56
+           p(more orthogonal)=0.9401, p(more aligned)=0.0609
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20200402.json
+
+============================================================
+[20200926] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=290
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=279
+            D_C shape: (82, 102), D_S shape: (82, 52)
+  [reverse] Observed: |cos(θ)|=0.0332, θ=88.1°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (82, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 37, D_eff=4.0
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1472
+    [400/1000] null_mean=0.1616
+    [600/1000] null_mean=0.1600
+    [800/1000] null_mean=0.1565
+    [1000/1000] null_mean=0.1572
+  [result] a_obs=0.0332, null_mean=0.1572±0.1085
+           Δ=-0.1240, z=-1.14
+           p(more orthogonal)=0.1139, p(more aligned)=0.8871
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20200926.json
+
+============================================================
+[20200929] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=264
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=284
+            D_C shape: (76, 102), D_S shape: (76, 52)
+  [reverse] Observed: |cos(θ)|=0.0918, θ=84.7°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (76, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 30, D_eff=3.0
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1119
+    [400/1000] null_mean=0.1044
+    [600/1000] null_mean=0.1033
+    [800/1000] null_mean=0.1024
+    [1000/1000] null_mean=0.1040
+  [result] a_obs=0.0918, null_mean=0.1040±0.0812
+           Δ=-0.0122, z=-0.15
+           p(more orthogonal)=0.5435, p(more aligned)=0.4575
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20200929.json
+
+============================================================
+[20201001] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=256
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=292
+            D_C shape: (139, 102), D_S shape: (139, 52)
+  [reverse] Observed: |cos(θ)|=0.4288, θ=64.6°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (139, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 43, D_eff=5.4
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1429
+    [400/1000] null_mean=0.1334
+    [600/1000] null_mean=0.1343
+    [800/1000] null_mean=0.1332
+    [1000/1000] null_mean=0.1326
+  [result] a_obs=0.4288, null_mean=0.1326±0.0850
+           Δ=0.2962, z=3.49
+           p(more orthogonal)=1.0000, p(more aligned)=0.0010
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20201001.json
+
+============================================================
+[20201004] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=291
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=237
+            D_C shape: (123, 102), D_S shape: (123, 52)
+  [reverse] Observed: |cos(θ)|=0.3618, θ=68.8°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (123, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 42, D_eff=3.4
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2700
+    [400/1000] null_mean=0.2688
+    [600/1000] null_mean=0.2685
+    [800/1000] null_mean=0.2644
+    [1000/1000] null_mean=0.2649
+  [result] a_obs=0.3618, null_mean=0.2649±0.1500
+           Δ=0.0968, z=0.65
+           p(more orthogonal)=0.6933, p(more aligned)=0.3077
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20201004.json
+
+============================================================
+[20201204] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=285
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=229
+            D_C shape: (59, 102), D_S shape: (59, 52)
+  [reverse] Observed: |cos(θ)|=0.2136, θ=77.7°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (59, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 28, D_eff=5.1
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1974
+    [400/1000] null_mean=0.2022
+    [600/1000] null_mean=0.2013
+    [800/1000] null_mean=0.2030
+    [1000/1000] null_mean=0.2029
+  [result] a_obs=0.2136, null_mean=0.2029±0.1414
+           Δ=0.0106, z=0.08
+           p(more orthogonal)=0.5824, p(more aligned)=0.4186
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20201204.json
+
+============================================================
+[20201211] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=302
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=249
+            D_C shape: (60, 102), D_S shape: (60, 52)
+  [reverse] Observed: |cos(θ)|=0.5101, θ=59.3°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (60, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 33, D_eff=5.7
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2222
+    [400/1000] null_mean=0.2131
+    [600/1000] null_mean=0.2179
+    [800/1000] null_mean=0.2202
+    [1000/1000] null_mean=0.2175
+  [result] a_obs=0.5101, null_mean=0.2175±0.1360
+           Δ=0.2926, z=2.15
+           p(more orthogonal)=0.9850, p(more aligned)=0.0160
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20201211.json
+
+============================================================
+[20201216] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=251
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=257
+            D_C shape: (77, 102), D_S shape: (77, 52)
+  [reverse] Observed: |cos(θ)|=0.6846, θ=46.8°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (77, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 38, D_eff=4.5
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2133
+    [400/1000] null_mean=0.2199
+    [600/1000] null_mean=0.2232
+    [800/1000] null_mean=0.2263
+    [1000/1000] null_mean=0.2242
+  [result] a_obs=0.6846, null_mean=0.2242±0.1388
+           Δ=0.4603, z=3.32
+           p(more orthogonal)=1.0000, p(more aligned)=0.0010
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20201216.json
+
+============================================================
+[20230622] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=465
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=401
+            D_C shape: (118, 102), D_S shape: (118, 52)
+  [reverse] Observed: |cos(θ)|=0.1087, θ=83.8°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (118, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 47, D_eff=3.8
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1979
+    [400/1000] null_mean=0.1979
+    [600/1000] null_mean=0.1954
+    [800/1000] null_mean=0.1992
+    [1000/1000] null_mean=0.1981
+  [result] a_obs=0.1087, null_mean=0.1981±0.1178
+           Δ=-0.0893, z=-0.76
+           p(more orthogonal)=0.2817, p(more aligned)=0.7193
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20230622.json
+
+============================================================
+[20230627] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=432
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=435
+            D_C shape: (68, 102), D_S shape: (68, 52)
+  [reverse] Observed: |cos(θ)|=0.0767, θ=85.6°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (68, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 32, D_eff=2.2
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.4595
+    [400/1000] null_mean=0.4531
+    [600/1000] null_mean=0.4467
+    [800/1000] null_mean=0.4528
+    [1000/1000] null_mean=0.4533
+  [result] a_obs=0.0767, null_mean=0.4533±0.2133
+           Δ=-0.3766, z=-1.77
+           p(more orthogonal)=0.0589, p(more aligned)=0.9421
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20230627.json
+
+============================================================
+[20230705] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=380
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=415
+            D_C shape: (84, 102), D_S shape: (84, 52)
+  [reverse] Observed: |cos(θ)|=0.0198, θ=88.9°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (84, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 39, D_eff=2.9
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1461
+    [400/1000] null_mean=0.1447
+    [600/1000] null_mean=0.1406
+    [800/1000] null_mean=0.1418
+    [1000/1000] null_mean=0.1412
+  [result] a_obs=0.0198, null_mean=0.1412±0.0963
+           Δ=-0.1215, z=-1.26
+           p(more orthogonal)=0.0829, p(more aligned)=0.9181
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20230705.json
+
+============================================================
+[20230707] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=386
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=399
+            D_C shape: (32, 102), D_S shape: (32, 52)
+  [reverse] Observed: |cos(θ)|=0.1232, θ=82.9°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (32, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 23, D_eff=2.3
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.3192
+    [400/1000] null_mean=0.3188
+    [600/1000] null_mean=0.3214
+    [800/1000] null_mean=0.3209
+    [1000/1000] null_mean=0.3168
+  [result] a_obs=0.1232, null_mean=0.3168±0.1801
+           Δ=-0.1936, z=-1.07
+           p(more orthogonal)=0.1838, p(more aligned)=0.8172
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20230707.json
+
+============================================================
+[20230710] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=493
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=413
+            D_C shape: (66, 102), D_S shape: (66, 52)
+  [reverse] Observed: |cos(θ)|=0.3241, θ=71.1°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (66, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 40, D_eff=6.3
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1175
+    [400/1000] null_mean=0.1222
+    [600/1000] null_mean=0.1209
+    [800/1000] null_mean=0.1219
+    [1000/1000] null_mean=0.1230
+  [result] a_obs=0.3241, null_mean=0.1230±0.0807
+           Δ=0.2011, z=2.49
+           p(more orthogonal)=0.9950, p(more aligned)=0.0060
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20230710.json
+
+============================================================
+[20231025] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=230
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=365
+            D_C shape: (48, 102), D_S shape: (48, 52)
+  [reverse] Observed: |cos(θ)|=0.1452, θ=81.7°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (48, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 37, D_eff=5.3
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2049
+    [400/1000] null_mean=0.2030
+    [600/1000] null_mean=0.2064
+    [800/1000] null_mean=0.2051
+    [1000/1000] null_mean=0.2068
+  [result] a_obs=0.1452, null_mean=0.2068±0.1249
+           Δ=-0.0616, z=-0.49
+           p(more orthogonal)=0.3576, p(more aligned)=0.6434
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20231025.json
+
+============================================================
+[20231103] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=50
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=62
+            D_C shape: (72, 102), D_S shape: (72, 52)
+  [reverse] Observed: |cos(θ)|=0.1049, θ=84.0°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (72, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 41, D_eff=5.6
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.0829
+    [400/1000] null_mean=0.0794
+    [600/1000] null_mean=0.0807
+    [800/1000] null_mean=0.0795
+    [1000/1000] null_mean=0.0792
+  [result] a_obs=0.1049, null_mean=0.0792±0.0466
+           Δ=0.0256, z=0.55
+           p(more orthogonal)=0.6783, p(more aligned)=0.3227
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20231103.json
+
+============================================================
+[20231109] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=255
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=396
+            D_C shape: (77, 102), D_S shape: (77, 52)
+  [reverse] Observed: |cos(θ)|=0.4440, θ=63.6°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (77, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 43, D_eff=6.4
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2671
+    [400/1000] null_mean=0.2787
+    [600/1000] null_mean=0.2803
+    [800/1000] null_mean=0.2810
+    [1000/1000] null_mean=0.2803
+  [result] a_obs=0.4440, null_mean=0.2803±0.1644
+           Δ=0.1638, z=1.00
+           p(more orthogonal)=0.8022, p(more aligned)=0.1988
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20231109.json
+
+============================================================
+[20231121] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=308
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=441
+            D_C shape: (61, 102), D_S shape: (61, 52)
+  [reverse] Observed: |cos(θ)|=0.0287, θ=88.4°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (61, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 36, D_eff=4.5
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2963
+    [400/1000] null_mean=0.3093
+    [600/1000] null_mean=0.3068
+    [800/1000] null_mean=0.3091
+    [1000/1000] null_mean=0.3116
+  [result] a_obs=0.0287, null_mean=0.3116±0.1876
+           Δ=-0.2830, z=-1.51
+           p(more orthogonal)=0.0559, p(more aligned)=0.9451
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20231121.json
+
+============================================================
+[20231123] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=248
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=488
+            D_C shape: (102, 102), D_S shape: (102, 52)
+  [reverse] Observed: |cos(θ)|=0.4270, θ=64.7°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (102, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 47, D_eff=4.7
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1971
+    [400/1000] null_mean=0.1975
+    [600/1000] null_mean=0.2025
+    [800/1000] null_mean=0.2005
+    [1000/1000] null_mean=0.2040
+  [result] a_obs=0.4270, null_mean=0.2040±0.1202
+           Δ=0.2231, z=1.86
+           p(more orthogonal)=0.9740, p(more aligned)=0.0270
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/reverse_case_correctonly_20231123.json
+
+============================================================
+[20231130] Processing...
+  [skip] Missing sC or sS_raw
+
+============================================================
+[20231205] Processing...
+  [skip] Missing sC or sS_raw
+
+======================================================================
+[done] Results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly
+======================================================================
+
+[2/6] DONE
+
+==============================================================
+[3/6] TEMPORAL CROSS-ALIGNMENT (correctonly)
+==============================================================
+======================================================================
+TEMPORAL CROSS-ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 23 session(s)
+[info] C: vertical (stim-aligned)
+[info] S: horizontal (sacc-aligned, tag: axes_peakbin_saccCS-sacc-horizontal-20mssw)
+
+============================================================
+[20200327] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (41, 204)
+         Manifold dim: 39, D_eff=24.5
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.215, Max: 0.386
+           Null: 0.128±0.096
+           Peak time: 265ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20200327_MFEF.json
+
+============================================================
+[20200328] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (60, 204)
+         Manifold dim: 39, D_eff=3.4
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.369, Max: 0.586
+           Null: 0.344±0.180
+           Peak time: 265ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20200328_MFEF.json
+
+============================================================
+[20200401] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (71, 204)
+         Manifold dim: 50, D_eff=5.4
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.542, Max: 0.726
+           Null: 0.282±0.171
+           Peak time: 225ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20200401_MFEF.json
+
+============================================================
+[20200402] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (80, 204)
+         Manifold dim: 50, D_eff=3.7
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.330, Max: 0.545
+           Null: 0.236±0.139
+           Peak time: 305ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20200402_MFEF.json
+
+============================================================
+[20200926] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (82, 204)
+         Manifold dim: 49, D_eff=5.0
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.091, Max: 0.239
+           Null: 0.128±0.092
+           Peak time: 185ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20200926_MFEF.json
+
+============================================================
+[20200929] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (76, 204)
+         Manifold dim: 44, D_eff=4.3
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.182, Max: 0.272
+           Null: 0.167±0.103
+           Peak time: 185ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20200929_MFEF.json
+
+============================================================
+[20201001] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (139, 204)
+         Manifold dim: 66, D_eff=5.5
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.281, Max: 0.470
+           Null: 0.156±0.104
+           Peak time: 225ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20201001_MFEF.json
+
+============================================================
+[20201004] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (123, 204)
+         Manifold dim: 62, D_eff=3.9
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.328, Max: 0.454
+           Null: 0.175±0.117
+           Peak time: 265ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20201004_MFEF.json
+
+============================================================
+[20201204] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (59, 204)
+         Manifold dim: 37, D_eff=4.4
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.433, Max: 0.756
+           Null: 0.275±0.173
+           Peak time: 205ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20201204_MFEF.json
+
+============================================================
+[20201211] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (60, 204)
+         Manifold dim: 40, D_eff=4.2
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.401, Max: 0.613
+           Null: 0.186±0.128
+           Peak time: 245ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20201211_MFEF.json
+
+============================================================
+[20201216] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (77, 204)
+         Manifold dim: 48, D_eff=3.5
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.215, Max: 0.532
+           Null: 0.279±0.150
+           Peak time: 225ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20201216_MFEF.json
+
+============================================================
+[20230622] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (118, 204)
+         Manifold dim: 71, D_eff=4.6
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.147, Max: 0.312
+           Null: 0.236±0.143
+           Peak time: 365ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20230622_SFEF.json
+
+============================================================
+[20230627] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (68, 204)
+         Manifold dim: 37, D_eff=2.2
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.163, Max: 0.290
+           Null: 0.158±0.080
+           Peak time: 205ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20230627_SFEF.json
+
+============================================================
+[20230705] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (84, 204)
+         Manifold dim: 52, D_eff=4.1
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.119, Max: 0.227
+           Null: 0.184±0.107
+           Peak time: 425ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20230705_SFEF.json
+
+============================================================
+[20230707] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (32, 204)
+         Manifold dim: 24, D_eff=2.2
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.254, Max: 0.481
+           Null: 0.151±0.102
+           Peak time: 105ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20230707_SFEF.json
+
+============================================================
+[20230710] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (66, 204)
+         Manifold dim: 49, D_eff=4.9
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.242, Max: 0.396
+           Null: 0.197±0.132
+           Peak time: 305ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20230710_SFEF.json
+
+============================================================
+[20231025] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (48, 204)
+         Manifold dim: 41, D_eff=3.4
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.206, Max: 0.432
+           Null: 0.144±0.094
+           Peak time: 365ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20231025_SFEF.json
+
+============================================================
+[20231103] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (72, 204)
+         Manifold dim: 55, D_eff=5.2
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.227, Max: 0.441
+           Null: 0.257±0.149
+           Peak time: 305ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20231103_SFEF.json
+
+============================================================
+[20231109] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (77, 204)
+         Manifold dim: 56, D_eff=5.8
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.135, Max: 0.267
+           Null: 0.110±0.073
+           Peak time: 85ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20231109_SFEF.json
+
+============================================================
+[20231121] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (61, 204)
+         Manifold dim: 43, D_eff=3.4
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.107, Max: 0.245
+           Null: 0.182±0.101
+           Peak time: 325ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20231121_SFEF.json
+
+============================================================
+[20231123] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (102, 204)
+         Manifold dim: 64, D_eff=4.4
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.203, Max: 0.309
+           Null: 0.143±0.089
+           Peak time: 165ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_20231123_SFEF.json
+
+============================================================
+[20231130] Processing...
+  [skip] Missing sS_raw in sacc axes
+
+============================================================
+[20231205] Processing...
+  [skip] Missing sS_raw in sacc axes
+
+============================================================
+Generating summary figure...
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal/case_vi_temporal_summary.png
+
+======================================================================
+[done] Results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/case_vi_temporal
+======================================================================
+
+[3/6] DONE
+
+==============================================================
+[4/6] AXIS PROJECTION ANALYSIS (correctonly)
+==============================================================
+Analyzing 23 sessions...
+  Processing 20200327...
+    cos(C,S)=0.248, n_shared_pcs=0, overlap=0.0178
+  Processing 20200328...
+    cos(C,S)=0.575, n_shared_pcs=1, overlap=0.2231
+  Processing 20200401...
+    cos(C,S)=0.709, n_shared_pcs=2, overlap=0.1438
+  Processing 20200402...
+    cos(C,S)=0.446, n_shared_pcs=1, overlap=0.1620
+  Processing 20200926...
+    cos(C,S)=0.013, n_shared_pcs=0, overlap=0.0257
+  Processing 20200929...
+    cos(C,S)=0.267, n_shared_pcs=2, overlap=0.1374
+  Processing 20201001...
+    cos(C,S)=0.429, n_shared_pcs=1, overlap=0.1178
+  Processing 20201004...
+    cos(C,S)=0.407, n_shared_pcs=2, overlap=0.1173
+  Processing 20201204...
+    cos(C,S)=0.733, n_shared_pcs=2, overlap=0.2251
+  Processing 20201211...
+    cos(C,S)=0.565, n_shared_pcs=2, overlap=0.1672
+  Processing 20201216...
+    cos(C,S)=0.501, n_shared_pcs=1, overlap=0.0961
+  Processing 20230622...
+    cos(C,S)=0.291, n_shared_pcs=1, overlap=0.0503
+  Processing 20230627...
+    cos(C,S)=0.010, n_shared_pcs=0, overlap=0.0301
+  Processing 20230705...
+    cos(C,S)=0.219, n_shared_pcs=1, overlap=0.0611
+  Processing 20230707...
+    cos(C,S)=0.278, n_shared_pcs=2, overlap=0.1524
+  Processing 20230710...
+    cos(C,S)=0.406, n_shared_pcs=1, overlap=0.0524
+  Processing 20231025...
+    cos(C,S)=0.434, n_shared_pcs=0, overlap=0.0270
+  Processing 20231103...
+    cos(C,S)=0.125, n_shared_pcs=1, overlap=0.0685
+  Processing 20231109...
+    cos(C,S)=0.232, n_shared_pcs=0, overlap=0.0125
+  Processing 20231121...
+    cos(C,S)=0.284, n_shared_pcs=0, overlap=0.0278
+  Processing 20231123...
+    cos(C,S)=0.204, n_shared_pcs=0, overlap=0.0488
+  Processing 20231130...
+  Processing 20231205...
+
+======================================================================
+SUMMARY
+======================================================================
+N sessions analyzed: 21
+Mean cos(C,S): 0.351 ± 0.194
+Mean overlap metric: 0.0935 ± 0.0655
+Mean N shared PCs: 1.0 ± 0.8
+Correlation(cos, overlap): r = 0.724
+
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/axis_projection_analysis_correctonly/summary.json
+
+[4/6] DONE
+
+==============================================================
+[5/6] TARGET LOCATION CONFOUND (correctonly)
+==============================================================
+Analyzing 23 sessions...
+  Processing 20200327...
+    cos(C,S)=0.248
+  Processing 20200328...
+    cos(C,S)=0.575
+  Processing 20200401...
+    cos(C,S)=0.709
+  Processing 20200402...
+    cos(C,S)=0.446
+  Processing 20200926...
+    cos(C,S)=0.013
+  Processing 20200929...
+    cos(C,S)=0.267
+  Processing 20201001...
+    cos(C,S)=0.429
+  Processing 20201004...
+    cos(C,S)=0.407
+  Processing 20201204...
+    cos(C,S)=0.733
+  Processing 20201211...
+    cos(C,S)=0.565
+  Processing 20201216...
+    cos(C,S)=0.501
+  Processing 20230622...
+    cos(C,S)=0.291
+  Processing 20230627...
+    cos(C,S)=0.010
+  Processing 20230705...
+    cos(C,S)=0.219
+  Processing 20230707...
+    cos(C,S)=0.278
+  Processing 20230710...
+    cos(C,S)=0.406
+  Processing 20231025...
+    cos(C,S)=0.434
+  Processing 20231103...
+    cos(C,S)=0.125
+  Processing 20231109...
+    cos(C,S)=0.232
+  Processing 20231121...
+    cos(C,S)=0.284
+  Processing 20231123...
+    cos(C,S)=0.204
+  Processing 20231130...
+  Processing 20231205...
+
+======================================================================
+SUMMARY
+======================================================================
+N sessions: 21
+Mean cos(C,S) original: 0.351 ± 0.194
+
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/target_location_analysis_correctonly/summary.json
+
+[5/6] DONE
+
+==============================================================
+[6/6] COMPREHENSIVE SUMMARY (correctonly)
+==============================================================
+======================================================================
+CASE VI INVESTIGATION SUMMARY (correctonly)
+======================================================================
+
+Loaded results:
+  Case vi driver analysis: Yes
+  Case vi original: 21 sessions
+  Reverse case: 21 sessions
+  Temporal cross-alignment: 21 sessions
+
+======================================================================
+CASE VI vs REVERSE CASE COMPARISON
+======================================================================
+
+Matched sessions: 21
+
+Session        VI_a_obs  Rev_a_obs    VI_null   Rev_null     VI-Rev
+-----------------------------------------------------------------
+20200327          0.269      0.307      0.117      0.122     -0.039
+20200328          0.539      0.333      0.358      0.153     +0.205
+20200401          0.820      0.015      0.285      0.206     +0.805
+20200402          0.345      0.402      0.174      0.206     -0.057
+20200926          0.067      0.033      0.077      0.157     +0.034
+20200929          0.292      0.092      0.170      0.104     +0.200
+20201001          0.383      0.429      0.199      0.133     -0.045
+20201004          0.475      0.362      0.330      0.265     +0.113
+20201204          0.844      0.214      0.400      0.203     +0.631
+20201211          0.669      0.510      0.335      0.217     +0.159
+20201216          0.634      0.685      0.406      0.224     -0.050
+20230622          0.677      0.109      0.165      0.198     +0.568
+20230627          0.287      0.077      0.314      0.453     +0.210
+20230705          0.128      0.020      0.171      0.141     +0.108
+20230707          0.393      0.123      0.307      0.317     +0.270
+20230710          0.433      0.324      0.206      0.123     +0.109
+20231025          0.293      0.145      0.191      0.207     +0.147
+20231103          0.004      0.105      0.107      0.079     -0.101
+20231109          0.468      0.444      0.245      0.280     +0.024
+20231121          0.023      0.029      0.173      0.312     -0.006
+20231123          0.190      0.427      0.141      0.204     -0.237
+-----------------------------------------------------------------
+Mean              0.392      0.247
+Std               0.238      0.187
+
+Paired t-test (VI vs Reverse): t=2.622, p=0.0163
+Wilcoxon signed-rank: W=48.0, p=0.0175
+Correlation (VI vs Reverse): r=0.343, p=0.1282
+
+======================================================================
+GENERATING COMPREHENSIVE FIGURE
+======================================================================
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_correctonly/case_vi_comprehensive_summary.png
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_correctonly/case_vi_investigation_summary.json
+
+======================================================================
+SUMMARY COMPLETE
+======================================================================
+
+[6/6] DONE
+
+Results for correctonly saved to:
+  - /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_correctonly/
+  - /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_correctonly/
+  - /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_correctonly/
+  - /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/axis_projection_analysis_correctonly/
+  - /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/target_location_analysis_correctonly/
+
+
+######################################################################
+RUNNING ANALYSES FOR: alltrials
+######################################################################
+
+Cleaning up old outputs for alltrials...
+Done cleaning.
+
+==============================================================
+[1/6] CASE VI DRIVER ANALYSIS (alltrials)
+==============================================================
+======================================================================
+ANALYZING CASE VI DRIVERS (alltrials)
+======================================================================
+
+======================================================================
+CROSS-ORIENTATION MATRIX
+======================================================================
+
+Cross-Orientation Matrix (Stim-C vs Sacc-S):
+                    S(horizontal)    S(vertical)
+C(horizontal)    N/A                 N/A             
+C(vertical  )    N/A                 N/A             
+
+[Case vi] Loaded 21 sessions
+[Case iv] Loaded 21 sessions
+[Case v] Loaded 23 sessions
+[Case i] Loaded 21 sessions
+[Case iii] Loaded 23 sessions
+
+======================================================================
+CASE VI SUMMARY STATISTICS
+======================================================================
+N sessions: 21
+a_obs:      mean=0.358, std=0.237, min=0.000, max=0.784
+null_mean:  mean=0.230, std=0.087
+delta:      mean=0.127, std=0.175
+D_eff:      mean=6.3, std=4.0
+auc_C:      mean=0.906, std=0.097
+auc_S:      mean=0.894, std=0.121
+
+High alignment sessions (a_obs >= 0.511): ['20200328', '20200401', '20200402', '20201204', '20201211', '20201216']
+Low alignment sessions (a_obs <= 0.185): ['20200327', '20200926', '20230622', '20231103', '20231121', '20231123']
+
+======================================================================
+CORRELATION ANALYSIS
+======================================================================
+a_obs vs D_eff:       r=-0.391, p=0.0794
+a_obs vs manifold_dim: r=-0.500, p=0.0209
+a_obs vs null_mean:   r=0.807, p=0.0000
+a_obs vs auc_C:       r=0.311, p=0.1697
+a_obs vs auc_S:       r=0.453, p=0.0394
+a_obs vs n_trials_C:  r=-0.318, p=0.1604
+a_obs vs n_trials_S:  r=-0.086, p=0.7120
+
+======================================================================
+COMPARISON WITH OTHER CASES
+======================================================================
+case_i (sacc-horiz)                     : N=21, a_obs=0.083±0.071, null=0.243, delta=-0.160
+case_iii (sacc-vert)                    : N=23, a_obs=0.100±0.098, null=0.295, delta=-0.195
+case_iv (stim-horiz vs sacc-horiz)      : N=21, a_obs=0.141±0.146, null=0.238, delta=-0.097
+case_v (stim-pool vs sacc-pool)         : N=23, a_obs=0.156±0.102, null=0.256, delta=-0.100
+case_vi (stim-vert vs sacc-horiz)       : N=21, a_obs=0.358±0.237, null=0.230, delta=0.127
+
+t-test (case vi vs case iv): t=3.484, p=0.0012
+Mann-Whitney U (case vi > case iv): U=338.0, p=0.0016
+
+======================================================================
+GENERATING FIGURES
+======================================================================
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_alltrials/case_vi_correlations.png
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_alltrials/case_comparison.png
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_alltrials/case_vi_sessions.png
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_alltrials/case_vi_analysis.json
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/diagnose_case_vi_matrix.json
+
+======================================================================
+ANALYSIS COMPLETE
+======================================================================
+
+[1/6] DONE
+
+==============================================================
+[2/6] REVERSE CASE ANALYSIS (alltrials)
+==============================================================
+======================================================================
+REVERSE CASE ANALYSIS: Stim-C(horiz) vs Sacc-S(vert)
+======================================================================
+[info] Processing 23 session(s)
+[info] Axes suffix: 20mssw_nofilter
+
+============================================================
+[20200327] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=291
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=276
+            D_C shape: (41, 102), D_S shape: (41, 52)
+  [reverse] Observed: |cos(θ)|=0.1817, θ=79.5°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (41, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 36, D_eff=19.0
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1016
+    [400/1000] null_mean=0.1023
+    [600/1000] null_mean=0.1049
+    [800/1000] null_mean=0.1058
+    [1000/1000] null_mean=0.1035
+  [result] a_obs=0.1817, null_mean=0.1035±0.0783
+           Δ=0.0783, z=1.00
+           p(more orthogonal)=0.8192, p(more aligned)=0.1818
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20200327.json
+
+============================================================
+[20200328] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=255
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=287
+            D_C shape: (60, 102), D_S shape: (60, 52)
+  [reverse] Observed: |cos(θ)|=0.3496, θ=69.5°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (60, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 30, D_eff=3.6
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1348
+    [400/1000] null_mean=0.1355
+    [600/1000] null_mean=0.1352
+    [800/1000] null_mean=0.1366
+    [1000/1000] null_mean=0.1376
+  [result] a_obs=0.3496, null_mean=0.1376±0.0960
+           Δ=0.2120, z=2.21
+           p(more orthogonal)=0.9690, p(more aligned)=0.0320
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20200328.json
+
+============================================================
+[20200401] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=257
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=261
+            D_C shape: (71, 102), D_S shape: (71, 52)
+  [reverse] Observed: |cos(θ)|=0.1304, θ=82.5°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (71, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 40, D_eff=6.6
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1617
+    [400/1000] null_mean=0.1659
+    [600/1000] null_mean=0.1697
+    [800/1000] null_mean=0.1680
+    [1000/1000] null_mean=0.1713
+  [result] a_obs=0.1304, null_mean=0.1713±0.1159
+           Δ=-0.0409, z=-0.35
+           p(more orthogonal)=0.4286, p(more aligned)=0.5724
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20200401.json
+
+============================================================
+[20200402] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=242
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=224
+            D_C shape: (80, 102), D_S shape: (80, 52)
+  [reverse] Observed: |cos(θ)|=0.4136, θ=65.6°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (80, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 40, D_eff=4.7
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2377
+    [400/1000] null_mean=0.2397
+    [600/1000] null_mean=0.2346
+    [800/1000] null_mean=0.2357
+    [1000/1000] null_mean=0.2385
+  [result] a_obs=0.4136, null_mean=0.2385±0.1434
+           Δ=0.1751, z=1.22
+           p(more orthogonal)=0.8501, p(more aligned)=0.1508
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20200402.json
+
+============================================================
+[20200926] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=295
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=286
+            D_C shape: (82, 102), D_S shape: (82, 52)
+  [reverse] Observed: |cos(θ)|=0.0636, θ=86.4°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (82, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 37, D_eff=3.9
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1531
+    [400/1000] null_mean=0.1664
+    [600/1000] null_mean=0.1627
+    [800/1000] null_mean=0.1596
+    [1000/1000] null_mean=0.1609
+  [result] a_obs=0.0636, null_mean=0.1609±0.1087
+           Δ=-0.0974, z=-0.90
+           p(more orthogonal)=0.2268, p(more aligned)=0.7742
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20200926.json
+
+============================================================
+[20200929] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=268
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=303
+            D_C shape: (76, 102), D_S shape: (76, 52)
+  [reverse] Observed: |cos(θ)|=0.0246, θ=88.6°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (76, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 31, D_eff=3.0
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1422
+    [400/1000] null_mean=0.1418
+    [600/1000] null_mean=0.1420
+    [800/1000] null_mean=0.1401
+    [1000/1000] null_mean=0.1405
+  [result] a_obs=0.0246, null_mean=0.1405±0.0993
+           Δ=-0.1159, z=-1.17
+           p(more orthogonal)=0.0959, p(more aligned)=0.9051
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20200929.json
+
+============================================================
+[20201001] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=260
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=299
+            D_C shape: (139, 102), D_S shape: (139, 52)
+  [reverse] Observed: |cos(θ)|=0.3971, θ=66.6°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (139, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 43, D_eff=5.3
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1555
+    [400/1000] null_mean=0.1413
+    [600/1000] null_mean=0.1408
+    [800/1000] null_mean=0.1403
+    [1000/1000] null_mean=0.1394
+  [result] a_obs=0.3971, null_mean=0.1394±0.0909
+           Δ=0.2578, z=2.83
+           p(more orthogonal)=1.0000, p(more aligned)=0.0010
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20201001.json
+
+============================================================
+[20201004] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=297
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=251
+            D_C shape: (123, 102), D_S shape: (123, 52)
+  [reverse] Observed: |cos(θ)|=0.3011, θ=72.5°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (123, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 42, D_eff=3.5
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2573
+    [400/1000] null_mean=0.2553
+    [600/1000] null_mean=0.2559
+    [800/1000] null_mean=0.2509
+    [1000/1000] null_mean=0.2506
+  [result] a_obs=0.3011, null_mean=0.2506±0.1430
+           Δ=0.0505, z=0.35
+           p(more orthogonal)=0.5934, p(more aligned)=0.4076
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20201004.json
+
+============================================================
+[20201204] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=287
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=238
+            D_C shape: (59, 102), D_S shape: (59, 52)
+  [reverse] Observed: |cos(θ)|=0.1702, θ=80.2°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (59, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 28, D_eff=5.1
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1915
+    [400/1000] null_mean=0.1962
+    [600/1000] null_mean=0.1973
+    [800/1000] null_mean=0.2000
+    [1000/1000] null_mean=0.1997
+  [result] a_obs=0.1702, null_mean=0.1997±0.1401
+           Δ=-0.0295, z=-0.21
+           p(more orthogonal)=0.4895, p(more aligned)=0.5115
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20201204.json
+
+============================================================
+[20201211] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=306
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=256
+            D_C shape: (60, 102), D_S shape: (60, 52)
+  [reverse] Observed: |cos(θ)|=0.5154, θ=59.0°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (60, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 32, D_eff=5.7
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2138
+    [400/1000] null_mean=0.2114
+    [600/1000] null_mean=0.2080
+    [800/1000] null_mean=0.2078
+    [1000/1000] null_mean=0.2074
+  [result] a_obs=0.5154, null_mean=0.2074±0.1400
+           Δ=0.3079, z=2.20
+           p(more orthogonal)=0.9840, p(more aligned)=0.0170
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20201211.json
+
+============================================================
+[20201216] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=252
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=267
+            D_C shape: (77, 102), D_S shape: (77, 52)
+  [reverse] Observed: |cos(θ)|=0.5945, θ=53.5°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (77, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 37, D_eff=4.4
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2077
+    [400/1000] null_mean=0.2120
+    [600/1000] null_mean=0.2211
+    [800/1000] null_mean=0.2211
+    [1000/1000] null_mean=0.2244
+  [result] a_obs=0.5945, null_mean=0.2244±0.1350
+           Δ=0.3701, z=2.74
+           p(more orthogonal)=1.0000, p(more aligned)=0.0010
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20201216.json
+
+============================================================
+[20230622] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=553
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=542
+            D_C shape: (118, 102), D_S shape: (118, 52)
+  [reverse] Observed: |cos(θ)|=0.1227, θ=83.0°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (118, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 46, D_eff=3.3
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2076
+    [400/1000] null_mean=0.2114
+    [600/1000] null_mean=0.2085
+    [800/1000] null_mean=0.2050
+    [1000/1000] null_mean=0.2055
+  [result] a_obs=0.1227, null_mean=0.2055±0.1180
+           Δ=-0.0828, z=-0.70
+           p(more orthogonal)=0.2957, p(more aligned)=0.7053
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20230622.json
+
+============================================================
+[20230627] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=520
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=582
+            D_C shape: (68, 102), D_S shape: (68, 52)
+  [reverse] Observed: |cos(θ)|=0.2101, θ=77.9°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (68, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 30, D_eff=2.1
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.3689
+    [400/1000] null_mean=0.3649
+    [600/1000] null_mean=0.3652
+    [800/1000] null_mean=0.3663
+    [1000/1000] null_mean=0.3629
+  [result] a_obs=0.2101, null_mean=0.3629±0.1772
+           Δ=-0.1529, z=-0.86
+           p(more orthogonal)=0.2318, p(more aligned)=0.7692
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20230627.json
+
+============================================================
+[20230705] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=442
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=534
+            D_C shape: (84, 102), D_S shape: (84, 52)
+  [reverse] Observed: |cos(θ)|=0.0453, θ=87.4°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (84, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 38, D_eff=2.7
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1277
+    [400/1000] null_mean=0.1272
+    [600/1000] null_mean=0.1235
+    [800/1000] null_mean=0.1230
+    [1000/1000] null_mean=0.1247
+  [result] a_obs=0.0453, null_mean=0.1247±0.0867
+           Δ=-0.0794, z=-0.92
+           p(more orthogonal)=0.2238, p(more aligned)=0.7772
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20230705.json
+
+============================================================
+[20230707] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=464
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=554
+            D_C shape: (32, 102), D_S shape: (32, 52)
+  [reverse] Observed: |cos(θ)|=0.1027, θ=84.1°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (32, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 22, D_eff=2.0
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.4206
+    [400/1000] null_mean=0.4073
+    [600/1000] null_mean=0.3942
+    [800/1000] null_mean=0.3938
+    [1000/1000] null_mean=0.4006
+  [result] a_obs=0.1027, null_mean=0.4006±0.1915
+           Δ=-0.2979, z=-1.56
+           p(more orthogonal)=0.0909, p(more aligned)=0.9101
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20230707.json
+
+============================================================
+[20230710] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=570
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=515
+            D_C shape: (66, 102), D_S shape: (66, 52)
+  [reverse] Observed: |cos(θ)|=0.2671, θ=74.5°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (66, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 40, D_eff=5.8
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1503
+    [400/1000] null_mean=0.1481
+    [600/1000] null_mean=0.1469
+    [800/1000] null_mean=0.1486
+    [1000/1000] null_mean=0.1467
+  [result] a_obs=0.2671, null_mean=0.1467±0.0987
+           Δ=0.1204, z=1.22
+           p(more orthogonal)=0.8571, p(more aligned)=0.1439
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20230710.json
+
+============================================================
+[20231025] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=250
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=416
+            D_C shape: (48, 102), D_S shape: (48, 52)
+  [reverse] Observed: |cos(θ)|=0.0358, θ=87.9°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (48, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 37, D_eff=5.2
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1904
+    [400/1000] null_mean=0.2059
+    [600/1000] null_mean=0.2122
+    [800/1000] null_mean=0.2092
+    [1000/1000] null_mean=0.2114
+  [result] a_obs=0.0358, null_mean=0.2114±0.1380
+           Δ=-0.1756, z=-1.27
+           p(more orthogonal)=0.0989, p(more aligned)=0.9021
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20231025.json
+
+============================================================
+[20231103] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=64
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=89
+            D_C shape: (72, 102), D_S shape: (72, 52)
+  [reverse] Observed: |cos(θ)|=0.0465, θ=87.3°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (72, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 45, D_eff=7.8
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.0720
+    [400/1000] null_mean=0.0706
+    [600/1000] null_mean=0.0699
+    [800/1000] null_mean=0.0706
+    [1000/1000] null_mean=0.0717
+  [result] a_obs=0.0465, null_mean=0.0717±0.0475
+           Δ=-0.0251, z=-0.53
+           p(more orthogonal)=0.3616, p(more aligned)=0.6394
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20231103.json
+
+============================================================
+[20231109] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=275
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=454
+            D_C shape: (77, 102), D_S shape: (77, 52)
+  [reverse] Observed: |cos(θ)|=0.4995, θ=60.0°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (77, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 44, D_eff=6.7
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2357
+    [400/1000] null_mean=0.2379
+    [600/1000] null_mean=0.2328
+    [800/1000] null_mean=0.2322
+    [1000/1000] null_mean=0.2373
+  [result] a_obs=0.4995, null_mean=0.2373±0.1492
+           Δ=0.2622, z=1.76
+           p(more orthogonal)=0.9570, p(more aligned)=0.0440
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20231109.json
+
+============================================================
+[20231121] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=350
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=516
+            D_C shape: (61, 102), D_S shape: (61, 52)
+  [reverse] Observed: |cos(θ)|=0.1385, θ=82.0°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (61, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 36, D_eff=4.2
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.2857
+    [400/1000] null_mean=0.2832
+    [600/1000] null_mean=0.2753
+    [800/1000] null_mean=0.2763
+    [1000/1000] null_mean=0.2763
+  [result] a_obs=0.1385, null_mean=0.2763±0.1764
+           Δ=-0.1378, z=-0.78
+           p(more orthogonal)=0.2787, p(more aligned)=0.7223
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20231121.json
+
+============================================================
+[20231123] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [reverse] Building geometry from both epochs (Z-scored, SW-transformed)...
+            C epoch: stim, horizontal, window=(0.0, 0.5), trials=303
+            S epoch: sacc, vertical, window=(-0.2, 0.05), trials=571
+            D_C shape: (102, 102), D_S shape: (102, 52)
+  [reverse] Observed: |cos(θ)|=0.1721, θ=80.1°
+  [null] Building S-epoch geometry with both C and S conditions...
+         Using SAME SW-transformed S cache as observed geometry
+         D_S_combined shape: (102, 104)
+  [null] Using S-epoch geometry (fixed-axis null)
+  [null] Manifold dim: 46, D_eff=4.6
+  [null] Running 1000 covariance-constrained null samples...
+    [200/1000] null_mean=0.1883
+    [400/1000] null_mean=0.1888
+    [600/1000] null_mean=0.1892
+    [800/1000] null_mean=0.1852
+    [1000/1000] null_mean=0.1879
+  [result] a_obs=0.1721, null_mean=0.1879±0.1173
+           Δ=-0.0158, z=-0.14
+           p(more orthogonal)=0.4735, p(more aligned)=0.5275
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/reverse_case_alltrials_20231123.json
+
+============================================================
+[20231130] Processing...
+  [skip] Missing sC or sS_raw
+
+============================================================
+[20231205] Processing...
+  [preprocess] Applying sliding window to both caches for observed geometry...
+               20.0ms window, 10.0ms step
+               C (stim): 2 bins, step 1
+               S (sacc): 4 bins, step 2
+  [skip] Not enough trials for C: 26
+
+======================================================================
+[done] Results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials
+======================================================================
+
+[2/6] DONE
+
+==============================================================
+[3/6] TEMPORAL CROSS-ALIGNMENT (alltrials)
+==============================================================
+======================================================================
+TEMPORAL CROSS-ALIGNMENT ANALYSIS
+======================================================================
+[info] Processing 23 session(s)
+[info] C: vertical (stim-aligned)
+[info] S: horizontal (sacc-aligned, tag: axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter)
+
+============================================================
+[20200327] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (41, 204)
+         Manifold dim: 39, D_eff=22.7
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.088, Max: 0.218
+           Null: 0.115±0.086
+           Peak time: 25ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20200327_MFEF.json
+
+============================================================
+[20200328] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (60, 204)
+         Manifold dim: 39, D_eff=3.4
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.365, Max: 0.598
+           Null: 0.333±0.189
+           Peak time: 225ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20200328_MFEF.json
+
+============================================================
+[20200401] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (71, 204)
+         Manifold dim: 50, D_eff=5.3
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.511, Max: 0.722
+           Null: 0.273±0.167
+           Peak time: 305ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20200401_MFEF.json
+
+============================================================
+[20200402] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (80, 204)
+         Manifold dim: 49, D_eff=3.6
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.339, Max: 0.525
+           Null: 0.195±0.117
+           Peak time: 305ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20200402_MFEF.json
+
+============================================================
+[20200926] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (82, 204)
+         Manifold dim: 49, D_eff=4.9
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.085, Max: 0.238
+           Null: 0.133±0.093
+           Peak time: 185ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20200926_MFEF.json
+
+============================================================
+[20200929] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (76, 204)
+         Manifold dim: 44, D_eff=4.3
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.183, Max: 0.289
+           Null: 0.173±0.103
+           Peak time: 185ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20200929_MFEF.json
+
+============================================================
+[20201001] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (139, 204)
+         Manifold dim: 66, D_eff=5.5
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.274, Max: 0.470
+           Null: 0.152±0.103
+           Peak time: 225ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20201001_MFEF.json
+
+============================================================
+[20201004] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (123, 204)
+         Manifold dim: 62, D_eff=3.9
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.297, Max: 0.450
+           Null: 0.170±0.114
+           Peak time: 265ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20201004_MFEF.json
+
+============================================================
+[20201204] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (59, 204)
+         Manifold dim: 36, D_eff=4.4
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.419, Max: 0.732
+           Null: 0.274±0.170
+           Peak time: 225ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20201204_MFEF.json
+
+============================================================
+[20201211] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (60, 204)
+         Manifold dim: 40, D_eff=4.1
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.398, Max: 0.607
+           Null: 0.180±0.128
+           Peak time: 265ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20201211_MFEF.json
+
+============================================================
+[20201216] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (77, 204)
+         Manifold dim: 47, D_eff=3.4
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.206, Max: 0.519
+           Null: 0.257±0.150
+           Peak time: 245ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20201216_MFEF.json
+
+============================================================
+[20230622] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (118, 204)
+         Manifold dim: 70, D_eff=4.0
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.127, Max: 0.252
+           Null: 0.231±0.125
+           Peak time: 465ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20230622_SFEF.json
+
+============================================================
+[20230627] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (68, 204)
+         Manifold dim: 36, D_eff=1.9
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.142, Max: 0.336
+           Null: 0.171±0.087
+           Peak time: 225ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20230627_SFEF.json
+
+============================================================
+[20230705] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (84, 204)
+         Manifold dim: 51, D_eff=3.8
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.109, Max: 0.315
+           Null: 0.168±0.105
+           Peak time: 425ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20230705_SFEF.json
+
+============================================================
+[20230707] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (32, 204)
+         Manifold dim: 23, D_eff=2.0
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.201, Max: 0.434
+           Null: 0.148±0.106
+           Peak time: 105ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20230707_SFEF.json
+
+============================================================
+[20230710] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (66, 204)
+         Manifold dim: 49, D_eff=4.4
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.253, Max: 0.427
+           Null: 0.217±0.132
+           Peak time: 305ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20230710_SFEF.json
+
+============================================================
+[20231025] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (48, 204)
+         Manifold dim: 40, D_eff=3.3
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.160, Max: 0.367
+           Null: 0.123±0.086
+           Peak time: 445ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20231025_SFEF.json
+
+============================================================
+[20231103] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (72, 204)
+         Manifold dim: 57, D_eff=5.8
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.145, Max: 0.337
+           Null: 0.239±0.139
+           Peak time: 185ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20231103_SFEF.json
+
+============================================================
+[20231109] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (77, 204)
+         Manifold dim: 56, D_eff=5.6
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.165, Max: 0.314
+           Null: 0.114±0.083
+           Peak time: 85ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20231109_SFEF.json
+
+============================================================
+[20231121] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (61, 204)
+         Manifold dim: 43, D_eff=3.2
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.109, Max: 0.216
+           Null: 0.181±0.101
+           Peak time: 465ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20231121_SFEF.json
+
+============================================================
+[20231123] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (102, 204)
+         Manifold dim: 64, D_eff=4.1
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.174, Max: 0.285
+           Null: 0.142±0.089
+           Peak time: 145ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20231123_SFEF.json
+
+============================================================
+[20231130] Processing...
+  [skip] Missing sS_raw in sacc axes
+
+============================================================
+[20231205] Processing...
+  [temporal] 23 time windows from 0ms to 500ms
+             C orientation: vertical, S orientation: horizontal
+  [null] Computing null distribution (500 samples)...
+         Using C-EPOCH geometry (stim-aligned, vertical orientation)
+         D_C_combined shape: (104, 204)
+         Manifold dim: 72, D_eff=6.6
+         Using C-epoch geometry (correct null for temporal analysis)
+  [result] Mean alignment: 0.082, Max: 0.230
+           Null: 0.154±0.101
+           Peak time: 65ms
+  [saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_20231205_SFEF.json
+
+============================================================
+Generating summary figure...
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal/case_vi_temporal_summary.png
+
+======================================================================
+[done] Results saved to /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/case_vi_temporal
+======================================================================
+
+[3/6] DONE
+
+==============================================================
+[4/6] AXIS PROJECTION ANALYSIS (alltrials)
+==============================================================
+Analyzing 23 sessions...
+  Processing 20200327...
+    cos(C,S)=0.215, n_shared_pcs=0, overlap=0.0450
+  Processing 20200328...
+    cos(C,S)=0.568, n_shared_pcs=1, overlap=0.2209
+  Processing 20200401...
+    cos(C,S)=0.664, n_shared_pcs=3, overlap=0.1125
+  Processing 20200402...
+    cos(C,S)=0.545, n_shared_pcs=1, overlap=0.1317
+  Processing 20200926...
+    cos(C,S)=0.013, n_shared_pcs=1, overlap=0.0435
+  Processing 20200929...
+    cos(C,S)=0.273, n_shared_pcs=3, overlap=0.1422
+  Processing 20201001...
+    cos(C,S)=0.477, n_shared_pcs=1, overlap=0.1313
+  Processing 20201004...
+    cos(C,S)=0.438, n_shared_pcs=2, overlap=0.1051
+  Processing 20201204...
+    cos(C,S)=0.705, n_shared_pcs=2, overlap=0.2355
+  Processing 20201211...
+    cos(C,S)=0.559, n_shared_pcs=1, overlap=0.1653
+  Processing 20201216...
+    cos(C,S)=0.512, n_shared_pcs=2, overlap=0.0740
+  Processing 20230622...
+    cos(C,S)=0.106, n_shared_pcs=2, overlap=0.0976
+  Processing 20230627...
+    cos(C,S)=0.058, n_shared_pcs=0, overlap=0.0267
+  Processing 20230705...
+    cos(C,S)=0.180, n_shared_pcs=1, overlap=0.0554
+  Processing 20230707...
+    cos(C,S)=0.207, n_shared_pcs=2, overlap=0.1940
+  Processing 20230710...
+    cos(C,S)=0.419, n_shared_pcs=0, overlap=0.0387
+  Processing 20231025...
+    cos(C,S)=0.144, n_shared_pcs=0, overlap=0.0177
+  Processing 20231103...
+    cos(C,S)=0.071, n_shared_pcs=0, overlap=0.0249
+  Processing 20231109...
+    cos(C,S)=0.257, n_shared_pcs=0, overlap=0.0110
+  Processing 20231121...
+    cos(C,S)=0.126, n_shared_pcs=0, overlap=0.0320
+  Processing 20231123...
+    cos(C,S)=0.129, n_shared_pcs=0, overlap=0.0467
+  Processing 20231130...
+  Processing 20231205...
+    cos(C,S)=0.037, n_shared_pcs=0, overlap=0.0041
+
+======================================================================
+SUMMARY
+======================================================================
+N sessions analyzed: 22
+Mean cos(C,S): 0.305 ± 0.215
+Mean overlap metric: 0.0889 ± 0.0682
+Mean N shared PCs: 1.0 ± 1.0
+Correlation(cos, overlap): r = 0.698
+
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/axis_projection_analysis_alltrials/summary.json
+
+[4/6] DONE
+
+==============================================================
+[5/6] TARGET LOCATION CONFOUND (alltrials)
+==============================================================
+Analyzing 23 sessions...
+  Processing 20200327...
+    cos(C,S)=0.215
+  Processing 20200328...
+    cos(C,S)=0.568
+  Processing 20200401...
+    cos(C,S)=0.664
+  Processing 20200402...
+    cos(C,S)=0.545
+  Processing 20200926...
+    cos(C,S)=0.013
+  Processing 20200929...
+    cos(C,S)=0.273
+  Processing 20201001...
+    cos(C,S)=0.477
+  Processing 20201004...
+    cos(C,S)=0.438
+  Processing 20201204...
+    cos(C,S)=0.705
+  Processing 20201211...
+    cos(C,S)=0.559
+  Processing 20201216...
+    cos(C,S)=0.512
+  Processing 20230622...
+    cos(C,S)=0.106
+  Processing 20230627...
+    cos(C,S)=0.058
+  Processing 20230705...
+    cos(C,S)=0.180
+  Processing 20230707...
+    cos(C,S)=0.207
+  Processing 20230710...
+    cos(C,S)=0.419
+  Processing 20231025...
+    cos(C,S)=0.144
+  Processing 20231103...
+    cos(C,S)=0.071
+  Processing 20231109...
+    cos(C,S)=0.257
+  Processing 20231121...
+    cos(C,S)=0.126
+  Processing 20231123...
+    cos(C,S)=0.129
+  Processing 20231130...
+  Processing 20231205...
+    cos(C,S)=0.037
+
+======================================================================
+SUMMARY
+======================================================================
+N sessions: 22
+Mean cos(C,S) original: 0.305 ± 0.215
+
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/target_location_analysis_alltrials/summary.json
+
+[5/6] DONE
+
+==============================================================
+[6/6] COMPREHENSIVE SUMMARY (alltrials)
+==============================================================
+======================================================================
+CASE VI INVESTIGATION SUMMARY (alltrials)
+======================================================================
+
+Loaded results:
+  Case vi driver analysis: Yes
+  Case vi original: 21 sessions
+  Reverse case: 21 sessions
+  Temporal cross-alignment: 22 sessions
+
+======================================================================
+CASE VI vs REVERSE CASE COMPARISON
+======================================================================
+
+Matched sessions: 21
+
+Session        VI_a_obs  Rev_a_obs    VI_null   Rev_null     VI-Rev
+-----------------------------------------------------------------
+20200327          0.165      0.182      0.152      0.103     -0.017
+20200328          0.529      0.350      0.348      0.138     +0.179
+20200401          0.750      0.130      0.275      0.171     +0.620
+20200402          0.511      0.414      0.207      0.238     +0.098
+20200926          0.045      0.064      0.110      0.161     -0.019
+20200929          0.318      0.025      0.167      0.140     +0.293
+20201001          0.418      0.397      0.198      0.139     +0.021
+20201004          0.435      0.301      0.308      0.251     +0.134
+20201204          0.784      0.170      0.369      0.200     +0.614
+20201211          0.657      0.515      0.341      0.207     +0.141
+20201216          0.673      0.594      0.420      0.224     +0.079
+20230622          0.000      0.123      0.203      0.205     -0.123
+20230627          0.248      0.210      0.222      0.363     +0.038
+20230705          0.226      0.045      0.173      0.125     +0.181
+20230707          0.500      0.103      0.292      0.401     +0.397
+20230710          0.494      0.267      0.192      0.147     +0.227
+20231025          0.202      0.036      0.184      0.211     +0.166
+20231103          0.021      0.047      0.090      0.072     -0.025
+20231109          0.296      0.499      0.270      0.237     -0.204
+20231121          0.056      0.139      0.180      0.276     -0.082
+20231123          0.185      0.172      0.139      0.188     +0.013
+-----------------------------------------------------------------
+Mean              0.358      0.228
+Std               0.237      0.169
+
+Paired t-test (VI vs Reverse): t=2.788, p=0.0113
+Wilcoxon signed-rank: W=44.0, p=0.0113
+Correlation (VI vs Reverse): r=0.515, p=0.0168
+
+======================================================================
+GENERATING COMPREHENSIVE FIGURE
+======================================================================
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_alltrials/case_vi_comprehensive_summary.png
+  Saved: /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_alltrials/case_vi_investigation_summary.json
+
+======================================================================
+SUMMARY COMPLETE
+======================================================================
+
+[6/6] DONE
+
+Results for alltrials saved to:
+  - /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/case_vi_analysis_alltrials/
+  - /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/reverse_case_alltrials/
+  - /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/temporal_cross_alignment_alltrials/
+  - /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/axis_projection_analysis_alltrials/
+  - /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/vi/target_location_analysis_alltrials/
+
+==============================================================
+ALL ANALYSES COMPLETE
+==============================================================
+End time: Tue Feb  3 21:56:20 CST 2026

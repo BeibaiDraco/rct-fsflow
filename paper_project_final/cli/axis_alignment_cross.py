@@ -31,6 +31,8 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 import numpy as np
 
+from paperflow.norm import sliding_window_cache_data
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -301,12 +303,21 @@ def analyze_cross_alignment(
     # QC thresholds (optional)
     qc_threshold_C: float = 0.0,
     qc_threshold_S: float = 0.0,
+    # Null distribution mode
+    null_mode: str = "s_epoch",  # "s_epoch" (fixed-axis) or "combined" (legacy)
 ) -> Optional[Dict]:
     """
     Cross-alignment analysis: C from one alignment vs S from another.
     
     This handles the coordinate system alignment needed when axes
     come from different caches with different z-scorings.
+    
+    Null distribution modes:
+    - "s_epoch" (recommended): Sample random S from S-epoch geometry only.
+      This tests: "Is the actual S more aligned with C than a random S 
+      from the S-epoch manifold?" More comparable to same-alignment nulls.
+    - "combined": Sample from combined (C + S epoch) geometry.
+      This tests: "Is the alignment unusual given the joint structure?"
     """
     area = get_fef_area(sid)
     
@@ -378,9 +389,44 @@ def analyze_cross_alignment(
     sC_raw = convert_axis_to_raw(sC_Z, sigma_C)
     sS_raw = convert_axis_to_raw(sS_Z, sigma_S)
     
-    # --- Build trial masks ---
-    mask_C = trial_mask(cache_C, orientation_C, pt_min_ms)
-    mask_S = trial_mask(cache_S, orientation_S, pt_min_ms)
+    # --- Apply sliding window transformation to BOTH caches for OBSERVED geometry ---
+    # This ensures consistency: both observed and null use the same data representation
+    # Parameters: 20ms window, 10ms step
+    # IMPORTANT: Native bin sizes differ by alignment:
+    #   - Stim-aligned caches: 10ms native bins
+    #   - Sacc-aligned caches: 5ms native bins
+    sliding_window_ms = 20.0
+    sliding_step_ms = 10.0
+    
+    # Stim-aligned cache (cache_C): 10ms native bins
+    native_bin_ms_stim = 10.0
+    sw_bins_C = int(sliding_window_ms / native_bin_ms_stim)  # 2 bins
+    sw_step_C = int(sliding_step_ms / native_bin_ms_stim)    # 1 bin
+    
+    # Sacc-aligned cache (cache_S): 5ms native bins
+    native_bin_ms_sacc = 5.0
+    sw_bins_S = int(sliding_window_ms / native_bin_ms_sacc)  # 4 bins
+    sw_step_S = int(sliding_step_ms / native_bin_ms_sacc)    # 2 bins
+    
+    print(f"  [preprocess] Applying sliding window to both caches for observed geometry...")
+    print(f"               {sliding_window_ms}ms window, {sliding_step_ms}ms step")
+    print(f"               C (stim): {sw_bins_C} bins, step {sw_step_C}")
+    print(f"               S (sacc): {sw_bins_S} bins, step {sw_step_S}")
+    
+    # Apply SW with alignment-specific parameters
+    if sw_bins_C > 0 and sw_step_C > 0:
+        cache_C_sw, _ = sliding_window_cache_data(cache_C, sw_bins_C, sw_step_C)
+    else:
+        cache_C_sw = cache_C
+    
+    if sw_bins_S > 0 and sw_step_S > 0:
+        cache_S_sw, _ = sliding_window_cache_data(cache_S, sw_bins_S, sw_step_S)
+    else:
+        cache_S_sw = cache_S
+    
+    # --- Build trial masks on SW-transformed caches ---
+    mask_C = trial_mask(cache_C_sw, orientation_C, pt_min_ms)
+    mask_S = trial_mask(cache_S_sw, orientation_S, pt_min_ms)
     
     if mask_C.sum() < 40:
         print(f"  [skip] Not enough trials for C: {mask_C.sum()}")
@@ -389,45 +435,42 @@ def analyze_cross_alignment(
         print(f"  [skip] Not enough trials for S: {mask_S.sum()}")
         return None
     
-    # --- Get raw X data and labels ---
-    time_C = cache_C["time"].astype(float)
-    time_S = cache_S["time"].astype(float)
+    # --- Get data and labels from SW-transformed caches ---
+    # Use Z-scored data for consistency with same-alignment methodology
+    time_C = cache_C_sw["time"].astype(float)
+    time_S = cache_S_sw["time"].astype(float)
     
-    # Use X if available, otherwise Z (less ideal for cross-cache comparison)
-    if "X" in cache_C and "X" in cache_S:
-        X_C = cache_C["X"][mask_C].astype(np.float64)
-        X_S = cache_S["X"][mask_S].astype(np.float64)
-    else:
-        print(f"  [warn] Using Z instead of X for geometry (less ideal)")
-        X_C = cache_C["Z"][mask_C].astype(np.float64) * sigma_C
-        X_S = cache_S["Z"][mask_S].astype(np.float64) * sigma_S
+    # Use Z-scored data (same as same-alignment)
+    Z_C = cache_C_sw["Z"][mask_C].astype(np.float64)
+    Z_S = cache_S_sw["Z"][mask_S].astype(np.float64)
     
     # Labels for condition averaging
-    C_labels_C = cache_C.get("lab_C", np.full(cache_C["Z"].shape[0], np.nan))[mask_C].astype(float)
-    S_labels_S = cache_S.get("lab_S", np.full(cache_S["Z"].shape[0], np.nan))[mask_S].astype(float)
+    C_labels_C = cache_C_sw.get("lab_C", np.full(cache_C_sw["Z"].shape[0], np.nan))[mask_C].astype(float)
+    S_labels_S = cache_S_sw.get("lab_S", np.full(cache_S_sw["Z"].shape[0], np.nan))[mask_S].astype(float)
     
     # Additional labels for rich condition IDs
-    S_labels_C = cache_C.get("lab_S", np.full(cache_C["Z"].shape[0], np.nan))[mask_C].astype(float)
-    R_labels_C = cache_C.get("lab_R", np.full(cache_C["Z"].shape[0], np.nan))[mask_C].astype(float)
-    ori_C = cache_C.get("lab_orientation", np.array(["pooled"] * cache_C["Z"].shape[0]))[mask_C]
+    S_labels_C = cache_C_sw.get("lab_S", np.full(cache_C_sw["Z"].shape[0], np.nan))[mask_C].astype(float)
+    R_labels_C = cache_C_sw.get("lab_R", np.full(cache_C_sw["Z"].shape[0], np.nan))[mask_C].astype(float)
+    ori_C = cache_C_sw.get("lab_orientation", np.array(["pooled"] * cache_C_sw["Z"].shape[0]))[mask_C]
     
-    C_labels_S = cache_S.get("lab_C", np.full(cache_S["Z"].shape[0], np.nan))[mask_S].astype(float)
-    R_labels_S = cache_S.get("lab_R", np.full(cache_S["Z"].shape[0], np.nan))[mask_S].astype(float)
-    ori_S = cache_S.get("lab_orientation", np.array(["pooled"] * cache_S["Z"].shape[0]))[mask_S]
+    C_labels_S = cache_S_sw.get("lab_C", np.full(cache_S_sw["Z"].shape[0], np.nan))[mask_S].astype(float)
+    R_labels_S = cache_S_sw.get("lab_R", np.full(cache_S_sw["Z"].shape[0], np.nan))[mask_S].astype(float)
+    ori_S = cache_S_sw.get("lab_orientation", np.array(["pooled"] * cache_S_sw["Z"].shape[0]))[mask_S]
     
-    # --- Build condition-averaged activity in raw X space ---
-    print(f"  [cross] Building geometry from both epochs...")
+    # --- Build condition-averaged activity using Z-scored data (SW-transformed) ---
+    # This matches same-alignment methodology exactly
+    print(f"  [cross] Building geometry from both epochs (Z-scored, SW-transformed)...")
     print(f"          C epoch: {align_C}, window={win_C}, trials={mask_C.sum()}")
     print(f"          S epoch: {align_S}, window={win_S}, trials={mask_S.sum()}")
     
     D_C = condition_average_activity(
-        X_C, C_labels_C, time_C, win_C,
+        Z_C, C_labels_C, time_C, win_C,
         use_rich_cond=use_rich_cond,
         C=C_labels_C, S=S_labels_C, R=R_labels_C, orientation=ori_C
     )
     
     D_S = condition_average_activity(
-        X_S, S_labels_S, time_S, win_S,
+        Z_S, S_labels_S, time_S, win_S,
         use_rich_cond=use_rich_cond,
         C=C_labels_S, S=S_labels_S, R=R_labels_S, orientation=ori_S
     )
@@ -438,17 +481,18 @@ def analyze_cross_alignment(
     
     print(f"          D_C shape: {D_C.shape}, D_S shape: {D_S.shape}")
     
-    # --- Concatenate and compute common standardization ---
+    # --- Concatenate and center (already Z-scored, no additional standardization needed) ---
     D_combined = np.hstack([D_C, D_S])
+    D_combined_centered = D_combined - D_combined.mean(axis=1, keepdims=True)
     
-    # Per-unit std from combined data
+    # For coordinate conversion, we still need a common reference
+    # Since both caches are independently Z-scored, we use the combined geometry's std
     sigma_ref = np.std(D_combined, axis=1)
     sigma_ref[~np.isfinite(sigma_ref) | (sigma_ref < 1e-8)] = 1.0
     
-    # Standardize the geometry matrix
-    D_std = D_combined / sigma_ref[:, None]
-    
     # --- Convert axes to standardized space ---
+    # Axes were trained on their respective caches (different z-scorings)
+    # Convert to common standardized space using sigma_ref
     sC_std = convert_axis_to_standardized(sC_raw, sigma_ref)
     sS_std = convert_axis_to_standardized(sS_raw, sigma_ref)
     
@@ -459,9 +503,47 @@ def analyze_cross_alignment(
     
     print(f"  [cross] Observed: |cos(θ)|={a_obs:.4f}, θ={theta_obs:.1f}°")
     
-    # --- Build covariance factor ---
-    D_centered = D_std - D_std.mean(axis=1, keepdims=True)
-    U_cov, s_cov, _ = np.linalg.svd(D_centered, full_matrices=False)
+    # --- Build covariance factor based on null_mode ---
+    print(f"  [null] Mode: {null_mode}")
+    
+    if null_mode == "s_epoch":
+        # FIXED-AXIS NULL: Use S-epoch geometry with BOTH C and S conditions
+        # This matches the same-alignment methodology where D_combined = [D_C, D_S]
+        # but applied to the S epoch (sacc-aligned) cache
+        # 
+        # IMPORTANT: Use the SAME SW-transformed data as the observed geometry
+        # to ensure consistency between observed and null
+        print(f"         Building S-epoch geometry with both C and S conditions...")
+        print(f"         Using SAME SW-transformed S cache as observed geometry")
+        
+        # Build D_C from S epoch using Z-scored data (C labels, S time window)
+        # Uses the same SW-transformed cache_S_sw and its derived data
+        D_C_from_S_epoch_Z = condition_average_activity(
+            Z_S, C_labels_S, time_S, win_S,
+            use_rich_cond=use_rich_cond,
+            C=C_labels_S, S=S_labels_S, R=R_labels_S, orientation=ori_S
+        )
+        
+        # D_S is already computed above from the same cache (S labels, S time window)
+        # Use it directly for the combined S-epoch geometry
+        
+        # Combine: D_C and D_S from S epoch (same cache, same window, z-scored)
+        if D_C_from_S_epoch_Z.size > 0 and D_S.size > 0:
+            D_S_combined_Z = np.hstack([D_C_from_S_epoch_Z, D_S])
+            D_S_centered = D_S_combined_Z - D_S_combined_Z.mean(axis=1, keepdims=True)
+            print(f"         D_S_combined shape: {D_S_combined_Z.shape}")
+        else:
+            # Fallback to D_S only if D_C_from_S_epoch is empty
+            D_S_centered = D_S - D_S.mean(axis=1, keepdims=True)
+            print(f"         [warn] Using D_S only (D_C_from_S_epoch was empty)")
+        
+        U_cov, s_cov, _ = np.linalg.svd(D_S_centered, full_matrices=False)
+        print(f"         Using S-epoch geometry (fixed-axis null, z-scored, sliding window)")
+    else:
+        # COMBINED NULL (legacy): Use combined geometry from both epochs
+        # D_combined_centered was already computed above
+        U_cov, s_cov, _ = np.linalg.svd(D_combined_centered, full_matrices=False)
+        print(f"         Using combined (C+S) geometry")
     
     # Keep components explaining 99% variance
     cumvar = np.cumsum(s_cov**2) / np.sum(s_cov**2)
@@ -574,6 +656,7 @@ def analyze_cross_alignment(
         "D_C_shape": list(D_C.shape),
         "D_S_shape": list(D_S.shape),
         "use_rich_cond": use_rich_cond,
+        "null_mode": null_mode,
         
         # Settings
         "win_C": list(win_C),
@@ -694,6 +777,11 @@ Case iv:  C from stim (pooled) vs S from sacc (pooled)
     parser.add_argument("--qc_threshold_C", type=float, default=0.0)
     parser.add_argument("--qc_threshold_S", type=float, default=0.0)
     
+    # Null distribution mode
+    parser.add_argument("--null_mode", default="s_epoch", choices=["s_epoch", "combined"],
+                        help="Null mode: 's_epoch' (fixed-axis, recommended) uses S-epoch geometry only; "
+                             "'combined' uses joint C+S geometry (legacy)")
+    
     # Output
     parser.add_argument("--tag", default="cross",
                         help="Output tag for result files")
@@ -724,6 +812,7 @@ Case iv:  C from stim (pooled) vs S from sacc (pooled)
     print(f"[info] C: {args.align_C}/{args.axes_tag_C} ({args.orientation_C})")
     print(f"[info] S: {args.align_S}/{args.axes_tag_S} ({args.orientation_S})")
     print(f"[info] win_C: {args.win_C}, win_S: {args.win_S}")
+    print(f"[info] Null mode: {args.null_mode}")
     print(f"[info] Use rich conditions: {use_rich_cond}")
     
     # Output directory
@@ -752,6 +841,7 @@ Case iv:  C from stim (pooled) vs S from sacc (pooled)
             use_rich_cond=use_rich_cond,
             qc_threshold_C=args.qc_threshold_C,
             qc_threshold_S=args.qc_threshold_S,
+            null_mode=args.null_mode,
         )
         
         if result is not None:

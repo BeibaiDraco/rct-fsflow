@@ -1143,8 +1143,11 @@ def analyze_session_axis_covariance(
         print(f"  [skip] Empty condition-averaged matrix")
         return None
     
+    print(f"  [null] D_C shape: {D_C.shape}, D_S shape: {D_S.shape}")
+    
     # Build manifold covariance estimate from combined data
     D_combined = np.hstack([D_C, D_S])
+    print(f"  [null] D_combined shape: {D_combined.shape}")
     D_combined_centered = D_combined - D_combined.mean(axis=1, keepdims=True)
     
     # SVD for covariance structure

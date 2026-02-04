@@ -9,30 +9,31 @@
   "align_S": "sacc",
   "axes_tag_S": "axes_peakbin_saccCS-sacc-horizontal-20mssw",
   "orientation_S": "horizontal",
-  "a_obs": 0.02318277701092367,
-  "theta_obs_deg": 88.67160571279824,
-  "null_mean": 0.14357413943835867,
-  "null_std": 0.10780574859886861,
-  "null_angle_mean_deg": 81.68286978822482,
-  "p_orth": 0.10989010989010989,
-  "p_align": 0.8911088911088911,
+  "a_obs": 0.06694409291692086,
+  "theta_obs_deg": 86.16151532808516,
+  "null_mean": 0.07717448124493008,
+  "null_std": 0.06108971217878946,
+  "null_angle_mean_deg": 85.56301235615003,
+  "p_orth": 0.5294705294705294,
+  "p_align": 0.47152847152847155,
   "n_perms_valid": 1000,
-  "delta": -0.120391362427435,
-  "delta_theta_deg": 6.988735924573419,
-  "z_score": -1.1167434389365993,
-  "manifold_dim": 67,
-  "D_eff": 11.576404649143276,
-  "expected_cos": 0.23450559668067084,
-  "expected_angle_deg": 76.43751880849958,
+  "delta": -0.010230388328009224,
+  "delta_theta_deg": 0.5985029719351331,
+  "z_score": -0.167464994728871,
+  "manifold_dim": 39,
+  "D_eff": 5.33584938922342,
+  "expected_cos": 0.34541268305188966,
+  "expected_angle_deg": 69.79301049646084,
   "D_C_shape": [
     82,
-    100
+    102
   ],
   "D_S_shape": [
     82,
-    100
+    52
   ],
   "use_rich_cond": false,
+  "null_mode": "s_epoch",
   "win_C": [
     0.0,
     0.5

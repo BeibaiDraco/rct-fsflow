@@ -1,0 +1,22 @@
+{
+  "n_case_vi": 21,
+  "n_reverse": 21,
+  "n_temporal": 21,
+  "n_matched": 21,
+  "case_vi_stats": {
+    "a_obs_mean": 0.39194432346192254,
+    "a_obs_std": 0.238218641640184,
+    "null_mean_mean": 0.23196336115456925
+  },
+  "reverse_stats": {
+    "a_obs_mean": 0.2468253656004883,
+    "a_obs_std": 0.18737328309840218,
+    "null_mean_mean": 0.20501519915018013
+  },
+  "comparison": {
+    "paired_t_stat": 2.6222858502887987,
+    "paired_t_p": 0.016319892872414993,
+    "correlation_r": 0.34283187390955305,
+    "correlation_p": 0.12816137340697645
+  }
+}

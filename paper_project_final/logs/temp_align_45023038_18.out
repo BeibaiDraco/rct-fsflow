@@ -1,0 +1,268 @@
+==============================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+Session: 20231103 (task 18)
+==============================================================
+
+==============================================================
+CORRECT-ONLY TRIALS (out/)
+==============================================================
+
+------------------------------------------------------------
+Orientation: horizontal, Filter: correctonly
+Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231103
+Orientation: horizontal
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw
+======================================================================
+[auto] Using C window length from axes: 150ms
+
+[temporal] Session 20231103, orientation=horizontal, area=SFEF
+  [S axis] Window: [-60, 40] ms
+  [trials] 50 trials (orientation=horizontal, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=150ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.050, 0.211]
+  [result] Peak alignment: 0.211 at 130ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=2.5, expected |cos|=0.506
+  [null] null_mean=0.509 ± 0.248
+
+[temporal] Session 20231103, orientation=horizontal, area=SLIP
+  [S axis] Window: [-0, 50] ms
+  [trials] 50 trials (orientation=horizontal, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=150ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.008, 0.238]
+  [result] Peak alignment: 0.238 at -210ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=3.7, expected |cos|=0.412
+  [null] null_mean=0.238 ± 0.137
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_horizontal_correctonly/temporal_20231103_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_horizontal_correctonly/temporal_20231103_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+------------------------------------------------------------
+Orientation: pooled, Filter: correctonly
+Axes tag: axes_peakbin_saccCS-sacc-pooled-20mssw
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231103
+Orientation: pooled
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-pooled-20mssw
+======================================================================
+[auto] Using C window length from axes: 50ms
+
+[temporal] Session 20231103, orientation=pooled, area=SFEF
+  [S axis] Window: [-0, 50] ms
+  [trials] 112 trials (orientation=pooled, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.003, 0.180]
+  [result] Peak alignment: 0.180 at -190ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=1.7, expected |cos|=0.617
+  [null] null_mean=0.369 ± 0.182
+
+[temporal] Session 20231103, orientation=pooled, area=SLIP
+  [S axis] Window: [-20, 30] ms
+  [trials] 112 trials (orientation=pooled, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.012, 0.316]
+  [result] Peak alignment: 0.316 at -350ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=3.3, expected |cos|=0.441
+  [null] null_mean=0.168 ± 0.119
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_pooled_correctonly/temporal_20231103_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_pooled_correctonly/temporal_20231103_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+------------------------------------------------------------
+Orientation: vertical, Filter: correctonly
+Axes tag: axes_peakbin_saccCS-sacc-vertical-20mssw
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231103
+Orientation: vertical
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-vertical-20mssw
+======================================================================
+[auto] Using C window length from axes: 50ms
+
+[temporal] Session 20231103, orientation=vertical, area=SFEF
+  [S axis] Window: [-0, 50] ms
+  [trials] 62 trials (orientation=vertical, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.000, 0.512]
+  [result] Peak alignment: 0.512 at 70ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=2.2, expected |cos|=0.541
+  [null] null_mean=0.225 ± 0.123
+
+[temporal] Session 20231103, orientation=vertical, area=SLIP
+  [S axis] Window: [-0, 50] ms
+  [trials] 62 trials (orientation=vertical, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.008, 0.645]
+  [result] Peak alignment: 0.645 at 70ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=7.3, expected |cos|=0.296
+  [null] null_mean=0.136 ± 0.092
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_vertical_correctonly/temporal_20231103_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out/temporal_alignment/temporal_alignment_vertical_correctonly/temporal_20231103_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+==============================================================
+ALL TRIALS (out_nofilter/)
+==============================================================
+
+------------------------------------------------------------
+Orientation: horizontal, Filter: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231103
+Orientation: horizontal
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-horizontal-20mssw_nofilter
+======================================================================
+[auto] Using C window length from axes: 150ms
+
+[temporal] Session 20231103, orientation=horizontal, area=SFEF
+  [S axis] Window: [-60, 40] ms
+  [trials] 64 trials (orientation=horizontal, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=150ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.002, 0.282]
+  [result] Peak alignment: 0.282 at 130ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=2.4, expected |cos|=0.513
+  [null] null_mean=0.502 ± 0.249
+
+[temporal] Session 20231103, orientation=horizontal, area=SLIP
+  [S axis] Window: [-0, 50] ms
+  [trials] 64 trials (orientation=horizontal, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=150ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.006, 0.285]
+  [result] Peak alignment: 0.285 at -350ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=4.4, expected |cos|=0.379
+  [null] null_mean=0.259 ± 0.148
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_horizontal_alltrials/temporal_20231103_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_horizontal_alltrials/temporal_20231103_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+------------------------------------------------------------
+Orientation: pooled, Filter: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231103
+Orientation: pooled
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-pooled-20mssw_nofilter
+======================================================================
+[auto] Using C window length from axes: 50ms
+
+[temporal] Session 20231103, orientation=pooled, area=SFEF
+  [S axis] Window: [-0, 50] ms
+  [trials] 153 trials (orientation=pooled, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.001, 0.190]
+  [result] Peak alignment: 0.190 at -250ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=1.6, expected |cos|=0.622
+  [null] null_mean=0.349 ± 0.169
+
+[temporal] Session 20231103, orientation=pooled, area=SLIP
+  [S axis] Window: [-20, 30] ms
+  [trials] 153 trials (orientation=pooled, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.027, 0.285]
+  [result] Peak alignment: 0.285 at 170ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=3.9, expected |cos|=0.405
+  [null] null_mean=0.138 ± 0.106
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_pooled_alltrials/temporal_20231103_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_pooled_alltrials/temporal_20231103_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+------------------------------------------------------------
+Orientation: vertical, Filter: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-vertical-20mssw_nofilter
+------------------------------------------------------------
+======================================================================
+TEMPORAL C-S ALIGNMENT ANALYSIS
+======================================================================
+Session: 20231103
+Orientation: vertical
+Filter mode: alltrials
+Axes tag: axes_peakbin_saccCS-sacc-vertical-20mssw_nofilter
+======================================================================
+[auto] Using C window length from axes: 50ms
+
+[temporal] Session 20231103, orientation=vertical, area=SFEF
+  [S axis] Window: [-20, 30] ms
+  [trials] 89 trials (orientation=vertical, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.018, 0.263]
+  [result] Peak alignment: 0.263 at -250ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=2.3, expected |cos|=0.530
+  [null] null_mean=0.247 ± 0.133
+
+[temporal] Session 20231103, orientation=vertical, area=SLIP
+  [S axis] Window: [-0, 50] ms
+  [trials] 89 trials (orientation=vertical, PT>=200.0ms)
+  [sliding] 28 window positions from -350ms to 200ms
+  [window] Length=50ms, Step=20ms
+  [result] 28 valid windows
+  [result] Alignment range: [0.006, 0.282]
+  [result] Peak alignment: 0.282 at 70ms
+  [null] Computing covariance-constrained null...
+  [null] D_eff=8.4, expected |cos|=0.276
+  [null] null_mean=0.202 ± 0.132
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_vertical_alltrials/temporal_20231103_SFEF.json
+[saved] /project/bdoiron/dracoxu/rct-fsflow/paper_project_final/out_nofilter/temporal_alignment/temporal_alignment_vertical_alltrials/temporal_20231103_SLIP.json
+
+[done] Temporal alignment analysis complete
+
+==============================================================
+[done] Temporal alignment analysis complete for SID=20231103
+==============================================================
